@@ -3,6 +3,8 @@ const dotenv = require('dotenv').config();
 const path = require('path');
 const connectDB = require('./config/db');
 const colors = require('colors');
+const { errorHandler } = require('./middleware/errorMiddleware');
+
 // Grab port info from config
 const PORT = process.env.PORT || 5000;
 
@@ -18,6 +20,9 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
+
+// Error handler
+app.use(errorHandler);
 
 // Serve Frontend
 if (process.env.NODE_ENV === 'production') {
