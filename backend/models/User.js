@@ -10,6 +10,26 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  favouriteRecipes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Recipe',
+    },
+  ],
+  recipeMenu: [
+    {
+      recipeId: mongoose.Schema.Types.ObjectId,
+      serves: Number,
+    },
+  ],
+  shoppingList: [
+    {
+      ingredientId: mongoose.Schema.Types.ObjectId,
+      quantity: Number,
+      unit: String,
+      obtained: Boolean,
+    },
+  ],
 });
 
 module.exports = mongoose.model('User', UserSchema);
