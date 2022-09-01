@@ -52,4 +52,16 @@ router.put('/:recipeId', upload.single('image'), asyncHandler(async (req, res) =
 	}
 }))
 
+// Delete a recipe
+router.delete('/:recipeId', asyncHandler(async (req, res) => {
+	const { recipeId } = req.params
+	try {
+		await Recipe.findByIdAndDelete(recipeId)
+		res.status(200).json({ recipeId })
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
 module.exports = router;
