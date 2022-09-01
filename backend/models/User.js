@@ -30,6 +30,16 @@ const UserSchema = mongoose.Schema({
       obtained: Boolean,
     },
   ],
+  regularItems: [
+    {
+      ingredientId: mongoose.Schema.Types.ObjectId
+    }
+  ],
+  extraItems: [
+    {
+      
+    }
+  ]
 });
 
 module.exports = mongoose.model('User', UserSchema);

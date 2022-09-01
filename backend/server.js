@@ -20,8 +20,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/ingredients', require('./routes/ingredientRoutes'));
-app.use('/api/ingredientCategories', require('./routes/ingredientCategoryRoutes'));
+app.use('/api/items', require('./routes/itemRoutes'));
+app.use('/api/itemCategories', require('./routes/itemCategoryRoutes'));
 app.use('/api/recipeCategories', require('./routes/recipeCategoryRoutes'));
 
 
