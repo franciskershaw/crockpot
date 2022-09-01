@@ -18,7 +18,6 @@ const RecipeSchema = new mongoose.Schema({
       id: mongoose.Schema.Types.ObjectId,
       quantity: Number,
       unit: String,
-      required: true,
     },
   ],
   instructions: [
@@ -39,9 +38,10 @@ const RecipeSchema = new mongoose.Schema({
     },
   ],
   createdBy: {
-    type: mongoose.Schema.Types.Objectid,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);
+const User = require('./User');

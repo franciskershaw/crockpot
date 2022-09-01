@@ -23,6 +23,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/items', require('./routes/itemRoutes'));
 app.use('/api/itemCategories', require('./routes/itemCategoryRoutes'));
 app.use('/api/recipeCategories', require('./routes/recipeCategoryRoutes'));
+app.use('/api/recipes', require('./routes/recipeRoutes'));
 
 
 // Error handler

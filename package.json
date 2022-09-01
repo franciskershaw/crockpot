@@ -21,6 +21,7 @@
   "homepage": "https://github.com/franciskershaw/crockpot-node#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.31.0",
     "colors": "^1.4.0",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
@@ -28,6 +29,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.2",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
     "uuidv4": "^6.2.13"
   }
 }
