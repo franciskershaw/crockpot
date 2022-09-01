@@ -21,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/ingredientCategories', require('./routes/ingredientCategoryRoutes'));
+app.use('/api/ingredients', require('./routes/ingredientRoutes'));
 
 // Error handler
 app.use(errorHandler);

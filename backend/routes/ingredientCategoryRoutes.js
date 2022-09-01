@@ -9,6 +9,7 @@ router.post('/', asyncHandler(async (req, res) => {
 	try {
 		const ingredientCategory = new IngredientCategory(req.body);
 		await ingredientCategory.save()
+
 		res.status(201).json(ingredientCategory)
 	} catch (err) {
 		res.status(400)
