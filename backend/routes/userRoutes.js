@@ -32,9 +32,12 @@ router.post('/', asyncHandler(async (req, res) => {
 	const user = await User.create({
 		username,
 		password: hashedPassword,
+		isAdmin: false,
 		favouriteRecipes: [],
 		recipeMenu: [],
-		shoppingList: []
+		shoppingList: [],
+		regularItems: [],
+		extraItems: [],
 	})
 
 	if (user) {

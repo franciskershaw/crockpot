@@ -10,6 +10,9 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+  },
   favouriteRecipes: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +27,7 @@ const UserSchema = mongoose.Schema({
   ],
   shoppingList: [
     {
-      ingredientId: mongoose.Schema.Types.ObjectId,
+      itemId: mongoose.Schema.Types.ObjectId,
       quantity: Number,
       unit: String,
       obtained: Boolean,
@@ -32,14 +35,18 @@ const UserSchema = mongoose.Schema({
   ],
   regularItems: [
     {
-      ingredientId: mongoose.Schema.Types.ObjectId
-    }
+      itemId: mongoose.Schema.Types.ObjectId,
+      quantity: Number,
+      unit: String,
+    },
   ],
   extraItems: [
     {
-      
-    }
-  ]
+      itemId: mongoose.Schema.Types.ObjectId,
+      quantity: Number,
+      unit: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model('User', UserSchema);
