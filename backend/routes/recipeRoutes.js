@@ -23,4 +23,33 @@ router.post('/', upload.single('image'), asyncHandler(async (req, res) => {
 	}
 }))
 
+// Edit a recipe
+router.put('/:recipeId', upload.single('image'), asyncHandler(async (req, res) => {
+	try {
+		const recipe = await Recipe.findById(req.params.recipeId)
+
+		if (!recipe) {
+			res.status(404)
+			throw new Error('Recipe not found')
+		}
+
+		const updatedRecipe = await Recipe.findByIdAndUpdate(
+			req.params.recipeId,
+			req.body,
+			{ new: true }
+		)
+		updatedRecipe.image = {
+			url: req.file.path,
+			filename: req.file.filename
+		}
+		await updatedRecipe.save()
+
+		res.status(200).json(updatedRecipe)
+
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
 module.exports = router;

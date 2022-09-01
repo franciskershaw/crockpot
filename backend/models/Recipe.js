@@ -47,4 +47,3 @@ const RecipeSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);
-const User = require('./User');
