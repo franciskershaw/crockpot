@@ -76,6 +76,31 @@ router.post('/login', asyncHandler(async (req, res) => {
 	}
 }))
 
+// Temp - get user by id
+router.get('/:userId', asyncHandler(async (req, res) => {
+	try {
+		const user = await User.findById(req.params.userId)
+		res.status(200).json(user)
+	} catch (err) {
+		throw new Error('Cannee find user')
+	}
+}))
+
+// Edit user
+router.put('/:userId', asyncHandler(async (req, res) => {
+	try {
+		const updatedUser = await User.findByIdAndUpdate(
+			req.params.userId,
+			req.body,
+			{ new: true }
+		);
+		res.status(200).json(updatedUser)
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
 // Generate token
 const generateToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
