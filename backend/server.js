@@ -6,7 +6,7 @@ const colors = require('colors');
 const { errorHandler } = require('./middleware/errorMiddleware');
 
 // Grab port info from config
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Connect to Mongo database
 connectDB();
