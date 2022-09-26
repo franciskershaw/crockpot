@@ -1,6 +1,12 @@
+import Button from '../../components/global/buttons/Button'
+import Icon from '../../components/global/icons/Icon'
+
 const LandingPage = () => {
 	return (
-		<div>LandingPage</div>
+		<div>
+			<Button />
+      		<Icon />
+		</div>
 	)
 }
 
