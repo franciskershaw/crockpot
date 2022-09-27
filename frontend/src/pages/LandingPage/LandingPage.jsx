@@ -4,8 +4,16 @@ import Icon from '../../components/global/icons/Icon'
 const LandingPage = () => {
 	return (
 		<div>
-			<Button />
-      		<Icon text={"Hell000o!"} type={"secondary"}/>
+			<div className='flex space-x-5'>
+				<Icon text={""}/>
+				<Icon text={"Primary"}/>
+				<Icon text={"Secondary"} type={"secondary"}/>
+			</div>
+			{/* <div className='flex space-x-5'>
+				<Icon text={""}/>
+				<Icon text={"Primary"}/>
+				<Icon text={"Secondary"} type={"secondary"}/>
+			</div> */}
 		</div>
 	)
 }

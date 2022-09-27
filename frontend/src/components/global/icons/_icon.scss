@@ -1,17 +1,63 @@
 .icon {
-    @apply inline-flex items-center justify-center flex-shrink-0 h-9 w-9 text-black border-2 border-black rounded-full;
+    @apply flex flex-col items-center;
 
-    transition: $a-short ease-in-out;
+    // SVGs
+    svg {
+        @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 h-5 w-5 p-2 border-2 rounded-full;
+        transition: $a-short ease-in-out;
+    }
 
+    // Text
+    &__text {
+        @apply text-black inline-block relative;
+
+        &:after {
+            @apply bg-black;
+
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            transform-origin: bottom left;
+            transition: $a-short ease-in-out;
+        }
+    }
+
+    // Hover
     &:hover {
-        @apply text-white bg-black;
+        svg {
+            @apply text-white bg-black;
+        }
+
+        .icon__text:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
     }
 
     &--secondary {
-        @apply text-red-500 bg-blue-500 border-red-500;
+        // SVGs
+        svg {
+            @apply text-purple-500 border-purple-500 bg-white;
+        }
 
+        // Text
+        .icon__text {
+            @apply text-purple-500;
+
+            &:after {
+                @apply bg-purple-500;
+            }
+        }
+
+        // Hover
         &:hover {
-            @apply text-blue-500 bg-red-500 border-blue-500;
+            svg {
+                @apply text-white bg-purple-500;
+            }
         }
     }
 }
