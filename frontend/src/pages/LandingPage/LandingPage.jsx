@@ -4,7 +4,7 @@ import Icon from '../../components/global/icons/Icon'
 const LandingPage = () => {
 	return (
 		<div>
-			<div className='flex space-x-5'>
+			{/* <div className='flex space-x-5'>
 				<Icon text={""}/>
 				<Icon text={"Primary"}/>
 				<Icon text={"Secondary"} type={"secondary"}/>
@@ -12,7 +12,7 @@ const LandingPage = () => {
 			<div className='flex space-x-5'>
 				<Button text={"Primary"}/>
 				<Button text={"Secondary"} type={"secondary"}/>
-			</div>
+			</div> */}
 		</div>
 	)
 }
