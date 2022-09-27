@@ -9,7 +9,7 @@
 
     // Text
     &__text {
-        @apply text-black inline-block relative;
+        @apply text-black inline-block relative capitalize;
 
         &:after {
             @apply bg-black;
