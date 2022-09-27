@@ -5,7 +5,7 @@ const LandingPage = () => {
 	return (
 		<div>
 			<Button />
-      		<Icon />
+      		<Icon text={"Hell000o!"} type={"secondary"}/>
 		</div>
 	)
 }

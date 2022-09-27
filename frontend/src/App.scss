@@ -3,5 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './config/vars';
+
 @import './components/global/buttons/button';
 @import './components/global/icons/icon';

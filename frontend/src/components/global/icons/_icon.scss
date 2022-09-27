@@ -1,3 +1,17 @@
 .icon {
-    color: red;
+    @apply inline-flex items-center justify-center flex-shrink-0 h-9 w-9 text-black border-2 border-black rounded-full;
+
+    transition: $a-short ease-in-out;
+
+    &:hover {
+        @apply text-white bg-black;
+    }
+
+    &--secondary {
+        @apply text-red-500 bg-blue-500 border-red-500;
+
+        &:hover {
+            @apply text-blue-500 bg-red-500 border-blue-500;
+        }
+    }
 }
