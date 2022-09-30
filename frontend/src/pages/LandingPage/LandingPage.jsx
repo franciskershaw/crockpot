@@ -6,15 +6,15 @@ import {faBook} from '@fortawesome/free-solid-svg-icons'
 const LandingPage = () => {
 	return (
 		<div>
-			{/* <div className='flex space-x-5'>
-				<Icon text={"text"} svg={"Cookbook"}>
-					<FontAwesomeIcon icon={faBook}/>
-				</Icon>
-			</div> */}
-			{/* <div className='flex space-x-5'>
-				<Button text={"Primary"}/>
-				<Button text={"Secondary"} type={"secondary"}/>
-			</div> */}
+			<div>
+				<h1>This is an h1!</h1>
+				<h2>This is an h2!</h2>
+				<h3>This is an h3!</h3>
+				<h4>This is an h4!</h4>
+				<h5>This is an h5!</h5>
+				<h6>This is an h6!</h6>
+				<p>This is a p!</p>
+			</div>
 		</div>
 	)
 }

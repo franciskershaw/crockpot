@@ -3,6 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './config/base';
+@import './config/typography';
 @import './config/vars';
 
 @import './components/global/buttons/button';
