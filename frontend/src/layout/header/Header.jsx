@@ -1,20 +1,19 @@
 import { Link } from 'react-router-dom';
 import Icon from '../../components/global/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPlus, faMagnifyingGlass, faBook, faUtensils} from '@fortawesome/free-solid-svg-icons'
-
+import {faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
 
 const Header = () => {
   return (
     <header className='header'>
       <div className="container flex justify-between items-center">
         <div className="header__left">
-          <h1 className="header__title">Browse Recipes</h1>
+          <h1 className="text-h3">Title</h1>
         </div>
         <div className="header__right">
-          <Link to={'register'}>
-            <Icon>
-              <FontAwesomeIcon icon={faPlus}/>
+          <Link to={'login'}>
+            <Icon text={"Log in"}>
+              <FontAwesomeIcon icon={faArrowRightFromBracket}/>
             </Icon>
           </Link>
         </div>

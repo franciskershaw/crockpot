@@ -8,3 +8,8 @@ body {
     width: 100vw;
     overflow-x: hidden;
 }
+
+main {
+    display: flex;
+    min-height: 100vh;
+}

@@ -1,0 +1,17 @@
+.form {
+    &__input {
+        @apply flex flex-col w-full;
+
+        label {
+            @apply mb-1;
+        }
+
+        input {
+            @apply border border-black rounded p-1;
+        }
+
+        input:hover, input:focus {
+            @apply outline-black;
+        }
+    }
+}
