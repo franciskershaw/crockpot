@@ -15,6 +15,15 @@ const LandingPage = () => {
 				<h6>This is an h6!</h6>
 				<p>This is a p!</p>
 			</div>
+			<div className='container border border-black'>
+				<p>Bacon ipsum dolor amet tongue picanha porchetta venison ball tip chislic strip steak kevin ham shank. Pancetta ribeye pork loin beef ribs, flank burgdoggen alcatra jowl strip steak rump ham hock. Swine boudin sausage filet mignon pig corned beef short ribs biltong meatball buffalo shankle. Capicola turkey jowl pancetta ham tongue. Drumstick corned beef biltong beef ribs chislic ball tip pork belly, brisket burgdoggen alcatra fatback filet mignon. Sirloin bresaola corned beef strip steak pig pork loin ribeye capicola jerky ground round beef.</p>	
+			</div>
+			<div className='container container--sm border border-black'>
+				<p>Bacon ipsum dolor amet tongue picanha porchetta venison ball tip chislic strip steak kevin ham shank. Pancetta ribeye pork loin beef ribs, flank burgdoggen alcatra jowl strip steak rump ham hock. Swine boudin sausage filet mignon pig corned beef short ribs biltong meatball buffalo shankle. Capicola turkey jowl pancetta ham tongue. Drumstick corned beef biltong beef ribs chislic ball tip pork belly, brisket burgdoggen alcatra fatback filet mignon. Sirloin bresaola corned beef strip steak pig pork loin ribeye capicola jerky ground round beef.</p>	
+			</div>
+			<div className='container container--xsm border border-black'>
+				<p>Bacon ipsum dolor amet tongue picanha porchetta venison ball tip chislic strip steak kevin ham shank. Pancetta ribeye pork loin beef ribs, flank burgdoggen alcatra jowl strip steak rump ham hock. Swine boudin sausage filet mignon pig corned beef short ribs biltong meatball buffalo shankle. Capicola turkey jowl pancetta ham tongue. Drumstick corned beef biltong beef ribs chislic ball tip pork belly, brisket burgdoggen alcatra fatback filet mignon. Sirloin bresaola corned beef strip steak pig pork loin ribeye capicola jerky ground round beef.</p>	
+			</div>
 		</div>
 	)
 }

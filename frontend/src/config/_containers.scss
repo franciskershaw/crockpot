@@ -1,0 +1,14 @@
+.container {
+    @apply px-4 mx-auto;
+
+    width: 100%;
+    max-width: 1200px;
+
+    &--sm {
+        width: 80%;
+    }
+
+    &--xsm {
+        width: 60%;
+    }
+}

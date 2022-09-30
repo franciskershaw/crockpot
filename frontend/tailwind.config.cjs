@@ -82,6 +82,10 @@ module.exports = {
           letterSpacing: '0',
           fontWeight: '400',
         }],
+      },
+      zIndex: {
+        'nav': 10,
+        'modal': 20
       }
     },
   },
