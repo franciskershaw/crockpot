@@ -1,5 +1,9 @@
 .navbar {
-    @apply flex items-center shadow-top fixed bottom-0 left-0 right-0;
+    @apply flex items-center bg-white shadow-top fixed bottom-0 left-0 right-0 z-nav;
 
     height: 12.5vh;
+}
+
+main {
+    margin-bottom: 15vh;
 }

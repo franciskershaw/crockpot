@@ -2,9 +2,12 @@
     @apply flex items-center bg-white shadow-bottom fixed top-0 left-0 right-0 z-nav;
 
     height: 12.5vh;
+
+    &__title {
+        @apply text-h3;
+    }
 }
 
 main {
     margin-top: 15vh;
-    margin-bottom: 15vh;
 }
