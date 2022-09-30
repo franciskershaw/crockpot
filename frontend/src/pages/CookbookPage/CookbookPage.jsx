@@ -1,6 +1,11 @@
+import Header from '../../layout/header/Header'
+
 const CookbookPage = () => {
 	return (
-		<div>CookbookPage</div>
+		<>
+		<Header title='Cookbook'/>
+		CookbookPage
+		</>
 	)
 }
 

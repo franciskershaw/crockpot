@@ -1,7 +1,12 @@
-const AddRecipePage = () => {
-	return (
-		<div>AddRecipePage</div>
-	)
-}
+import Header from '../../layout/header/Header';
 
-export default AddRecipePage
+const AddRecipePage = () => {
+  return (
+    <>
+      <Header title="Add recipe" />
+      <div>AddRecipePage</div>
+    </>
+  );
+};
+
+export default AddRecipePage;
