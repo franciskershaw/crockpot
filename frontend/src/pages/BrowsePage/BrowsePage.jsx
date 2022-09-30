@@ -1,9 +1,12 @@
-const BrowsePage = () => {
-	return (
-		<div>
-			All recipes
-		</div>
-	)
-}
+import Header from '../../layout/header/Header';
 
-export default BrowsePage
+const BrowsePage = () => {
+  return (
+    <>
+      <Header title="Browse Recipes" />
+      <div>Browse Page</div>
+    </>
+  );
+};
+
+export default BrowsePage;
