@@ -1,10 +1,10 @@
-const Icon = ({type, state, text, children}) => {
+const Icon = ({type, classes, state, text, children}) => {
   const iconType = type ? ` icon--${type}` : ''; // Primary, secondary
   const iconState = state ? ` icon--${state}` : '';
   const iconText = text ? `${text}` : '';
 
   return (
-    <div className={`icon${iconType}${iconState}`}>
+    <div className={`icon${iconType}${iconState} ${classes}`}>
         {children}
         {iconText ? (
             <>
