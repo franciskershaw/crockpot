@@ -1,30 +1,66 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const LoginPage = () => {
-	return (
-		<div className="container container--sm flex items-center">
-			<div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
-				<h1 className="text-h3 capitalize text-center">Log in</h1>
-				<form className="form w-full space-y-3" id="login">
-					<div className="form__input">
-						<label for="name">Username</label>
-						<input type="text" id="name" name="name" required></input>
-					</div>
-					<div className="form__input">
-						<label for="password">Password</label>
-						<input type="text" id="password" name="password" required></input>
-					</div>
-				</form>
-				<button className="btn mx-auto" type="submit" form="login" value="Log in">Log in</button>
-				<div className='text-center'>
-					<p>Don't have an account?</p>
-					<Link to={'/register'} className="underline">
-						Register
-					</Link>
-				</div>
-			</div>
-		</div>
-	)
-}
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+  const { username, password } = formData;
 
-export default LoginPage
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  return (
+    <div className="container container--sm flex items-center">
+      <div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
+        <h1 className="text-h3 capitalize text-center">Log in</h1>
+        <form className="form w-full space-y-3" id="login">
+          <div className="form__input">
+            <label htmlFor="username">Username</label>
+            <input
+              value={username}
+              onChange={onChange}
+              type="text"
+              id="username"
+              name="username"
+              required></input>
+          </div>
+          <div className="form__input">
+            <label htmlFor="password">Password</label>
+            <input
+              password={password}
+              onChange={onChange}
+              type="password"
+              id="password"
+              name="password"
+              required></input>
+          </div>
+        </form>
+        <button
+          className="btn mx-auto"
+          type="submit"
+          form="login"
+          value="Log in">
+          Log in
+        </button>
+        <div className="text-center">
+          <p>Don't have an account?</p>
+          <Link to={'/register'} className="underline">
+            Register
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;

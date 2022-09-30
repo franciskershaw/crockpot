@@ -7,7 +7,7 @@ const RegisterPage = () => {
 				<h1 className="text-h3 capitalize text-center">Register</h1>
 				<form className="form w-full space-y-3" id="login">
 					<div className="form__input">
-						<label for="name">Username</label>
+						<label htmlFor="name">Username</label>
 						<input type="text" id="name" name="name" required></input>
 					</div>
 					<div className="form__input">
@@ -15,8 +15,8 @@ const RegisterPage = () => {
 						<input type="text" id="password" name="password" required></input>
 					</div>
 					<div className="form__input">
-						<label for="confirmPassword">Confirm password</label>
-						<input type="text" id="confirmPassword" name="confirmPassword" required></input>
+						<label htmlFor="confirmPassword">Confirm password</label>
+						<input type="password" id="confirmPassword" name="confirmPassword" required></input>
 					</div>
 				</form>
 				<button className="btn mx-auto" type="submit" form="login" value="Register">Register</button>
