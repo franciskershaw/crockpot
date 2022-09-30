@@ -18,7 +18,7 @@ const LoginPage = () => {
 				<button className="btn mx-auto" type="submit" form="login" value="Log in">Log in</button>
 				<div className='text-center'>
 					<p>Don't have an account?</p>
-					<Link to={'register'} className="underline">
+					<Link to={'/register'} className="underline">
 						Register
 					</Link>
 				</div>
