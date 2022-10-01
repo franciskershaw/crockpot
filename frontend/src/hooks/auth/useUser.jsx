@@ -5,39 +5,41 @@ import {
   clearStoredUser,
   getStoredUser,
   setStoredUser,
-} from '../../utils/userStorage.js';
-import { getUser } from '../../queries/authRequests.jsx';
+} from '../../reactQuery/userStorage.js';
 
 // Hook
 export function useUser() {
   const queryClient = useQueryClient();
 
-  const { data: user } = useQuery([queryKeys.user], ({ signal }) => getUser(user, signal), {
-    initialData: getStoredUser,
-    onSuccess: (received) => {
-      if (!received) {
-        clearStoredUser();
-      } else {
-        setStoredUser(received);
-      }
-    },
-  });
+  const { data: user } = useQuery(
+    [queryKeys.user],
+    ({ signal }) => getUser(user, signal),
+    {
+      initialData: getStoredUser,
+      onSuccess: (received) => {
+        if (!received) {
+          clearStoredUser();
+        } else {
+          setStoredUser(received);
+        }
+      },
+    }
+  );
 
-	// called from useAuth
-	function updateUser(newUser) {
-		queryClient.setQueryData([queryKeys.user], newUser);
-	}
+  // called from useAuth
+  function updateUser(newUser) {
+    queryClient.setQueryData([queryKeys.user], newUser);
+  }
 
-	// called from useAuth
-	function clearUser() {
-		// reset user to null
-		queryClient.setQueryData([queryKeys.user], null)
-		clearStoredUser()
-		// Remove user queries from cache
-		queryClient.resetQueries(queryKeys.user, { exact: true })
+  // called from useAuth
+  function clearUser() {
+    // reset user to null
+    queryClient.setQueryData([queryKeys.user], null);
+    clearStoredUser();
+    // Remove user queries from cache
+    queryClient.resetQueries(queryKeys.user, { exact: true });
     // Clear cache of other queries later on
-	}
+  }
 
-	return { user, updateUser, clearUser}
-	
+  return { user, updateUser, clearUser };
 }
