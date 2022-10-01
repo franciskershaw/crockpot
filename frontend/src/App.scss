@@ -8,9 +8,10 @@
 @import './config/typography';
 @import './config/vars';
 
-@import './components/global/buttons/button';
-@import './components/global/forms/forms';
-@import './components/global/icons/icon';
+@import './components/buttons/button';
+@import './components/forms/forms';
+@import './components/icons/icon';
+@import './components/recipeCard/recipe-card';
 
 @import './layout/header/header';
 @import './layout/navbar/navbar';

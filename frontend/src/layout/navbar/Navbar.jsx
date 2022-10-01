@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Icon from '../../components/global/icons/Icon'
+import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus, faMagnifyingGlass, faBook, faUtensils} from '@fortawesome/free-solid-svg-icons'
 

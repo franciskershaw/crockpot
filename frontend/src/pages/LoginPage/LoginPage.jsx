@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const LoginPage = () => {
 	return (
 		<div className="container container--sm flex items-center">
-			<div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
+			<div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded">
 				<h1 className="text-h3 capitalize text-center">Log in</h1>
 				<form className="form w-full space-y-3" id="login">
 					<div className="form__input">

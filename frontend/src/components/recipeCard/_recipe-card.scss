@@ -1,0 +1,33 @@
+.recipe-card {
+    @apply shadow-card rounded overflow-hidden relative;
+
+    width: calc(50% - 1rem);
+    margin-bottom: 1rem;
+    transition: $a-short ease-in-out;
+
+    &:hover {
+        transform: $a-scale;
+    }
+
+    &__image-container {
+        @apply relative pb-[100%];
+    }
+
+    &__image {
+        @apply absolute h-full w-full top-0 bottom-0 left-0 right-0;
+
+        img {
+            @apply h-full w-full object-cover;
+        }
+    }
+
+    &__icons {
+        @apply absolute top-0 left-0 right-0 z-10;
+    }
+
+    &__title {
+        @apply absolute bottom-0 left-0 right-0 z-10 p-2 text-white;
+
+        background: rgba(50,50,50,0.5);
+    }
+}

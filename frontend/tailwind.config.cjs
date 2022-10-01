@@ -3,8 +3,14 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      borderRadius: {
+        'sm': '0.5rem',
+        DEFAULT: '1rem',
+        'lg': '2rem',
+      },
       boxShadow: {
-        card: '0 0 0.5rem rgba(0, 0, 0, 0.2)',
+        DEFAULT: '0 0 0.5rem rgba(0, 0, 0, 0.2)',
+        card: '0 13px 27px -5px rgb(51 61 71 / 25%), 0 8px 16px -8px rgb(51 61 71 / 30%);',
         top: '0 -5px 15px rgb(51 61 71 / 35%)',
         bottom: '0 5px 15px rgb(51 61 71 / 35%)',
       },
@@ -33,7 +39,7 @@ module.exports = {
           fontWeight: '400',
         }],
         h5: ['16px', {
-          lineHeight: '24px',
+          lineHeight: '20px',
           letterSpacing: '0',
           fontWeight: '400',
         }],
@@ -84,8 +90,8 @@ module.exports = {
         }],
       },
       zIndex: {
-        'nav': 10,
-        'modal': 20
+        'nav': 20,
+        'modal': 30
       }
     },
   },
