@@ -1,5 +1,8 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useUser } from '../../hooks/auth/useUser';
+import { useAuth } from '../../hooks/auth/useAuth';
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +12,16 @@ const RegisterPage = () => {
   });
   const { username, password, confirmPassword } = formData;
 
+  const navigate = useNavigate();
+  const auth = useAuth();
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      return navigate('/browse');
+    }
+  }, [user]);
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -16,11 +29,25 @@ const RegisterPage = () => {
     }));
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+    } else {
+      const userData = {
+        username,
+        password,
+      };
+      auth.signup(userData);
+    }
+  };
+
   return (
     <div className="container container--sm flex items-center">
       <div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
         <h1 className="text-h3 capitalize text-center">Register</h1>
-        <form className="form w-full space-y-3" id="login">
+        <form onSubmit={onSubmit} className="form w-full space-y-3" id="login">
           <div className="form__input">
             <label htmlFor="username">Username</label>
             <input
@@ -29,7 +56,7 @@ const RegisterPage = () => {
               name="username"
               required
               value={username}
-							onChange={onChange}
+              onChange={onChange}
             />
           </div>
           <div className="form__input">
@@ -40,7 +67,7 @@ const RegisterPage = () => {
               name="password"
               required
               value={password}
-							onChange={onChange}
+              onChange={onChange}
             />
           </div>
           <div className="form__input">
@@ -51,7 +78,7 @@ const RegisterPage = () => {
               name="confirmPassword"
               required
               value={confirmPassword}
-							onChange={onChange}
+              onChange={onChange}
             />
           </div>
         </form>

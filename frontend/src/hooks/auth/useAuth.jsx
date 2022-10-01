@@ -14,7 +14,7 @@ export function useAuth() {
       }
 
       updateUser(response.data);
-      toast.info(`Logged in as ${response.data.userName}`);
+      toast.info(`Logged in as ${response.data.username}`);
       return response.data;
 
     } catch (err) {
@@ -30,7 +30,7 @@ export function useAuth() {
     }
 
     updateUser(response.data);
-    toast.info(`Logged in as ${response.data.userName}`);
+    toast.info(`Logged in as ${response.data.username}`);
     return response.data;
   };
 
