@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -15,10 +15,6 @@ const LoginPage = () => {
     }));
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   return (
     <div className="container container--sm flex items-center">
       <div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
@@ -32,17 +28,19 @@ const LoginPage = () => {
               type="text"
               id="username"
               name="username"
-              required></input>
+              required
+            />
           </div>
           <div className="form__input">
             <label htmlFor="password">Password</label>
             <input
-              password={password}
+              value={password}
               onChange={onChange}
               type="password"
               id="password"
               name="password"
-              required></input>
+              required
+            />
           </div>
         </form>
         <button
