@@ -1,0 +1,45 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { queryKeys } from '../../reactQuery/queryKeys.js';
+import {
+  clearStoredUser,
+  getStoredUser,
+  setStoredUser,
+} from '../../reactQuery/userStorage.js';
+
+// Hook
+export function useUser() {
+  const queryClient = useQueryClient();
+
+  const { data: user } = useQuery(
+    [queryKeys.user],
+    ({ signal }) => getUser(user, signal),
+    {
+      initialData: getStoredUser,
+      onSuccess: (received) => {
+        if (!received) {
+          clearStoredUser();
+        } else {
+          setStoredUser(received);
+        }
+      },
+    }
+  );
+
+  // called from useAuth
+  function updateUser(newUser) {
+    queryClient.setQueryData([queryKeys.user], newUser);
+  }
+
+  // called from useAuth
+  function clearUser() {
+    // reset user to null
+    queryClient.setQueryData([queryKeys.user], null);
+    clearStoredUser();
+    // Remove user queries from cache
+    queryClient.resetQueries(queryKeys.user, { exact: true });
+    // Clear cache of other queries later on
+  }
+
+  return { user, updateUser, clearUser };
+}

@@ -1,9 +1,23 @@
-import { Link } from 'react-router-dom';
-import Icon from '../../components/icons/Icon'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
+import { Link, useNavigate } from 'react-router-dom';
+import Icon from '../../components/global/icons/Icon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowRightFromBracket,
+  faArrowRightToBracket,
+} from '@fortawesome/free-solid-svg-icons';
+import { useUser } from '../../hooks/auth/useUser';
+import { useAuth } from '../../hooks/auth/useAuth';
 
-const Header = ({ title, children }) => {
+const Header = ({ title }) => {
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const { signout } = useAuth();
+
+  const onLogout = () => {
+    signout();
+    return navigate('/login');
+  };
+
   return (
     <header className="header">
       <div className="container flex justify-between items-center">
@@ -12,11 +26,19 @@ const Header = ({ title, children }) => {
           {children}
         </div>
         <div className="header__right">
-          <Link to={'/login'}>
-            <Icon text={"Log in"}>
-              <FontAwesomeIcon icon={faArrowRightFromBracket}/>
-            </Icon>
-          </Link>
+          {user ? (
+            <div onClick={onLogout}>
+              <Icon text={'Log out'}>
+                <FontAwesomeIcon icon={faArrowRightToBracket} />
+              </Icon>
+            </div>
+          ) : (
+            <Link to={'login'}>
+              <Icon text={'Log in'}>
+                <FontAwesomeIcon icon={faArrowRightFromBracket} />
+              </Icon>
+            </Link>
+          )}
         </div>
       </div>
     </header>
