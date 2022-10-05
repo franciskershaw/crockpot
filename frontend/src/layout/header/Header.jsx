@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Icon from '../../components/global/icons/Icon';
+import Icon from '../../components/icons/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowRightFromBracket,
@@ -23,19 +23,18 @@ const Header = ({ title }) => {
       <div className="container flex justify-between items-center">
         <div className="header__left flex items-center">
           <h1 className="h3">{title}</h1>
-          {children}
         </div>
         <div className="header__right">
           {user ? (
-            <div onClick={onLogout}>
+            <div onClick={onLogout} className="cursor-pointer">
               <Icon text={'Log out'}>
-                <FontAwesomeIcon icon={faArrowRightToBracket} />
+                <FontAwesomeIcon icon={faArrowRightFromBracket} />
               </Icon>
             </div>
           ) : (
             <Link to={'login'}>
               <Icon text={'Log in'}>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                <FontAwesomeIcon icon={faArrowRightToBracket} />
               </Icon>
             </Link>
           )}

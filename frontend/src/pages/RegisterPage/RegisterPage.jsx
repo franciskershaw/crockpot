@@ -46,7 +46,7 @@ const RegisterPage = () => {
   return (
     <div className="container container--sm flex items-center">
       <div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
-        <h1 className="text-h3 capitalize text-center">Register</h1>
+        <h1 className=" capitalize text-center">Register</h1>
         <form onSubmit={onSubmit} className="form w-full space-y-3" id="login">
           <div className="form__input">
             <label htmlFor="username">Username</label>
