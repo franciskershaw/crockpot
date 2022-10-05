@@ -1,4 +1,6 @@
 .form {
+    @apply space-y-3;
+
     &__input {
         @apply flex flex-col w-full;
 
@@ -6,11 +8,28 @@
             @apply mb-1;
         }
 
-        input {
-            @apply border border-black rounded-sm p-1;
+        input, select {
+            @apply border border-black rounded p-2;
         }
 
-        input:hover, input:focus {
+        input {
+            @apply px-3;
+        }
+
+        select {
+            position: relative;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/></svg>") no-repeat;
+            background-size: 16px 16px;
+            background-position: right 8px top 50%;
+
+            
+            
+        }
+
+        input:hover, input:focus, select:hover, select:focus {
             @apply outline-black;
         }
     }

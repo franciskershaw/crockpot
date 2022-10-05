@@ -32,7 +32,7 @@ const Header = ({ title }) => {
               </Icon>
             </div>
           ) : (
-            <Link to={'login'}>
+            <Link to={'/login'}>
               <Icon text={'Log in'}>
                 <FontAwesomeIcon icon={faArrowRightToBracket} />
               </Icon>

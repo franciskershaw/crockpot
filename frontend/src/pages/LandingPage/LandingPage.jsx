@@ -18,12 +18,39 @@ const LandingPage = () => {
 				<div>
 					<Button text={"Button"}></Button>
 					<Button type={"secondary"} text={"Button"}></Button>
-					<Button noHover={true} text={"Button"} tooltip={"10000"}></Button>
+					<Button noHover={true} text={"Button"}></Button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Buttons with tooltip</h3>
+				<div>
+					<Button text={"Button"} tooltip={"1"}></Button>
+					<Button type={"secondary"} text={"Button"} tooltip={"2"}></Button>
+					<Button noHover={true} text={"Button"} tooltip={"3"}></Button>
+				</div>
 
 				<h3 className='text-blue-500 my-5'>Form inputs</h3>
+				<div>
+					<form action="" className='form container container--sm'>
+						<div className="form__input">
+							<label htmlFor="input1">Input 1</label>
+							<input
+							type="text"
+							id="input1"
+							name="input1"
+							required
+							/>
+						</div>
+						<div className="form__input">
+							<label htmlFor="input2">Input 2</label>
+							<select>
+								<option value="option1">Option 1</option>
+								<option value="option2">Option 2</option>
+								<option value="option3">Option 3</option>
+								<option value="option4">Option 4</option>
+							</select>
+						</div>
+					</form>
+				</div>
 
 				<h3 className='text-blue-500 my-5'>Plus/minus inputs</h3>
 
