@@ -24,13 +24,53 @@
             background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/></svg>") no-repeat;
             background-size: 16px 16px;
             background-position: right 8px top 50%;
-
-            
-            
         }
 
         input:hover, input:focus, select:hover, select:focus {
             @apply outline-black;
         }
     }
+
+    &__input--75 {
+        width: calc(75% - 0.25rem);
+    }
+
+    &__input--50 {
+        width: calc(50% - 0.25rem);
+    }
+
+    &__input--25 {
+        width: calc(25% - 0.25rem);
+    }
+}
+
+.form__input--quantity {
+    @apply w-fit border border-black rounded-lg flex bg-white;
+
+    .icon {
+        margin-top: 3px;
+
+        svg {
+            // background: red;
+            border: 1px black solid;
+            cursor: pointer;
+        }
+    }
+
+    input {
+        @apply mx-2 p-2 text-center;
+        max-width: 50px;
+    }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

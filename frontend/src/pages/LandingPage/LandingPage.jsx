@@ -1,9 +1,10 @@
 import Button from '../../components/buttons/Button'
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
+import QuantityInput from '../../components/forms/QuantityInput';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faBook} from '@fortawesome/free-solid-svg-icons'
+import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
 
 const LandingPage = () => {
 	return (
@@ -31,14 +32,87 @@ const LandingPage = () => {
 				<h3 className='text-blue-500 my-5'>Form inputs</h3>
 				<div>
 					<form action="" className='form container container--sm'>
+						{/* 100% */}
 						<div className="form__input">
-							<label htmlFor="input1">Input 1</label>
+							<label htmlFor="input1">100%</label>
 							<input
 							type="text"
 							id="input1"
 							name="input1"
 							required
 							/>
+						</div>
+						{/* 75%, 25% */}
+						<div className='flex justify-between'>
+							<div className="form__input form__input--75">
+								<label htmlFor="input1">75%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
+							<div className="form__input form__input--25">
+								<label htmlFor="input1">25%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
+						</div>
+						{/* 50%, 50% */}
+						<div className='flex justify-between'>
+							<div className="form__input form__input--50">
+								<label htmlFor="input1">50%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
+							<div className="form__input form__input--50">
+								<label htmlFor="input1">50%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
+						</div>
+						{/* 50%, 25%, 25% */}
+						<div className='flex justify-between'>
+							<div className="form__input form__input--50">
+								<label htmlFor="input1">50%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
+							<div className="form__input form__input--25">
+								<label htmlFor="input1">25%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
+							<div className="form__input form__input--25">
+								<label htmlFor="input1">25%</label>
+								<input
+								type="text"
+								id="input1"
+								name="input1"
+								required
+								/>
+							</div>
 						</div>
 						<div className="form__input">
 							<label htmlFor="input2">Input 2</label>
@@ -49,10 +123,9 @@ const LandingPage = () => {
 								<option value="option4">Option 4</option>
 							</select>
 						</div>
+						<QuantityInput label={"Hello!"} />
 					</form>
 				</div>
-
-				<h3 className='text-blue-500 my-5'>Plus/minus inputs</h3>
 
 				<h3 className='text-blue-500 my-5'>Icons</h3>
 				<div className='flex justify-evenly'>
