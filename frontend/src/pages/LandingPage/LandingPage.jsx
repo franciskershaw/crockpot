@@ -2,6 +2,7 @@ import Button from '../../components/buttons/Button'
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import QuantityInput from '../../components/forms/QuantityInput';
+import ToggleSwitch from '../../components/toggles/ToggleSwitch';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
@@ -156,8 +157,14 @@ const LandingPage = () => {
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Toggle switch</h3>
+				<ToggleSwitch />
+
+
+				<h3 className='text-blue-500 my-5'>Toggle box</h3>
 
 				<h3 className='text-blue-500 my-5'>Toggle pills</h3>
+
+				<h3 className='text-blue-500 my-5'>Accordion</h3>
 
 			</div>
 
@@ -180,6 +187,9 @@ const LandingPage = () => {
 					<RecipeCard></RecipeCard>
 					<RecipeCard></RecipeCard>
 				</div>
+
+				<h3 className='text-blue-500 my-5'>Recipe cards - layout 2</h3>
+
 			</div>
 
 

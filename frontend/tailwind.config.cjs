@@ -89,7 +89,13 @@ module.exports = {
           fontWeight: '400',
         }],
       },
+      transitionDuration: {
+        'sm': '400ms',
+        'md': '600ms',
+        'lg': '1000ms',
+      },
       zIndex: {
+        '1': 1,
         'nav': 20,
         'modal': 30
       }

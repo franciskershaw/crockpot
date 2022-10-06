@@ -3,7 +3,6 @@ import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
 
 const QuantityInput = ({step, label}) => {
     const inputStep = step ? step : '1';
-    // console.log(inputStep)
 
     return (
         <div className="flex flex-col">

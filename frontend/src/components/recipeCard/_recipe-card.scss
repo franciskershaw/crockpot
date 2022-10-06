@@ -1,9 +1,8 @@
 .recipe-card {
-    @apply shadow-card rounded overflow-hidden relative;
+    @apply shadow-card rounded overflow-hidden relative duration-md ease-in-out;
 
     width: calc(50% - 1rem);
     margin-bottom: 1rem;
-    transition: $a-short ease-in-out;
 
     &:hover {
         transform: $a-scale;

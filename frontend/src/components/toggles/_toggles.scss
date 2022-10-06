@@ -1,0 +1,17 @@
+.toggle {
+    @apply flex text-center relative bg-gray-400 rounded-lg;
+
+    &__input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    &__option {
+        @apply w-1/2 px-4 py-2 cursor-pointer text-white z-1;
+    }
+
+    &__slider {
+        @apply h-full w-1/2 bg-purple-500 absolute rounded-lg duration-sm ease-in-out;
+    }
+}

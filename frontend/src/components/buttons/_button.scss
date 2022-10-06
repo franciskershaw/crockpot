@@ -1,7 +1,6 @@
 .btn {
-    @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 px-4 py-2 border rounded-lg w-fit cursor-pointer relative;
+    @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 px-4 py-2 border rounded-lg w-fit cursor-pointer relative duration-sm ease-in-out;
     min-width: 150px;
-    transition: $a-short ease-in-out;
 
     &__tooltip {
         @apply absolute overflow-hidden flex items-center justify-center text-black border border-black bg-white rounded-full h-6 w-6;
@@ -16,7 +15,7 @@
         @apply inline-block relative capitalize;
 
         &:after {
-            @apply bg-white;
+            @apply bg-white duration-sm ease-in-out;
 
             content: '';
             position: absolute;
@@ -26,7 +25,6 @@
             bottom: 0;
             left: 0;
             transform-origin: bottom left;
-            transition: $a-short ease-in-out;
         }
     }
 
