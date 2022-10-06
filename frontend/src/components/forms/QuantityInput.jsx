@@ -10,9 +10,9 @@ const QuantityInput = ({step, label}) => {
                 <label htmlFor="" className='mb-1'>{label}</label>
             ) : null}
             <div className="form__input--quantity">
-                <div className="icon ml-[3px]"><FontAwesomeIcon icon={faPlus}/></div>
+                <div className="icon"><FontAwesomeIcon icon={faPlus}/></div>
                 <input type="number" min={0} step={inputStep} placeholder="0"/>
-                <div className="icon mr-[3px]"><FontAwesomeIcon icon={faMinus}/></div>
+                <div className="icon"><FontAwesomeIcon icon={faMinus}/></div>
             </div>
         </div>
     )

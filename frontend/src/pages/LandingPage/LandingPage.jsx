@@ -136,7 +136,7 @@ const LandingPage = () => {
 								<option value="option4">Option 4</option>
 							</select>
 						</div>
-						<QuantityInput label={"Hello!"} />
+						<QuantityInput label={"Quantity Input"} />
 					</form>
 				</div>
 
@@ -167,7 +167,6 @@ const LandingPage = () => {
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
 				</div>
-
 				<div className='flex justify-evenly'>
 					<Icon invert>
 						<FontAwesomeIcon icon={faBook}/>

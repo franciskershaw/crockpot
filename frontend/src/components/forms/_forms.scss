@@ -45,21 +45,33 @@
 }
 
 .form__input--quantity {
-    @apply w-fit border border-black rounded-lg flex bg-white;
+    @apply w-fit border-2 border-black rounded-lg flex bg-white;
 
     .icon {
-        margin-top: 3px;
-
         svg {
-            // background: red;
-            border: 1px black solid;
-            cursor: pointer;
+            @apply border-4 border-purple bg-purple outline outline-2 outline-purple text-white cursor-pointer;
+
+            &:hover {
+                @apply border-purple bg-purple text-white;
+            }
         }
     }
 
     input {
         @apply mx-2 p-2 text-center;
         max-width: 50px;
+
+        &:focus {
+            @apply outline-none;
+        }
+    }
+
+    &:hover {
+        @apply border-purple shadow;
+    }
+
+    &:focus-within {
+        @apply border-purple shadow;
     }
 }
 
