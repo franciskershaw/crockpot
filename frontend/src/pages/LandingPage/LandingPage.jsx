@@ -18,16 +18,28 @@ const LandingPage = () => {
 
 				<h3 className='text-blue-500 my-5'>Buttons</h3>
 				<div className='flex justify-evenly'>
-					<Button text={"Button"}></Button>
-					<Button type={"secondary"} text={"Button"}></Button>
-					<Button noHover={true} text={"Button"}></Button>
+					<Button text={"Black"}></Button>
+					<Button type={"secondary"} text={"Purple"}></Button>
+					<Button noHover={true} text={"No hover"}></Button>
+				</div>
+
+				<div className='flex justify-evenly'>
+					<Button text={"Black inverted"} invert></Button>
+					<Button type={"secondary"} text={"Purple inverted"} invert></Button>
+					<Button noHover={true} text={"No hover inverted"} invert></Button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Buttons with tooltip</h3>
 				<div className='flex justify-evenly'>
-					<Button text={"Button"} tooltip={"1"}></Button>
-					<Button type={"secondary"} text={"Button"} tooltip={"2"}></Button>
-					<Button noHover={true} text={"Button"} tooltip={"3"}></Button>
+					<Button text={"Black"} tooltip={"1"}></Button>
+					<Button type={"secondary"} text={"Purple"} tooltip={"2"}></Button>
+					<Button noHover={true} text={"No hover"} tooltip={"3"}></Button>
+				</div>
+
+				<div className='flex justify-evenly'>
+					<Button text={"Black inverted"} tooltip={"1"} invert></Button>
+					<Button type={"secondary"} text={"Purple inverted"} tooltip={"2"} invert></Button>
+					<Button noHover={true} text={"No hover inverted"} tooltip={"3"} invert></Button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Form inputs</h3>
@@ -152,6 +164,33 @@ const LandingPage = () => {
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
 					<Icon noHover={true} text={"Add recipe"} type={"secondary"}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+				</div>
+
+				<div className='flex justify-evenly'>
+					<Icon invert>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert noHover={true}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert type={"secondary"}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert noHover={true} type={"secondary"}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert text={"Add recipe"}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert noHover={true} text={"Add recipe"}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert text={"Add recipe"} type={"secondary"}>
+						<FontAwesomeIcon icon={faBook}/>
+					</Icon>
+					<Icon invert noHover={true} text={"Add recipe"} type={"secondary"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
 				</div>

@@ -1,9 +1,9 @@
 .btn {
-    @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 px-4 py-2 border rounded-lg w-fit cursor-pointer relative duration-sm ease-in-out;
+    @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 px-4 py-2 border-2 rounded-lg w-fit cursor-pointer relative duration-sm ease-in-out;
     min-width: 150px;
 
     &__tooltip {
-        @apply absolute overflow-hidden flex items-center justify-center text-black border border-black bg-white rounded-full h-6 w-6;
+        @apply absolute overflow-hidden flex items-center justify-center text-black border-2 border-black bg-white rounded-full h-6 w-6 font-medium;
 
         font-size: 12px;
         top: -10px;
@@ -53,5 +53,44 @@
 
     &--no-hover {
         pointer-events: none;
+    }
+}
+
+.btn--invert {
+    @apply text-white border-white bg-black;
+
+    .btn__tooltip {
+        @apply text-white border-white bg-black;
+    }
+
+    // Text
+    .btn__text {
+        &:after {
+            @apply bg-black;
+        }
+    }
+
+    &:hover {
+        @apply text-black border-black bg-white;
+    }
+
+    // Secondary
+    &.btn--secondary {
+        @apply text-white border-white bg-purple;
+
+        .btn__tooltip {
+            @apply text-white border-white bg-purple;
+        }
+
+        .btn__text {
+            &:after {
+                @apply bg-purple;
+            }
+        }
+
+        // Hover
+        &:hover {
+            @apply text-purple border-purple bg-white;
+        }
     }
 }

@@ -2,12 +2,13 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    borderRadius: {
+      'sm': '0.5rem',
+      DEFAULT: '1rem',
+      'lg': '2rem',
+      'full': '9999px'
+    },
     extend: {
-      borderRadius: {
-        'sm': '0.5rem',
-        DEFAULT: '1rem',
-        'lg': '2rem',
-      },
       boxShadow: {
         DEFAULT: '0 0 0.5rem rgba(0, 0, 0, 0.2)',
         card: '0 13px 27px -5px rgb(51 61 71 / 25%), 0 8px 16px -8px rgb(51 61 71 / 30%);',

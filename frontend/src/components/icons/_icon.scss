@@ -64,3 +64,49 @@
         pointer-events: none;
     }
 }
+
+.icon--invert {
+    svg {
+        @apply text-white bg-black;
+    }
+
+    // Text
+    // .icon__text {
+    //     @apply text-white;
+
+    //     &:after {
+    //         @apply bg-white;
+    //     }
+    // }
+
+    // Hover
+    &:hover {
+        svg {
+            @apply text-black bg-white border-black;
+        }
+    }
+
+    // Secondary
+    &.icon--secondary {
+        // SVGs
+        svg {
+            @apply text-white border-purple bg-purple;
+        }
+
+        // Text
+        .icon__text {
+            @apply text-purple;
+
+            &:after {
+                @apply bg-purple;
+            }
+        }
+
+        // Hover
+        &:hover {
+            svg {
+                @apply text-purple bg-white;
+            }
+        }
+    }
+}

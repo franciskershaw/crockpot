@@ -1,11 +1,12 @@
-const Button = ({type, noHover, state, tooltip, text}) => {
+const Button = ({type, invert, noHover, state, tooltip, text}) => {
   const buttonType = type ? ` btn--${type}` : ''; // Primary, secondary
+  const buttonInvert = invert ? ` btn--invert` : '';
   const buttonNoHover = noHover ? ' btn--no-hover' : '';
   const buttonState = state ? ` btn--${state}` : '';
   const buttonText = text ? `${text}` : '';
 
   return (
-    <a className={`btn${buttonType}${buttonNoHover}${buttonState}`}>
+    <a className={`btn${buttonType}${buttonInvert}${buttonNoHover}${buttonState}`}>
       {tooltip ? (
         <div className="btn__tooltip">{tooltip}</div>
       ) : null}
