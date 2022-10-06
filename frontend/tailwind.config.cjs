@@ -14,6 +14,15 @@ module.exports = {
         top: '0 -5px 15px rgb(51 61 71 / 35%)',
         bottom: '0 5px 15px rgb(51 61 71 / 35%)',
       },
+      colors: {
+        white: '#fff',
+        grey: {
+          'bg': '#eee',
+          'inactive': '#b0b0b0'
+        },
+        black: '#333d47',
+        purple: '#3e3ac2',
+      },
       fontFamily: {
         body: ['Poppins', 'sans-serif'],
       },
@@ -88,6 +97,10 @@ module.exports = {
           letterSpacing: '0',
           fontWeight: '400',
         }],
+      },
+      scale: {
+        'sm': '1.025',
+        'lg': '1.05',
       },
       transitionDuration: {
         'sm': '400ms',

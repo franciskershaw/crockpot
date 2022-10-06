@@ -5,7 +5,7 @@
     margin-bottom: 1rem;
 
     &:hover {
-        transform: $a-scale;
+        @apply scale-sm;
     }
 
     &__image-container {

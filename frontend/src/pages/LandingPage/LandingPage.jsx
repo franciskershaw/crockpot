@@ -17,14 +17,14 @@ const LandingPage = () => {
 				<h2 className='text-red-500 font-bold underline'>Atoms</h2>
 
 				<h3 className='text-blue-500 my-5'>Buttons</h3>
-				<div>
+				<div className='flex justify-evenly'>
 					<Button text={"Button"}></Button>
 					<Button type={"secondary"} text={"Button"}></Button>
 					<Button noHover={true} text={"Button"}></Button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Buttons with tooltip</h3>
-				<div>
+				<div className='flex justify-evenly'>
 					<Button text={"Button"} tooltip={"1"}></Button>
 					<Button type={"secondary"} text={"Button"} tooltip={"2"}></Button>
 					<Button noHover={true} text={"Button"} tooltip={"3"}></Button>
