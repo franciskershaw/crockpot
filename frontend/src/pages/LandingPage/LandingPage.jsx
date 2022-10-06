@@ -157,8 +157,9 @@ const LandingPage = () => {
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Toggle switch</h3>
-				<ToggleSwitch />
-
+				<div className='container container--sm'>
+					<ToggleSwitch left={"Left"} right={"Right"} />
+				</div>
 
 				<h3 className='text-blue-500 my-5'>Toggle box</h3>
 

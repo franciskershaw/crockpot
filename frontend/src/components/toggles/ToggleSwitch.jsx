@@ -1,17 +1,18 @@
 import { useRef } from 'react';
 
-const ToggleSwitch = () => {
+const ToggleSwitch = ({left, right}) => {
+  const leftOption = left.toLowerCase().replaceAll(' ', '-');
+  const rightOption = right.toLowerCase().replaceAll(' ', '-');
+  const name = `${leftOption}_${rightOption}`
+
   const slider = useRef(null);
 
   const sendLeft = (e) => {
-    // slider.current.className = "toggle__slider toggle__slider--left";
     slider.current.style.transform = "translate(0%,0)"
   }
 
   const sendRight = (e) => {
-    console.log(slider)
     slider.current.style.transform = "translate(100%,0)"
-    // slider.current.className = "toggle__slider toggle__slider--right";
   }
 
   return (
@@ -21,23 +22,23 @@ const ToggleSwitch = () => {
           onChange={sendLeft} 
           className="toggle__input" 
           type="radio" 
-          name="option" 
-          id="option1" 
+          name={name} 
+          id={leftOption} 
           checked="checked" 
         />
-        <label className="toggle__option" htmlFor="option1">
-          Option 1
+        <label className="toggle__option" htmlFor={leftOption}>
+          {left}
         </label>
         {/* Option 2 */}
         <input 
           onChange={sendRight} 
           className="toggle__input" 
           type="radio" 
-          name="option" 
-          id="option2" 
+          name={name}
+          id={rightOption} 
         />
-        <label className="toggle__option" htmlFor="option2">
-          Option 2
+        <label className="toggle__option" htmlFor={rightOption}>
+          {right}
         </label>
         <span ref={slider} className="toggle__slider"></span>
     </div>
