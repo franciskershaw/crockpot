@@ -27,7 +27,7 @@ const Header = ({ title }) => {
         <div className="header__right">
           {user ? (
             <div onClick={onLogout} className="cursor-pointer">
-              <Icon text={'Log out'}>
+              <Icon text={'Log out'} outline>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} />
               </Icon>
             </div>

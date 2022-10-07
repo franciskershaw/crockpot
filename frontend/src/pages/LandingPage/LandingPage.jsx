@@ -247,6 +247,16 @@ const LandingPage = () => {
 			<div className='flex flex-col'>
 				<h2 className='text-red-500 font-bold underline'>Config</h2>
 
+				<h3 className='text-blue-500 my-5'>Colours</h3>
+				<div className='flex space-x-5'>
+					<div className='w-20 h-20 rounded-full bg-white border border-black'></div>
+					<div className='w-20 h-20 rounded-full bg-grey-bg'></div>
+					<div className='w-20 h-20 rounded-full bg-grey-inactive'></div>
+					<div className='w-20 h-20 rounded-full bg-purple'></div>
+					<div className='w-20 h-20 rounded-full bg-black'></div>
+				</div>
+
+
 				<h3 className='text-blue-500 my-5'>Typography</h3>
 				<div>
 					<h1>This is an h1!</h1>
