@@ -3,6 +3,40 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .primary {
+        @apply text-white border-black bg-black;
+    }
+
+    .primary--hover {
+        @apply text-black border-black bg-white;
+    }
+
+    .primary-outline {
+        @apply text-black border-black bg-white;
+    }
+
+    .primary-outline--hover {
+        @apply text-white border-black bg-black;
+    }
+
+    .secondary {
+        @apply text-white border-purple bg-purple;
+    }
+
+    .secondary--hover {
+        @apply text-purple border-purple bg-white;
+    }
+
+    .secondary-outline {
+        @apply text-purple border-purple bg-white;
+    }
+
+    .secondary-outline--hover {
+        @apply text-white border-purple bg-purple;
+    }
+}
+
 @import './config/base';
 @import './config/containers';
 @import './config/typography';
@@ -10,6 +44,7 @@
 @import './components/buttons/button';
 @import './components/forms/forms';
 @import './components/icons/icon';
+@import './components/pills/pills';
 @import './components/recipeCard/recipe-card';
 @import './components/toggles/toggles';
 

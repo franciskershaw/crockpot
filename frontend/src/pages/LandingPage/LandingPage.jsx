@@ -23,9 +23,9 @@ const LandingPage = () => {
 					<Button noHover={true} text={"No hover"}></Button>
 				</div>
 				<div className='flex justify-evenly'>
-					<Button text={"Black inverted"} invert></Button>
-					<Button type={"secondary"} text={"Purple inverted"} invert></Button>
-					<Button noHover={true} text={"No hover inverted"} invert></Button>
+					<Button text={"Black inverted"} outline></Button>
+					<Button type={"secondary"} text={"Purple outlineed"} outline></Button>
+					<Button noHover={true} text={"No hover outlineed"} outline></Button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Buttons with tooltip</h3>
@@ -35,9 +35,9 @@ const LandingPage = () => {
 					<Button noHover={true} text={"No hover"} tooltip={"3"}></Button>
 				</div>
 				<div className='flex justify-evenly'>
-					<Button text={"Black inverted"} tooltip={"1"} invert></Button>
-					<Button type={"secondary"} text={"Purple inverted"} tooltip={"2"} invert></Button>
-					<Button noHover={true} text={"No hover inverted"} tooltip={"3"} invert></Button>
+					<Button text={"Black outlineed"} tooltip={"1"} outline></Button>
+					<Button type={"secondary"} text={"Purple outlineed"} tooltip={"2"} outline></Button>
+					<Button noHover={true} text={"No hover outlineed"} tooltip={"3"} outline></Button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Form inputs</h3>
@@ -134,7 +134,7 @@ const LandingPage = () => {
 								<option value="option4">Option 4</option>
 							</select>
 						</div>
-						<QuantityInput label={"Quantity Input"} />
+						<QuantityInput label={"Quantity Input"} step={5} />
 					</form>
 				</div>
 
@@ -204,7 +204,16 @@ const LandingPage = () => {
 					</Toggle>
 				</div>
 
-				<h3 className='text-blue-500 my-5'>Toggle pills</h3>
+				<h3 className='text-blue-500 my-5'>Pills</h3>
+				<div>
+					<div className="pill">Pill 1</div>
+					<div className="pill pill--secondary">Pill 1</div>
+					<div className="pill pill--outline">Pill 1</div>
+					<div className="pill pill--secondary pill--outline">Pill 1</div>
+				</div>
+				
+
+				<h3 className='text-blue-500 my-5'>List of pills</h3>
 
 				<h3 className='text-blue-500 my-5'>Accordion</h3>
 
