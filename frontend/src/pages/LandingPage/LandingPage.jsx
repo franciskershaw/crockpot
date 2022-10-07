@@ -2,7 +2,7 @@ import Button from '../../components/buttons/Button'
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import QuantityInput from '../../components/forms/QuantityInput';
-import ToggleSwitch from '../../components/toggles/ToggleSwitch';
+import Toggle from '../../components/toggles/Toggle';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
@@ -22,7 +22,6 @@ const LandingPage = () => {
 					<Button type={"secondary"} text={"Purple"}></Button>
 					<Button noHover={true} text={"No hover"}></Button>
 				</div>
-
 				<div className='flex justify-evenly'>
 					<Button text={"Black inverted"} invert></Button>
 					<Button type={"secondary"} text={"Purple inverted"} invert></Button>
@@ -35,7 +34,6 @@ const LandingPage = () => {
 					<Button type={"secondary"} text={"Purple"} tooltip={"2"}></Button>
 					<Button noHover={true} text={"No hover"} tooltip={"3"}></Button>
 				</div>
-
 				<div className='flex justify-evenly'>
 					<Button text={"Black inverted"} tooltip={"1"} invert></Button>
 					<Button type={"secondary"} text={"Purple inverted"} tooltip={"2"} invert></Button>
@@ -194,12 +192,17 @@ const LandingPage = () => {
 					</Icon>
 				</div>
 
-				<h3 className='text-blue-500 my-5'>Toggle switch</h3>
+				<h3 className='text-blue-500 my-5'>Toggles</h3>
 				<div className='container container--sm'>
-					<ToggleSwitch left={"Left"} right={"Right"} />
+					<Toggle left={"Left"} right={"Right"} />
 				</div>
-
-				<h3 className='text-blue-500 my-5'>Toggle box</h3>
+				<div className='mt-4 container container--sm'>
+					<Toggle left={"Left box"} right={"Right box"} box>
+						<>Ingredients, blah</>
+						{/* <>Ingredients, blah blah</>
+						<>Ingredients, blah blah blah</> */}
+					</Toggle>
+				</div>
 
 				<h3 className='text-blue-500 my-5'>Toggle pills</h3>
 
