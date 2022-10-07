@@ -30,3 +30,17 @@
         background: rgba(50,50,50,0.5);
     }
 }
+
+.recipe-card-long {
+    @apply w-full border-2 border-purple shadow-card rounded overflow-hidden flex items-center;
+
+    height: 125px;
+
+    &__image-container {
+        @apply relative w-2/5 h-full;
+    }
+
+    &__content-container {
+        @apply flex flex-col p-2 justify-between;
+    }
+}

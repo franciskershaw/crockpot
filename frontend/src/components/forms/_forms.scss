@@ -45,11 +45,13 @@
 }
 
 .form__input--quantity {
-    @apply w-fit border-2 border-black rounded-lg flex bg-white;
+    @apply w-fit border-2 border-black rounded-lg flex bg-white relative;
 
     .icon {
+        @apply absolute;
+
         svg {
-            @apply border-4 border-purple bg-purple outline outline-2 outline-purple text-white cursor-pointer;
+            @apply border-purple bg-purple text-white cursor-pointer;
 
             &:hover {
                 @apply border-purple bg-purple text-white;
@@ -58,8 +60,8 @@
     }
 
     input {
-        @apply mx-2 p-2 text-center;
-        max-width: 50px;
+        @apply mx-2 p-1 text-center;
+        width: 85px;
 
         &:focus {
             @apply outline-none;

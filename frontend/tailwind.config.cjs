@@ -44,7 +44,7 @@ module.exports = {
           fontWeight: '400',
         }],
         h4: ['20px', {
-          lineHeight: '28px',
+          lineHeight: '24px',
           letterSpacing: '0',
           fontWeight: '400',
         }],

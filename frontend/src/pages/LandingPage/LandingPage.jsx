@@ -1,6 +1,7 @@
 import Button from '../../components/buttons/Button'
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
+import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
 import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
 import Icon from '../../components/icons/Icon'
@@ -240,6 +241,11 @@ const LandingPage = () => {
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Recipe cards - layout 2</h3>
+				<div className='container container--md space-y-5'>
+					<RecipeCardLong></RecipeCardLong>
+					<RecipeCardLong></RecipeCardLong>
+					<RecipeCardLong></RecipeCardLong>
+				</div>
 
 			</div>
 

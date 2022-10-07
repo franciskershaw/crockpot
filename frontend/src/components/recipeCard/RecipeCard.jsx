@@ -8,10 +8,10 @@ const RecipeCard = () => {
     <div className="recipe-card">
       <div className='recipe-card__image-container'>
         <div className='recipe-card__icons flex justify-between p-1'>
-          <Icon>
+          <Icon type={"secondary"} outline>
             <FontAwesomeIcon icon={faUtensils}/>
           </Icon>
-          <Icon>
+          <Icon type={"secondary"} outline>
             <FontAwesomeIcon icon={faHeart}/>
           </Icon>
         </div>
