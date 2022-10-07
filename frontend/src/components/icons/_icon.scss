@@ -3,7 +3,7 @@
 
     // SVGs
     svg {
-        @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 h-4 w-4 p-2 border-2 rounded-full duration-sm ease-in-out;
+        @apply primary inline-flex items-center justify-center flex-shrink-0 h-4 w-4 p-2 border-2 rounded-full duration-sm ease-in-out;
     }
 
     // Text
@@ -27,7 +27,7 @@
     // Hover
     &:hover {
         svg {
-            @apply text-white bg-black;
+            @apply primary--hover;
         }
 
         .icon__text:after {
@@ -40,7 +40,7 @@
     &--secondary {
         // SVGs
         svg {
-            @apply text-purple border-purple bg-white;
+            @apply secondary;
         }
 
         // Text
@@ -55,58 +55,59 @@
         // Hover
         &:hover {
             svg {
-                @apply text-white bg-purple;
+                @apply secondary--hover;
+            }
+        }
+    }
+
+    // Outline
+    &--outline {
+        // SVGs
+        svg {
+            @apply primary-outline;
+        }
+
+        // Text
+        .icon__text {
+            @apply text-black;
+
+            &:after {
+                @apply bg-black;
+            }
+        }
+
+        // Hover
+        &:hover {
+            svg {
+                @apply primary-outline--hover;
+            }
+        }
+
+        &.icon--secondary {
+            // SVGs
+            svg {
+                @apply secondary-outline;
+            }
+
+            // Text
+            .icon__text {
+                @apply text-purple;
+
+                &:after {
+                    @apply bg-purple;
+                }
+            }
+
+            // Hover
+            &:hover {
+                svg {
+                    @apply secondary-outline--hover;
+                }
             }
         }
     }
 
     &--no-hover {
         pointer-events: none;
-    }
-}
-
-.icon--invert {
-    svg {
-        @apply text-white bg-black;
-    }
-
-    // Text
-    // .icon__text {
-    //     @apply text-white;
-
-    //     &:after {
-    //         @apply bg-white;
-    //     }
-    // }
-
-    // Hover
-    &:hover {
-        svg {
-            @apply text-black bg-white border-black;
-        }
-    }
-
-    // Secondary
-    &.icon--secondary {
-        // SVGs
-        svg {
-            @apply text-white border-purple bg-purple;
-        }
-
-        // Text
-        .icon__text {
-            @apply text-purple;
-
-            &:after {
-                @apply bg-purple;
-            }
-        }
-
-        // Hover
-        &:hover {
-            svg {
-                @apply text-purple bg-white;
-            }
-        }
     }
 }

@@ -166,28 +166,28 @@ const LandingPage = () => {
 					</Icon>
 				</div>
 				<div className='flex justify-evenly'>
-					<Icon invert>
+					<Icon outline>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert noHover={true}>
+					<Icon outline noHover={true}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert type={"secondary"}>
+					<Icon outline type={"secondary"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert noHover={true} type={"secondary"}>
+					<Icon outline noHover={true} type={"secondary"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert text={"Add recipe"}>
+					<Icon outline text={"Add recipe"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert noHover={true} text={"Add recipe"}>
+					<Icon outline noHover={true} text={"Add recipe"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert text={"Add recipe"} type={"secondary"}>
+					<Icon outline text={"Add recipe"} type={"secondary"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
-					<Icon invert noHover={true} text={"Add recipe"} type={"secondary"}>
+					<Icon outline noHover={true} text={"Add recipe"} type={"secondary"}>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
 				</div>
