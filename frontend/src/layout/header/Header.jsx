@@ -26,15 +26,15 @@ const Header = ({ title }) => {
         </div>
         <div className="header__right">
           {user ? (
-            <div onClick={onLogout}>
-              <Icon text={'Log out'}>
-                <FontAwesomeIcon icon={faArrowRightToBracket} />
+            <div onClick={onLogout} className="cursor-pointer">
+              <Icon text={'Log out'} outline>
+                <FontAwesomeIcon icon={faArrowRightFromBracket} />
               </Icon>
             </div>
           ) : (
-            <Link to={'login'}>
-              <Icon text={'Log in'}>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} />
+            <Link to={'/login'}>
+              <Icon text={'Log in'} outline>
+                <FontAwesomeIcon icon={faArrowRightToBracket} />
               </Icon>
             </Link>
           )}

@@ -1,12 +1,11 @@
 .recipe-card {
-    @apply shadow-card rounded overflow-hidden relative;
+    @apply shadow-card rounded overflow-hidden relative duration-md ease-in-out;
 
     width: calc(50% - 1rem);
     margin-bottom: 1rem;
-    transition: $a-short ease-in-out;
 
     &:hover {
-        transform: $a-scale;
+        @apply scale-sm;
     }
 
     &__image-container {
@@ -29,5 +28,19 @@
         @apply absolute bottom-0 left-0 right-0 z-10 p-2 text-white;
 
         background: rgba(50,50,50,0.5);
+    }
+}
+
+.recipe-card-long {
+    @apply w-full border-2 border-purple shadow-card rounded overflow-hidden flex items-center;
+
+    height: 125px;
+
+    &__image-container {
+        @apply relative w-2/5 h-full;
+    }
+
+    &__content-container {
+        @apply flex flex-col p-2 justify-between;
     }
 }

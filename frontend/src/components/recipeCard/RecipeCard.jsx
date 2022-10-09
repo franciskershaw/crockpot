@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
+import {faUtensils, faHeart} from '@fortawesome/free-solid-svg-icons'
 
 const RecipeCard = () => {
   return (
     <div className="recipe-card">
       <div className='recipe-card__image-container'>
         <div className='recipe-card__icons flex justify-between p-1'>
-          <Icon>
-            <FontAwesomeIcon icon={faArrowRightFromBracket}/>
+          <Icon type={"secondary"} outline>
+            <FontAwesomeIcon icon={faUtensils}/>
           </Icon>
-          <Icon>
-            <FontAwesomeIcon icon={faArrowRightFromBracket}/>
+          <Icon type={"secondary"} outline>
+            <FontAwesomeIcon icon={faHeart}/>
           </Icon>
         </div>
         <div className='recipe-card__image'>

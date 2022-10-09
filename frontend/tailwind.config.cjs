@@ -2,17 +2,27 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    borderRadius: {
+      'sm': '0.5rem',
+      DEFAULT: '1rem',
+      'lg': '2rem',
+      'full': '9999px'
+    },
     extend: {
-      borderRadius: {
-        'sm': '0.5rem',
-        DEFAULT: '1rem',
-        'lg': '2rem',
-      },
       boxShadow: {
         DEFAULT: '0 0 0.5rem rgba(0, 0, 0, 0.2)',
         card: '0 13px 27px -5px rgb(51 61 71 / 25%), 0 8px 16px -8px rgb(51 61 71 / 30%);',
         top: '0 -5px 15px rgb(51 61 71 / 35%)',
         bottom: '0 5px 15px rgb(51 61 71 / 35%)',
+      },
+      colors: {
+        white: '#fff',
+        grey: {
+          'bg': '#eee',
+          'inactive': '#b0b0b0'
+        },
+        black: '#333d47',
+        purple: '#3e3ac2',
       },
       fontFamily: {
         body: ['Poppins', 'sans-serif'],
@@ -34,7 +44,7 @@ module.exports = {
           fontWeight: '400',
         }],
         h4: ['20px', {
-          lineHeight: '28px',
+          lineHeight: '24px',
           letterSpacing: '0',
           fontWeight: '400',
         }],
@@ -89,7 +99,17 @@ module.exports = {
           fontWeight: '400',
         }],
       },
+      scale: {
+        'sm': '1.025',
+        'lg': '1.05',
+      },
+      transitionDuration: {
+        'sm': '400ms',
+        'md': '600ms',
+        'lg': '1000ms',
+      },
       zIndex: {
+        '1': 1,
         'nav': 20,
         'modal': 30
       }

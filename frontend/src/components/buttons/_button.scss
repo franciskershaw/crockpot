@@ -1,20 +1,98 @@
 .btn {
-    @apply text-black border-black bg-white inline-flex items-center justify-center flex-shrink-0 px-4 py-2 border rounded-lg w-fit;
+    @apply primary inline-flex items-center justify-center flex-shrink-0 px-4 py-2 border-2 rounded-lg w-fit cursor-pointer relative duration-sm ease-in-out;
     min-width: 150px;
-    transition: $a-short ease-in-out;
+
+    // Tooltip
+    &__tooltip {
+        @apply bg-black text-white border-white absolute overflow-hidden flex items-center justify-center border-2 rounded-full h-6 w-6 font-medium;
+
+        font-size: 12px;
+        top: -10px;
+        right: -10px;
+    }
+
+    // Text
+    &__text {
+        @apply inline-block relative capitalize;
+
+        &:after {
+            @apply bg-white duration-sm ease-in-out;
+
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            transform-origin: bottom left;
+        }
+    }
 
     &:hover {
-        @apply underline text-white bg-black;
-        transform: $a-scale-lg;
+        @apply primary--hover scale-lg;
+
+        .btn__text:after {
+            @apply bg-black;
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
     }
 
     // Secondary
     &--secondary {
-        @apply text-purple-500 border-purple-500 bg-white;
+        @apply secondary;
+
+        .btn__tooltip {
+            @apply text-white bg-purple;
+        }
 
         // Hover
         &:hover {
-            @apply text-white bg-purple-500;
+            @apply secondary--hover;
+
+            .btn__text:after {
+                @apply bg-purple;
+            }
         }
+    }
+
+    // Outline
+    &--outline {
+        @apply primary-outline;
+
+        .btn__tooltip {
+            @apply primary-outline;
+        }
+
+        // Hover
+        &:hover {
+            @apply primary-outline--hover;
+
+            .btn__text:after {
+                @apply bg-white;
+            }
+        }
+
+        // Secondary outline
+        &.btn--secondary {
+            @apply secondary-outline;
+
+            .btn__tooltip {
+                @apply secondary-outline;
+            }
+
+            &:hover {
+                @apply secondary-outline--hover;
+    
+                .btn__text:after {
+                    @apply bg-white;
+                }
+            }
+        }
+    }
+
+    &--no-hover {
+        pointer-events: none;
     }
 }

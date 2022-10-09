@@ -6,9 +6,11 @@
 
     &--sm {
         width: 80%;
+        max-width: calc(1200px * 0.8);
     }
 
     &--xsm {
         width: 60%;
+        max-width: calc(1200px * 0.6);
     }
 }

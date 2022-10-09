@@ -1,0 +1,17 @@
+.pill {
+    @apply primary inline-flex items-center justify-center flex-shrink-0 px-4 py-0.5 border-2 rounded-lg w-fit cursor-default;
+
+    // Secondary
+    &--secondary {
+        @apply secondary;
+    }
+
+    // Outline
+    &--outline {
+        @apply primary-outline;
+
+        &.pill--secondary {
+            @apply secondary-outline;
+        }
+    }
+}

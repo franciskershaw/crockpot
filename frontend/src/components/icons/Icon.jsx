@@ -1,11 +1,13 @@
-const Icon = ({type, classes, state, text, children}) => {
+const Icon = ({type, outline, noHover, classes, state, text, children}) => {
   const iconType = type ? ` icon--${type}` : ''; // Primary, secondary
+  const iconOutline = outline ? ` icon--outline` : ''; // Primary, secondary
+  const iconNoHover = noHover ? ' icon--no-hover' : '';
   const iconClasses = classes ? ` ${classes}` : '';
   const iconState = state ? ` icon--${state}` : '';
   const iconText = text ? `${text}` : '';
 
   return (
-    <div className={`icon${iconType}${iconClasses}${iconState}`}>
+    <div className={`icon${iconType}${iconOutline}${iconNoHover}${iconClasses}${iconState}`}>
         {children}
         {iconText ? (
             <>
