@@ -1,4 +1,5 @@
 import Button from '../../components/buttons/Button'
+import PlusMinus from '../../components/buttons/PlusMinus'
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
@@ -18,6 +19,7 @@ const LandingPage = () => {
 				<h2 className='text-red-500 font-bold underline'>Atoms</h2>
 
 				<h3 className='text-blue-500 my-5'>Buttons</h3>
+				<div>
 				<div className='flex justify-evenly'>
 					<Button text={"Black"}></Button>
 					<Button type={"secondary"} text={"Purple"}></Button>
@@ -39,6 +41,10 @@ const LandingPage = () => {
 					<Button text={"Black outlineed"} tooltip={"1"} outline></Button>
 					<Button type={"secondary"} text={"Purple outlineed"} tooltip={"2"} outline></Button>
 					<Button noHover={true} text={"No hover outlineed"} tooltip={"3"} outline></Button>
+				</div>
+				<div>
+					<PlusMinus/>
+				</div>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Form inputs</h3>
@@ -126,6 +132,7 @@ const LandingPage = () => {
 								/>
 							</div>
 						</div>
+						{/* Select */}
 						<div className="form__input">
 							<label htmlFor="input2">Input 2</label>
 							<select>
@@ -135,8 +142,20 @@ const LandingPage = () => {
 								<option value="option4">Option 4</option>
 							</select>
 						</div>
+						{/* File input */}
+						<div className='form__input'>
+							<label htmlFor="filename">25%</label>
+							<input
+								type="file"
+								id="filename"
+								name="filename"
+							/>
+						</div>
+						{/* Quantity input */}
 						<QuantityInput label={"Quantity Input"} step={5} />
 					</form>
+					{/* Submit button */}
+					<button class="btn" type="submit" form="form" value="Submit">Submit</button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Icons</h3>

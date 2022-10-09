@@ -1,11 +1,12 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
 
-const QuantityInput = ({step, label}) => {
+const QuantityInput = ({classes, step, label}) => {
+    const inputClasses = classes ? ` ${classes}` : '';
     const inputStep = step ? step : '1';
 
     return (
-        <div className="flex flex-col">
+        <div className={`flex flex-col${inputClasses}`}>
             {label ? (
                 <label htmlFor="" className='mb-1'>{label}</label>
             ) : null}

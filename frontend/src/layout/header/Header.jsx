@@ -33,7 +33,7 @@ const Header = ({ title }) => {
             </div>
           ) : (
             <Link to={'/login'}>
-              <Icon text={'Log in'}>
+              <Icon text={'Log in'} outline>
                 <FontAwesomeIcon icon={faArrowRightToBracket} />
               </Icon>
             </Link>
