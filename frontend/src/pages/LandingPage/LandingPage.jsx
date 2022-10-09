@@ -1,5 +1,6 @@
 import Button from '../../components/buttons/Button'
 import PlusMinus from '../../components/buttons/PlusMinus'
+import Modal from '../../components/modals/Modal';
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
@@ -232,10 +233,12 @@ const LandingPage = () => {
 					<div className="pill pill--secondary pill--outline">Pill 1</div>
 				</div>
 				
-
 				<h3 className='text-blue-500 my-5'>List of pills</h3>
 
 				<h3 className='text-blue-500 my-5'>Accordion</h3>
+
+				<h3 className='text-blue-500 my-5'>Modal</h3>
+				<Modal></Modal>
 
 			</div>
 
