@@ -1,9 +1,22 @@
 import { useRef, useState, useEffect } from 'react';
 
 const Toggle = ({left, right, box, children}) => {
-  const leftOption = left.toLowerCase().replaceAll(' ', '-');
+  if (!left) {
+    left = "left"
+  }
+  if (!right) {
+    right = "right"
+  }
+
+  let content = false
+  if (children) {
+    content = true
+  }
+
+  const leftOption = left ? left.toLowerCase().replaceAll(' ', '-') : 'left';
   const rightOption = right.toLowerCase().replaceAll(' ', '-');
   const toggleBox = box ? ` toggle--boxed` : '';
+  const toggleContent = content ? ` toggle--content` : '';
   const name = `${leftOption}_${rightOption}`
 
   let leftContent
@@ -40,7 +53,7 @@ const Toggle = ({left, right, box, children}) => {
   },[direction])
 
   return (
-    <div className={`toggle${toggleBox}`}>
+    <div className={`toggle${toggleBox}${toggleContent}`}>
         <div className='toggle-switch'>
           {/* Left */}
           <input 
@@ -67,8 +80,8 @@ const Toggle = ({left, right, box, children}) => {
           </label>
           <span ref={slider} className="toggle-switch__slider"></span>
       </div>
-      {box ? (
-        <div className='toggle-box'>
+      {content ? (
+        <div className={box ? `toggle-box` : `pt-4`}>
           {direction === 'left' ? (
             // Show left content
             <div className='toggle-box__content'>

@@ -14,7 +14,7 @@ body.modal-is-open {
 }
 
 main {
-    @apply flex flex-col justify-center bg-grey-bg overflow-x-hidden;
+    @apply bg-grey-bg overflow-x-hidden;
 
     min-height: 100vh;
 }
