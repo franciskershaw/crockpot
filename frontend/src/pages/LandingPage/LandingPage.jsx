@@ -171,7 +171,9 @@ const LandingPage = () => {
 						<QuantityInput label={"Quantity Input"} step={5} />
 					</form>
 					{/* Submit button */}
-					<button className="btn" type="submit" form="form" value="Submit">Submit</button>
+					<button className="btn" type="submit" form="form" value="Submit">
+						<span className='btn__text'>Submit</span>
+					</button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Icons</h3>

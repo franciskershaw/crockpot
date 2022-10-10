@@ -7,7 +7,7 @@ const Icon = ({type, outline, noHover, classes, state, text, children}) => {
   const iconText = text ? `${text}` : '';
 
   return (
-    <div className={`icon${iconType}${iconOutline}${iconNoHover}${iconClasses}${iconState}`}>
+    <div className={`icon${iconType}${iconOutline}${iconNoHover}${iconClasses}${iconState}${iconText ? ' icon--no-hover' : ''}`}>
         {children}
         {iconText ? (
             <>

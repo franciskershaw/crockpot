@@ -1,5 +1,5 @@
 .icon {
-    @apply flex flex-col items-center;
+    @apply flex flex-col items-center duration-sm ease-in-out;
 
     // SVGs
     svg {
@@ -26,9 +26,7 @@
 
     // Hover
     &:hover {
-        svg {
-            @apply primary--hover;
-        }
+        @apply scale-lg;
 
         .icon__text:after {
             transform: scaleX(1);
@@ -49,13 +47,6 @@
 
             &:after {
                 @apply bg-purple;
-            }
-        }
-
-        // Hover
-        &:hover {
-            svg {
-                @apply secondary--hover;
             }
         }
     }
@@ -108,6 +99,8 @@
     }
 
     &--no-hover {
-        pointer-events: none;
+        &:hover {
+            transform: none;
+        }
     }
 }
