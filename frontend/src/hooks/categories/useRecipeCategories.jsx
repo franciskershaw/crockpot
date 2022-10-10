@@ -1,20 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAllItemCategories } from '../../queries/itemCategoryRequests';
+import { fetchAllRecipeCategories } from '../../queries/recipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { useUser } from '../auth/useUser';
 
 // Hook
-export function useItemCategories() {
+export function useRecipeCategories() {
   const { user } = useUser();
 
   const fallback = [];
-  const { data: categories = fallback } = useQuery(
+  const { data: recipeCategories = fallback } = useQuery(
     [queryKeys.categories],
-    () => fetchAllItemCategories(user.token),
+    () => fetchAllRecipeCategories(user.token),
     {
       staleTime: 10000000,
     }
   );
 
-  return { categories };
+  return { recipeCategories };
 }

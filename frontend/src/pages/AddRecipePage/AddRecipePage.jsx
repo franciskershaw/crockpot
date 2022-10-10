@@ -6,9 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useItemCategories } from '../../hooks/categories/useItemCategories';
+import { useRecipeCategories } from '../../hooks/categories/useRecipeCategories';
 
 const AddRecipePage = () => {
+  const { recipeCategories } = useRecipeCategories()
+  console.log(recipeCategories)
+
   const [formData, setFormData] = useState({
     name: '',
     image: null,
@@ -21,13 +24,21 @@ const AddRecipePage = () => {
   });
 
   useEffect(() => {
-    console.log(formData)
-  },[formData])
+    console.log(formData);
+  }, [formData]);
 
-  const { categories } = useItemCategories()
-  console.log(categories)
+  useEffect(() => {
+    if (recipeCategories.length) {
+      setFormData((prevState) => ({
+        ...prevState,
+        categories: [recipeCategories[0]._id]
+      }))
+    }
+  },[recipeCategories])
 
-  const onChange = (e) => {
+  const onChange = (e, type) => {
+    console.log(e);
+    console.log(type);
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -35,22 +46,30 @@ const AddRecipePage = () => {
   };
 
   const imageHandler = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
 
-    if (!(file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
-      toast.error('Please select from the following file types: jpg, jpeg, png')
-      e.target.value = null
+    if (
+      !(
+        file.type === 'image/png' ||
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg'
+      )
+    ) {
+      toast.error(
+        'Please select from the following file types: jpg, jpeg, png'
+      );
+      e.target.value = null;
       return;
-    }  else if (file.size > 500000) {
+    } else if (file.size > 500000) {
       toast.error('Please upload an image smaller than 500kb');
-      e.target.value = null
+      e.target.value = null;
       return;
     }
     setFormData((prevState) => ({
       ...prevState,
-      image: file
-    }))
-  }
+      image: file,
+    }));
+  };
 
   return (
     <>
@@ -66,7 +85,7 @@ const AddRecipePage = () => {
             <label htmlFor="name">Recipe name</label>
             <input
               value={formData.name}
-              onChange={onChange}
+              onChange={(e) => onChange(e, 'single')}
               type="text"
               id="name"
               name="name"
@@ -76,7 +95,13 @@ const AddRecipePage = () => {
           {/* Image - 100, file */}
           <div className="form__input">
             <label htmlFor="image">Upload image</label>
-            <input onChange={imageHandler} type="file" id="image" name="image" required />
+            <input
+              onChange={imageHandler}
+              type="file"
+              id="image"
+              name="image"
+              required
+            />
           </div>
           {/* Time, serves - 50 50, quantities  */}
           <div className="flex justify-between">
@@ -85,10 +110,10 @@ const AddRecipePage = () => {
                 nameAndId={'timeInMinutes'}
                 value={formData.timeInMinutes}
                 setValue={setFormData}
-                onChange={onChange}
+                onChange={(e) => onChange(e, 'single')}
                 label={'Time'}
                 step={5}
-                classes={'items-center'}                
+                classes={'items-center'}
               />
             </div>
             <div className="form__input--50 items-center">
@@ -107,10 +132,11 @@ const AddRecipePage = () => {
           {/* Categories - 100, select */}
           <div className="form__input">
             <label htmlFor="categories">Categories</label>
-            <select name="categories">
-              <option value="sensual">Sensual</option>
-              <option value="erotic">Erotic</option>
-              <option value="chickeeen">Chickeeen</option>
+
+            <select name="categories" onChange={onChange}>
+              {recipeCategories.map((category) => (
+                <option key={category.name} value={category._id}>{category.name}</option>
+              ))}
             </select>
           </div>
           <PlusMinus />
