@@ -102,7 +102,7 @@ const AddRecipePage = () => {
           <PlusMinus />
         </form>
         <div className='mt-5 text-center'>
-          <button class="btn btn--secondary" type="submit" form="addRecipe" value="Add Recipe">Add Recipe</button>
+          <button className="btn btn--secondary" type="submit" form="addRecipe" value="Add Recipe">Add Recipe</button>
         </div>
       </div>
     </>

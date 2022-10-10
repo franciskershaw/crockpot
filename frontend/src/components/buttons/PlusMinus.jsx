@@ -6,10 +6,10 @@ const PlusMinus = () => {
 
     return (
         <div className='flex justify-center'>
-            <Icon classes={"mx-2"} type={"secondary"}>
+            <Icon classes={"mx-2 cursor-pointer"} type={"secondary"}>
                 <FontAwesomeIcon icon={faMinus}/>
             </Icon>
-            <Icon classes={"mx-2"} type={"secondary"}>
+            <Icon classes={"mx-2 cursor-pointer"} type={"secondary"}>
                 <FontAwesomeIcon icon={faPlus}/>
             </Icon>
         </div>
