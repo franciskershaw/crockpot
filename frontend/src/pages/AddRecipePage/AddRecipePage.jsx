@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useItemCategories } from '../../hooks/categories/useItemCategories';
 
 const AddRecipePage = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,9 @@ const AddRecipePage = () => {
   useEffect(() => {
     console.log(formData)
   },[formData])
+
+  const { categories } = useItemCategories()
+  console.log(categories)
 
   const onChange = (e) => {
     setFormData((prevState) => ({
