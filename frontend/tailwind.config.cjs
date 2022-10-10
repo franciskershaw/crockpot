@@ -99,6 +99,12 @@ module.exports = {
           fontWeight: '400',
         }],
       },
+      height: {
+        'header': '12.5vh',
+      },
+      padding: {
+        'header-padding': '15vh'
+      },
       scale: {
         'sm': '1.025',
         'lg': '1.05',
@@ -110,6 +116,8 @@ module.exports = {
       },
       zIndex: {
         '1': 1,
+        'recipe-cards': 5,
+        'search': 10,
         'nav': 20,
         'modal': 30
       }

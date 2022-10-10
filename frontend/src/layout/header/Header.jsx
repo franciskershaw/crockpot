@@ -8,7 +8,7 @@ import {
 import { useUser } from '../../hooks/auth/useUser';
 import { useAuth } from '../../hooks/auth/useAuth';
 
-const Header = ({ title }) => {
+const Header = ({ title, children }) => {
   const navigate = useNavigate();
   const { user } = useUser();
   const { signout } = useAuth();
@@ -22,6 +22,7 @@ const Header = ({ title }) => {
     <header className="header">
       <div className="container flex justify-between items-center">
         <div className="header__left flex items-center">
+          {children}
           <h1 className="h3">{title}</h1>
         </div>
         <div className="header__right">

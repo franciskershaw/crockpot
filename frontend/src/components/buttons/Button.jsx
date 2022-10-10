@@ -1,4 +1,4 @@
-const Button = ({type, outline, noHover, state, tooltip, text}) => {
+const Button = ({type, outline, noHover, state, tooltip, onClick, text}) => {
   const buttonType = type ? ` btn--${type}` : ''; // Primary, secondary
   const buttonOutline = outline ? ` btn--outline` : '';
   const buttonNoHover = noHover ? ' btn--no-hover' : '';
@@ -6,7 +6,7 @@ const Button = ({type, outline, noHover, state, tooltip, text}) => {
   const buttonText = text ? `${text}` : '';
 
   return (
-    <a className={`btn${buttonType}${buttonOutline}${buttonNoHover}${buttonState}`}>
+    <a onClick={onClick} className={`btn${buttonType}${buttonOutline}${buttonNoHover}${buttonState}`}>
       {tooltip ? (
         <div className="btn__tooltip">{tooltip}</div>
       ) : null}

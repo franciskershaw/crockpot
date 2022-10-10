@@ -1,9 +1,7 @@
 .header {
-    @apply flex items-center bg-grey-bg shadow-bottom fixed top-0 left-0 right-0 z-nav capitalize;
-
-    height: 12.5vh;
+    @apply flex items-center bg-grey-bg shadow-bottom fixed top-0 left-0 right-0 z-nav capitalize h-header;
 }
 
 main {
-    padding-top: 15vh;
+    @apply pt-header-padding;
 }

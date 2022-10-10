@@ -45,7 +45,7 @@ const RegisterPage = () => {
 
   return (
     <div className="container container--sm flex items-center">
-      <div className="flex flex-col flex-grow border border-black space-y-6 p-4 rounded-2xl">
+      <div className="form-card">
         <h1 className=" capitalize text-center">Register</h1>
         <form onSubmit={onSubmit} className="form w-full space-y-3" id="login">
           <div className="form__input">
@@ -83,7 +83,7 @@ const RegisterPage = () => {
           </div>
         </form>
         <button
-          className="btn mx-auto"
+          className="btn btn--secondary mx-auto"
           type="submit"
           form="login"
           value="Register">

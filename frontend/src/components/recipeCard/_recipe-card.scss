@@ -21,11 +21,11 @@
     }
 
     &__icons {
-        @apply absolute top-0 left-0 right-0 z-10;
+        @apply absolute top-0 left-0 right-0 z-recipe-cards;
     }
 
     &__title {
-        @apply absolute bottom-0 left-0 right-0 z-10 p-2 text-white;
+        @apply absolute bottom-0 left-0 right-0 z-recipe-cards p-2 text-white;
 
         background: rgba(50,50,50,0.5);
     }
