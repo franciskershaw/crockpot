@@ -79,17 +79,24 @@ const AddRecipePage = () => {
             <div className="form__input--50">
               <QuantityInput
                 nameAndId={'timeInMinutes'}
+                value={formData.timeInMinutes}
+                setValue={setFormData}
+                onChange={onChange}
                 label={'Time'}
                 step={5}
-                classes={'items-center'}
+                classes={'items-center'}                
               />
             </div>
             <div className="form__input--50 items-center">
               <QuantityInput
                 nameAndId={'serves'}
+                value={formData.serves}
+                setValue={setFormData}
+                onChange={onChange}
                 label={'Serves'}
                 step={1}
                 classes={'items-center'}
+                maxValue={20}
               />
             </div>
           </div>
