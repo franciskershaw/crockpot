@@ -4,12 +4,13 @@ import PlusMinus from '../../components/buttons/PlusMinus';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const AddRecipePage = () => {
   const [formData, setFormData] = useState({
     name: '',
-    image: {},
+    image: null,
     timeInMinutes: 30,
     serves: 4,
     categories: [],
@@ -18,12 +19,35 @@ const AddRecipePage = () => {
     notes: [],
   });
 
+  useEffect(() => {
+    console.log(formData)
+  },[formData])
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
+  const imageHandler = (e) => {
+    const file = e.target.files[0]
+
+    if (!(file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
+      toast.error('Please select from the following file types: jpg, jpeg, png')
+      e.target.value = null
+      return;
+    }  else if (file.size > 500000) {
+      toast.error('Please upload an image smaller than 500kb');
+      e.target.value = null
+      return;
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      image: file
+    }))
+  }
+
   return (
     <>
       <Header title="Add recipe">
@@ -48,7 +72,7 @@ const AddRecipePage = () => {
           {/* Image - 100, file */}
           <div className="form__input">
             <label htmlFor="image">Upload image</label>
-            <input type="file" id="image" name="image" required />
+            <input onChange={imageHandler} type="file" id="image" name="image" required />
           </div>
           {/* Time, serves - 50 50, quantities  */}
           <div className="flex justify-between">
