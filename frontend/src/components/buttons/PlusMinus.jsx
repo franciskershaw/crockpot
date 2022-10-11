@@ -1,19 +1,22 @@
-import Icon from '../../components/icons/Icon'
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
+import Icon from '../../components/icons/Icon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
-const PlusMinus = () => {
+const PlusMinus = ({ addInput }) => {
+  return (
+    <div className="flex justify-center">
+      <div>
+        <Icon classes={'mx-2'} type={'secondary'}>
+          <FontAwesomeIcon icon={faMinus} />
+        </Icon>
+      </div>
+      <div onClick={addInput}>
+        <Icon classes={'mx-2'} type={'secondary'}>
+          <FontAwesomeIcon icon={faPlus} />
+        </Icon>
+      </div>
+    </div>
+  );
+};
 
-    return (
-        <div className='flex justify-center'>
-            <Icon classes={"mx-2"} type={"secondary"}>
-                <FontAwesomeIcon icon={faMinus}/>
-            </Icon>
-            <Icon classes={"mx-2"} type={"secondary"}>
-                <FontAwesomeIcon icon={faPlus}/>
-            </Icon>
-        </div>
-    )
-}
-
-export default PlusMinus
+export default PlusMinus;

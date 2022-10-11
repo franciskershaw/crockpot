@@ -9,15 +9,16 @@ import { toast } from 'react-toastify';
 import { useRecipeCategories } from '../../hooks/categories/useRecipeCategories';
 
 const AddRecipePage = () => {
-  const { recipeCategories } = useRecipeCategories()
-  console.log(recipeCategories)
+  const { recipeCategories } = useRecipeCategories();
 
   const [formData, setFormData] = useState({
     name: '',
     image: null,
     timeInMinutes: 30,
     serves: 4,
-    categories: [],
+    categories: [
+      { _id: '' },
+    ],
     ingredients: [],
     instructions: [],
     notes: [],
@@ -27,23 +28,32 @@ const AddRecipePage = () => {
     console.log(formData);
   }, [formData]);
 
-  useEffect(() => {
-    if (recipeCategories.length) {
-      setFormData((prevState) => ({
-        ...prevState,
-        categories: [recipeCategories[0]._id]
-      }))
-    }
-  },[recipeCategories])
-
-  const onChange = (e, type) => {
-    console.log(e);
-    console.log(type);
+  const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
+  const multipleInputChange = (e, index, key) => {
+    let data = [...formData[key]]
+    data[index]._id = e.target.value
+    setFormData((prevState) => ({
+      ...prevState,
+      ingredients: [data]
+    }))
+  }
+
+  const addInput = (key) => {
+    console.log(key)
+    let object = {
+      _id: ''
+    }
+    setFormData((prevState) => ({
+      ...prevState,
+      [key]: [...prevState[key], object]
+    }))
+  }
 
   const imageHandler = (e) => {
     const file = e.target.files[0];
@@ -65,6 +75,7 @@ const AddRecipePage = () => {
       e.target.value = null;
       return;
     }
+
     setFormData((prevState) => ({
       ...prevState,
       image: file,
@@ -132,14 +143,20 @@ const AddRecipePage = () => {
           {/* Categories - 100, select */}
           <div className="form__input">
             <label htmlFor="categories">Categories</label>
-
-            <select name="categories" onChange={onChange}>
-              {recipeCategories.map((category) => (
-                <option key={category.name} value={category._id}>{category.name}</option>
-              ))}
-            </select>
+              {formData.categories.length && (formData.categories.map((category, index) => (
+                <select key={`categoryInput_${index}`} onChange={(e)=>multipleInputChange(e, index, 'categories')} name="categories" defaultValue={'Please select a category'}>
+                  <option disabled value="Please select a category">
+                    Please select a category
+                  </option>
+                  {recipeCategories.map((category) => (
+                    <option key={category.name} value={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              )))}
           </div>
-          <PlusMinus />
+          <PlusMinus addInput={()=>addInput('categories')} />
           {/* Ingredients - 50 25 25, select */}
           <div className="flex justify-between">
             <div className="form__input form__input--50">
