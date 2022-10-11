@@ -10,15 +10,24 @@ const CookbookPage = () => {
 		<>
 		<Header title='Cookbook'>
 			<Icon classes={"mr-3"} type={"no-hover"}>
-			<FontAwesomeIcon icon={faBook}/>
+				<FontAwesomeIcon icon={faBook}/>
 			</Icon>
 		</Header>
 		<div className='container'>
-			<Toggle left={"My favourites (1)"} right={"My recipes (3)"}>
+			<Toggle left={"My favourites (8)"} right={"My recipes (5)"} fixed>
 				<div className="flex flex-wrap justify-evenly">
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
 					<RecipeCard></RecipeCard>
 				</div>
 				<div className="flex flex-wrap justify-evenly">
+					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard>
 					<RecipeCard></RecipeCard>
 					<RecipeCard></RecipeCard>
 					<RecipeCard></RecipeCard>

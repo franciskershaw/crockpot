@@ -38,4 +38,10 @@
             border-bottom-right-radius: 2rem;
         }
     }
+
+    &--fixed {
+        .toggle-switch-wrapper {
+            @apply fixed top-0 left-0 right-0 z-search pt-header-padding pb-6 bg-opacity-80 bg-grey-bg;
+        }
+    }
 }
