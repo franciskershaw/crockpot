@@ -51,40 +51,6 @@ const AddRecipePage = () => {
     }));
   };
 
-  const addInput = (key) => {
-    console.log(key);
-    let object;
-    if (key === 'categories') {
-      object = {
-        _id: '',
-      };
-    } else if (key === 'ingredients') {
-      object = {
-        _id: '',
-        quantity: 1,
-        unit: '',
-      };
-    } else if (key === 'instructions' || key === 'notes') {
-      object = {
-        instruction: '',
-      };
-    }
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [key]: [...prevState[key], object],
-    }));
-  };
-
-  const minusInput = (key) => {
-    if (formData[key].length > 1) {
-      setFormData((prevState) => ({
-        ...prevState,
-        [key]: [...prevState[key].slice(0, -1)],
-      }));
-    }
-  };
-
   const imageHandler = (e) => {
     const file = e.target.files[0];
 
@@ -190,9 +156,11 @@ const AddRecipePage = () => {
                     ))}
                   </select>
                   {index + 1 === rows.length && (
-                    <PlusMinus
-                      minusInput={() => minusInput('categories')}
-                      addInput={() => addInput('categories')}
+                    <PlusMinus                      
+                      identifier={'categories'}
+                      formData={formData}
+                      setFormData={setFormData}
+                      newRow={category}
                     />
                   )}
                 </div>
@@ -277,8 +245,10 @@ const AddRecipePage = () => {
                   />
                   {index + 1 === rows.length && (
                     <PlusMinus
-                      addInput={() => addInput('instructions')}
-                      minusInput={() => minusInput('instructions')}
+                      identifier={'instructions'}
+                      formData={formData}
+                      setFormData={setFormData}
+                      newRow={instruction}
                     />
                   )}
                 </div>
@@ -300,8 +270,10 @@ const AddRecipePage = () => {
                   />
                   {index + 1 === rows.length && (
                     <PlusMinus
-                      addInput={() => addInput('notes')}
-                      minusInput={() => minusInput('notes')}
+                      identifier={'notes'}
+                      formData={formData}
+                      setFormData={setFormData}
+                      newRow={note}
                     />
                   )}
                 </div>
