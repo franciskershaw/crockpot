@@ -16,9 +16,7 @@ const AddRecipePage = () => {
     image: null,
     timeInMinutes: 30,
     serves: 4,
-    categories: [
-      { _id: '' },
-    ],
+    categories: [{ _id: '' }],
     ingredients: [],
     instructions: [],
     notes: [],
@@ -36,24 +34,33 @@ const AddRecipePage = () => {
   };
 
   const multipleInputChange = (e, index, key) => {
-    let data = [...formData[key]]
-    data[index]._id = e.target.value
+    let data = [...formData[key]];
+    data[index]._id = e.target.value;
     setFormData((prevState) => ({
       ...prevState,
-      ingredients: [data]
-    }))
-  }
+      ingredients: [data],
+    }));
+  };
 
   const addInput = (key) => {
-    console.log(key)
     let object = {
-      _id: ''
-    }
+      _id: '',
+    };
     setFormData((prevState) => ({
       ...prevState,
-      [key]: [...prevState[key], object]
-    }))
-  }
+      [key]: [...prevState[key], object],
+    }));
+  };
+
+  const minusInput = (key) => {
+    if (formData[key].length > 1) {
+      console.log('CAN DO!')
+      setFormData((prevState) => ({
+        ...prevState,
+        [key]: [[...prevState[key]].pop()]
+      }))
+    }
+  };
 
   const imageHandler = (e) => {
     const file = e.target.files[0];
@@ -143,8 +150,13 @@ const AddRecipePage = () => {
           {/* Categories - 100, select */}
           <div className="form__input">
             <label htmlFor="categories">Categories</label>
-              {formData.categories.length && (formData.categories.map((category, index) => (
-                <select key={`categoryInput_${index}`} onChange={(e)=>multipleInputChange(e, index, 'categories')} name="categories" defaultValue={'Please select a category'}>
+            {formData.categories.length &&
+              formData.categories.map((category, index) => (
+                <select
+                  key={`categoryInput_${index}`}
+                  onChange={(e) => multipleInputChange(e, index, 'categories')}
+                  name="categories"
+                  defaultValue={'Please select a category'}>
                   <option disabled value="Please select a category">
                     Please select a category
                   </option>
@@ -154,9 +166,9 @@ const AddRecipePage = () => {
                     </option>
                   ))}
                 </select>
-              )))}
+              ))}
           </div>
-          <PlusMinus addInput={()=>addInput('categories')} />
+          <PlusMinus minusInput={() => minusInput('categories')} addInput={() => addInput('categories')} />
           {/* Ingredients - 50 25 25, select */}
           <div className="flex justify-between">
             <div className="form__input form__input--50">
@@ -189,7 +201,7 @@ const AddRecipePage = () => {
               </select>
             </div>
           </div>
-          <PlusMinus />
+          <PlusMinus addInput={() => addInput('ingredients')} />
           {/* Instructions - 100 */}
           <div className="form__input">
             <label htmlFor="instructions">Instructions</label>
