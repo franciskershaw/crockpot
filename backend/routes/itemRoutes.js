@@ -4,6 +4,17 @@ const asyncHandler = require('express-async-handler');
 
 const Item = require('../models/Item');
 
+// Get all items
+router.get('/', asyncHandler(async (req, res) => {
+	try {
+		const items = await Item.find()
+		res.status(200).json(items)
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
 // Create a new item
 router.post('/', asyncHandler(async (req, res) => {
 	try {
