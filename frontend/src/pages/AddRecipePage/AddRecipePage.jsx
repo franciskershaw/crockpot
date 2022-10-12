@@ -54,13 +54,7 @@ const AddRecipePage = () => {
   const imageHandler = (e) => {
     const file = e.target.files[0];
 
-    if (
-      !(
-        file.type === 'image/png' ||
-        file.type === 'image/jpg' ||
-        file.type === 'image/jpeg'
-      )
-    ) {
+    if (!(file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
       toast.error(
         'Please select from the following file types: jpg, jpeg, png'
       );
@@ -78,6 +72,11 @@ const AddRecipePage = () => {
     }));
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault()
+    console.log(formData)
+  }
+
   return (
     <>
       <Header title="Add recipe">
@@ -86,7 +85,7 @@ const AddRecipePage = () => {
         </Icon>
       </Header>
       <div className="container">
-        <form className="form" id="addRecipe">
+        <form onSubmit={onSubmit} className="form" id="addRecipe">
           {/* Recipe name - 100 */}
           <div className="form__input">
             <label htmlFor="name">Recipe name</label>
@@ -171,7 +170,6 @@ const AddRecipePage = () => {
           <div className="flex justify-between">
             {formData.ingredients.length &&
               formData.ingredients.map((ingredient, index, rows) => (
-                // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
                 <div key={`ingredientInput_${index}`} className="">
                   <div className="form__input form__input--50">
                     {/* <label htmlFor="ingredient">Ingredients</label> */}
@@ -222,8 +220,10 @@ const AddRecipePage = () => {
                   </div>
                   {index + 1 === rows.length && (
                     <PlusMinus
-                      addInput={() => addInput('ingredients')}
-                      minusInput={() => minusInput('ingredients')}
+                      identifier={'ingredients'}
+                      formData={formData}
+                      setFormData={setFormData}
+                      newRow={ingredient}
                     />
                   )}
                 </div>
