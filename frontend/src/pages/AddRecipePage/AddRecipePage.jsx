@@ -50,20 +50,31 @@ const AddRecipePage = () => {
     }));
   };
 
-  const onChangeIngredients = (e, index, formKey) => {
-    let data = [...formData[formKey]];
+  const onChangeIngredients = (e, index, key) => {
+    let data = [...formData[key]];
     let subKey = e.target.name;
     data[index][subKey] = e.target.value;
     setFormData((prevState) => ({
       ...prevState,
-      [formKey]: data,
+      [key]: data,
     }));
   };
 
   const addInput = (key) => {
-    let object = {
-      _id: '',
-    };
+    console.log(key)
+    let object;
+    if (key === 'categories') {
+      object = {
+        _id: '',
+      };
+    } else if (key === 'ingredients') {
+      object = {
+        _id: '',
+        quantity: 1,
+        unit: ''
+      }
+    }
+    
     setFormData((prevState) => ({
       ...prevState,
       [key]: [...prevState[key], object],
@@ -238,7 +249,7 @@ const AddRecipePage = () => {
                 </div>
               ))}
           </div>
-          <PlusMinus addInput={() => addInput('ingredients')} />
+          <PlusMinus addInput={() => addInput('ingredients')} minusInput={() => minusInput('ingredients')} />
           {/* Instructions - 100 */}
           <div className="form__input">
             <label htmlFor="instructions">Instructions</label>
