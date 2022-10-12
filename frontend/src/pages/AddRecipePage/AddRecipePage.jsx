@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { useRecipeCategories } from '../../hooks/categories/useRecipeCategories';
+import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
 
 const AddRecipePage = () => {
   const { recipeCategories } = useRecipeCategories();
