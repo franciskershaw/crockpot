@@ -174,31 +174,35 @@ const AddRecipePage = () => {
           <div className="form__input">
             <label htmlFor="categories">Categories</label>
             {formData.categories.length &&
-              formData.categories.map((category, index) => (
-                <select
-                  key={`categoryInput_${index}`}
-                  onChange={(e) => onChangeMultiple(e, index, 'categories')}
-                  name="_id"
-                  defaultValue={'Please select a category'}>
-                  <option disabled value="Please select a category">
-                    Please select a category
-                  </option>
-                  {recipeCategories.map((category) => (
-                    <option key={category.name} value={category._id}>
-                      {category.name}
+              formData.categories.map((category, index, rows) => (
+                <div key={`categoryInput_${index}`}>
+                  <select
+                    onChange={(e) => onChangeMultiple(e, index, 'categories')}
+                    name="_id"
+                    defaultValue={'Please select a category'}>
+                    <option disabled value="Please select a category">
+                      Please select a category
                     </option>
-                  ))}
-                </select>
+                    {recipeCategories.map((category) => (
+                      <option key={category.name} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  {index + 1 === rows.length && (
+                    <PlusMinus
+                      minusInput={() => minusInput('categories')}
+                      addInput={() => addInput('categories')}
+                    />
+                  )}
+                </div>
               ))}
           </div>
-          <PlusMinus
-            minusInput={() => minusInput('categories')}
-            addInput={() => addInput('categories')}
-          />
+
           {/* Ingredients - 50 25 25, select */}
           <div className="flex justify-between">
             {formData.ingredients.length &&
-              formData.ingredients.map((ingredient, index) => (
+              formData.ingredients.map((ingredient, index, rows) => (
                 // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
                 <div key={`ingredientInput_${index}`} className="">
                   <div className="form__input form__input--50">
@@ -248,51 +252,61 @@ const AddRecipePage = () => {
                       <option value="cans">cans</option>
                     </select>
                   </div>
+                  {index + 1 === rows.length && (
+                    <PlusMinus
+                      addInput={() => addInput('ingredients')}
+                      minusInput={() => minusInput('ingredients')}
+                    />
+                  )}
                 </div>
               ))}
           </div>
-          <PlusMinus
-            addInput={() => addInput('ingredients')}
-            minusInput={() => minusInput('ingredients')}
-          />
+
           {/* Instructions - 100 */}
           <div className="form__input">
             <label htmlFor="instructions">Instructions</label>
             {formData.instructions.length &&
-              formData.instructions.map((instruction, index) => (
-                <input
-                  key={`instructionInput_${index}`}
-                  type="text"
-                  name="instruction"
-                  value={instruction.instruction}
-                  required
-                  onChange={(e) => onChangeMultiple(e, index, 'instructions')}
-                />
+              formData.instructions.map((instruction, index, rows) => (
+                <div key={`instructionInput_${index}`}>
+                  <input
+                    type="text"
+                    name="instruction"
+                    value={instruction.instruction}
+                    required
+                    onChange={(e) => onChangeMultiple(e, index, 'instructions')}
+                  />
+                  {index + 1 === rows.length && (
+                    <PlusMinus
+                      addInput={() => addInput('instructions')}
+                      minusInput={() => minusInput('instructions')}
+                    />
+                  )}
+                </div>
               ))}
           </div>
-          <PlusMinus
-            addInput={() => addInput('instructions')}
-            minusInput={() => minusInput('instructions')}
-          />
+
           {/* Notes */}
           <div className="form__input">
             <label htmlFor="notes">Notes</label>
             {formData.notes.length &&
-              formData.notes.map((note, index) => (
-                <input
-                  key={`noteInput_${index}`}
-                  type="text"
-                  name="note"
-                  value={note.note}
-                  required
-                  onChange={(e) => onChangeMultiple(e, index, 'notes')}
-                />
+              formData.notes.map((note, index, rows) => (
+                <div key={`noteInput_${index}`}>
+                  <input
+                    type="text"
+                    name="note"
+                    value={note.note}
+                    required
+                    onChange={(e) => onChangeMultiple(e, index, 'notes')}
+                  />
+                  {index + 1 === rows.length && (
+                    <PlusMinus
+                      addInput={() => addInput('notes')}
+                      minusInput={() => minusInput('notes')}
+                    />
+                  )}
+                </div>
               ))}
           </div>
-          <PlusMinus
-            addInput={() => addInput('notes')}
-            minusInput={() => minusInput('notes')}
-          />
         </form>
         <div className="mt-5 text-center">
           <button
