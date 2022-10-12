@@ -9,7 +9,7 @@ export function useRecipeCategories() {
 
   const fallback = [];
   const { data: recipeCategories = fallback } = useQuery(
-    [queryKeys.categories],
+    [queryKeys.recipeCategories],
     () => fetchAllRecipeCategories(user.token),
     {
       staleTime: 10000000,

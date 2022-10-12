@@ -1,4 +1,4 @@
 export const queryKeys = {
   user: 'user',
-  categories: 'categories',
+  recipeCategories: 'recipeCategories',
 };
