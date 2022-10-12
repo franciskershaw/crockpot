@@ -7,9 +7,11 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
+import { useItems } from '../../hooks/items/useItems';
 
 const AddRecipePage = () => {
   const { recipeCategories } = useRecipeCategories();
+  const { ingredients } = useItems();
 
   const [formData, setFormData] = useState({
     name: '',
