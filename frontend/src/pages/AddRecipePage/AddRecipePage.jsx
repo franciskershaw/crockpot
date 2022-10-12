@@ -26,7 +26,7 @@ const AddRecipePage = () => {
         unit: '',
       },
     ],
-    instructions: [],
+    instructions: [{ instruction: '' }],
     notes: [],
   });
 
@@ -41,18 +41,10 @@ const AddRecipePage = () => {
     }));
   };
 
-  const onChangeCategories = (e, index, key) => {
+  const onChangeMultiple = (e, index, key) => {
+    console.log(e.target.value, index, key);
     let data = [...formData[key]];
-    data[index]._id = e.target.value;
-    setFormData((prevState) => ({
-      ...prevState,
-      [key]: data,
-    }));
-  };
-
-  const onChangeIngredients = (e, index, key) => {
-    let data = [...formData[key]];
-    let subKey = e.target.name;
+    let subKey = e.target.name; // '_unit', '_id', 'quantity'
     data[index][subKey] = e.target.value;
     setFormData((prevState) => ({
       ...prevState,
@@ -61,7 +53,7 @@ const AddRecipePage = () => {
   };
 
   const addInput = (key) => {
-    console.log(key)
+    console.log(key);
     let object;
     if (key === 'categories') {
       object = {
@@ -71,10 +63,14 @@ const AddRecipePage = () => {
       object = {
         _id: '',
         quantity: 1,
-        unit: ''
-      }
+        unit: '',
+      };
+    } else if (key === 'instructions') {
+      object = {
+        instruction: '',
+      };
     }
-    
+
     setFormData((prevState) => ({
       ...prevState,
       [key]: [...prevState[key], object],
@@ -182,8 +178,8 @@ const AddRecipePage = () => {
               formData.categories.map((category, index) => (
                 <select
                   key={`categoryInput_${index}`}
-                  onChange={(e) => onChangeCategories(e, index, 'categories')}
-                  name="categories"
+                  onChange={(e) => onChangeMultiple(e, index, 'categories')}
+                  name="_id"
                   defaultValue={'Please select a category'}>
                   <option disabled value="Please select a category">
                     Please select a category
@@ -211,7 +207,7 @@ const AddRecipePage = () => {
                     <select
                       name="_id"
                       onChange={(e) =>
-                        onChangeIngredients(e, index, 'ingredients')
+                        onChangeMultiple(e, index, 'ingredients')
                       }
                       defaultValue="Please select an ingredient">
                       <option disabled value="Please select an ingredient">
@@ -228,7 +224,9 @@ const AddRecipePage = () => {
                     {/* <label htmlFor="ingredientNum" className="invisible">Quantities</label> */}
                     <input
                       name="quantity"
-                      onChange={(e) => onChangeIngredients(e, index, 'ingredients')}
+                      onChange={(e) =>
+                        onChangeMultiple(e, index, 'ingredients')
+                      }
                       value={ingredient.quantity}
                       type="number"
                       min="0"
@@ -237,7 +235,12 @@ const AddRecipePage = () => {
                   </div>
                   <div className="form__input form__input--25">
                     {/* <label htmlFor="ingredientUnit" className="invisible">Units</label> */}
-                    <select name="unit" defaultValue='' onChange={(e) => onChangeIngredients(e, index, 'ingredients')}>
+                    <select
+                      name="unit"
+                      defaultValue=""
+                      onChange={(e) =>
+                        onChangeMultiple(e, index, 'ingredients')
+                      }>
                       <option value="">-</option>
                       <option value="g">g</option>
                       <option value="ml">ml</option>
@@ -249,13 +252,29 @@ const AddRecipePage = () => {
                 </div>
               ))}
           </div>
-          <PlusMinus addInput={() => addInput('ingredients')} minusInput={() => minusInput('ingredients')} />
+          <PlusMinus
+            addInput={() => addInput('ingredients')}
+            minusInput={() => minusInput('ingredients')}
+          />
           {/* Instructions - 100 */}
           <div className="form__input">
             <label htmlFor="instructions">Instructions</label>
-            <input type="text" id="instructions" name="instructions" required />
+            {formData.instructions.length &&
+              formData.instructions.map((instruction, index) => (
+                <input
+                  key={`instructionInput_${index}`}
+                  type="text"
+                  name="instruction"
+                  value={instruction.instruction}
+                  required
+                  onChange={(e) => onChangeMultiple(e, index, 'instructions')}
+                />
+              ))}
           </div>
-          <PlusMinus />
+          <PlusMinus
+            addInput={() => addInput('instructions')}
+            minusInput={() => minusInput('instructions')}
+          />
           {/* Notes */}
           <div className="form__input">
             <label htmlFor="notes">Notes</label>
