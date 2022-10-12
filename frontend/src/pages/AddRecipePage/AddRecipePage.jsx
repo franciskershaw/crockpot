@@ -51,10 +51,54 @@ const AddRecipePage = () => {
     }));
   };
 
+  const addInput = (key) => {
+    console.log(key);
+    let object;
+    if (key === 'categories') {
+      object = {
+        _id: '',
+      };
+    } else if (key === 'ingredients') {
+      object = {
+        _id: '',
+        quantity: 1,
+        unit: '',
+      };
+    } else if (key === 'instructions') {
+      object = {
+        instruction: '',
+      };
+    } else if (key === 'notes') {
+      object = {
+        note: ''
+      }
+    }
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [key]: [...prevState[key], object],
+    }));
+  };
+
+  const minusInput = (key) => {
+    if (formData[key].length > 1) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [key]: [...prevState[key].slice(0, -1)],
+      }));
+    }
+  };
+
   const imageHandler = (e) => {
     const file = e.target.files[0];
 
-    if (!(file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
+    if (
+      !(
+        file.type === 'image/png' ||
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg'
+      )
+    ) {
       toast.error(
         'Please select from the following file types: jpg, jpeg, png'
       );
@@ -72,11 +116,6 @@ const AddRecipePage = () => {
     }));
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault()
-    console.log(formData)
-  }
-
   return (
     <>
       <Header title="Add recipe">
@@ -85,7 +124,7 @@ const AddRecipePage = () => {
         </Icon>
       </Header>
       <div className="container">
-        <form onSubmit={onSubmit} className="form" id="addRecipe">
+        <form className="form" id="addRecipe">
           {/* Recipe name - 100 */}
           <div className="form__input">
             <label htmlFor="name">Recipe name</label>
@@ -155,11 +194,9 @@ const AddRecipePage = () => {
                     ))}
                   </select>
                   {index + 1 === rows.length && (
-                    <PlusMinus                      
-                      identifier={'categories'}
-                      formData={formData}
-                      setFormData={setFormData}
-                      newRow={category}
+                    <PlusMinus
+                      minusInput={() => minusInput('categories')}
+                      addInput={() => addInput('categories')}
                     />
                   )}
                 </div>
@@ -170,6 +207,7 @@ const AddRecipePage = () => {
           <div className="flex justify-between">
             {formData.ingredients.length &&
               formData.ingredients.map((ingredient, index, rows) => (
+                // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
                 <div key={`ingredientInput_${index}`} className="">
                   <div className="form__input form__input--50">
                     {/* <label htmlFor="ingredient">Ingredients</label> */}
@@ -220,10 +258,8 @@ const AddRecipePage = () => {
                   </div>
                   {index + 1 === rows.length && (
                     <PlusMinus
-                      identifier={'ingredients'}
-                      formData={formData}
-                      setFormData={setFormData}
-                      newRow={ingredient}
+                      addInput={() => addInput('ingredients')}
+                      minusInput={() => minusInput('ingredients')}
                     />
                   )}
                 </div>
@@ -245,10 +281,8 @@ const AddRecipePage = () => {
                   />
                   {index + 1 === rows.length && (
                     <PlusMinus
-                      identifier={'instructions'}
-                      formData={formData}
-                      setFormData={setFormData}
-                      newRow={instruction}
+                      addInput={() => addInput('instructions')}
+                      minusInput={() => minusInput('instructions')}
                     />
                   )}
                 </div>
@@ -270,10 +304,8 @@ const AddRecipePage = () => {
                   />
                   {index + 1 === rows.length && (
                     <PlusMinus
-                      identifier={'notes'}
-                      formData={formData}
-                      setFormData={setFormData}
-                      newRow={note}
+                      addInput={() => addInput('notes')}
+                      minusInput={() => minusInput('notes')}
                     />
                   )}
                 </div>
