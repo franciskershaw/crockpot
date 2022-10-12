@@ -19,7 +19,13 @@ const AddRecipePage = () => {
     timeInMinutes: 30,
     serves: 4,
     categories: [{ _id: '' }],
-    ingredients: [],
+    ingredients: [
+      {
+        _id: '',
+        quantity: 1,
+        unit: '',
+      },
+    ],
     instructions: [],
     notes: [],
   });
@@ -44,6 +50,16 @@ const AddRecipePage = () => {
     }));
   };
 
+  const onChangeIngredients = (e, index, formKey) => {
+    let data = [...formData[formKey]];
+    let subKey = e.target.name;
+    data[index][subKey] = e.target.value;
+    setFormData((prevState) => ({
+      ...prevState,
+      [formKey]: data,
+    }));
+  };
+
   const addInput = (key) => {
     let object = {
       _id: '',
@@ -58,8 +74,8 @@ const AddRecipePage = () => {
     if (formData[key].length > 1) {
       setFormData((prevState) => ({
         ...prevState,
-        [key]: [...prevState[key].slice(0, -1)]
-      }))
+        [key]: [...prevState[key].slice(0, -1)],
+      }));
     }
   };
 
@@ -169,38 +185,58 @@ const AddRecipePage = () => {
                 </select>
               ))}
           </div>
-          <PlusMinus minusInput={() => minusInput('categories')} addInput={() => addInput('categories')} />
+          <PlusMinus
+            minusInput={() => minusInput('categories')}
+            addInput={() => addInput('categories')}
+          />
           {/* Ingredients - 50 25 25, select */}
           <div className="flex justify-between">
-            <div className="form__input form__input--50">
-              <label htmlFor="ingredient">Ingredients</label>
-              <select name="ingredient">
-                <option value="apple">Apple</option>
-                <option value="banana">Banana</option>
-                <option value="chickeeen">Chickeeen</option>
-              </select>
-            </div>
-            <div className="form__input form__input--25">
-              <label htmlFor="ingredientNum" className="invisible">
-                Quantities
-              </label>
-              <input
-                name="ingredientNum"
-                type="number"
-                min="0"
-                placeholder="0"
-              />
-            </div>
-            <div className="form__input form__input--25">
-              <label htmlFor="ingredientUnit" className="invisible">
-                Units
-              </label>
-              <select name="ingredientUnit">
-                <option value="">-</option>
-                <option value="g">g</option>
-                <option value="ml">ml</option>
-              </select>
-            </div>
+            {formData.ingredients.length &&
+              formData.ingredients.map((ingredient, index) => (
+                // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
+                <div key={`ingredientInput_${index}`} className="">
+                  <div className="form__input form__input--50">
+                    {/* <label htmlFor="ingredient">Ingredients</label> */}
+                    <select
+                      name="_id"
+                      onChange={(e) =>
+                        onChangeIngredients(e, index, 'ingredients')
+                      }
+                      defaultValue="Please select an ingredient">
+                      <option disabled value="Please select an ingredient">
+                        Please select an ingredient
+                      </option>
+                      {ingredients.map((ingredient) => (
+                        <option key={ingredient.name} value={ingredient._id}>
+                          {ingredient.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form__input form__input--25">
+                    {/* <label htmlFor="ingredientNum" className="invisible">Quantities</label> */}
+                    <input
+                      name="quantity"
+                      onChange={(e) => onChangeIngredients(e, index, 'ingredients')}
+                      value={ingredient.quantity}
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div className="form__input form__input--25">
+                    {/* <label htmlFor="ingredientUnit" className="invisible">Units</label> */}
+                    <select name="unit" defaultValue='' onChange={(e) => onChangeIngredients(e, index, 'ingredients')}>
+                      <option value="">-</option>
+                      <option value="g">g</option>
+                      <option value="ml">ml</option>
+                      <option value="tsp">tsp</option>
+                      <option value="tbsp">Tbsp</option>
+                      <option value="cans">cans</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
           </div>
           <PlusMinus addInput={() => addInput('ingredients')} />
           {/* Instructions - 100 */}
