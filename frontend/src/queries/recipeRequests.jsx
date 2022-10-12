@@ -11,3 +11,16 @@ export const fetchAllRecipeCategories = async (token) => {
 
   return response.data;
 };
+
+export const addNewRecipe = async (token, formData) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+
+  const response = await axios.post(`/api/recipes`, formData, config)
+
+  return response.data
+}

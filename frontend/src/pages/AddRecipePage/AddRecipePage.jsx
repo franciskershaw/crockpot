@@ -30,9 +30,9 @@ const AddRecipePage = () => {
     notes: [{ note: '' }],
   });
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -52,7 +52,6 @@ const AddRecipePage = () => {
   };
 
   const addInput = (key) => {
-    console.log(key);
     let object;
     if (key === 'categories') {
       object = {
@@ -73,7 +72,6 @@ const AddRecipePage = () => {
         note: ''
       }
     }
-
     setFormData((prevState) => ({
       ...prevState,
       [key]: [...prevState[key], object],
@@ -92,13 +90,7 @@ const AddRecipePage = () => {
   const imageHandler = (e) => {
     const file = e.target.files[0];
 
-    if (
-      !(
-        file.type === 'image/png' ||
-        file.type === 'image/jpg' ||
-        file.type === 'image/jpeg'
-      )
-    ) {
+    if (!(file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
       toast.error(
         'Please select from the following file types: jpg, jpeg, png'
       );
@@ -116,6 +108,23 @@ const AddRecipePage = () => {
     }));
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault()
+    const { name, image, timeInMinutes, serves, categories, ingredients, instructions, notes } = formData
+    console.log(name)
+    console.log(image)
+    console.log(timeInMinutes)
+    console.log(serves)
+    console.log(categories)
+    console.log(ingredients)
+    console.log(instructions)
+    console.log(notes)
+    const data = new FormData()
+    data.append('image', image)
+    
+    console.log([...data])
+  }
+
   return (
     <>
       <Header title="Add recipe">
@@ -124,7 +133,7 @@ const AddRecipePage = () => {
         </Icon>
       </Header>
       <div className="container">
-        <form className="form" id="addRecipe">
+        <form onSubmit={onSubmit} className="form" id="addRecipe">
           {/* Recipe name - 100 */}
           <div className="form__input">
             <label htmlFor="name">Recipe name</label>
