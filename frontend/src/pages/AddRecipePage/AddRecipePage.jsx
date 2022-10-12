@@ -27,7 +27,7 @@ const AddRecipePage = () => {
       },
     ],
     instructions: [{ instruction: '' }],
-    notes: [],
+    notes: [{ note: '' }],
   });
 
   useEffect(() => {
@@ -42,9 +42,8 @@ const AddRecipePage = () => {
   };
 
   const onChangeMultiple = (e, index, key) => {
-    console.log(e.target.value, index, key);
     let data = [...formData[key]];
-    let subKey = e.target.name; // '_unit', '_id', 'quantity'
+    let subKey = e.target.name;
     data[index][subKey] = e.target.value;
     setFormData((prevState) => ({
       ...prevState,
@@ -65,7 +64,7 @@ const AddRecipePage = () => {
         quantity: 1,
         unit: '',
       };
-    } else if (key === 'instructions') {
+    } else if (key === 'instructions' || key === 'notes') {
       object = {
         instruction: '',
       };
@@ -278,9 +277,22 @@ const AddRecipePage = () => {
           {/* Notes */}
           <div className="form__input">
             <label htmlFor="notes">Notes</label>
-            <input type="text" id="notes" name="notes" required />
+            {formData.notes.length &&
+              formData.notes.map((note, index) => (
+                <input
+                  key={`noteInput_${index}`}
+                  type="text"
+                  name="note"
+                  value={note.note}
+                  required
+                  onChange={(e) => onChangeMultiple(e, index, 'notes')}
+                />
+              ))}
           </div>
-          <PlusMinus />
+          <PlusMinus
+            addInput={() => addInput('notes')}
+            minusInput={() => minusInput('notes')}
+          />
         </form>
         <div className="mt-5 text-center">
           <button
