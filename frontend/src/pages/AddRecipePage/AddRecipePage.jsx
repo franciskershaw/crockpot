@@ -33,12 +33,12 @@ const AddRecipePage = () => {
     }));
   };
 
-  const multipleInputChange = (e, index, key) => {
+  const onChangeCategories = (e, index, key) => {
     let data = [...formData[key]];
     data[index]._id = e.target.value;
     setFormData((prevState) => ({
       ...prevState,
-      ingredients: [data],
+      [key]: data,
     }));
   };
 
@@ -54,10 +54,9 @@ const AddRecipePage = () => {
 
   const minusInput = (key) => {
     if (formData[key].length > 1) {
-      console.log('CAN DO!')
       setFormData((prevState) => ({
         ...prevState,
-        [key]: [[...prevState[key]].pop()]
+        [key]: [...prevState[key].slice(0, -1)]
       }))
     }
   };
@@ -103,7 +102,7 @@ const AddRecipePage = () => {
             <label htmlFor="name">Recipe name</label>
             <input
               value={formData.name}
-              onChange={(e) => onChange(e, 'single')}
+              onChange={onChange}
               type="text"
               id="name"
               name="name"
@@ -128,7 +127,7 @@ const AddRecipePage = () => {
                 nameAndId={'timeInMinutes'}
                 value={formData.timeInMinutes}
                 setValue={setFormData}
-                onChange={(e) => onChange(e, 'single')}
+                onChange={onChange}
                 label={'Time'}
                 step={5}
                 classes={'items-center'}
@@ -154,7 +153,7 @@ const AddRecipePage = () => {
               formData.categories.map((category, index) => (
                 <select
                   key={`categoryInput_${index}`}
-                  onChange={(e) => multipleInputChange(e, index, 'categories')}
+                  onChange={(e) => onChangeCategories(e, index, 'categories')}
                   name="categories"
                   defaultValue={'Please select a category'}>
                   <option disabled value="Please select a category">
