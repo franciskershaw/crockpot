@@ -18,7 +18,7 @@ const AddRecipePage = () => {
     image: null,
     timeInMinutes: 30,
     serves: 4,
-    categories: [{ _id: '' }],
+    categories: [{ _id: '' }], // ['', '', '']
     ingredients: [
       {
         _id: '',
@@ -111,17 +111,29 @@ const AddRecipePage = () => {
   const onSubmit = (e) => {
     e.preventDefault()
     const { name, image, timeInMinutes, serves, categories, ingredients, instructions, notes } = formData
-    console.log(name)
-    console.log(image)
-    console.log(timeInMinutes)
-    console.log(serves)
-    console.log(categories)
-    console.log(ingredients)
-    console.log(instructions)
-    console.log(notes)
-    const data = new FormData()
-    data.append('image', image)
+
+    const categoriesFormated = categories.map(object => object._id)
+    const instructionsFormated = instructions.map(object => object.instruction)
+    const notesFormated = notes.map(object => object.note)
     
+    const data = new FormData()
+
+    data.append('name', name)
+    data.append('image', image)
+    data.append('timeInMinutes', timeInMinutes)
+    categoriesFormated.forEach((category) => data.append(`categories`, category))
+    // ingredients.forEach((ingredient => console.log(ingredient)))
+    ingredients.forEach((ingredient, index) => {
+      const keyValues = Object.entries(ingredient)
+      for (let keyValue of keyValues) {
+        let key = keyValue[0]
+        let value = keyValue[1]
+        data.append(`ingredients[${index}][${key}]`, value)
+      }      
+    })
+    instructionsFormated.forEach((instruction) => data.append(`instructions`, instruction))
+    data.append('notes', notesFormated)
+
     console.log([...data])
   }
 
