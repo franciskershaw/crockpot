@@ -228,7 +228,7 @@ const AddRecipePage = () => {
           </div>
 
           {/* Ingredients - 50 25 25, select */}
-          <div className="flex justify-between">
+          <div className="flex justify-between flex-wrap">
             {formData.ingredients.length &&
               formData.ingredients.map((ingredient, index, rows) => (
                 // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
@@ -262,6 +262,7 @@ const AddRecipePage = () => {
                       type="number"
                       min="0"
                       placeholder="0"
+                      step='any'
                     />
                   </div>
                   <div className="form__input form__input--25">
@@ -323,7 +324,6 @@ const AddRecipePage = () => {
                     type="text"
                     name="note"
                     value={note.note}
-                    required
                     onChange={(e) => onChangeMultiple(e, index, 'notes')}
                   />
                   {index + 1 === rows.length && (

@@ -7,7 +7,7 @@ const Item = require('../models/Item');
 // Get all items
 router.get('/', asyncHandler(async (req, res) => {
 	try {
-		const items = await Item.find()
+		const items = await Item.find().sort({'name': 1})
 		res.status(200).json(items)
 	} catch (err) {
 		res.status(400)
