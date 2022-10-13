@@ -10,7 +10,6 @@ const Recipe = require('../models/Recipe')
 // Create a new recipe 
 router.post('/', upload.single('image'), asyncHandler(async (req, res) => {
 	try {
-		console.log(req.body)
 		const recipe = new Recipe(req.body);
 		recipe.image = {
 			url: req.file.path,

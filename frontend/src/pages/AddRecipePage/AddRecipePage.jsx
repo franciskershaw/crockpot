@@ -9,11 +9,13 @@ import { toast } from 'react-toastify';
 import { useAddRecipe } from '../../hooks/recipes/useAddRecipe';
 import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
 import { useItems } from '../../hooks/items/useItems';
+import { useUser } from '../../hooks/auth/useUser';
 
 const AddRecipePage = () => {
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
   const addRecipe = useAddRecipe()
+  const { user } = useUser() 
 
   const [formData, setFormData] = useState({
     name: '',
@@ -134,7 +136,7 @@ const AddRecipePage = () => {
     })
     instructionsFormated.forEach((instruction) => data.append(`instructions`, instruction))
     data.append('notes', notesFormated)
-    
+    data.append('createdBy', user._id)
     addRecipe(data)
   }
 
