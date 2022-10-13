@@ -4,14 +4,16 @@ import PlusMinus from '../../components/buttons/PlusMinus';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAddRecipe } from '../../hooks/recipes/useAddRecipe';
 import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
 import { useItems } from '../../hooks/items/useItems';
 
 const AddRecipePage = () => {
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
+  const addRecipe = useAddRecipe()
 
   const [formData, setFormData] = useState({
     name: '',
@@ -29,10 +31,6 @@ const AddRecipePage = () => {
     instructions: [{ instruction: '' }],
     notes: [{ note: '' }],
   });
-
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -128,13 +126,16 @@ const AddRecipePage = () => {
       for (let keyValue of keyValues) {
         let key = keyValue[0]
         let value = keyValue[1]
+        if (key === 'quantity') {
+          value = (value / serves).toFixed(2)
+        }
         data.append(`ingredients[${index}][${key}]`, value)
       }      
     })
     instructionsFormated.forEach((instruction) => data.append(`instructions`, instruction))
     data.append('notes', notesFormated)
-
-    console.log([...data])
+    
+    addRecipe(data)
   }
 
   return (
