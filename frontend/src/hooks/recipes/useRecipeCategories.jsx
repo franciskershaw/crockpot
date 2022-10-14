@@ -5,12 +5,10 @@ import { useUser } from '../auth/useUser';
 
 // Hook
 export function useRecipeCategories() {
-  const { user } = useUser();
-
   const fallback = [];
   const { data: recipeCategories = fallback } = useQuery(
     [queryKeys.recipeCategories],
-    () => fetchAllRecipeCategories(user.token),
+    () => fetchAllRecipeCategories(),
     {
       staleTime: 10000000,
     }

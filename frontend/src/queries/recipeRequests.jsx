@@ -6,14 +6,8 @@ export const fetchAllRecipes = async () => {
   return response.data;
 };
 
-export const fetchAllRecipeCategories = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const response = await axios.get(`/api/recipeCategories`, config);
+export const fetchAllRecipeCategories = async () => {
+  const response = await axios.get(`/api/recipeCategories`);
 
   return response.data;
 };
