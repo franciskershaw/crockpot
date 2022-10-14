@@ -16,11 +16,11 @@ const RecipeCard = ({ recipe }) => {
             <FontAwesomeIcon icon={faHeart} />
           </Icon>
         </div>
-        <div className="recipe-card__image">
+        <Link to={`/viewRecipe/${_id}`} className="recipe-card__image">
           <img
             src={image.url}
             alt={image.name}></img>
-        </div>
+        </Link>
       </div>
       <div className="recipe-card__title">
         <h4 className="text-white h5">{name}</h4>

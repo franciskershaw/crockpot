@@ -271,9 +271,9 @@ const LandingPage = () => {
 
 				<h3 className='text-blue-500 my-5'>Recipe cards</h3>
 				<div className="flex flex-wrap justify-evenly">
+					{/* <RecipeCard></RecipeCard>
 					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
+					<RecipeCard></RecipeCard> */}
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Recipe cards - layout 2</h3>
