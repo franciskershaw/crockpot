@@ -44,6 +44,12 @@ router.post('/', asyncHandler(async (req, res) => {
 		res.status(201).json({
 			_id: user._id,
 			username: user.username,
+			isAdmin: user.isAdmin,
+			favouriteRecipes: user.favouriteRecipes,
+			recipeMenu: user.recipeMenu,
+			shoppingList: user.ShoppingList,
+			regularItems: user.regularItems,
+			extraItems: user.extraItems,
 			token: generateToken(user._id)
 		})
 	} else {
@@ -64,11 +70,17 @@ router.post('/login', asyncHandler(async (req, res) => {
 					res.status(200).json({
 							_id: user._id,
 							username: user.username,
+							isAdmin: user.isAdmin,
+							favouriteRecipes: user.favouriteRecipes,
+							recipeMenu: user.recipeMenu,
+							shoppingList: user.shoppingList,
+							regularItems: user.regularItems,
+							extraItems: user.extraItems,
 							token: generateToken(user._id),
 					})
 			} else {
 					res.status(401).json({message: 'Invalid credentials'})
-					throw new Error('Invalid credentials')
+					// throw new Error('Invalid credentials')
 			}
 	} catch (err) {
 			console.log(err)
