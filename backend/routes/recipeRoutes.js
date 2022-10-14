@@ -7,6 +7,16 @@ const upload = multer({ storage })
 
 const Recipe = require('../models/Recipe')
 
+router.get('/', asyncHandler(async (req, res) => {
+	try {
+		const recipes = await Recipe.find();
+		res.status(200).json(recipes);
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
 // Create a new recipe 
 router.post('/', upload.single('image'), asyncHandler(async (req, res) => {
 	try {
