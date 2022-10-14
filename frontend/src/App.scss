@@ -35,6 +35,13 @@
     .secondary-outline--hover {
         @apply text-white border-purple bg-purple;
     }
+
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 }
 
 @import './config/base';
@@ -44,6 +51,7 @@
 @import './components/buttons/button';
 @import './components/forms/forms';
 @import './components/icons/icon';
+@import './components/modals/modal';
 @import './components/pills/pills';
 @import './components/recipeCard/recipe-card';
 @import './components/toggles/toggles';

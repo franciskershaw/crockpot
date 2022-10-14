@@ -1,5 +1,6 @@
 import Button from '../../components/buttons/Button'
 import PlusMinus from '../../components/buttons/PlusMinus'
+import Modal from '../../components/modals/Modal';
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
@@ -8,8 +9,15 @@ import Toggle from '../../components/toggles/Toggle';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
+import { useState, useEffect } from 'react';
 
 const LandingPage = () => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const openModal = () => {
+        document.body.classList.add("modal-is-open")
+        setIsModalOpen(true)
+    }
+
 	return (
 		<>
 			<Header title="Header">
@@ -17,6 +25,14 @@ const LandingPage = () => {
 
 			<div className='flex flex-col'>
 				<h2 className='text-red-500 font-bold underline'>Atoms</h2>
+
+				<h3 className='text-blue-500 my-5'>Modal</h3>
+				<button onClick={openModal} className='btn btn--secondary'>Open modal</button>
+				{isModalOpen ? (
+					<Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} heading={"Modal heading"}>
+						<p>Modal modal modal!</p>
+					</Modal>
+				) : null}
 
 				<h3 className='text-blue-500 my-5'>Buttons</h3>
 				<div>
@@ -42,7 +58,7 @@ const LandingPage = () => {
 					<Button type={"secondary"} text={"Purple outlineed"} tooltip={"2"} outline></Button>
 					<Button noHover={true} text={"No hover outlineed"} tooltip={"3"} outline></Button>
 				</div>
-				<div>
+				<div className='mt-5'>
 					<PlusMinus/>
 				</div>
 				</div>
@@ -155,7 +171,9 @@ const LandingPage = () => {
 						<QuantityInput label={"Quantity Input"} step={5} />
 					</form>
 					{/* Submit button */}
-					<button class="btn" type="submit" form="form" value="Submit">Submit</button>
+					<button className="btn" type="submit" form="form" value="Submit">
+						<span className='btn__text'>Submit</span>
+					</button>
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Icons</h3>
@@ -232,7 +250,6 @@ const LandingPage = () => {
 					<div className="pill pill--secondary pill--outline">Pill 1</div>
 				</div>
 				
-
 				<h3 className='text-blue-500 my-5'>List of pills</h3>
 
 				<h3 className='text-blue-500 my-5'>Accordion</h3>

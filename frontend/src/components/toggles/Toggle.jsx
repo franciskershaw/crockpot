@@ -1,9 +1,23 @@
 import { useRef, useState, useEffect } from 'react';
 
-const Toggle = ({left, right, box, children}) => {
-  const leftOption = left.toLowerCase().replaceAll(' ', '-');
+const Toggle = ({left, right, box, fixed, children}) => {
+  if (!left) {
+    left = "left"
+  }
+  if (!right) {
+    right = "right"
+  }
+
+  let content = false
+  if (children) {
+    content = true
+  }
+
+  const leftOption = left ? left.toLowerCase().replaceAll(' ', '-') : 'left';
   const rightOption = right.toLowerCase().replaceAll(' ', '-');
   const toggleBox = box ? ` toggle--boxed` : '';
+  const toggleFixed = fixed ? ` toggle--fixed` : '';
+  const toggleContent = content ? ` toggle--content` : '';
   const name = `${leftOption}_${rightOption}`
 
   let leftContent
@@ -40,35 +54,37 @@ const Toggle = ({left, right, box, children}) => {
   },[direction])
 
   return (
-    <div className={`toggle${toggleBox}`}>
-        <div className='toggle-switch'>
-          {/* Left */}
-          <input 
-            onChange={sendLeft} 
-            className="toggle-switch__input" 
-            type="radio" 
-            name={name} 
-            id={leftOption} 
-            checked="checked" 
-          />
-          <label className="toggle-switch__option" htmlFor={leftOption}>
-            {left}
-          </label>
-          {/* Right */}
-          <input 
-            onChange={sendRight} 
-            className="toggle-switch__input" 
-            type="radio" 
-            name={name}
-            id={rightOption} 
-          />
-          <label className="toggle-switch__option" htmlFor={rightOption}>
-            {right}
-          </label>
-          <span ref={slider} className="toggle-switch__slider"></span>
+    <div className={`toggle${toggleBox}${toggleFixed}${toggleContent}`}>
+        <div className='toggle-switch-wrapper'>
+          <div className='toggle-switch'>
+            {/* Left */}
+            <input 
+              onChange={sendLeft} 
+              className="toggle-switch__input" 
+              type="radio" 
+              name={name} 
+              id={leftOption} 
+              checked="checked" 
+            />
+            <label className="toggle-switch__option" htmlFor={leftOption}>
+              {left}
+            </label>
+            {/* Right */}
+            <input 
+              onChange={sendRight} 
+              className="toggle-switch__input" 
+              type="radio" 
+              name={name}
+              id={rightOption} 
+            />
+            <label className="toggle-switch__option" htmlFor={rightOption}>
+              {right}
+            </label>
+            <span ref={slider} className="toggle-switch__slider"></span>
+        </div>
       </div>
-      {box ? (
-        <div className='toggle-box'>
+      {content ? (
+        <div className={box ? `toggle-box` : (fixed ? `pt-16` : `pt-4`)}>
           {direction === 'left' ? (
             // Show left content
             <div className='toggle-box__content'>

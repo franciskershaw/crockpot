@@ -19,4 +19,4 @@ const PlusMinus = ({ addInput, minusInput }) => {
   );
 };
 
-export default PlusMinus;
+export default PlusMinus

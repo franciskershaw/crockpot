@@ -30,10 +30,10 @@
     }
 
     &:hover {
-        @apply primary--hover scale-lg;
+        @apply scale-lg;
 
         .btn__text:after {
-            @apply bg-black;
+            @apply bg-white;
             transform: scaleX(1);
             transform-origin: bottom left;
         }
@@ -49,10 +49,8 @@
 
         // Hover
         &:hover {
-            @apply secondary--hover;
-
             .btn__text:after {
-                @apply bg-purple;
+                @apply bg-white;
             }
         }
     }

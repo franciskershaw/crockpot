@@ -9,7 +9,7 @@
         }
 
         input, select {
-            @apply border-2 border-black rounded p-2;
+            @apply bg-white border-2 border-black rounded p-2;
         }
 
         input {
@@ -24,6 +24,8 @@
             background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/></svg>") no-repeat;
             background-size: 16px 16px;
             background-position: right 8px top 50%;
+            
+            @apply bg-white;
         }
 
         input:hover, input:focus, select:hover, select:focus {
@@ -77,16 +79,20 @@
     }
 }
 
+.form-card {
+    @apply flex flex-col shadow-card bg-white flex-grow border-2 border-purple space-y-6 p-4 rounded-lg;
+}
+
 // #file-upload {
 //     display: none!important;
 // }
 
-.custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
+// .custom-file-upload {
+//     border: 1px solid #ccc;
+//     display: inline-block;
+//     padding: 6px 12px;
+//     cursor: pointer;
+// }
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

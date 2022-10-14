@@ -9,10 +9,12 @@ body {
     overflow-x: hidden;
 }
 
+body.modal-is-open {
+    @apply fixed;
+}
+
 main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    @apply bg-grey-bg overflow-x-hidden;
+
     min-height: 100vh;
-    overflow-x: hidden;
 }

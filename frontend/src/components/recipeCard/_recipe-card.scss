@@ -21,23 +21,27 @@
     }
 
     &__icons {
-        @apply absolute top-0 left-0 right-0 z-10;
+        @apply absolute top-0 left-0 right-0 z-recipe-cards;
     }
 
     &__title {
-        @apply absolute bottom-0 left-0 right-0 z-10 p-2 text-white;
+        @apply absolute bottom-0 left-0 right-0 z-recipe-cards p-2 text-white;
 
         background: rgba(50,50,50,0.5);
     }
 }
 
 .recipe-card-long {
-    @apply w-full border-2 border-purple shadow-card rounded overflow-hidden flex items-center;
+    @apply border-2 border-purple shadow-card rounded overflow-hidden flex items-center duration-md ease-in-out;
 
-    height: 125px;
+    width: calc(100% - 1rem);
+
+    &:hover {
+        @apply scale-sm;
+    }
 
     &__image-container {
-        @apply relative w-2/5 h-full;
+        @apply relative w-1/2 h-full;
     }
 
     &__content-container {
