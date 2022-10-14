@@ -9,7 +9,7 @@ const AddRecipePage = () => {
   return (
     <>
       <Header title="Add recipe">
-        <Icon classes={"ml-2"} type={"no-hover"}>
+        <Icon classes={"mr-3"} type={"no-hover"}>
           <FontAwesomeIcon icon={faPlus}/>
         </Icon>
       </Header>

@@ -32,12 +32,16 @@
 }
 
 .recipe-card-long {
-    @apply w-full border-2 border-purple shadow-card rounded overflow-hidden flex items-center;
+    @apply border-2 border-purple shadow-card rounded overflow-hidden flex items-center duration-md ease-in-out;
 
-    height: 125px;
+    width: calc(100% - 1rem);
+
+    &:hover {
+        @apply scale-sm;
+    }
 
     &__image-container {
-        @apply relative w-2/5 h-full;
+        @apply relative w-1/2 h-full;
     }
 
     &__content-container {

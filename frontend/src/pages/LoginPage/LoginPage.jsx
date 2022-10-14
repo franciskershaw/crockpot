@@ -39,7 +39,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container container--sm flex items-center">
+    <div className="container container--sm flex items-center centered">
       <div className="form-card">
         <h1 className="h2 capitalize text-center">Log in</h1>
         <form onSubmit={onSubmit} className="form w-full space-y-3" id="login">
