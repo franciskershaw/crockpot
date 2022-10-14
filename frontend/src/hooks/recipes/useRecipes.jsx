@@ -10,10 +10,7 @@ export function useRecipes() {
   const fallback = [];
   const { data: allRecipes = fallback } = useQuery(
     [queryKeys.recipes],
-    fetchAllRecipes,
-    {
-      staleTime: 10000000,
-    }
+    fetchAllRecipes
   );
 
   return { allRecipes };

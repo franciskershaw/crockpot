@@ -14,8 +14,8 @@ export function useAddRecipe() {
   const { mutate } = useMutation(
     (formData) => addNewRecipe(user.token, formData),
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries([queryKeys.recipes]);
+      onSuccess: async (data) => {
+        await queryClient.resetQueries([queryKeys.recipes], {});
         // May need to update user if we return their recipes to User object - see useCreateCampaign in Dungeon Tracker
         navigate('/browse')
         toast.success('Success! New recipe added.');
