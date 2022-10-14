@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SharedLayout from './layout/SharedLayout';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import AddRecipePage from './pages/AddRecipePage/AddRecipePage';
 import BrowsePage from './pages/BrowsePage/BrowsePage';
 import CookbookPage from './pages/CookbookPage/CookbookPage';
@@ -19,14 +20,14 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/browse" element={<BrowsePage />} />
-            <Route path="/cookbook"> {/*PrivateRoute*/}
+            <Route path="/cookbook" element={<PrivateRoute />}> {/*PrivateRoute*/}
               <Route path="/cookbook" element={<CookbookPage />} />
             </Route>
             <Route path="/viewrecipe/:id" element={<ViewRecipePage />} />
-            <Route path='/addrecipe'> {/*PrivateRoute*/}
+            <Route path='/addrecipe' element={<PrivateRoute />}> {/*PrivateRoute*/}
               <Route path='/addrecipe' element={<AddRecipePage />} />
             </Route>
-            <Route path='/menu'> {/*PrivateRoute*/}
+            <Route path='/menu' element={<PrivateRoute />}> {/*PrivateRoute*/}
               <Route path='/menu' element={<MenuPage/>} />
             </Route>
           </Route>
