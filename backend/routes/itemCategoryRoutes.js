@@ -4,6 +4,17 @@ const asyncHandler = require('express-async-handler');
 
 const ItemCategory = require('../models/ItemCategory')
 
+// Get all categories (for adding recipe page)
+router.get('/', asyncHandler(async (req, res) => {
+	try {
+		const itemCategories = await ItemCategory.find()
+		res.status(200).json(itemCategories)
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
 // Create a new item category
 router.post('/', asyncHandler(async (req, res) => {
 	try {
