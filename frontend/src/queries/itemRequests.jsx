@@ -1,25 +1,13 @@
 import axios from 'axios';
 
-export const fetchAllItems = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const response = await axios.get(`/api/items`, config);
+export const fetchAllItems = async () => {
+  const response = await axios.get(`/api/items`);
 
   return response.data;
 };
 
-export const fetchAllItemCategories = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const response = await axios.get(`/api/itemCategories`, config);
+export const fetchAllItemCategories = async () => {
+  const response = await axios.get(`/api/itemCategories`);
 
   return response.data;
 };
