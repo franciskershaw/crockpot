@@ -1,8 +1,8 @@
 import { useCurrentRecipe } from '../../hooks/recipes/useCurrentRecipe';
-import { redirect } from 'react-router-dom';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
+  console.log(recipe)
   if (recipe) {
     return (
       <div>
