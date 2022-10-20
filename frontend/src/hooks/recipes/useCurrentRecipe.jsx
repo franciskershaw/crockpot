@@ -8,8 +8,11 @@ export function useCurrentRecipe() {
   const { allRecipes } = useRecipes();
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
+  
   const params = useParams();
-  const recipe = allRecipes.find((recipe) => recipe._id === params.id);
+  const currentRecipe = allRecipes.find((recipe) => recipe._id === params.id);
+  let currentRecipeCategories = []
+  let currentRecipeingredients = []
 
-  return { recipe };
+  return { currentRecipe, currentRecipeCategories, currentRecipeingredients };
 }
