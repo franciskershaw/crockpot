@@ -1,17 +1,78 @@
-.pill {
-    @apply primary inline-flex items-center justify-center flex-shrink-0 px-4 py-0.5 border-2 rounded-lg w-fit cursor-default;
+// ul.pills {
+//     .pill {
+//         @apply primary inline-flex items-center justify-center flex-shrink-0 px-4 py-0.5 border-2 rounded-lg w-fit cursor-default duration-sm ease-in-out;
 
-    // Secondary
-    &--secondary {
-        @apply secondary;
-    }
+//         &:hover {
+//             @apply scale-lg;
+//         }
 
-    // Outline
-    &--outline {
-        @apply primary-outline;
+//         // Secondary
+//         &--secondary {
+//             @apply secondary;
+//         }
 
-        &.pill--secondary {
-            @apply secondary-outline;
-        }
-    }
+//         // Outline
+//         &--outline {
+//             @apply primary-outline;
+
+//             &.pill--secondary {
+//                 @apply secondary-outline;
+//             }
+//         }
+//     }
+// }
+
+// https://codepen.io/quinlo/pen/ReMRXz
+ul.toggle-pills .pill{
+    display: inline;
+}
+
+ul.toggle-pills .pill label{
+    @apply inline-block bg-white border-2 border-grey-inactive text-grey-inactive m-0.5 px-4 py-0.5 rounded-lg w-fit cursor-pointer;
+    transition: all .4s ease-in-out;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+ul.toggle-pills .pill label:hover{
+    @apply scale-sm;
+}
+
+ul.toggle-pills .pill label::before {
+    @apply pr-1;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    content: "\f067";
+    transition: transform .4s ease-in-out;
+}
+
+ul.toggle-pills .pill input[type="checkbox"]:checked + label::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f00c";
+    transform: rotate(-360deg);
+    transition: transform .4s ease-in-out;
+}
+
+ul.toggle-pills .pill input[type="checkbox"]:checked + label {
+    @apply primary shadow-lg;
+    transition: all .4s;
+}
+
+ul.toggle-pills--secondary .pill input[type="checkbox"]:checked + label {
+    @apply secondary;
+}
+
+ul.toggle-pills .pill input[type="checkbox"] {
+  @apply opacity-0 absolute;
 }

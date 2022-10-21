@@ -17,15 +17,8 @@ const MenuPage = () => {
 		<div className='container'>
 			<Toggle left={"My favourites (8)"} right={"My recipes (5)"} fixed>
 				<div className="flex flex-wrap justify-evenly space-y-3">
-					<RecipeCardLong></RecipeCardLong>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCardLong></RecipeCardLong>
-					<RecipeCardLong></RecipeCardLong>
-					<RecipeCardLong></RecipeCardLong>
-					<RecipeCardLong></RecipeCardLong>
-					<RecipeCardLong></RecipeCardLong>
-					<RecipeCardLong></RecipeCardLong>
+					{/* <RecipeCardLong></RecipeCardLong> */}
+					{/* <RecipeCard></RecipeCard> */}
 				</div>
 				<div className="flex flex-wrap justify-evenly">
 				</div>

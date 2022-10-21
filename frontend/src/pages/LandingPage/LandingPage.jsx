@@ -4,6 +4,7 @@ import Modal from '../../components/modals/Modal';
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
+import TogglePills from '../../components/pills/TogglePills';
 import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
 import Icon from '../../components/icons/Icon'
@@ -243,15 +244,12 @@ const LandingPage = () => {
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Pills</h3>
-				<div>
-					<div className="pill">Pill 1</div>
-					<div className="pill pill--secondary">Pill 1</div>
-					<div className="pill pill--outline">Pill 1</div>
-					<div className="pill pill--secondary pill--outline">Pill 1</div>
+
+				<div className='flex'>
+					{/* <TogglePills /> */}
+					<TogglePills type={"secondary"}/>
 				</div>
 				
-				<h3 className='text-blue-500 my-5'>List of pills</h3>
-
 				<h3 className='text-blue-500 my-5'>Accordion</h3>
 
 			</div>
@@ -292,7 +290,7 @@ const LandingPage = () => {
 				<h3 className='text-blue-500 my-5'>Colours</h3>
 				<div className='flex space-x-5'>
 					<div className='w-20 h-20 rounded-full bg-white border border-black'></div>
-					<div className='w-20 h-20 rounded-full bg-grey-bg'></div>
+					<div className='w-20 h-20 rounded-full bg-grey-bg border border-black'></div>
 					<div className='w-20 h-20 rounded-full bg-grey-inactive'></div>
 					<div className='w-20 h-20 rounded-full bg-purple'></div>
 					<div className='w-20 h-20 rounded-full bg-black'></div>
