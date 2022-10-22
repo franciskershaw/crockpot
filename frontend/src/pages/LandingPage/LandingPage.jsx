@@ -4,6 +4,7 @@ import Modal from '../../components/modals/Modal';
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
+import ScrollPills from '../../components/pills/ScrollPills';
 import TogglePills from '../../components/pills/TogglePills';
 import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
@@ -245,9 +246,19 @@ const LandingPage = () => {
 
 				<h3 className='text-blue-500 my-5'>Pills</h3>
 
-				<div className='flex'>
+				<div>
 					{/* <TogglePills /> */}
-					<TogglePills type={"secondary"}/>
+					<TogglePills type={""} name={"one"}/>
+				</div>
+
+				<div>
+					{/* <TogglePills /> */}
+					<TogglePills type={"secondary"} name={"two"}/>
+				</div>
+
+				<div>
+					<ScrollPills type={""}/>
+					<ScrollPills type={"secondary"}/>
 				</div>
 				
 				<h3 className='text-blue-500 my-5'>Accordion</h3>

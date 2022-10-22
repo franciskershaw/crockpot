@@ -1,34 +1,6 @@
-// ul.pills {
-//     .pill {
-//         @apply primary inline-flex items-center justify-center flex-shrink-0 px-4 py-0.5 border-2 rounded-lg w-fit cursor-default duration-sm ease-in-out;
-
-//         &:hover {
-//             @apply scale-lg;
-//         }
-
-//         // Secondary
-//         &--secondary {
-//             @apply secondary;
-//         }
-
-//         // Outline
-//         &--outline {
-//             @apply primary-outline;
-
-//             &.pill--secondary {
-//                 @apply secondary-outline;
-//             }
-//         }
-//     }
-// }
-
-// https://codepen.io/quinlo/pen/ReMRXz
-ul.toggle-pills .pill{
-    display: inline;
-}
-
-ul.toggle-pills .pill label{
-    @apply inline-block bg-white border-2 border-grey-inactive text-grey-inactive m-0.5 px-4 py-0.5 rounded-lg w-fit cursor-pointer;
+ul.pills li label, ul.scroll-pills li {
+    @apply capitalize inline-flex bg-white border-2 border-grey-inactive text-grey-inactive m-0.5 px-4 py-1 rounded-lg w-fit cursor-pointer;
+    white-space: nowrap;
     transition: all .4s ease-in-out;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -38,13 +10,66 @@ ul.toggle-pills .pill label{
     -webkit-tap-highlight-color: transparent;
 }
 
-ul.toggle-pills .pill label:hover{
+ul.pills li label:hover{
     @apply scale-sm;
 }
 
-ul.toggle-pills .pill label::before {
+ul.pills li input[type="checkbox"] {
+  @apply opacity-0 absolute;
+}
+
+
+// Full width scrollable list of pill elements - https://codepen.io/quinlo/pen/ReMRXz
+ul.scroll-pills {
+    @apply w-full overflow-x-scroll flex py-1.5;
+
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        height: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        @apply rounded bg-black/[0.5] shadow-sm;
+    }
+}
+
+ul.scroll-pills--secondary {
+    &::-webkit-scrollbar-thumb {
+        @apply bg-purple/[0.5];
+    }
+}
+
+ul.scroll-pills li {
+    @apply primary shadow-lg m-0.5;
+    transition: all .4s;
+}
+
+ul.scroll-pills--secondary li {
+    @apply secondary;
+}
+
+ul.scroll-pills li::after {
+    @apply pl-2;
+    display: inline-flex;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 12px;
+    content: "\f00d";
+}
+
+
+// Togglable list of pill elements - https://codepen.io/quinlo/pen/ReMRXz
+ul.toggle-pills li {
+    display: inline;
+}
+
+ul.toggle-pills li label::before {
     @apply pr-1;
-    display: inline-block;
+    display: inline-flex;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
@@ -56,7 +81,7 @@ ul.toggle-pills .pill label::before {
     transition: transform .4s ease-in-out;
 }
 
-ul.toggle-pills .pill input[type="checkbox"]:checked + label::before {
+ul.toggle-pills li input[type="checkbox"]:checked + label::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: "\f00c";
@@ -64,15 +89,11 @@ ul.toggle-pills .pill input[type="checkbox"]:checked + label::before {
     transition: transform .4s ease-in-out;
 }
 
-ul.toggle-pills .pill input[type="checkbox"]:checked + label {
+ul.toggle-pills li input[type="checkbox"]:checked + label {
     @apply primary shadow-lg;
     transition: all .4s;
 }
 
-ul.toggle-pills--secondary .pill input[type="checkbox"]:checked + label {
+ul.toggle-pills--secondary li input[type="checkbox"]:checked + label {
     @apply secondary;
-}
-
-ul.toggle-pills .pill input[type="checkbox"] {
-  @apply opacity-0 absolute;
 }
