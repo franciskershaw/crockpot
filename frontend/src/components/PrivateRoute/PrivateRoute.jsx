@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 const PrivateRoute = () => {
   const { user } = useUser();
-	if (!user) toast.info('You must be logged in to view this page')
+	if (!user) toast.error('You must be logged in to view this page')
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
 

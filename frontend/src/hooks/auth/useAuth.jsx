@@ -14,7 +14,7 @@ export function useAuth() {
       }
 
       updateUser(response.data);
-      toast.info(`Logged in as ${response.data.username}`);
+      toast.success(`Logged in as ${response.data.username}`);
       return response.data;
 
     } catch (err) {
@@ -30,13 +30,13 @@ export function useAuth() {
     }
 
     updateUser(response.data);
-    toast.info(`Logged in as ${response.data.username}`);
+    toast.success(`Logged in as ${response.data.username}`);
     return response.data;
   };
 
   const signout = () => {
     clearUser();
-    toast.info('You have successfully logged out');
+    toast.success('You have successfully logged out');
   };
 
   return {

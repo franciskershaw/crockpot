@@ -20,9 +20,11 @@
     }
     
     &--boxed {
-        @apply shadow-card rounded-lg;
+        @apply shadow-card;
+        border-radius: 1.5rem;
 
         .toggle-switch {
+            border-radius: 1.5rem;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
 
@@ -34,8 +36,8 @@
         .toggle-box {
             @apply border-2 border-t-0 border-black p-4 overflow-hidden;
 
-            border-bottom-left-radius: 2rem;
-            border-bottom-right-radius: 2rem;
+            border-bottom-left-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
         }
     }
 

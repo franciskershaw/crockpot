@@ -15,7 +15,7 @@ const MenuPage = () => {
 			</Icon>
 		</Header>
 		<div className='container'>
-			<Toggle left={"My favourites (8)"} right={"My recipes (5)"} fixed>
+			<Toggle left={"Menu"} right={"Shopping List"} fixed>
 				<div className="flex flex-wrap justify-evenly space-y-3">
 					{/* <RecipeCardLong></RecipeCardLong> */}
 					{/* <RecipeCard></RecipeCard> */}

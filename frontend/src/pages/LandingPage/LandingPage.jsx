@@ -22,7 +22,7 @@ const LandingPage = () => {
     }
 
 	const gimmeToast = () => {
-		toast.info("Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor"); // same as toast(message, {type: "info"});
+		toast.info("Lorem ipsum dolor"); // same as toast(message, {type: "info"});
 		toast.error("Lorem ipsum dolor")
 		toast.success("Lorem ipsum dolor")
 		toast.warn("Lorem ipsum dolor")

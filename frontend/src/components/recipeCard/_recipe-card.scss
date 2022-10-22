@@ -25,7 +25,7 @@
     }
 
     &__title {
-        @apply absolute bottom-0 left-0 right-0 z-recipe-cards p-2 text-white;
+        @apply absolute bottom-0 left-0 right-0 z-recipe-cards p-2 text-white pointer-events-none;
 
         background: rgba(50,50,50,0.5);
     }
