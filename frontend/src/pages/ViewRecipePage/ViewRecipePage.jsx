@@ -1,8 +1,8 @@
 import { useCurrentRecipe } from '../../hooks/recipes/useCurrentRecipe';
 
 const ViewRecipePage = () => {
-  const { currentRecipe: recipe, currentRecipeIngredients: ingredients } = useCurrentRecipe();
-  console.log(ingredients)
+  const { currentRecipe: recipe } = useCurrentRecipe();
+  console.log(recipe)
   if (recipe) {
     return (
       <div>
@@ -13,8 +13,8 @@ const ViewRecipePage = () => {
           ))}
         </ul>
         <ul>
-          {recipe.categories.map((category) => (
-            <li key={`category_${category._id}`}>{category.name}</li>
+          {recipe.categories.map((category, index) => (
+            <li key={`category_${index}`}>{category.name}</li>
           ))}
         </ul>
       </div>
