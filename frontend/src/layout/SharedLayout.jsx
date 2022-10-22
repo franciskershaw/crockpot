@@ -10,7 +10,7 @@ const SharedLayout = () => {
         <Outlet />
       </main>
       <Navbar />
-      <ToastContainer />
+      <ToastContainer closeButton={false} />
     </>
   );
 };

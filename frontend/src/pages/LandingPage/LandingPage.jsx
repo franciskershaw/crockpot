@@ -8,6 +8,7 @@ import ScrollPills from '../../components/pills/ScrollPills';
 import TogglePills from '../../components/pills/TogglePills';
 import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
+import { toast } from 'react-toastify';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
@@ -20,6 +21,13 @@ const LandingPage = () => {
         setIsModalOpen(true)
     }
 
+	const gimmeToast = () => {
+		toast.info("Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor"); // same as toast(message, {type: "info"});
+		toast.error("Lorem ipsum dolor")
+		toast.success("Lorem ipsum dolor")
+		toast.warn("Lorem ipsum dolor")
+	}
+
 	return (
 		<>
 			<Header title="Header">
@@ -27,6 +35,9 @@ const LandingPage = () => {
 
 			<div className='flex flex-col'>
 				<h2 className='text-red-500 font-bold underline'>Atoms</h2>
+
+				<h3 className='text-blue-500 my-5'>Toasts</h3>
+				<button className='btn btn--secondary' onClick={gimmeToast}>Let there be toast!</button>
 
 				<h3 className='text-blue-500 my-5'>Modal</h3>
 				<button onClick={openModal} className='btn btn--secondary'>Open modal</button>
