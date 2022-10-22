@@ -59,22 +59,17 @@ const BrowsePage = () => {
             onClick={openCategoriesModal}
             type={'secondary'}
             text={'Categories'}
-            tooltip={'2'}
+            tooltip={0}
           />
           <Button
             onClick={openIngredientsModal}
             type={'secondary'}
             text={'Ingredients'}
-            tooltip={'3'}
+            tooltip={3}
           />
         </div>
       </form>
       <div className="flex flex-wrap justify-evenly pt-32">
-        {/* <RecipeCard></RecipeCard>
-        <RecipeCard></RecipeCard>
-        <RecipeCard></RecipeCard>
-        <RecipeCard></RecipeCard>
-        <RecipeCard></RecipeCard> */}
         {allRecipes.map((recipe) => (
           <RecipeCard key={recipe._id} recipe={recipe} />
         ))}
