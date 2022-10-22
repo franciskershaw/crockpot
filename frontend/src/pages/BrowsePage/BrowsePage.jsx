@@ -12,9 +12,11 @@ import {
   faRefresh,
   faFilter,
 } from '@fortawesome/free-solid-svg-icons';
+import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories'; 
 
 const BrowsePage = () => {
   const { allRecipes } = useRecipes();
+  const { recipeCategories } = useRecipeCategories();
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const openCategoriesModal = () => {
@@ -65,7 +67,7 @@ const BrowsePage = () => {
             onClick={openIngredientsModal}
             type={'secondary'}
             text={'Ingredients'}
-            tooltip={3}
+            tooltip={0}
           />
         </div>
       </form>
