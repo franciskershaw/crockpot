@@ -4,8 +4,11 @@ import Modal from '../../components/modals/Modal';
 import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard'
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong'
+import ScrollPills from '../../components/pills/ScrollPills';
+import TogglePills from '../../components/pills/TogglePills';
 import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
+import { toast } from 'react-toastify';
 import Icon from '../../components/icons/Icon'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +21,13 @@ const LandingPage = () => {
         setIsModalOpen(true)
     }
 
+	const gimmeToast = () => {
+		toast.info("Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor"); // same as toast(message, {type: "info"});
+		toast.error("Lorem ipsum dolor")
+		toast.success("Lorem ipsum dolor")
+		toast.warn("Lorem ipsum dolor")
+	}
+
 	return (
 		<>
 			<Header title="Header">
@@ -25,6 +35,9 @@ const LandingPage = () => {
 
 			<div className='flex flex-col'>
 				<h2 className='text-red-500 font-bold underline'>Atoms</h2>
+
+				<h3 className='text-blue-500 my-5'>Toasts</h3>
+				<button className='btn btn--secondary' onClick={gimmeToast}>Let there be toast!</button>
 
 				<h3 className='text-blue-500 my-5'>Modal</h3>
 				<button onClick={openModal} className='btn btn--secondary'>Open modal</button>
@@ -243,15 +256,22 @@ const LandingPage = () => {
 				</div>
 
 				<h3 className='text-blue-500 my-5'>Pills</h3>
+
 				<div>
-					<div className="pill">Pill 1</div>
-					<div className="pill pill--secondary">Pill 1</div>
-					<div className="pill pill--outline">Pill 1</div>
-					<div className="pill pill--secondary pill--outline">Pill 1</div>
+					{/* <TogglePills /> */}
+					<TogglePills type={""} name={"one"}/>
+				</div>
+
+				<div>
+					{/* <TogglePills /> */}
+					<TogglePills type={"secondary"} name={"two"}/>
+				</div>
+
+				<div>
+					<ScrollPills type={""}/>
+					<ScrollPills type={"secondary"}/>
 				</div>
 				
-				<h3 className='text-blue-500 my-5'>List of pills</h3>
-
 				<h3 className='text-blue-500 my-5'>Accordion</h3>
 
 			</div>
@@ -292,7 +312,7 @@ const LandingPage = () => {
 				<h3 className='text-blue-500 my-5'>Colours</h3>
 				<div className='flex space-x-5'>
 					<div className='w-20 h-20 rounded-full bg-white border border-black'></div>
-					<div className='w-20 h-20 rounded-full bg-grey-bg'></div>
+					<div className='w-20 h-20 rounded-full bg-grey-bg border border-black'></div>
 					<div className='w-20 h-20 rounded-full bg-grey-inactive'></div>
 					<div className='w-20 h-20 rounded-full bg-purple'></div>
 					<div className='w-20 h-20 rounded-full bg-black'></div>

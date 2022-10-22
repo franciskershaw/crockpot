@@ -14,7 +14,7 @@ const RecipeCardLong = () => {
       </div>
       <div className='recipe-card-long__content-container space-y-2'>
         <h4 className='h4'>Pulled Chicken Burgers</h4>
-        <div className='flex flex-col'>
+        <div className='flex flex-col space-y-2'>
           <QuantityInput />
           <div className='flex space-x-2'>
             <Icon type={"secondary"} outline>

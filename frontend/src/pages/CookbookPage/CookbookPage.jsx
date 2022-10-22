@@ -16,21 +16,10 @@ const CookbookPage = () => {
 		<div className='container'>
 			<Toggle left={"My favourites (8)"} right={"My recipes (5)"} fixed>
 				<div className="flex flex-wrap justify-evenly">
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
+					{/* <RecipeCard></RecipeCard> */}
 				</div>
 				<div className="flex flex-wrap justify-evenly">
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
-					<RecipeCard></RecipeCard>
+					{/* <RecipeCard></RecipeCard> */}
 				</div>
 			</Toggle>
 		</div>
