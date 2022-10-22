@@ -1,8 +1,8 @@
 import { useCurrentRecipe } from '../../hooks/recipes/useCurrentRecipe';
 
 const ViewRecipePage = () => {
-  const { currentRecipe: recipe, currentRecipeCategories: categories, currentRecipeingredients: ingredients } = useCurrentRecipe();
-  console.log(recipe)
+  const { currentRecipe: recipe, currentRecipeCategories: categories, currentRecipeIngredients: ingredients } = useCurrentRecipe();
+  // console.log(recipe)
   console.log(categories)
   console.log(ingredients)
   if (recipe) {

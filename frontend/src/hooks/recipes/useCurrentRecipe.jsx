@@ -11,8 +11,20 @@ export function useCurrentRecipe() {
   
   const params = useParams();
   const currentRecipe = allRecipes.find((recipe) => recipe._id === params.id);
+  
   let currentRecipeCategories = []
-  let currentRecipeingredients = []
+  let currentRecipeIngredients = []
+  
+  if (currentRecipe) {
+    console.log(currentRecipe)
+    currentRecipe.categories.map((category) => {
+      for (let object of recipeCategories) {
+        if (object._id === category) {
+          currentRecipeCategories.push(object)
+        }
+      }
+    })
+  }
 
-  return { currentRecipe, currentRecipeCategories, currentRecipeingredients };
+  return { currentRecipe, currentRecipeCategories, currentRecipeIngredients };
 }
