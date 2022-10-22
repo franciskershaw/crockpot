@@ -1,8 +1,12 @@
 import { useCurrentRecipe } from '../../hooks/recipes/useCurrentRecipe';
+import { useEffect } from 'react';
 
 const ViewRecipePage = () => {
-  const { currentRecipe: recipe } = useCurrentRecipe();
-  console.log(recipe)
+  const { recipe } = useCurrentRecipe();
+  useEffect(() => {
+    console.log(recipe)
+  },[recipe])
+  
   if (recipe) {
     return (
       <div>
@@ -14,7 +18,12 @@ const ViewRecipePage = () => {
         </ul>
         <ul>
           {recipe.categories.map((category, index) => (
-            <li key={`category_${index}`}>{category.name}</li>
+            <li className='font-bold' key={`category_${index}`}>{category.name}</li>
+          ))}
+        </ul>
+        <ul>
+          {recipe.ingredients.map((ingredient, index) => (
+            <li key={`ingredient_${index}`}>{ingredient.name} x {ingredient.quantity} {ingredient.unit}</li>
           ))}
         </ul>
       </div>

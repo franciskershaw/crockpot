@@ -10,13 +10,13 @@ export function useCurrentRecipe() {
   const { ingredients } = useItems();
 
   const params = useParams();
-  const currentRecipe = allRecipes.find((recipe) => recipe._id === params.id);
+  const recipe = allRecipes.find((recipe) => recipe._id === params.id);
   
   let currentRecipeCategories = [];
   let currentRecipeIngredients = [];
 
-  if (currentRecipe) {
-    for (let category of currentRecipe.categories) {
+  if (recipe) {
+    for (let category of recipe.categories) {
       for (let object of recipeCategories) {
         if (object._id === category) {
           currentRecipeCategories.push(object)
@@ -24,9 +24,23 @@ export function useCurrentRecipe() {
       }
     }
     if (currentRecipeCategories.length) {
-      currentRecipe.categories = currentRecipeCategories;
+      recipe.categories = currentRecipeCategories;
+    }
+
+    for (let ingredient of recipe.ingredients) {
+      for (let object of ingredients) {
+        if (object._id === ingredient._id) {
+          currentRecipeIngredients.push({
+            ...ingredient,
+            name: object.name
+          })
+        }
+      }
+    }
+    if (currentRecipeIngredients.length) {
+      recipe.ingredients = currentRecipeIngredients
     }
   }
 
-  return { currentRecipe };
+  return { recipe };
 }
