@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
   const togglePillType = toggleType ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
@@ -10,6 +10,8 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
     console.log(checkedPills);
   }, [checkedPills]);
 
+  const togglePillsList = useRef();
+
   const onClick = (e, pill) => {
     if (e.target.checked) {
       setCheckedPills((prev) => [...prev, pill]);
@@ -18,31 +20,31 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
     }
   };
 
+  const removeScrollPills = (pill) => {
+    setCheckedPills((prev) => prev.filter((items) => items._id !== pill._id));
+    togglePillsList.current.childNodes.forEach((child) => {
+      if (child.children[0].id === pill._id) {
+        child.children[0].checked = false;
+      }
+    });
+  };
+
   return (
     <>
       {checkedPills.length > 0 && (
         <ul className={`pills scroll-pills ${scrollPillType}`}>
           {checkedPills.map((pill, index) => (
             <li
-              onClick={() =>
-                setCheckedPills((prev) =>
-                  prev.filter((items) => items._id !== pill._id)
-                )
-              }
+              onClick={() => removeScrollPills(pill)}
               key={`checkedPill_${index}`}>
               {pill.name}
             </li>
           ))}
         </ul>
       )}
-      {/* <ul >
-        {pills.map((pill, index) => (
-          <li key={`pill_${index}`} onClick={() => removePill(index)}>
-            {pill}
-          </li>
-        ))}
-      </ul> */}
-      <ul className={`pills toggle-pills ${togglePillType} text-center`}>
+      <ul
+        ref={togglePillsList}
+        className={`pills toggle-pills ${togglePillType} text-center`}>
         {data.map((pill, index) => (
           <li key={`pill_${index}`}>
             <input
@@ -55,9 +57,11 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
           </li>
         ))}
       </ul>
-			{checkedPills.length > 0 && (
-				<button>Apply {checkedPills.length} filter{checkedPills.length > 1 && 's'}</button>
-			)}
+      {checkedPills.length > 0 && (
+        <button>
+          Apply {checkedPills.length} filter{checkedPills.length > 1 && 's'}
+        </button>
+      )}
     </>
   );
 };
