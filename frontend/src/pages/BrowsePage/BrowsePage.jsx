@@ -81,7 +81,7 @@ const BrowsePage = () => {
         isModalOpen={isCategoriesModalOpen}
         setIsModalOpen={setIsCategoriesModalOpen}
         heading={'Categories'}>
-        <ToggleAndScrollPills data={recipeCategories} type='secondary' />
+        <ToggleAndScrollPills data={recipeCategories} scrollType='secondary' />
       </Modal>
       <Modal
         isModalOpen={isIngredientsModalOpen}
