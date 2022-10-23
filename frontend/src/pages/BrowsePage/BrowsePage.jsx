@@ -3,6 +3,7 @@ import Header from '../../layout/header/Header';
 import Icon from '../../components/icons/Icon';
 import Modal from '../../components/modals/Modal';
 import RecipeCard from '../../components/recipeCard/RecipeCard';
+import ToggleAndScrollPills from '../../components/pills/ToggleAndScrollPills';
 import { useContext, useState } from 'react';
 import { useRecipes } from '../../hooks/recipes/useRecipes';
 import Context from '../../context/Context';
@@ -80,7 +81,7 @@ const BrowsePage = () => {
         isModalOpen={isCategoriesModalOpen}
         setIsModalOpen={setIsCategoriesModalOpen}
         heading={'Categories'}>
-        <p>Modal modal modal!</p>
+        <ToggleAndScrollPills data={recipeCategories} type='secondary' />
       </Modal>
       <Modal
         isModalOpen={isIngredientsModalOpen}
