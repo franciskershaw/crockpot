@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
+const ToggleAndScrollPills = ({ toggleType, scrollType, data, setToolTip, setModalOpen }) => {
   const togglePillType = toggleType ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
   const scrollPillType = scrollType ? `scroll-pills--${scrollType}` : ''; // Primary, secondary
 
@@ -8,6 +8,7 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
 
   useEffect(() => {
     console.log(checkedPills);
+		setToolTip(checkedPills.length)
   }, [checkedPills]);
 
   const togglePillsList = useRef();
@@ -28,6 +29,10 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
       }
     });
   };
+
+	const onSubmit = () => {
+		setModalOpen((prev) => !prev)
+	}
 
   return (
     <>
@@ -58,7 +63,7 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data }) => {
         ))}
       </ul>
       {checkedPills.length > 0 && (
-        <button>
+        <button onClick={onSubmit}>
           Apply {checkedPills.length} filter{checkedPills.length > 1 && 's'}
         </button>
       )}

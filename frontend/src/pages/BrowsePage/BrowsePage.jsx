@@ -4,20 +4,24 @@ import Icon from '../../components/icons/Icon';
 import Modal from '../../components/modals/Modal';
 import RecipeCard from '../../components/recipeCard/RecipeCard';
 import ToggleAndScrollPills from '../../components/pills/ToggleAndScrollPills';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useRecipes } from '../../hooks/recipes/useRecipes';
-import Context from '../../context/Context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMagnifyingGlass,
   faRefresh,
   faFilter,
 } from '@fortawesome/free-solid-svg-icons';
-import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories'; 
+import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
+import { useItems } from '../../hooks/items/useItems';
 
 const BrowsePage = () => {
   const { allRecipes } = useRecipes();
   const { recipeCategories } = useRecipeCategories();
+  const { ingredients } = useItems();
+
+  const [categoriesToolTip, setCategoriesTooltip] = useState(0);
+  const [ingredientsToolTip, setIngredientsTooltip] = useState(0);
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const openCategoriesModal = () => {
@@ -62,13 +66,13 @@ const BrowsePage = () => {
             onClick={openCategoriesModal}
             type={'secondary'}
             text={'Categories'}
-            tooltip={0}
+            tooltip={categoriesToolTip}
           />
           <Button
             onClick={openIngredientsModal}
             type={'secondary'}
             text={'Ingredients'}
-            tooltip={0}
+            tooltip={ingredientsToolTip}
           />
         </div>
       </form>
@@ -81,13 +85,23 @@ const BrowsePage = () => {
         isModalOpen={isCategoriesModalOpen}
         setIsModalOpen={setIsCategoriesModalOpen}
         heading={'Categories'}>
-        <ToggleAndScrollPills data={recipeCategories} scrollType='secondary' />
+        <ToggleAndScrollPills
+          data={recipeCategories}
+          scrollType="secondary"
+          setToolTip={setCategoriesTooltip}
+          setModalOpen={setIsCategoriesModalOpen}
+        />
       </Modal>
       <Modal
         isModalOpen={isIngredientsModalOpen}
         setIsModalOpen={setIsIngredientsModalOpen}
         heading={'Ingredients'}>
-        <p>Modal modal modal!</p>
+        <ToggleAndScrollPills
+          data={ingredients}
+          scrollType="secondary"
+          setToolTip={setIngredientsTooltip}
+          setModalOpen={setIsIngredientsModalOpen}
+        />
       </Modal>
     </>
   );
