@@ -7,16 +7,13 @@ import ToggleAndScrollPills from '../../components/pills/ToggleAndScrollPills';
 import { useState, useEffect } from 'react';
 import { useRecipes } from '../../hooks/recipes/useRecipes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faMagnifyingGlass,
-  faRefresh,
-  faFilter,
-} from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
 import { useItems } from '../../hooks/items/useItems';
 
 const BrowsePage = () => {
   const { allRecipes } = useRecipes();
+  let filteredRecipes = []
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
 
@@ -24,9 +21,13 @@ const BrowsePage = () => {
   const [ingredientFilters, setIngredientFilters] = useState([]);
 
   useEffect(() => {
-    console.log('category filters')
+    console.log(allRecipes)
     console.log(categoryFilters)
-  },[categoryFilters])
+    if (categoryFilters.length) {
+      console.log('Apply filters please')
+    }
+    
+  }, [categoryFilters]);
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const openCategoriesModal = () => {

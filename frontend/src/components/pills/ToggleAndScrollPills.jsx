@@ -10,14 +10,6 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filter
     setCheckedPills(filters)
   },[filters])
 
-  // useEffect(() => {
-  //   console.log(checkedPills)
-	// 	setCheckedPills(checkedPills)
-  // }, [checkedPills]);
-
-  useEffect(() => {
-    console.log(checkedPills)
-  },[checkedPills])
 
   const togglePillsList = useRef();
 
