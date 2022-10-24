@@ -1,19 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
 
-const ToggleAndScrollPills = ({ toggleType, scrollType, data, setToolTip, setModalOpen }) => {
+const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filters, setModalOpen }) => {
   const togglePillType = toggleType ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
   const scrollPillType = scrollType ? `scroll-pills--${scrollType}` : ''; // Primary, secondary
 
   const [checkedPills, setCheckedPills] = useState([]);
 
   useEffect(() => {
-    console.log(checkedPills);
-		setToolTip(checkedPills.length)
-  }, [checkedPills]);
+    setCheckedPills(filters)
+  },[filters])
+
+  // useEffect(() => {
+  //   console.log(checkedPills)
+	// 	setCheckedPills(checkedPills)
+  // }, [checkedPills]);
+
+  useEffect(() => {
+    console.log(checkedPills)
+  },[checkedPills])
 
   const togglePillsList = useRef();
 
-  const onClick = (e, pill) => {
+  const onChange = (e, pill) => {
     if (e.target.checked) {
       setCheckedPills((prev) => [...prev, pill]);
     } else if (!e.target.checked) {
@@ -32,6 +40,7 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setToolTip, setMod
 
 	const onSubmit = () => {
 		setModalOpen((prev) => !prev)
+    setFilters(checkedPills)
 	}
 
   return (
@@ -56,7 +65,8 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setToolTip, setMod
               type="checkbox"
               id={pill._id}
               value={pill._id}
-              onClick={(e) => onClick(e, pill)}
+              onChange={(e) => onChange(e, pill)}
+              defaultChecked={filters.includes(pill)}
             />
             <label htmlFor={pill._id}>{pill.name}</label>
           </li>
@@ -65,6 +75,11 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setToolTip, setMod
       {checkedPills.length > 0 && (
         <button onClick={onSubmit}>
           Apply {checkedPills.length} filter{checkedPills.length > 1 && 's'}
+        </button>
+      )}
+      {checkedPills.length === 0 && filters.length > 0 && (
+        <button onClick={onSubmit}>
+          Remove filters
         </button>
       )}
     </>
