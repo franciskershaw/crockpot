@@ -7,27 +7,35 @@ import ToggleAndScrollPills from '../../components/pills/ToggleAndScrollPills';
 import { useState, useEffect } from 'react';
 import { useRecipes } from '../../hooks/recipes/useRecipes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMagnifyingGlass,
+  faRefresh,
+} from '@fortawesome/free-solid-svg-icons';
 import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
 import { useItems } from '../../hooks/items/useItems';
 
 const BrowsePage = () => {
-  const { allRecipes } = useRecipes();
-  let filteredRecipes = []
+  let { allRecipes } = useRecipes();
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
 
+  const [filteredResults, setFilteredResults] = useState(allRecipes);
   const [categoryFilters, setCategoryFilters] = useState([]);
   const [ingredientFilters, setIngredientFilters] = useState([]);
 
   useEffect(() => {
-    console.log(allRecipes)
-    console.log(categoryFilters)
     if (categoryFilters.length) {
-      console.log('Apply filters please')
+      let categoryIds = categoryFilters.map((filter) => filter._id);
+      const filtered = allRecipes.filter((recipe) =>
+        categoryIds.every((value) => recipe.categories.includes(value))
+      );
+      setFilteredResults(filtered);
     }
-    
   }, [categoryFilters]);
+
+  useEffect(() => {
+    console.log(filteredResults)
+  },[filteredResults])
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const openCategoriesModal = () => {
@@ -83,9 +91,13 @@ const BrowsePage = () => {
         </div>
       </form>
       <div className="flex flex-wrap justify-evenly pt-32">
-        {allRecipes.map((recipe) => (
-          <RecipeCard key={recipe._id} recipe={recipe} />
-        ))}
+        {categoryFilters.length
+          ? filteredResults.map((recipe) => (
+              <RecipeCard key={recipe._id} recipe={recipe} />
+            ))
+          : allRecipes.map((recipe) => (
+              <RecipeCard key={recipe._id} recipe={recipe} />
+            ))}
       </div>
       <Modal
         isModalOpen={isCategoriesModalOpen}
