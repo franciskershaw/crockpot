@@ -39,8 +39,9 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filter
   };
 
 	const onSubmit = () => {
-		setModalOpen((prev) => !prev)
     setFilters(checkedPills)
+    document.body.classList.remove("modal-is-open")
+		setModalOpen(false)
 	}
 
   return (
