@@ -19,26 +19,12 @@ const BrowsePage = () => {
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
 
-  // const [filteredResults, setFilteredResults] = useState([]);
   const [activeFilters, setActiveFilters] = useState({
     categories: [],
-    ingredients: []
+    ingredients: [],
   });
-  const [ingredientFilters, setIngredientFilters] = useState([]);
 
-  // useEffect(() => {
-  //   if (categoryFilters.length) {
-  //     let categoryIds = categoryFilters.map((filter) => filter._id);
-  //     const filtered = allRecipes.filter((recipe) =>
-  //       categoryIds.every((value) => recipe.categories.includes(value))
-  //     );
-  //     setFilteredResults(filtered);
-  //   }
-  // }, [categoryFilters]);
-
-  useEffect(() => {
-    console.log(activeFilters)
-  },[activeFilters])
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const openCategoriesModal = () => {
@@ -51,6 +37,42 @@ const BrowsePage = () => {
     document.body.classList.add('modal-is-open');
     setIsIngredientsModalOpen(true);
   };
+
+  useEffect(() => {
+    console.log('-----------------');
+    console.log(activeFilters);
+    let filteredRecipes = [];
+    if (activeFilters.categories.length || activeFilters.ingredients.length) {
+      let categoryIds = [];
+      let ingredientIds = [];
+      if (activeFilters.categories.length) {
+        categoryIds = activeFilters.categories.map((filter) => filter._id);
+      }
+      if (activeFilters.ingredients.length) {
+        ingredientIds = activeFilters.ingredients.map((filter) => filter._id);
+      }
+      
+      if (categoryIds.length) {
+        const filteredByCategories = allRecipes.filter((recipe) =>
+          categoryIds.every((value) => recipe.categories.includes(value))
+        );
+        console.log(filteredByCategories);
+      }
+      if (ingredientIds.length) {
+        const filteredByIngredients = allRecipes.filter((recipe) =>
+          ingredientIds.every((value) =>
+            recipe.ingredients.some((e) => e._id === value)
+          )
+        );
+        console.log(filteredByIngredients);
+      }
+    }
+  }, [activeFilters]);
+
+  useEffect(() => {
+    console.log(filteredResults);
+    console.log('-----------------');
+  }, [filteredResults]);
 
   return (
     <>

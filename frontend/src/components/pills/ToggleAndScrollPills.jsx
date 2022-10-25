@@ -10,10 +10,6 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filter
     setCheckedPills(filters[filterType])
   },[filters])
 
-  useEffect(() => {
-    console.log(filterType)
-  },[filterType])
-
   const togglePillsList = useRef();
 
   const onChange = (e, pill) => {
