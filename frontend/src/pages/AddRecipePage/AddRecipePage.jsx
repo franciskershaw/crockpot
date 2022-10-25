@@ -147,7 +147,7 @@ const AddRecipePage = () => {
           <FontAwesomeIcon icon={faPlus}/>
         </Icon>
       </Header>
-      <div className="container">
+      <div className="container container--sm">
         <form onSubmit={onSubmit} className="form" id="addRecipe">
           {/* Recipe name - 100 */}
           <div className="form__input">
@@ -169,7 +169,6 @@ const AddRecipePage = () => {
               type="file"
               id="image"
               name="image"
-              required
             />
           </div>
           {/* Time, serves - 50 50, quantities  */}
@@ -201,38 +200,42 @@ const AddRecipePage = () => {
           {/* Categories - 100, select */}
           <div className="form__input">
             <label htmlFor="categories">Categories</label>
-            {formData.categories.length &&
-              formData.categories.map((category, index, rows) => (
-                <div key={`categoryInput_${index}`}>
-                  <select
-                    onChange={(e) => onChangeMultiple(e, index, 'categories')}
-                    name="_id"
-                    defaultValue={'Please select a category'}>
-                    <option disabled value="Please select a category">
-                      Please select a category
-                    </option>
-                    {recipeCategories.map((category) => (
-                      <option key={category.name} value={category._id}>
-                        {category.name}
+            <div className="space-y-1">
+              {formData.categories.length &&
+                formData.categories.map((category, index, rows) => (
+                  <div key={`categoryInput_${index}`}>
+                    <select
+                      onChange={(e) => onChangeMultiple(e, index, 'categories')}
+                      name="_id"
+                      defaultValue={'Please select a category'}>
+                      <option disabled value="Please select a category">
+                        Please select a category
                       </option>
-                    ))}
-                  </select>
-                  {index + 1 === rows.length && (
-                    <PlusMinus
-                      minusInput={() => minusInput('categories')}
-                      addInput={() => addInput('categories')}
-                    />
-                  )}
-                </div>
-              ))}
+                      {recipeCategories.map((category) => (
+                        <option key={category.name} value={category._id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    {index + 1 === rows.length && (
+                      <PlusMinus
+                        minusInput={() => minusInput('categories')}
+                        addInput={() => addInput('categories')}
+                        classes={"mt-1"}
+                      />
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
 
           {/* Ingredients - 50 25 25, select */}
-          <div className="flex justify-between flex-wrap">
+          <div className="space-y-1">
+            <label htmlFor="ingredients">Ingredients</label>
             {formData.ingredients.length &&
               formData.ingredients.map((ingredient, index, rows) => (
                 // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
-                <div key={`ingredientInput_${index}`} className="">
+                <div key={`ingredientInput_${index}`} className="flex justify-between flex-wrap">
                   <div className="form__input form__input--50">
                     {/* <label htmlFor="ingredient">Ingredients</label> */}
                     <select
@@ -285,6 +288,7 @@ const AddRecipePage = () => {
                     <PlusMinus
                       addInput={() => addInput('ingredients')}
                       minusInput={() => minusInput('ingredients')}
+                      classes={"mt-1 w-full"}
                     />
                   )}
                 </div>
@@ -293,47 +297,53 @@ const AddRecipePage = () => {
 
           {/* Instructions - 100 */}
           <div className="form__input">
-            <label htmlFor="instructions">Instructions</label>
-            {formData.instructions.length &&
-              formData.instructions.map((instruction, index, rows) => (
-                <div key={`instructionInput_${index}`}>
-                  <input
-                    type="text"
-                    name="instruction"
-                    value={instruction.instruction}
-                    required
-                    onChange={(e) => onChangeMultiple(e, index, 'instructions')}
-                  />
-                  {index + 1 === rows.length && (
-                    <PlusMinus
-                      addInput={() => addInput('instructions')}
-                      minusInput={() => minusInput('instructions')}
+            <div className="space-y-1">
+              <label htmlFor="instructions">Instructions</label>
+              {formData.instructions.length &&
+                formData.instructions.map((instruction, index, rows) => (
+                  <div key={`instructionInput_${index}`}>
+                    <input
+                      type="text"
+                      name="instruction"
+                      value={instruction.instruction}
+                      required
+                      onChange={(e) => onChangeMultiple(e, index, 'instructions')}
                     />
-                  )}
-                </div>
-              ))}
+                    {index + 1 === rows.length && (
+                      <PlusMinus
+                        addInput={() => addInput('instructions')}
+                        minusInput={() => minusInput('instructions')}
+                        classes={"mt-1"}
+                      />
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
 
           {/* Notes */}
           <div className="form__input">
             <label htmlFor="notes">Notes</label>
-            {formData.notes.length &&
-              formData.notes.map((note, index, rows) => (
-                <div key={`noteInput_${index}`}>
-                  <input
-                    type="text"
-                    name="note"
-                    value={note.note}
-                    onChange={(e) => onChangeMultiple(e, index, 'notes')}
-                  />
-                  {index + 1 === rows.length && (
-                    <PlusMinus
-                      addInput={() => addInput('notes')}
-                      minusInput={() => minusInput('notes')}
+            <div className="space-y-1">
+              {formData.notes.length &&
+                formData.notes.map((note, index, rows) => (
+                  <div key={`noteInput_${index}`}>
+                    <input
+                      type="text"
+                      name="note"
+                      value={note.note}
+                      onChange={(e) => onChangeMultiple(e, index, 'notes')}
                     />
-                  )}
-                </div>
-              ))}
+                    {index + 1 === rows.length && (
+                      <PlusMinus
+                        addInput={() => addInput('notes')}
+                        minusInput={() => minusInput('notes')}
+                        classes={"mt-1"}
+                      />
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
         </form>
         <div className="mt-5 text-center">
