@@ -76,7 +76,7 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filter
           Apply {checkedPills.length} filter{checkedPills.length > 1 && 's'}
         </button>
       )}
-      {checkedPills.length === 0 && filters.length > 0 && (
+      {checkedPills.length === 0 && filters[filterType].length > 0 && (
         <button onClick={onSubmit}>
           Remove filters
         </button>
