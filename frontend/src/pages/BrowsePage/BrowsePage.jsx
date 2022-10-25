@@ -19,23 +19,26 @@ const BrowsePage = () => {
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
 
-  const [filteredResults, setFilteredResults] = useState(allRecipes);
-  const [categoryFilters, setCategoryFilters] = useState([]);
+  // const [filteredResults, setFilteredResults] = useState([]);
+  const [activeFilters, setActiveFilters] = useState({
+    categories: [],
+    ingredients: []
+  });
   const [ingredientFilters, setIngredientFilters] = useState([]);
 
-  useEffect(() => {
-    if (categoryFilters.length) {
-      let categoryIds = categoryFilters.map((filter) => filter._id);
-      const filtered = allRecipes.filter((recipe) =>
-        categoryIds.every((value) => recipe.categories.includes(value))
-      );
-      setFilteredResults(filtered);
-    }
-  }, [categoryFilters]);
+  // useEffect(() => {
+  //   if (categoryFilters.length) {
+  //     let categoryIds = categoryFilters.map((filter) => filter._id);
+  //     const filtered = allRecipes.filter((recipe) =>
+  //       categoryIds.every((value) => recipe.categories.includes(value))
+  //     );
+  //     setFilteredResults(filtered);
+  //   }
+  // }, [categoryFilters]);
 
   useEffect(() => {
-    console.log(filteredResults)
-  },[filteredResults])
+    console.log(activeFilters)
+  },[activeFilters])
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const openCategoriesModal = () => {
@@ -80,24 +83,20 @@ const BrowsePage = () => {
             onClick={openCategoriesModal}
             type={'secondary'}
             text={'Categories'}
-            tooltip={categoryFilters.length}
+            tooltip={activeFilters.categories.length}
           />
           <Button
             onClick={openIngredientsModal}
             type={'secondary'}
             text={'Ingredients'}
-            tooltip={ingredientFilters.length}
+            tooltip={activeFilters.ingredients.length}
           />
         </div>
       </form>
       <div className="flex flex-wrap justify-evenly pt-32">
-        {categoryFilters.length
-          ? filteredResults.map((recipe) => (
-              <RecipeCard key={recipe._id} recipe={recipe} />
-            ))
-          : allRecipes.map((recipe) => (
-              <RecipeCard key={recipe._id} recipe={recipe} />
-            ))}
+        {allRecipes.map((recipe) => (
+          <RecipeCard key={recipe._id} recipe={recipe} />
+        ))}
       </div>
       <Modal
         isModalOpen={isCategoriesModalOpen}
@@ -106,8 +105,9 @@ const BrowsePage = () => {
         <ToggleAndScrollPills
           data={recipeCategories}
           scrollType="secondary"
-          filters={categoryFilters}
-          setFilters={setCategoryFilters}
+          filterType={'categories'}
+          filters={activeFilters}
+          setFilters={setActiveFilters}
           setModalOpen={setIsCategoriesModalOpen}
         />
       </Modal>
@@ -118,8 +118,9 @@ const BrowsePage = () => {
         <ToggleAndScrollPills
           data={ingredients}
           scrollType="secondary"
-          filters={ingredientFilters}
-          setFilters={setIngredientFilters}
+          filterType={'ingredients'}
+          filters={activeFilters}
+          setFilters={setActiveFilters}
           setModalOpen={setIsIngredientsModalOpen}
         />
       </Modal>

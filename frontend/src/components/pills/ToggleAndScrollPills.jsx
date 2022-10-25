@@ -1,15 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 
-const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filters, setModalOpen }) => {
+const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filters, setModalOpen, filterType }) => {
   const togglePillType = toggleType ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
   const scrollPillType = scrollType ? `scroll-pills--${scrollType}` : ''; // Primary, secondary
 
   const [checkedPills, setCheckedPills] = useState([]);
 
   useEffect(() => {
-    setCheckedPills(filters)
+    setCheckedPills(filters[filterType])
   },[filters])
 
+  useEffect(() => {
+    console.log(filterType)
+  },[filterType])
 
   const togglePillsList = useRef();
 
@@ -31,7 +34,10 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filter
   };
 
 	const onSubmit = () => {
-    setFilters(checkedPills)
+    setFilters((prev) => ({
+      ...prev,
+      [filterType]: checkedPills
+    }))
     document.body.classList.remove("modal-is-open")
 		setModalOpen(false)
 	}
@@ -59,7 +65,7 @@ const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filter
               id={pill._id}
               value={pill._id}
               onChange={(e) => onChange(e, pill)}
-              defaultChecked={filters.includes(pill)}
+              defaultChecked={filters[filterType].includes(pill)}
             />
             <label htmlFor={pill._id}>{pill.name}</label>
           </li>
