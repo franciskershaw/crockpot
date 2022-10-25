@@ -20,7 +20,7 @@
     }
     
     &--boxed {
-        @apply shadow-card;
+        @apply shadow-card bg-white;
         border-radius: 1.5rem;
 
         .toggle-switch {

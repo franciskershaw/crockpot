@@ -15,10 +15,10 @@ const ScrollPills = ({type}) => {
       setPills(newPills);
     };
 
-    const pillType = type ? ` scroll-pills--${type}` : ''; // Primary, secondary
+    const pillType = type ? ` pills--scroll--${type}` : ''; // Primary, secondary
 
     return (
-      <ul className={`pills scroll-pills${pillType}`}>
+      <ul className={`pills pills--scroll${pillType}`}>
           {pills.map((pill, index) => (
             <li key={`pill_${index}`} onClick={() => removePill(index)}>{pill}</li>
           ))}

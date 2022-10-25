@@ -55,3 +55,11 @@ h6, .h6 {
         @apply text-h6-md;
     }
 }
+
+ul.bullets {
+    @apply list-disc ml-4 space-y-0.5;
+}
+
+ol.bullets {
+    @apply list-decimal ml-4 space-y-1.5;
+}

@@ -1,13 +1,13 @@
 .Toastify {
     &__toast-theme--light {
-        @apply bg-white text-black rounded-sm shadow-lg border border-grey-inactive/[0.5];
+        @apply bg-white text-black rounded-sm shadow-lg border border-grey-inactive;
 
         font-family: inherit;
     }
 
     &__toast--info {
         &.Toastify__toast-theme--light {
-            @apply border-purple/[0.5];
+            @apply border-purple;
         }
 
         .Toastify__progress-bar {
@@ -21,7 +21,7 @@
 
     &__toast--error {
         &.Toastify__toast-theme--light {
-            @apply border-error/[0.5];
+            @apply border-error;
         }
 
         .Toastify__progress-bar {
@@ -35,7 +35,7 @@
 
     &__toast--success {
         &.Toastify__toast-theme--light {
-            @apply border-success/[0.5];
+            @apply border-success;
         }
 
         .Toastify__progress-bar {

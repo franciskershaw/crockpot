@@ -1,6 +1,6 @@
 // TO DO: Refactor CSS to neaten!
 
-ul.pills li label, ul.scroll-pills li {
+ul.pills li label, ul.pills--scroll li, ul.pills--plain li {
     @apply capitalize inline-flex bg-white border-2 border-grey-inactive text-grey-inactive m-0.5 px-4 py-1 rounded-lg w-fit cursor-pointer;
     white-space: nowrap;
     transition: all .4s ease-in-out;
@@ -21,8 +21,19 @@ ul.pills li input[type="checkbox"] {
 }
 
 
+// Plain pills with no effect
+ul.pills--plain li {
+    @apply primary shadow-lg m-0.5;
+    transition: all .4s;
+}
+
+ul.pills--plain--secondary li {
+    @apply secondary;
+}
+
+
 // Full width scrollable list of pill elements - https://codepen.io/quinlo/pen/ReMRXz
-ul.scroll-pills {
+ul.pills--scroll {
     @apply w-full overflow-x-scroll flex py-1.5;
 
     &::-webkit-scrollbar {
@@ -35,22 +46,22 @@ ul.scroll-pills {
     }
 }
 
-ul.scroll-pills--secondary {
+ul.pills--scroll--secondary {
     &::-webkit-scrollbar-thumb {
         @apply bg-purple/[0.5];
     }
 }
 
-ul.scroll-pills li {
+ul.pills--scroll li {
     @apply primary shadow-lg m-0.5;
     transition: all .4s;
 }
 
-ul.scroll-pills--secondary li {
+ul.pills--scroll--secondary li {
     @apply secondary;
 }
 
-ul.scroll-pills li::after {
+ul.pills--scroll li::after {
     @apply pl-2;
     display: inline-flex;
     font-style: normal;
@@ -65,11 +76,11 @@ ul.scroll-pills li::after {
 
 
 // Togglable list of pill elements - https://codepen.io/quinlo/pen/ReMRXz
-ul.toggle-pills li {
+ul.pills--toggle li {
     display: inline;
 }
 
-ul.toggle-pills li label::before {
+ul.pills--toggle li label::before {
     @apply pr-1;
     display: inline-flex;
     font-style: normal;
@@ -83,7 +94,7 @@ ul.toggle-pills li label::before {
     transition: transform .4s ease-in-out;
 }
 
-ul.toggle-pills li input[type="checkbox"]:checked + label::before {
+ul.pills--toggle li input[type="checkbox"]:checked + label::before {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: "\f00c";
@@ -91,11 +102,11 @@ ul.toggle-pills li input[type="checkbox"]:checked + label::before {
     transition: transform .4s ease-in-out;
 }
 
-ul.toggle-pills li input[type="checkbox"]:checked + label {
+ul.pills--toggle li input[type="checkbox"]:checked + label {
     @apply primary shadow-lg;
     transition: all .4s;
 }
 
-ul.toggle-pills--secondary li input[type="checkbox"]:checked + label {
+ul.pills--toggle--secondary li input[type="checkbox"]:checked + label {
     @apply secondary;
 }

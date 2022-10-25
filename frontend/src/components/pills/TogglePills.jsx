@@ -8,10 +8,10 @@ const TogglePills = ({name, type}) => {
       'Money',
     ];
 
-    const pillType = type ? ` toggle-pills--${type}` : ''; // Primary, secondary
+    const pillType = type ? ` pills--toggle--${type}` : ''; // Primary, secondary
   
     return (
-      <ul className={`pills toggle-pills${pillType} text-center`}>
+      <ul className={`pills pills--toggle${pillType} text-center`}>
         {pills.map((pill, index) => (
           <li key={`pill_${index}`}>
             <input type="checkbox" id={`${name}_${pill}`} value={pill}/>

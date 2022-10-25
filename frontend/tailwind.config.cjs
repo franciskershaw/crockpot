@@ -3,6 +3,7 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     borderRadius: {
+      'none': '0',
       'sm': '0.5rem',
       DEFAULT: '1rem',
       'lg': '2rem',
@@ -23,7 +24,7 @@ module.exports = {
         },
         black: '#333d47',
         purple: '#3e3ac2',
-        warning: '#eedc1e',
+        warning: '#ffd035',
         success: '#15c035',
         error: '#dc3b2b',
       },
