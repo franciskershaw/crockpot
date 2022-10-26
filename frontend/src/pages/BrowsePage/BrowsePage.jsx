@@ -40,10 +40,11 @@ const BrowsePage = () => {
 
   useEffect(() => {
     if (activeFilters.categories.length || activeFilters.ingredients.length) {
+      const { categories, ingredients} = activeFilters
       let filteredByCategories = [];
-      if (activeFilters.categories.length) {
+      if (categories.length) {
         filteredByCategories = allRecipes.filter((recipe) =>
-          activeFilters.categories.some((value) =>
+          categories.every((value) =>
             recipe.categories.includes(value._id)
           )
         );
@@ -51,10 +52,10 @@ const BrowsePage = () => {
       console.log(filteredByCategories);
 
       let filteredByIngredients = [];
-      if (activeFilters.ingredients.length) {
+      if (ingredients.length) {
         filteredByIngredients = allRecipes.filter((recipe) =>
-          activeFilters.ingredients.some((ingredient) =>
-            recipe.ingredients.some((e) => e._id === ingredient._id)
+          ingredients.every((ingredient) =>
+            recipe.ingredients.some((value) => value._id === ingredient._id)
           )
         );
       }
