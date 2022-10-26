@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 
-const ToggleAndScrollPills = ({ toggleType, scrollType, data, setFilters, filters, setModalOpen, filterType }) => {
-  const togglePillType = toggleType ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
-  const scrollPillType = scrollType ? `scroll-pills--${scrollType}` : ''; // Primary, secondary
+const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filters, setModalOpen, filterType }) => {
+  const togglePillType = toggleTheme ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
+  const scrollPillType = scrollTheme ? `scroll-pills--${scrollTheme}` : ''; // Primary, secondary
 
   const [checkedPills, setCheckedPills] = useState([]);
 

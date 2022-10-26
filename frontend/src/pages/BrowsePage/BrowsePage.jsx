@@ -119,7 +119,7 @@ const BrowsePage = () => {
         heading={'Categories'}>
         <ToggleAndScrollPills
           data={recipeCategories}
-          scrollType="secondary"
+          scrollTheme="secondary"
           filterType={'categories'}
           filters={activeFilters}
           setFilters={setActiveFilters}
@@ -132,7 +132,7 @@ const BrowsePage = () => {
         heading={'Ingredients'}>
         <ToggleAndScrollPills
           data={ingredients}
-          scrollType="secondary"
+          scrollTheme="secondary"
           filterType={'ingredients'}
           filters={activeFilters}
           setFilters={setActiveFilters}
