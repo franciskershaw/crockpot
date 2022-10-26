@@ -39,33 +39,26 @@ const BrowsePage = () => {
   };
 
   useEffect(() => {
-    console.log('-----------------');
-    console.log(activeFilters);
-    let filteredRecipes = [];
     if (activeFilters.categories.length || activeFilters.ingredients.length) {
-      let categoryIds = [];
-      let ingredientIds = [];
+      let filteredByCategories = [];
       if (activeFilters.categories.length) {
-        categoryIds = activeFilters.categories.map((filter) => filter._id);
-      }
-      if (activeFilters.ingredients.length) {
-        ingredientIds = activeFilters.ingredients.map((filter) => filter._id);
-      }
-      
-      if (categoryIds.length) {
-        const filteredByCategories = allRecipes.filter((recipe) =>
-          categoryIds.every((value) => recipe.categories.includes(value))
-        );
-        console.log(filteredByCategories);
-      }
-      if (ingredientIds.length) {
-        const filteredByIngredients = allRecipes.filter((recipe) =>
-          ingredientIds.every((value) =>
-            recipe.ingredients.some((e) => e._id === value)
+        filteredByCategories = allRecipes.filter((recipe) =>
+          activeFilters.categories.some((value) =>
+            recipe.categories.includes(value._id)
           )
         );
-        console.log(filteredByIngredients);
       }
+      console.log(filteredByCategories);
+
+      let filteredByIngredients = [];
+      if (activeFilters.ingredients.length) {
+        filteredByIngredients = allRecipes.filter((recipe) =>
+          activeFilters.ingredients.some((ingredient) =>
+            recipe.ingredients.some((e) => e._id === ingredient._id)
+          )
+        );
+      }
+      console.log(filteredByIngredients);
     }
   }, [activeFilters]);
 
