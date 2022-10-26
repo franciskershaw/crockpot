@@ -46,7 +46,6 @@ const BrowsePage = () => {
           )
         );
       }
-      console.log('filtered by categories:', filteredByCategories);
 
       // If ingredients chosen, filter all recipes by active ingredient filters
       let filteredByIngredients = [];
@@ -57,7 +56,6 @@ const BrowsePage = () => {
           )
         );
       }
-      console.log('filtered by ingredients:', filteredByIngredients);
 
       if (
         categories.length &&
