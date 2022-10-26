@@ -19,38 +19,36 @@ const BrowsePage = () => {
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
 
+  const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
+  const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     categories: [],
     ingredients: [],
   });
+  const [filteredResults, setFilteredResults] = useState({
+    active: false,
+    results: [],
+  });
 
-  const [filteredResults, setFilteredResults] = useState([]);
-
-  const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
-  const openCategoriesModal = () => {
-    document.body.classList.add('modal-is-open');
-    setIsCategoriesModalOpen(true);
-  };
-
-  const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
-  const openIngredientsModal = () => {
-    document.body.classList.add('modal-is-open');
-    setIsIngredientsModalOpen(true);
-  };
-
+  // Filtering by categories and ingredients
   useEffect(() => {
-    if (activeFilters.categories.length || activeFilters.ingredients.length) {
-      const { categories, ingredients} = activeFilters
+    let filteredRecipes = [];
+    const { categories, ingredients } = activeFilters;
+
+    // Either of the filters is active
+    if (categories.length || ingredients.length) {
+      // If categories chosen, filter all recipes by active category filters
       let filteredByCategories = [];
       if (categories.length) {
         filteredByCategories = allRecipes.filter((recipe) =>
-          categories.every((value) =>
-            recipe.categories.includes(value._id)
+          categories.every((category) =>
+            recipe.categories.includes(category._id)
           )
         );
       }
-      console.log(filteredByCategories);
+      console.log('filtered by categories:', filteredByCategories);
 
+      // If ingredients chosen, filter all recipes by active ingredient filters
       let filteredByIngredients = [];
       if (ingredients.length) {
         filteredByIngredients = allRecipes.filter((recipe) =>
@@ -59,14 +57,55 @@ const BrowsePage = () => {
           )
         );
       }
-      console.log(filteredByIngredients);
+      console.log('filtered by ingredients:', filteredByIngredients);
+
+      if (
+        categories.length &&
+        ingredients.length &&
+        filteredByCategories.length &&
+        filteredByIngredients.length
+      ) {
+        for (let object of filteredByCategories) {
+          for (let object2 of filteredByIngredients) {
+            if (object._id === object2._id) {
+              filteredRecipes.push(object);
+            }
+          }
+        }
+      } else if (
+        categories.length &&
+        !ingredients.length &&
+        filteredByCategories.length
+      ) {
+        filteredRecipes = filteredByCategories;
+      } else if (
+        !categories.length &&
+        ingredients.length &&
+        filteredByIngredients.length
+      ) {
+        filteredRecipes = filteredByIngredients;
+      }
+
+      setFilteredResults({
+        active: true,
+        results: filteredRecipes,
+      });
+    } else if (!categories.length && !ingredients.length) {
+      setFilteredResults({
+        active: false,
+        results: [],
+      });
     }
   }, [activeFilters]);
 
-  useEffect(() => {
-    console.log(filteredResults);
-    console.log('-----------------');
-  }, [filteredResults]);
+  const openCategoriesModal = () => {
+    document.body.classList.add('modal-is-open');
+    setIsCategoriesModalOpen(true);
+  };
+  const openIngredientsModal = () => {
+    document.body.classList.add('modal-is-open');
+    setIsIngredientsModalOpen(true);
+  };
 
   return (
     <>
@@ -110,9 +149,17 @@ const BrowsePage = () => {
         </div>
       </form>
       <div className="flex flex-wrap justify-evenly pt-32">
-        {allRecipes.map((recipe) => (
-          <RecipeCard key={recipe._id} recipe={recipe} />
-        ))}
+        {filteredResults.active && filteredResults.results.length ? (
+          filteredResults.results.map((recipe) => (
+            <RecipeCard key={recipe._id} recipe={recipe} />
+          ))
+        ) : filteredResults.active && !filteredResults.length ? (
+          <h4>No results available</h4>
+        ) : (
+          allRecipes.map((recipe) => (
+            <RecipeCard key={recipe._id} recipe={recipe} />
+          ))
+        )}
       </div>
       <Modal
         isModalOpen={isCategoriesModalOpen}
