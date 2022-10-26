@@ -21,6 +21,7 @@ const BrowsePage = () => {
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('')
   const [activeFilters, setActiveFilters] = useState({
     categories: [],
     ingredients: [],
@@ -124,7 +125,8 @@ const BrowsePage = () => {
             id="search"
             name="search"
             placeholder="Search for a recipe"
-            required
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             className="w-full !border-purple"
           />
           <Icon classes={'ml-4 cursor-pointer'} type={'secondary'}>
