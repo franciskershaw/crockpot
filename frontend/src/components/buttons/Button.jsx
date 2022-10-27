@@ -7,9 +7,9 @@ const Button = ({type, outline, noHover, state, tooltip, onClick, text}) => {
 
   return (
     <a onClick={onClick} className={`btn${buttonType}${buttonOutline}${buttonNoHover}${buttonState}`}>
-      {tooltip ? (
+      {tooltip > 0 && (
         <div className="btn__tooltip">{tooltip}</div>
-      ) : null}
+      )}
       <span className="btn__text">{buttonText}</span>
     </a>
   )
