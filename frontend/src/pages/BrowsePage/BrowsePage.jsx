@@ -21,7 +21,7 @@ const BrowsePage = () => {
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState('');
   const [activeFilters, setActiveFilters] = useState({
     categories: [],
     ingredients: [],
@@ -97,6 +97,10 @@ const BrowsePage = () => {
     }
   }, [activeFilters]);
 
+  useEffect(() => {
+    console.log(filteredResults)
+  },[filteredResults])
+
   const openCategoriesModal = () => {
     document.body.classList.add('modal-is-open');
     setIsCategoriesModalOpen(true);
@@ -105,6 +109,15 @@ const BrowsePage = () => {
     document.body.classList.add('modal-is-open');
     setIsIngredientsModalOpen(true);
   };
+
+  const onChangeSearchBar = (e) => {
+    setSearchValue(e.target.value)
+    let searchFilters = allRecipes.filter((recipe) => recipe.name.toLowerCase().includes(e.target.value))
+    setFilteredResults({
+      active: true,
+      results: searchFilters
+    })
+  }
 
   return (
     <>
@@ -126,7 +139,7 @@ const BrowsePage = () => {
             name="search"
             placeholder="Search for a recipe"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={onChangeSearchBar}
             className="w-full !border-purple"
           />
           <Icon classes={'ml-4 cursor-pointer'} type={'secondary'}>
