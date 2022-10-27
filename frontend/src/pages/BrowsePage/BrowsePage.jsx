@@ -98,8 +98,8 @@ const BrowsePage = () => {
   }, [activeFilters]);
 
   useEffect(() => {
-    console.log(filteredResults)
-  },[filteredResults])
+    console.log(filteredResults);
+  }, [filteredResults]);
 
   const openCategoriesModal = () => {
     document.body.classList.add('modal-is-open');
@@ -111,13 +111,25 @@ const BrowsePage = () => {
   };
 
   const onChangeSearchBar = (e) => {
-    setSearchValue(e.target.value)
-    let searchFilters = allRecipes.filter((recipe) => recipe.name.toLowerCase().includes(e.target.value))
+    let searchFilters = [];
+
+    setSearchValue(e.target.value);
+
+    // if (filteredResults.results.length) {
+    //   searchFilters = filteredResults.results.filter((recipe) =>
+    //     recipe.name.toLowerCase().includes(e.target.value)
+    //   );
+    // }
+
+    searchFilters = allRecipes.filter((recipe) =>
+      recipe.name.toLowerCase().includes(e.target.value)
+    );
+
     setFilteredResults({
       active: true,
-      results: searchFilters
-    })
-  }
+      results: searchFilters,
+    });
+  };
 
   return (
     <>
