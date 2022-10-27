@@ -1,0 +1,18 @@
+[data-reach-accordion] {
+    @apply border-2 border-purple bg-white rounded overflow-hidden shadow-card;
+
+    [data-reach-accordion-button] {
+        @apply p-3 w-full text-left border-b border-b-purple flex justify-between;
+
+        &:after {
+            content: "❯";
+            text-align: center;
+            transition: all .3s;
+        }
+    }
+    
+    [data-reach-accordion-panel] {
+        @apply px-5 py-2 border-b-2 border-b-purple;
+    }
+}
+
