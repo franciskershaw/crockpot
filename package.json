@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/franciskershaw/crockpot-node#readme",
   "dependencies": {
-    "@reach/accordion": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.31.0",
     "colors": "^1.4.0",
