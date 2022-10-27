@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 
 const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filters, setModalOpen, filterType }) => {
-  const togglePillType = toggleTheme ? `toggle-pills--${toggleType}` : ''; // Primary, secondary
-  const scrollPillType = scrollTheme ? `scroll-pills--${scrollTheme}` : ''; // Primary, secondary
+  const togglePillType = toggleTheme ? `pills--toggle--${toggleTheme}` : ''; // Primary, secondary
+  const scrollPillType = scrollTheme ? `pills--scroll--${scrollTheme}` : ''; // Primary, secondary
 
   const [checkedPills, setCheckedPills] = useState([]);
 
@@ -41,7 +41,7 @@ const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filt
   return (
     <>
       {checkedPills.length > 0 && (
-        <ul className={`pills scroll-pills ${scrollPillType}`}>
+        <ul className={`pills pills--scroll ${scrollPillType}`}>
           {checkedPills.map((pill, index) => (
             <li
               onClick={() => removeScrollPills(pill)}
@@ -53,7 +53,7 @@ const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filt
       )}
       <ul
         ref={togglePillsList}
-        className={`pills toggle-pills ${togglePillType} text-center`}>
+        className={`pills pills--toggle ${togglePillType} text-center`}>
         {data.map((pill, index) => (
           <li key={`pill_${index}`}>
             <input
