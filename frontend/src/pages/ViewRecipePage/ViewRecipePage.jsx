@@ -1,16 +1,24 @@
 import { useCurrentRecipe } from '../../hooks/recipes/useCurrentRecipe';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from '../../components/icons/Icon';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faClock, faUtensils, faHeart, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
 import Header from '../../layout/header/Header';
 import Toggle from '../../components/toggles/Toggle'
 import QuantityInput from '../../components/forms/QuantityInput';
+import { fetchSingleUser } from '../../queries/userRequests';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
+  const [createdBy, setCreatedBy] = useState('')
   useEffect(() => {
-    console.log(recipe)
+    if (recipe) {
+      const getCreatedBy = async (id) => {
+        let user = await fetchSingleUser(id)
+        setCreatedBy(user.username)
+      }
+      getCreatedBy(recipe.createdBy)
+    }
   },[recipe])
   
   if (recipe) {
@@ -19,7 +27,7 @@ const ViewRecipePage = () => {
         <Header title={recipe.name}>
           <></> 
           <div>
-            <span className='italic mr-3'>By {recipe.createdBy}</span>
+            <span className='italic mr-3 lowercase'>By {createdBy}</span>
             <span>
               <FontAwesomeIcon icon={faClock} className="mr-1"/>
               {recipe.timeInMinutes} mins
