@@ -30,6 +30,7 @@ const BrowsePage = () => {
     active: false,
     results: [],
   });
+  const [searchFilteredResults, setSearchFilteredResults] = useState([]);
 
   // Filtering by categories and ingredients
   useEffect(() => {
@@ -97,10 +98,6 @@ const BrowsePage = () => {
     }
   }, [activeFilters]);
 
-  useEffect(() => {
-    console.log(filteredResults);
-  }, [filteredResults]);
-
   const openCategoriesModal = () => {
     document.body.classList.add('modal-is-open');
     setIsCategoriesModalOpen(true);
@@ -121,14 +118,10 @@ const BrowsePage = () => {
     //   );
     // }
 
-    searchFilters = allRecipes.filter((recipe) =>
-      recipe.name.toLowerCase().includes(e.target.value)
-    );
+    // searchFilters = allRecipes.filter((recipe) =>
+    //   recipe.name.toLowerCase().includes(searchValue)
+    // );
 
-    setFilteredResults({
-      active: true,
-      results: searchFilters,
-    });
   };
 
   return (
