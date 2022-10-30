@@ -7,10 +7,6 @@ export const fetchSingleUser = async (id) => {
 };
 
 export const editUser = async (id, token, body) => {
-  console.log(id)
-  console.log(token)
-  console.log(body)
-  
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

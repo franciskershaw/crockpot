@@ -18,13 +18,14 @@ import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
+  const { user } = useUser();
+  const { favouriteRecipes } = user;
+  const editUser = useEditUser();
+
   const [createdBy, setCreatedBy] = useState('');
   const [formData, setFormData] = useState({
     serves: 4,
   });
-
-  const { user } = useUser();
-  const editUser = useEditUser()
 
   useEffect(() => {
     if (recipe) {
@@ -44,15 +45,16 @@ const ViewRecipePage = () => {
   };
 
   const onFavourite = () => {
-    console.log('clicked on favourite');
-    if (!user.favouriteRecipes.includes(recipe._id)) {
+    if (!favouriteRecipes.includes(recipe._id)) {
       editUser({
-        favouriteRecipes: [...user.favouriteRecipes, recipe._id],
+        favouriteRecipes: [...favouriteRecipes, recipe._id],
       });
-    } else if (user.favouriteRecipes.includes(recipe._id)) {
+    } else if (favouriteRecipes.includes(recipe._id)) {
       editUser({
-        favouriteRecipes: user.favouriteRecipes.filter(id => id !== recipe._id)
-      })
+        favouriteRecipes: favouriteRecipes.filter(
+          (id) => id !== recipe._id
+        ),
+      });
     }
   };
 
@@ -85,7 +87,7 @@ const ViewRecipePage = () => {
                   <Icon type={'secondary'} outline>
                     <FontAwesomeIcon icon={faUtensils} />
                   </Icon>
-                  <Icon type={'secondary'} outline>
+                  <Icon state={favouriteRecipes.includes(recipe._id) ? 'active' : ''} type={'secondary'} outline>
                     <FontAwesomeIcon onClick={onFavourite} icon={faHeart} />
                   </Icon>
                   {user.isAdmin && (
