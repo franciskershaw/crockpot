@@ -10,7 +10,7 @@ import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
 import { toast } from 'react-toastify';
 import Icon from '../../components/icons/Icon'
-import AccordionTest from '../../components/accordions/Accordion';
+import AccordionCustom from '../../components/accordions/Accordion';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
@@ -275,7 +275,7 @@ const LandingPage = () => {
 				
 				<h3 className='text-blue-500 my-5'>Accordion</h3>
 				<div className='container'>
-						<AccordionTest />
+					<AccordionCustom />
 				</div>
 			</div>
 

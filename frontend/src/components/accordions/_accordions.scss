@@ -24,11 +24,15 @@
         }
     }
     
-    &__content {
-        @apply px-5 py-2 border-b-2 border-b-purple;
+    &__content-wrapper {
+        @apply border-b-2 border-b-purple;
     }
     
-    .accordion__item:last-child .accordion__content {
+    &__content {
+        @apply px-5 py-2;
+    }
+    
+    .accordion__item:last-child .accordion__content-wrapper {
         @apply border-b-0 border-t border-purple;
     }
 }
