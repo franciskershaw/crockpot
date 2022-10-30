@@ -14,6 +14,7 @@ import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { fetchSingleUser } from '../../queries/userRequests';
 import { useUser } from '../../hooks/auth/useUser';
+import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
@@ -23,6 +24,7 @@ const ViewRecipePage = () => {
   });
 
   const { user } = useUser();
+  const editUser = useEditUser()
 
   useEffect(() => {
     if (recipe) {
@@ -42,8 +44,17 @@ const ViewRecipePage = () => {
   };
 
   const onFavourite = () => {
-    console.log('favourite!')
-  }
+    console.log('clicked on favourite');
+    if (!user.favouriteRecipes.includes(recipe._id)) {
+      editUser({
+        favouriteRecipes: [...user.favouriteRecipes, recipe._id],
+      });
+    } else if (user.favouriteRecipes.includes(recipe._id)) {
+      editUser({
+        favouriteRecipes: user.favouriteRecipes.filter(id => id !== recipe._id)
+      })
+    }
+  };
 
   if (recipe) {
     return (
@@ -115,7 +126,10 @@ const ViewRecipePage = () => {
             <ul className="bullets">
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={`ingredient_${index}`}>
-                  {ingredient.name} x {(ingredient.quantity * formData.serves).toFixed(2).replace(/[.,]00$/, "")}{' '}
+                  {ingredient.name} x{' '}
+                  {(ingredient.quantity * formData.serves)
+                    .toFixed(2)
+                    .replace(/[.,]00$/, '')}{' '}
                   {ingredient.unit}
                 </li>
               ))}
