@@ -20,6 +20,8 @@ const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
   const [createdBy, setCreatedBy] = useState('');
   const [formData, setFormData] = useState({
+    inMenu: false,
+    recipeId: '',
     serves: 4,
   });
 
@@ -34,8 +36,31 @@ const ViewRecipePage = () => {
         setCreatedBy(user.username);
       };
       getCreatedBy(recipe.createdBy);
+
+      setFormData((prev) => ({
+        ...prev,
+        recipeId: recipe._id,
+      }));
     }
   }, [recipe]);
+
+  useEffect(() => {
+    if (user) {
+      for (let menuRecipe in user.recipeMenu) {
+        if (menuRecipe._id === recipe._id) {
+          setFormData((prev) => ({
+            ...prev,
+            inMenu: true,
+            serves: menuRecipe.serves,
+          }));
+        }
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -55,6 +80,34 @@ const ViewRecipePage = () => {
           (id) => id !== recipe._id
         ),
       });
+    }
+  };
+
+  const onAddToMenu = () => {
+    if (formData.inMenu) {
+      editUser({
+        recipeMenu: user.recipeMenu.filter(
+          (menuRecipe) => menuRecipe._id !== recipe._id
+        ),
+      });
+      setFormData((prev) => ({
+        ...prev,
+        inMenu: false,
+      }));
+    } else if (!formData.inMenu) {
+      editUser({
+        recipeMenu: [
+          ...user.recipeMenu,
+          {
+            _id: formData.recipeId,
+            serves: formData.serves,
+          },
+        ],
+      });
+      setFormData((prev) => ({
+        ...prev,
+        inMenu: true
+      }))
     }
   };
 
@@ -85,7 +138,7 @@ const ViewRecipePage = () => {
               {user && (
                 <div className="absolute m-1.5 space-x-1.5 flex right-0">
                   <Icon type={'secondary'} outline>
-                    <FontAwesomeIcon icon={faUtensils} />
+                    <FontAwesomeIcon onClick={onAddToMenu} icon={faUtensils} />
                   </Icon>
                   <Icon
                     state={
