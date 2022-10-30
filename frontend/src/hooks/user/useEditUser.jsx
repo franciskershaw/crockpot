@@ -13,13 +13,15 @@ export function useEditUser() {
   const { mutate } = useMutation(
     (body) => editUser(user._id, user.token, body),
     {
-      onSuccess: (data) => {
-        console.log(data);
-        queryClient.setQueryData([queryKeys.user], (prevUserData) => {
-          const newUserData = prevUserData;
-          newUserData.favouriteRecipes = data.favouriteRecipes;
-          setStoredUser(newUserData);
-          return newUserData;
+      onSuccess: (data, body) => {
+        const keys = Object.keys(body);
+        keys.forEach((key) => {
+          queryClient.setQueryData([queryKeys.user], (prevUserData) => {
+            const newUserData = prevUserData;
+            newUserData[key] = data[key];
+            setStoredUser(newUserData);
+            return newUserData;
+          });
         });
       },
       onError: (data) => {
