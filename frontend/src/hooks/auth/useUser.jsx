@@ -38,7 +38,6 @@ export function useUser() {
     clearStoredUser();
     // Remove user queries from cache
     queryClient.resetQueries(queryKeys.user, { exact: true });
-    // Clear cache of other queries later on
   }
 
   return { user, updateUser, clearUser };

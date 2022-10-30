@@ -36,7 +36,7 @@ export function useAuth() {
 
   const signout = () => {
     clearUser();
-    toast.success('You have successfully logged out');
+    toast.info('You have successfully logged out');
   };
 
   return {
