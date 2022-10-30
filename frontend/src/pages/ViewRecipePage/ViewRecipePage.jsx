@@ -14,6 +14,7 @@ import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { fetchSingleUser } from '../../queries/userRequests';
 import { useUser } from '../../hooks/auth/useUser';
+import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
@@ -23,6 +24,7 @@ const ViewRecipePage = () => {
   });
 
   const { user } = useUser();
+  const editUser = useEditUser()
 
   useEffect(() => {
     console.log(recipe)
@@ -45,6 +47,13 @@ const ViewRecipePage = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const onFavourite = () => {
+    console.log('favourite!')
+    editUser({
+      favouriteRecipes: [...user.favouriteRecipes, recipe._id]
+    })
+  }
 
   if (recipe) {
     return (
@@ -76,7 +85,7 @@ const ViewRecipePage = () => {
                     <FontAwesomeIcon icon={faUtensils} />
                   </Icon>
                   <Icon type={'secondary'} outline>
-                    <FontAwesomeIcon icon={faHeart} />
+                    <FontAwesomeIcon onClick={onFavourite} icon={faHeart} />
                   </Icon>
                   {user.isAdmin && (
                     <>
