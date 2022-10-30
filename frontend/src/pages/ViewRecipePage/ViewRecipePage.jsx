@@ -14,7 +14,6 @@ import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { fetchSingleUser } from '../../queries/userRequests';
 import { useUser } from '../../hooks/auth/useUser';
-import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
@@ -24,10 +23,8 @@ const ViewRecipePage = () => {
   });
 
   const { user } = useUser();
-  const editUser = useEditUser()
 
   useEffect(() => {
-    console.log(recipe)
     if (recipe) {
       const getCreatedBy = async (id) => {
         let user = await fetchSingleUser(id);
@@ -36,10 +33,6 @@ const ViewRecipePage = () => {
       getCreatedBy(recipe.createdBy);
     }
   }, [recipe]);
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -50,9 +43,6 @@ const ViewRecipePage = () => {
 
   const onFavourite = () => {
     console.log('favourite!')
-    editUser({
-      favouriteRecipes: [...user.favouriteRecipes, recipe._id]
-    })
   }
 
   if (recipe) {
