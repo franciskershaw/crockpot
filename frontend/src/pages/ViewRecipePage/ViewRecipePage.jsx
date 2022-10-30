@@ -13,6 +13,7 @@ import Header from '../../layout/header/Header';
 import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { fetchSingleUser } from '../../queries/userRequests';
+import { useUser } from '../../hooks/auth/useUser';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
@@ -21,7 +22,10 @@ const ViewRecipePage = () => {
     serves: 4,
   });
 
+  const { user } = useUser();
+
   useEffect(() => {
+    console.log(recipe)
     if (recipe) {
       const getCreatedBy = async (id) => {
         let user = await fetchSingleUser(id);
@@ -32,8 +36,8 @@ const ViewRecipePage = () => {
   }, [recipe]);
 
   useEffect(() => {
-    console.log(formData)
-  },[formData])
+    console.log(formData);
+  }, [formData]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -66,20 +70,26 @@ const ViewRecipePage = () => {
                 alt={recipe.name}
                 loading="lazy"
               />
-              <div className="absolute m-1.5 space-x-1.5 flex right-0">
-                <Icon type={'secondary'} outline>
-                  <FontAwesomeIcon icon={faUtensils} />
-                </Icon>
-                <Icon type={'secondary'} outline>
-                  <FontAwesomeIcon icon={faHeart} />
-                </Icon>
-                <Icon type={'secondary'} outline>
-                  <FontAwesomeIcon icon={faEdit} />
-                </Icon>
-                <Icon type={'secondary'} outline>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Icon>
-              </div>
+              {user && (
+                <div className="absolute m-1.5 space-x-1.5 flex right-0">
+                  <Icon type={'secondary'} outline>
+                    <FontAwesomeIcon icon={faUtensils} />
+                  </Icon>
+                  <Icon type={'secondary'} outline>
+                    <FontAwesomeIcon icon={faHeart} />
+                  </Icon>
+                  {user.isAdmin && (
+                    <>
+                      <Icon type={'secondary'} outline>
+                        <FontAwesomeIcon icon={faEdit} />
+                      </Icon>
+                      <Icon type={'secondary'} outline>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Icon>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -106,7 +116,8 @@ const ViewRecipePage = () => {
             <ul className="bullets">
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={`ingredient_${index}`}>
-                  {ingredient.name} x {ingredient.quantity * formData.serves} {ingredient.unit}
+                  {ingredient.name} x {(ingredient.quantity * formData.serves).toFixed(2).replace(/[.,]00$/, "")}{' '}
+                  {ingredient.unit}
                 </li>
               ))}
             </ul>
