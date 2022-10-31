@@ -3,7 +3,8 @@ import Header from '../../layout/header/Header';
 import Icon from '../../components/icons/Icon';
 import Modal from '../../components/modals/Modal';
 import RecipeCard from '../../components/recipeCard/RecipeCard';
-import ToggleAndScrollPills from '../../components/pills/ToggleAndScrollPills';
+import ToggleAndScrollPillsCategories from './ToggleAndScrollPillsCategories';
+import ToggleAndScrollPillsIngredients from './ToggleAndScrollPillsIngredients';
 import { useState, useEffect } from 'react';
 import { useRecipes } from '../../hooks/recipes/useRecipes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -184,7 +185,7 @@ const BrowsePage = () => {
         setIsModalOpen={setIsCategoriesModalOpen}
         heading={'Categories'}
         noPadding>
-        <ToggleAndScrollPills
+        <ToggleAndScrollPillsCategories
           data={recipeCategories}
           scrollTheme="secondary"
           filterType={'categories'}
@@ -198,7 +199,7 @@ const BrowsePage = () => {
         setIsModalOpen={setIsIngredientsModalOpen}
         heading={'Ingredients'}
         noPadding>
-        <ToggleAndScrollPills
+        <ToggleAndScrollPillsIngredients
           data={ingredients}
           scrollTheme="secondary"
           filterType={'ingredients'}
