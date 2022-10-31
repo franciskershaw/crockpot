@@ -88,11 +88,13 @@ router.post('/login', asyncHandler(async (req, res) => {
 	}
 }))
 
-// Temp - get user by id
+// Get username by ID
 router.get('/:userId', asyncHandler(async (req, res) => {
 	try {
 		const user = await User.findById(req.params.userId)
-		res.status(200).json(user)
+		res.status(200).json({
+			username: user.username
+		})
 	} catch (err) {
 		throw new Error('Cannee find user')
 	}

@@ -20,7 +20,7 @@ const Header = ({ title, children }) => {
 
   const onLogout = () => {
     signout();
-    return navigate('/login');
+    return navigate('/browse');
   };
 
   let preTitle

@@ -21,13 +21,13 @@ const UserSchema = mongoose.Schema({
   ],
   recipeMenu: [
     {
-      recipeId: mongoose.Schema.Types.ObjectId,
+      _id: mongoose.Schema.Types.ObjectId,
       serves: Number,
     },
   ],
   shoppingList: [
     {
-      itemId: mongoose.Schema.Types.ObjectId,
+      _id: mongoose.Schema.Types.ObjectId,
       quantity: Number,
       unit: String,
       obtained: Boolean,
@@ -35,14 +35,14 @@ const UserSchema = mongoose.Schema({
   ],
   regularItems: [
     {
-      itemId: mongoose.Schema.Types.ObjectId,
+      _id: mongoose.Schema.Types.ObjectId,
       quantity: Number,
       unit: String,
     },
   ],
   extraItems: [
     {
-      itemId: mongoose.Schema.Types.ObjectId,
+      _id: mongoose.Schema.Types.ObjectId,
       quantity: Number,
       unit: String,
     },

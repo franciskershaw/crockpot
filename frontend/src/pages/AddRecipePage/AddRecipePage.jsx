@@ -129,13 +129,13 @@ const AddRecipePage = () => {
         let key = keyValue[0]
         let value = keyValue[1]
         if (key === 'quantity') {
-          value = (value / serves).toFixed(2)
+          value = (value / serves)
         }
         data.append(`ingredients[${index}][${key}]`, value)
       }      
     })
     instructionsFormated.forEach((instruction) => data.append(`instructions`, instruction))
-    data.append('notes', notesFormated)
+    notesFormated.forEach((note) => data.append(`notes`, note))
     data.append('createdBy', user._id)
     addRecipe(data)
   }
