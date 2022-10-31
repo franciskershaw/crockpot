@@ -16,7 +16,7 @@ import { useUser } from '../../hooks/auth/useUser';
 import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
-  const { recipe, createdBy } = useCurrentRecipe();
+  const { recipe } = useCurrentRecipe();
   const [formData, setFormData] = useState({
     inMenu: false,
     recipeId: '',
@@ -35,18 +35,6 @@ const ViewRecipePage = () => {
       }));
     }
   }, [recipe]);
-
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
-
-  // useEffect(() => {
-  //   console.log(user)
-  // },[user])
-
-  useEffect(() => {
-    console.log(recipe)
-  },[recipe])
 
   const onChange = (e) => {
     console.log(formData.inMenu)
@@ -104,7 +92,7 @@ const ViewRecipePage = () => {
         <Header title={recipe.name}>
           <></>
           <div>
-            <span className="italic mr-3 lowercase">By {createdBy}</span>
+            <span className="italic mr-3 lowercase">By {recipe.createdBy.name}</span>
             <span>
               <FontAwesomeIcon icon={faClock} className="mr-1" />
               {recipe.timeInMinutes} mins
