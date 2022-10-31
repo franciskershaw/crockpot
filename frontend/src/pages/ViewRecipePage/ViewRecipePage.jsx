@@ -19,7 +19,6 @@ const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
   const [formData, setFormData] = useState({
     inMenu: false,
-    recipeId: '',
     serves: 4,
   });
 
@@ -27,17 +26,7 @@ const ViewRecipePage = () => {
 
   const editUser = useEditUser();
 
-  useEffect(() => {
-    if (recipe) {
-      setFormData((prev) => ({
-        ...prev,
-        recipeId: recipe._id,
-      }));
-    }
-  }, [recipe]);
-
   const onChange = (e) => {
-    console.log(formData.inMenu)
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -59,31 +48,21 @@ const ViewRecipePage = () => {
   };
 
   const onAddToMenu = () => {
-    // if (formData.inMenu) {
-    //   editUser({
-    //     recipeMenu: user.recipeMenu.filter(
-    //       (menuRecipe) => menuRecipe._id !== recipe._id
-    //     ),
-    //   });
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     inMenu: false,
-    //   }));
-    // } else if (!formData.inMenu) {
-    //   editUser({
-    //     recipeMenu: [
-    //       ...user.recipeMenu,
-    //       {
-    //         _id: formData.recipeId,
-    //         serves: formData.serves,
-    //       },
-    //     ],
-    //   });
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     inMenu: true,
-    //   }));
-    // }
+    console.log(formData)
+    console.log(recipe._id)
+    console.log(user.recipeMenu)
+    if (!formData.inMenu) {
+      editUser({
+        recipeMenu: [...user.recipeMenu, {
+          _id: recipe._id,
+          serves: formData.serves
+        }]
+      })
+    } else if (formData.inMenu) {
+      editUser({
+        recipeMenu: recipeMenu.filter((recipe) => recipe._id !== recipe._id)
+      })
+    }
   };
 
   if (recipe) {
