@@ -19,8 +19,10 @@ import {
 	AccordionButton,
 	AccordionPanel,
 } from "@reach/accordion";
+import { usePrefetchRecipes } from '../../hooks/recipes/useRecipes';
 
 const LandingPage = () => {
+	usePrefetchRecipes()
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const openModal = () => {
         document.body.classList.add("modal-is-open")

@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/auth/useAuth';
 import { useUser } from '../../hooks/auth/useUser';
+import { usePrefetchRecipes } from '../../hooks/recipes/useRecipes';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const { user } = useUser();
+  usePrefetchRecipes()
 
   useEffect(() => {
     if (user) {

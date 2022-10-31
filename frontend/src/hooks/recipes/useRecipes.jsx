@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchAllRecipes } from '../../queries/recipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
-// Hook
+// Hooks
 export function useRecipes() {
   const fallback = [];
   const { data: allRecipes = fallback } = useQuery(
@@ -11,4 +11,9 @@ export function useRecipes() {
   );
 
   return { allRecipes };
+}
+
+export function usePrefetchRecipes() {
+  const queryClient = useQueryClient();
+  queryClient.prefetchQuery([queryKeys.recipes], fetchAllRecipes)
 }

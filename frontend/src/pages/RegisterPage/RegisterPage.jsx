@@ -15,6 +15,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const { user } = useUser();
+  usePrefetchRecipes()
 
   useEffect(() => {
     if (user) {
