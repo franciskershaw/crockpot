@@ -45,24 +45,15 @@ const ViewRecipePage = () => {
   }, [recipe]);
 
   useEffect(() => {
-    if (user) {
-      for (let menuRecipe in user.recipeMenu) {
-        if (menuRecipe._id === recipe._id) {
-          setFormData((prev) => ({
-            ...prev,
-            inMenu: true,
-            serves: menuRecipe.serves,
-          }));
-        }
-      }
-    }
-  }, [user]);
-
-  useEffect(() => {
     console.log(formData);
   }, [formData]);
 
+  useEffect(() => {
+    console.log(user)
+  },[user])
+
   const onChange = (e) => {
+    console.log(formData.inMenu)
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -84,31 +75,31 @@ const ViewRecipePage = () => {
   };
 
   const onAddToMenu = () => {
-    if (formData.inMenu) {
-      editUser({
-        recipeMenu: user.recipeMenu.filter(
-          (menuRecipe) => menuRecipe._id !== recipe._id
-        ),
-      });
-      setFormData((prev) => ({
-        ...prev,
-        inMenu: false,
-      }));
-    } else if (!formData.inMenu) {
-      editUser({
-        recipeMenu: [
-          ...user.recipeMenu,
-          {
-            _id: formData.recipeId,
-            serves: formData.serves,
-          },
-        ],
-      });
-      setFormData((prev) => ({
-        ...prev,
-        inMenu: true
-      }))
-    }
+    // if (formData.inMenu) {
+    //   editUser({
+    //     recipeMenu: user.recipeMenu.filter(
+    //       (menuRecipe) => menuRecipe._id !== recipe._id
+    //     ),
+    //   });
+    //   setFormData((prev) => ({
+    //     ...prev,
+    //     inMenu: false,
+    //   }));
+    // } else if (!formData.inMenu) {
+    //   editUser({
+    //     recipeMenu: [
+    //       ...user.recipeMenu,
+    //       {
+    //         _id: formData.recipeId,
+    //         serves: formData.serves,
+    //       },
+    //     ],
+    //   });
+    //   setFormData((prev) => ({
+    //     ...prev,
+    //     inMenu: true,
+    //   }));
+    // }
   };
 
   if (recipe) {
