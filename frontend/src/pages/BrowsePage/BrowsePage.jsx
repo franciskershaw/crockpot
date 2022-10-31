@@ -182,7 +182,8 @@ const BrowsePage = () => {
       <Modal
         isModalOpen={isCategoriesModalOpen}
         setIsModalOpen={setIsCategoriesModalOpen}
-        heading={'Categories'}>
+        heading={'Categories'}
+        noPadding>
         <ToggleAndScrollPills
           data={recipeCategories}
           scrollTheme="secondary"
@@ -195,7 +196,8 @@ const BrowsePage = () => {
       <Modal
         isModalOpen={isIngredientsModalOpen}
         setIsModalOpen={setIsIngredientsModalOpen}
-        heading={'Ingredients'}>
+        heading={'Ingredients'}
+        noPadding>
         <ToggleAndScrollPills
           data={ingredients}
           scrollTheme="secondary"

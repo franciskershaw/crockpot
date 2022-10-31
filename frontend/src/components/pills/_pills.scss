@@ -44,17 +44,24 @@ ul.pills--scroll {
     &::-webkit-scrollbar-thumb {
         @apply rounded bg-black/[0.5] shadow-sm;
     }
+
+    li {
+        transition: all .4s;
+    }
+
+    li:first-of-type {
+        @apply ml-2;
+    }
+
+    li:last-of-type {
+        @apply mr-2;
+    }
 }
 
 ul.pills--scroll--secondary {
     &::-webkit-scrollbar-thumb {
         @apply bg-purple/[0.5];
     }
-}
-
-ul.pills--scroll li {
-    @apply primary shadow-lg m-0.5;
-    transition: all .4s;
 }
 
 ul.pills--scroll--secondary li {

@@ -1,3 +1,4 @@
+import Button from '../buttons/Button';
 import { useState, useEffect, useRef } from 'react';
 
 const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filters, setModalOpen, filterType }) => {
@@ -40,20 +41,51 @@ const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filt
 
   return (
     <>
-      {checkedPills.length > 0 && (
-        <ul className={`pills pills--scroll ${scrollPillType}`}>
-          {checkedPills.map((pill, index) => (
-            <li
-              onClick={() => removeScrollPills(pill)}
-              key={`checkedPill_${index}`}>
-              {pill.name}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className='bg-grey-bg/80 py-4 sticky top-[68px] z-1 shadow-bottom'>
+        <form
+          action=""
+          className="form px-4">
+          <div className="form__input !flex-row items-center">
+            <label htmlFor="search" className="invisible w-0 h-0">
+              Search for a recipe
+            </label>
+            <input
+              type="text"
+              id="search"
+              name="search"
+              placeholder="Search for a recipe"
+              // value={searchValue}
+              // onChange={onChangeSearchBar}
+              className="w-full !border-purple"
+            />
+          </div>
+        </form>
+        {checkedPills.length > 0 && (
+          <>
+            <ul className={`pills pills--scroll ${scrollPillType} bg-black/20 my-2`}>
+              {checkedPills.map((pill, index) => (
+                <li
+                  onClick={() => removeScrollPills(pill)}
+                  key={`checkedPill_${index}`}>
+                  {pill.name}
+                </li>
+              ))}
+            </ul>
+            <div className='text-center'>
+              <Button 
+                onClick={onSubmit}
+                type={"secondary"} 
+                text={"Apply filters"} 
+                tooltip={checkedPills.length}
+                classes={"!py-1"}>
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
       <ul
         ref={togglePillsList}
-        className={`pills pills--toggle ${togglePillType} text-center`}>
+        className={`pills pills--toggle ${togglePillType} text-center p-4`}>
         {data.map((pill, index) => (
           <li key={`pill_${index}`}>
             <input
@@ -67,16 +99,6 @@ const ToggleAndScrollPills = ({ toggleTheme, scrollTheme, data, setFilters, filt
           </li>
         ))}
       </ul>
-      {checkedPills.length > 0 && (
-        <button onClick={onSubmit}>
-          Apply {checkedPills.length} filter{checkedPills.length > 1 && 's'}
-        </button>
-      )}
-      {checkedPills.length === 0 && filters[filterType].length > 0 && (
-        <button onClick={onSubmit}>
-          Remove filters
-        </button>
-      )}
     </>
   );
 };

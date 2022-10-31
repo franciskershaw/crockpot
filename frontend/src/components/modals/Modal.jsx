@@ -2,7 +2,7 @@ import FocusTrap from "focus-trap-react" // https://www.npmjs.com/package/focus-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faXmark} from '@fortawesome/free-solid-svg-icons'
 
-const Modal = ({isModalOpen, setIsModalOpen, heading, children}) => {
+const Modal = ({isModalOpen, setIsModalOpen, heading, children, noPadding}) => {
     const closeModal = () => {
         document.body.classList.remove("modal-is-open")
         setIsModalOpen(false)
@@ -21,7 +21,7 @@ const Modal = ({isModalOpen, setIsModalOpen, heading, children}) => {
                                     <FontAwesomeIcon icon={faXmark}/>
                                 </button>
                             </div>
-                            <div className="modal__content">
+                            <div className={`modal__content ${noPadding && ("modal__content--p-0")}`}>
                                 {children}
                             </div>
                         </div>
