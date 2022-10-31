@@ -12,13 +12,11 @@ import {
 import Header from '../../layout/header/Header';
 import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
-import { fetchSingleUser } from '../../queries/userRequests';
 import { useUser } from '../../hooks/auth/useUser';
 import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
-  const { recipe } = useCurrentRecipe();
-  const [createdBy, setCreatedBy] = useState('');
+  const { recipe, createdBy } = useCurrentRecipe();
   const [formData, setFormData] = useState({
     inMenu: false,
     recipeId: '',
@@ -31,12 +29,6 @@ const ViewRecipePage = () => {
 
   useEffect(() => {
     if (recipe) {
-      const getCreatedBy = async (id) => {
-        let user = await fetchSingleUser(id);
-        setCreatedBy(user.username);
-      };
-      getCreatedBy(recipe.createdBy);
-
       setFormData((prev) => ({
         ...prev,
         recipeId: recipe._id,
@@ -44,13 +36,17 @@ const ViewRecipePage = () => {
     }
   }, [recipe]);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
+
+  // useEffect(() => {
+  //   console.log(user)
+  // },[user])
 
   useEffect(() => {
-    console.log(user)
-  },[user])
+    console.log(recipe)
+  },[recipe])
 
   const onChange = (e) => {
     console.log(formData.inMenu)
