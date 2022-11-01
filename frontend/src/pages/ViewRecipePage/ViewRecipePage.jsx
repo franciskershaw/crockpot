@@ -17,14 +17,35 @@ import { useEditUser } from '../../hooks/user/useEditUser';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
+  const { user } = useUser();
   const [formData, setFormData] = useState({
     inMenu: false,
+    // serves: user && user.recipeMenu.length && user.recipeMenu.find(recipe => recipe.serves && recipe._id===recipe._id),
     serves: 4,
   });
 
-  const { user } = useUser();
-
   const editUser = useEditUser();
+
+  useEffect(() => {
+    if (
+      user &&
+      recipe &&
+      user.recipeMenu.length &&
+      user.recipeMenu.find((menuRecipe) => menuRecipe._id === recipe._id)
+    ) {
+      setFormData((prev) => ({
+        ...prev,
+        inMenu: true,
+        serves: user.recipeMenu.find(
+          (menuRecipe) => recipe._id === menuRecipe._id
+        )['serves'],
+      }));
+    }
+  }, [user, recipe]);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -48,20 +69,23 @@ const ViewRecipePage = () => {
   };
 
   const onAddToMenu = () => {
-    console.log(formData)
-    console.log(recipe._id)
-    console.log(user.recipeMenu)
+    console.log(formData);
+    console.log(recipe._id);
+    console.log(user.recipeMenu);
     if (!formData.inMenu) {
       editUser({
-        recipeMenu: [...user.recipeMenu, {
-          _id: recipe._id,
-          serves: formData.serves
-        }]
-      })
+        recipeMenu: [
+          ...user.recipeMenu,
+          {
+            _id: recipe._id,
+            serves: formData.serves,
+          },
+        ],
+      });
     } else if (formData.inMenu) {
       editUser({
-        recipeMenu: recipeMenu.filter((recipe) => recipe._id !== recipe._id)
-      })
+        recipeMenu: recipeMenu.filter((recipe) => recipe._id !== recipe._id),
+      });
     }
   };
 
@@ -71,7 +95,9 @@ const ViewRecipePage = () => {
         <Header title={recipe.name}>
           <></>
           <div>
-            <span className="italic mr-3 lowercase">By {recipe.createdBy.name}</span>
+            <span className="italic mr-3 lowercase">
+              By {recipe.createdBy.name}
+            </span>
             <span>
               <FontAwesomeIcon icon={faClock} className="mr-1" />
               {recipe.timeInMinutes} mins
