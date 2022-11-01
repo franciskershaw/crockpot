@@ -27,6 +27,7 @@ const ViewRecipePage = () => {
   const editUser = useEditUser();
 
   useEffect(() => {
+    console.log('hi')
     if (
       user &&
       recipe &&
@@ -43,16 +44,27 @@ const ViewRecipePage = () => {
     }
   }, [user, recipe]);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  // const onChange = (e) => {
+  //   console.log('hi')
+  //   setFormData((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  //   if (formData.inMenu === true) {
+  //     console.log('in menu, and about to update')
+  //     editUser({
+  //       recipeMenu: user.recipeMenu.map((menuRecipe) => {
+  //         if (menuRecipe._id === recipe._id) {
+  //           return { ...menuRecipe, serves: formData.serves };
+  //         }
+  //       }),
+  //     });
+  //   }
+  // };
 
   const onFavourite = () => {
     if (!user.favouriteRecipes.includes(recipe._id)) {
@@ -81,16 +93,18 @@ const ViewRecipePage = () => {
       });
       setFormData((prev) => ({
         ...prev,
-        inMenu: true
-      }))
+        inMenu: true,
+      }));
     } else if (formData.inMenu) {
       editUser({
-        recipeMenu: user.recipeMenu.filter((menuRecipe) => menuRecipe._id !== recipe._id),
+        recipeMenu: user.recipeMenu.filter(
+          (menuRecipe) => menuRecipe._id !== recipe._id
+        ),
       });
       setFormData((prev) => ({
         ...prev,
-        inMenu: false
-      }))
+        inMenu: false,
+      }));
     }
   };
 
@@ -160,7 +174,6 @@ const ViewRecipePage = () => {
             nameAndId={'serves'}
             value={formData.serves}
             setValue={setFormData}
-            onChange={onChange}
             step={1}
             classes={'items-center'}
             maxValue={20}
