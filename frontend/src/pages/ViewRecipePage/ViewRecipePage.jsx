@@ -68,10 +68,7 @@ const ViewRecipePage = () => {
     }
   };
 
-  const onAddToMenu = () => {
-    console.log(formData);
-    console.log(recipe._id);
-    console.log(user.recipeMenu);
+  const onMenu = () => {
     if (!formData.inMenu) {
       editUser({
         recipeMenu: [
@@ -82,10 +79,18 @@ const ViewRecipePage = () => {
           },
         ],
       });
+      setFormData((prev) => ({
+        ...prev,
+        inMenu: true
+      }))
     } else if (formData.inMenu) {
       editUser({
-        recipeMenu: recipeMenu.filter((recipe) => recipe._id !== recipe._id),
+        recipeMenu: user.recipeMenu.filter((menuRecipe) => menuRecipe._id !== recipe._id),
       });
+      setFormData((prev) => ({
+        ...prev,
+        inMenu: false
+      }))
     }
   };
 
@@ -118,7 +123,7 @@ const ViewRecipePage = () => {
               {user && (
                 <div className="absolute m-1.5 space-x-1.5 flex right-0">
                   <Icon type={'secondary'} outline>
-                    <FontAwesomeIcon onClick={onAddToMenu} icon={faUtensils} />
+                    <FontAwesomeIcon onClick={onMenu} icon={faUtensils} />
                   </Icon>
                   <Icon
                     state={
