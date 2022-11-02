@@ -17,10 +17,7 @@ export function useEditMenu(recipeId) {
       user &&
       recipe &&
       user.recipeMenu.length &&
-      user.recipeMenu.find(
-        (menuRecipe) =>
-          menuRecipe._id === recipe._id && menuRecipe.serves !== menuData.serves
-      )
+      user.recipeMenu.find((menuRecipe) => menuRecipe._id === recipe._id)
     ) {
       setMenuData((prev) => ({
         ...prev,
@@ -30,7 +27,7 @@ export function useEditMenu(recipeId) {
         )['serves'],
       }));
     }
-  }, [user, recipe]);
+  }, [user, recipe, recipeId]);
 
   useEffect(() => {
     if (user && menuData.inMenu) {
@@ -51,6 +48,15 @@ export function useEditMenu(recipeId) {
       }
     }
   }, [menuData.serves]);
+
+  // useEffect(() => {
+  //   if (!menuData.inMenu &&) {
+  //     setMenuData((prev) => ({
+  //       ...prev,
+  //       serves: 4
+  //     }))
+  //   }
+  // },[menuData.inMenu])
 
   const onClickMenu = () => {
     if (!menuData.inMenu) {
