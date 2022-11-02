@@ -20,19 +20,20 @@ const ViewRecipePage = () => {
   const { user } = useUser();
   const [formData, setFormData] = useState({
     inMenu: false,
-    // serves: user && user.recipeMenu.length && user.recipeMenu.find(recipe => recipe.serves && recipe._id===recipe._id),
     serves: 4,
   });
 
   const editUser = useEditUser();
 
   useEffect(() => {
-    console.log('hi')
     if (
       user &&
       recipe &&
       user.recipeMenu.length &&
-      user.recipeMenu.find((menuRecipe) => menuRecipe._id === recipe._id)
+      user.recipeMenu.find(
+        (menuRecipe) =>
+          menuRecipe._id === recipe._id && menuRecipe.serves !== formData.serves
+      )
     ) {
       setFormData((prev) => ({
         ...prev,
@@ -44,27 +45,25 @@ const ViewRecipePage = () => {
     }
   }, [user, recipe]);
 
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
-
-  // const onChange = (e) => {
-  //   console.log('hi')
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [e.target.name]: e.target.value,
-  //   }));
-  //   if (formData.inMenu === true) {
-  //     console.log('in menu, and about to update')
-  //     editUser({
-  //       recipeMenu: user.recipeMenu.map((menuRecipe) => {
-  //         if (menuRecipe._id === recipe._id) {
-  //           return { ...menuRecipe, serves: formData.serves };
-  //         }
-  //       }),
-  //     });
-  //   }
-  // };
+  useEffect(() => {
+    if (user && formData.inMenu) {
+      for (let menuRecipe of user.recipeMenu) {
+        if (
+          menuRecipe._id === recipe._id &&
+          menuRecipe.serves !== formData.serves
+        ) {
+          editUser({
+            recipeMenu: user.recipeMenu.map((menuRecipe) => {
+              if (menuRecipe._id === recipe._id) {
+                return { ...menuRecipe, serves: formData.serves };
+              }
+              return menuRecipe;
+            }),
+          });
+        }
+      }
+    }
+  }, [formData.serves]);
 
   const onFavourite = () => {
     if (!user.favouriteRecipes.includes(recipe._id)) {
