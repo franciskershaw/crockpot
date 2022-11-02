@@ -12,29 +12,15 @@ import Header from '../../layout/header/Header';
 import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
 import { useUser } from '../../hooks/auth/useUser';
-import { useEditUser } from '../../hooks/user/useEditUser';
 import { useEditMenu } from '../../hooks/user/useEditMenu';
+import { useEditFavourites } from '../../hooks/user/useEditFavourites';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
   const { user } = useUser();
 
-  const editUser = useEditUser();
+  const onFavourite = useEditFavourites(recipe, user)
   const { onClickMenu, menuData, setMenuData } = useEditMenu();
-
-  const onFavourite = () => {
-    if (!user.favouriteRecipes.includes(recipe._id)) {
-      editUser({
-        favouriteRecipes: [...user.favouriteRecipes, recipe._id],
-      });
-    } else if (user.favouriteRecipes.includes(recipe._id)) {
-      editUser({
-        favouriteRecipes: user.favouriteRecipes.filter(
-          (id) => id !== recipe._id
-        ),
-      });
-    }
-  };
 
   if (recipe) {
     return (

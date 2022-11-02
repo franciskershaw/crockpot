@@ -3,30 +3,14 @@ import Icon from '../../components/icons/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from '../../hooks/auth/useUser';
-import { useEditUser } from '../../hooks/user/useEditUser';
 import { useEditMenu } from '../../hooks/user/useEditMenu';
+import { useEditFavourites } from '../../hooks/user/useEditFavourites';
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUser();
-  const editUser = useEditUser();
-
   const { _id, name, image } = recipe;
-
   const { onClickMenu, menuData } = useEditMenu(_id);
-
-  const onFavourite = () => {
-    if (!user.favouriteRecipes.includes(recipe._id)) {
-      editUser({
-        favouriteRecipes: [...user.favouriteRecipes, recipe._id],
-      });
-    } else if (user.favouriteRecipes.includes(recipe._id)) {
-      editUser({
-        favouriteRecipes: user.favouriteRecipes.filter(
-          (id) => id !== recipe._id
-        ),
-      });
-    }
-  };
+  const onFavourite = useEditFavourites(recipe, user)
 
   return (
     <div className="recipe-card">
