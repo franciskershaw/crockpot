@@ -1,18 +1,38 @@
-[data-reach-accordion] {
+.accordion {
     @apply border-2 border-purple bg-white rounded overflow-hidden shadow-card;
 
-    [data-reach-accordion-button] {
-        @apply p-3 w-full text-left border-b border-b-purple flex justify-between;
+    &__button {
+        @apply flex justify-between p-3 border-b border-purple;
+    }
+
+    .accordion__item:last-child .accordion__button {
+        @apply border-b-0;
+    }
+
+    &__trigger {
+        @apply w-full flex justify-between;
 
         &:after {
             content: "❯";
-            text-align: center;
             transition: all .3s;
         }
     }
+
+    &__trigger[data-state="open"] {
+        &:after {
+            transform: rotate(90deg);
+        }
+    }
     
-    [data-reach-accordion-panel] {
-        @apply px-5 py-2 border-b-2 border-b-purple;
+    &__content-wrapper {
+        @apply border-b-2 border-b-purple;
+    }
+    
+    &__content {
+        @apply px-5 py-2;
+    }
+    
+    .accordion__item:last-child .accordion__content-wrapper {
+        @apply border-b-0 border-t border-purple;
     }
 }
-

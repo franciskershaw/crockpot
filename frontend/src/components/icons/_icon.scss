@@ -74,6 +74,14 @@
             }
         }
 
+        // Active
+        &.icon--active {
+            // SVGs
+            svg {
+                @apply primary;
+            }
+        }
+
         &.icon--secondary {
             // SVGs
             svg {
@@ -93,6 +101,14 @@
             &:hover {
                 svg {
                     @apply secondary-outline--hover;
+                }
+            }
+
+            // Active
+            &.icon--active {
+                // SVGs
+                svg {
+                    @apply secondary;
                 }
             }
         }
