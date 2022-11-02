@@ -4,12 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from '../../hooks/auth/useUser';
 import { useEditUser } from '../../hooks/user/useEditUser';
+import { useEditMenu } from '../../hooks/user/useEditMenu';
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUser();
   const editUser = useEditUser();
 
   const { _id, name, image } = recipe;
+
+  const { onClickMenu, menuData } = useEditMenu(_id);
 
   const onFavourite = () => {
     if (!user.favouriteRecipes.includes(recipe._id)) {
@@ -30,8 +33,11 @@ const RecipeCard = ({ recipe }) => {
       <div className="recipe-card__image-container">
         {user && (
           <div className="recipe-card__icons flex justify-between p-1">
-            <Icon type={'secondary'} outline>
-              <FontAwesomeIcon icon={faUtensils} />
+            <Icon
+              state={menuData.inMenu ? 'active' : ''}
+              type={'secondary'}
+              outline>
+              <FontAwesomeIcon onClick={onClickMenu} icon={faUtensils} />
             </Icon>
             <Icon
               state={user.favouriteRecipes.includes(recipe._id) ? 'active' : ''}

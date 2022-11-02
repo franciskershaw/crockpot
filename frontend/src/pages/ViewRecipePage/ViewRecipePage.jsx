@@ -20,7 +20,7 @@ const ViewRecipePage = () => {
   const { user } = useUser();
 
   const editUser = useEditUser();
-  const { onClickMenu, menuData, setMenuData } = useEditMenu()
+  const { onClickMenu, menuData, setMenuData } = useEditMenu();
 
   const onFavourite = () => {
     if (!user.favouriteRecipes.includes(recipe._id)) {
@@ -64,7 +64,10 @@ const ViewRecipePage = () => {
               />
               {user && (
                 <div className="absolute m-1.5 space-x-1.5 flex right-0">
-                  <Icon type={'secondary'} outline>
+                  <Icon
+                    state={menuData.inMenu ? 'active' : ''}
+                    type={'secondary'}
+                    outline>
                     <FontAwesomeIcon onClick={onClickMenu} icon={faUtensils} />
                   </Icon>
                   <Icon

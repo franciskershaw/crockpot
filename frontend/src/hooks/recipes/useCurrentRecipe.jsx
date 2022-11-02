@@ -5,11 +5,19 @@ import { fetchSingleRecipe } from '../../queries/recipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 //Hook
-export function useCurrentRecipe() {
+export function useCurrentRecipe(recipeId) {
   const { ingredients } = useItems();
+  let id;
   const params = useParams();
+  if (params.id) {
+    id = params.id;
+  } else if (!params.id) {
+    id = recipeId;
+  }
 
-  const { data: recipe } = useQuery([queryKeys.recipes, params.id], () => fetchSingleRecipe(params.id))
+  const { data: recipe } = useQuery([queryKeys.recipes, id], () =>
+    fetchSingleRecipe(id)
+  );
 
   if (recipe) {
     let currentRecipeIngredients = [];
@@ -27,6 +35,6 @@ export function useCurrentRecipe() {
       recipe.ingredients = currentRecipeIngredients;
     }
   }
-  
+
   return { recipe };
 }

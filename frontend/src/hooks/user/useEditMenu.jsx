@@ -3,8 +3,8 @@ import { useEditUser } from './useEditUser';
 import { useCurrentRecipe } from '../recipes/useCurrentRecipe';
 import { useEffect, useState } from 'react';
 
-export function useEditMenu() {
-  const { recipe } = useCurrentRecipe();
+export function useEditMenu(recipeId) {
+  const { recipe } = useCurrentRecipe(recipeId);
   const { user } = useUser();
   const editUser = useEditUser();
   const [menuData, setMenuData] = useState({
