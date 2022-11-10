@@ -6,6 +6,7 @@ import {
   getStoredUser,
   setStoredUser,
 } from '../../reactQuery/userStorage.js';
+import { getUser } from '../../queries/authRequests.jsx';
 
 // Hook
 export function useUser() {
