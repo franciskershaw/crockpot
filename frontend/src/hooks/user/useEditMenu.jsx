@@ -13,6 +13,7 @@ export function useEditMenu(recipeId) {
   });
 
   useEffect(() => {
+    // Sets menuData state when mounting a recipe component
     if (
       user &&
       recipe &&
@@ -30,6 +31,7 @@ export function useEditMenu(recipeId) {
   }, [user, recipe, recipeId]);
 
   useEffect(() => {
+    // Edits menu when user clicks on the serves input if recipe is in menu already
     if (user && menuData.inMenu) {
       for (let menuRecipe of user.recipeMenu) {
         if (
@@ -50,6 +52,7 @@ export function useEditMenu(recipeId) {
   }, [menuData.serves]);
 
   const onClickMenu = () => {
+    // Adds recipe into menu
     if (!menuData.inMenu) {
       editUser({
         recipeMenu: [
@@ -65,6 +68,7 @@ export function useEditMenu(recipeId) {
         inMenu: true,
       }));
 
+      // Removes recipe from menu
     } else if (menuData.inMenu) {
       editUser({
         recipeMenu: user.recipeMenu.filter(
@@ -74,7 +78,7 @@ export function useEditMenu(recipeId) {
       setMenuData((prev) => ({
         ...prev,
         inMenu: false,
-      }));      
+      }));
     }
   };
 
