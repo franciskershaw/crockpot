@@ -14,6 +14,8 @@ export function useEditUser() {
     (body) => editUser(user._id, user.token, body),
     {
       onSuccess: (data, body) => {
+        console.log(data)
+        console.log(body)
         const keys = Object.keys(body);
         keys.forEach((key) => {
           queryClient.setQueryData([queryKeys.user], (prevUserData) => {

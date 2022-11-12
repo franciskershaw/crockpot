@@ -1,7 +1,6 @@
 import { useUser } from '../auth/useUser';
 import { useEditUser } from './useEditUser';
 import { useCurrentRecipe } from '../recipes/useCurrentRecipe';
-import { useGenerateShoppingList } from './useGenerateShoppingList';
 import { useEffect, useState } from 'react';
 
 export function useEditMenu(recipeId) {
@@ -12,8 +11,6 @@ export function useEditMenu(recipeId) {
     inMenu: false,
     serves: 4,
   });
-
-  const { generateShoppingList } = useGenerateShoppingList()
 
   useEffect(() => {
     if (
@@ -47,7 +44,6 @@ export function useEditMenu(recipeId) {
               return menuRecipe;
             }),
           });
-          generateShoppingList(user)
         }
       }
     }
@@ -64,7 +60,6 @@ export function useEditMenu(recipeId) {
           },
         ],
       });
-      generateShoppingList(user)
       setMenuData((prev) => ({
         ...prev,
         inMenu: true,
@@ -76,7 +71,6 @@ export function useEditMenu(recipeId) {
           (menuRecipe) => menuRecipe._id !== recipe._id
         ),
       });
-      generateShoppingList(user)
       setMenuData((prev) => ({
         ...prev,
         inMenu: false,
