@@ -55,35 +55,37 @@ export function useEditMenu(recipeId) {
   const generateShoppingList = (prevShoppingList, method, newRecipe) => {
     let shoppingList = [...prevShoppingList];
     // Needs to return an array of objects: IDs, quantities, units, obtained
+    console.log('-----------------------------');
     console.log('Generating shopping list...');
     console.log('previous shoppingList:', prevShoppingList);
     console.log('method:', method);
     console.log('recipe:', newRecipe);
-
+    // shoppingList = []
     if (method === 'add') {
-      if (!prevShoppingList.length) {
-        for (let ingredient of newRecipe.ingredients) {
-          shoppingList.push({
+      let ingredientsArray = [] 
+      for (let ingredient of newRecipe.ingredients) {
+        if (prevShoppingList.find(item => item._id === ingredient._id)) {
+          let existingItem = prevShoppingList.find(item => item._id === ingredient._id)
+          existingItem.quantity = existingItem.quantity + ingredient.quantity
+          console.log('existingItem + extra', existingItem)
+          ingredientsArray.push(existingItem)
+        } else {
+          console.log('nonExistingIngredient', ingredient)
+          ingredientsArray.push({
             _id: ingredient._id,
             quantity: ingredient.quantity * newRecipe.serves,
             unit: ingredient.unit,
             obtained: false,
-          });
+          })
         }
-      } else {
-        let attemptAtNewShoppingList = [] 
-        newRecipe.ingredients.forEach((ingredient) => {
-          attemptAtNewShoppingList = shoppingList.map(item => {
-              if (item._id === ingredient._id) {
-                console.log(item)
-                console.log(ingredient)
-                return ingredient
-              }
-            })
-          }
-        );
-        console.log('Attempt:', attemptAtNewShoppingList);
       }
+      for (let item of prevShoppingList) {
+        if (!newRecipe.ingredients.find(ingredient => ingredient._id === item._id)) {
+          console.log('existingItem', item)
+          ingredientsArray.push(item)
+        }
+      }
+      shoppingList = ingredientsArray;
     }
     console.log(shoppingList);
     console.log('-----------------------------');
