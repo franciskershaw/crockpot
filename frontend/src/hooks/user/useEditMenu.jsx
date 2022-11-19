@@ -53,7 +53,7 @@ export function useEditMenu(recipeId) {
   }, [menuData.serves]);
 
   const generateShoppingList = (prevShoppingList, method, newRecipe) => {
-    let shoppingList = [...prevShoppingList];
+    let shoppingList = [];
     // Needs to return an array of objects: IDs, quantities, units, obtained
     console.log('-----------------------------');
     console.log('Generating shopping list...');
@@ -62,16 +62,14 @@ export function useEditMenu(recipeId) {
     console.log('recipe:', newRecipe);
     // shoppingList = []
     if (method === 'add') {
-      let ingredientsArray = [] 
+      // let ingredientsArray = [] 
       for (let ingredient of newRecipe.ingredients) {
         if (prevShoppingList.find(item => item._id === ingredient._id)) {
           let existingItem = prevShoppingList.find(item => item._id === ingredient._id)
           existingItem.quantity = existingItem.quantity + ingredient.quantity
-          console.log('existingItem + extra', existingItem)
-          ingredientsArray.push(existingItem)
+          shoppingList.push(existingItem)
         } else {
-          console.log('nonExistingIngredient', ingredient)
-          ingredientsArray.push({
+          shoppingList.push({
             _id: ingredient._id,
             quantity: ingredient.quantity * newRecipe.serves,
             unit: ingredient.unit,
@@ -81,11 +79,11 @@ export function useEditMenu(recipeId) {
       }
       for (let item of prevShoppingList) {
         if (!newRecipe.ingredients.find(ingredient => ingredient._id === item._id)) {
-          console.log('existingItem', item)
-          ingredientsArray.push(item)
+          shoppingList.push(item)
         }
       }
-      shoppingList = ingredientsArray;
+    } else if (method === 'remove') {
+
     }
     console.log(shoppingList);
     console.log('-----------------------------');
