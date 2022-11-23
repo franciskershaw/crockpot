@@ -38,7 +38,7 @@ export function useEditMenu(recipeId) {
           menuRecipe._id === recipe._id &&
           menuRecipe.serves !== menuData.serves
         ) {
-          // const shoppingList = generateShoppingList(user.shoppingList, 'editServes', [recipe._id, menuData.serves])
+          // const shoppingList = generateShoppingList(user.shoppingList, 'amendServes', [recipe._id, menuData.serves])
           editUser({
             recipeMenu: user.recipeMenu.map((menuRecipe) => {
               if (menuRecipe._id === recipe._id) {
@@ -60,30 +60,40 @@ export function useEditMenu(recipeId) {
     console.log('previous shoppingList:', prevShoppingList);
     console.log('method:', method);
     console.log('recipe:', newRecipe);
-    // shoppingList = []
     if (method === 'add') {
-      // let ingredientsArray = [] 
       for (let ingredient of newRecipe.ingredients) {
-        if (prevShoppingList.find(item => item._id === ingredient._id)) {
-          let existingItem = prevShoppingList.find(item => item._id === ingredient._id)
-          existingItem.quantity = existingItem.quantity + ingredient.quantity
-          shoppingList.push(existingItem)
-        } else {
+        let existingItem = prevShoppingList.find((item) => item._id === ingredient._id);
+        if (existingItem) {
+          existingItem.quantity = existingItem.quantity + (ingredient.quantity * newRecipe.serves);
+          shoppingList.push(existingItem);
+        } else if (!existingItem) {
           shoppingList.push({
             _id: ingredient._id,
             quantity: ingredient.quantity * newRecipe.serves,
             unit: ingredient.unit,
             obtained: false,
-          })
+          });
         }
       }
       for (let item of prevShoppingList) {
-        if (!newRecipe.ingredients.find(ingredient => ingredient._id === item._id)) {
-          shoppingList.push(item)
+        if (!newRecipe.ingredients.find((ingredient) => ingredient._id === item._id)) {
+          shoppingList.push(item);
         }
       }
     } else if (method === 'remove') {
-
+      prevShoppingList.forEach((item) => {
+        let itemToBeAmended = newRecipe.ingredients.find(ingredient => ingredient._id === item._id)
+        if (itemToBeAmended) {
+          item.quantity = item.quantity - (itemToBeAmended.quantity * newRecipe.serves)
+          if (item.quantity !== 0) {
+            shoppingList.push(item)
+          }     
+        } else {
+          shoppingList.push(item)
+        }
+      })
+    } else if (method === 'amendServes') {
+      
     }
     console.log(shoppingList);
     console.log('-----------------------------');
@@ -122,7 +132,7 @@ export function useEditMenu(recipeId) {
         recipeMenu: user.recipeMenu.filter(
           (menuRecipe) => menuRecipe._id !== recipe._id
         ),
-        // shoppingList
+        shoppingList,
       });
       setMenuData((prev) => ({
         ...prev,
