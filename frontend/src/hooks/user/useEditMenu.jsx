@@ -38,7 +38,10 @@ export function useEditMenu(recipeId) {
           menuRecipe._id === recipe._id &&
           menuRecipe.serves !== menuData.serves
         ) {
-          // const shoppingList = generateShoppingList(user.shoppingList, 'amendServes', [recipe._id, menuData.serves])
+          const shoppingList = generateShoppingList(user.shoppingList, 'amendServes', {
+            ingredients: recipe.ingredients,
+            serves: menuData.serves,
+          })
           editUser({
             recipeMenu: user.recipeMenu.map((menuRecipe) => {
               if (menuRecipe._id === recipe._id) {
@@ -46,6 +49,7 @@ export function useEditMenu(recipeId) {
               }
               return menuRecipe;
             }),
+            shoppingList
           });
         }
       }
@@ -93,7 +97,10 @@ export function useEditMenu(recipeId) {
         }
       })
     } else if (method === 'amendServes') {
-      
+      let temp = prevShoppingList.map((item) => {
+        return item
+      })
+      console.log(temp)
     }
     console.log(shoppingList);
     console.log('-----------------------------');
