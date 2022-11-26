@@ -40,7 +40,7 @@ const Header = ({ title, children }) => {
   }
 
   return (
-    <header className="header">
+    <header className="header md:hidden">
       <div className="container flex justify-between items-center">
         <div className="header__left flex flex-col">
           <div className='flex items-center'>

@@ -3,57 +3,57 @@
 body {
     @apply font-body text-body;
 
-    @screen md {
-        @apply text-body-md;
-    }
+    // @screen md {
+    //     @apply text-body-md;
+    // }
 }
 
 h1, .h1 {
     @apply text-h1;
 
-    @screen md {
-        @apply text-h1-md;
-    }
+    // @screen md {
+    //     @apply text-h1-md;
+    // }
 }
 
 h2, .h2 {
     @apply text-h2;
 
-    @screen md {
-        @apply text-h2-md;
-    }
+    // @screen md {
+    //     @apply text-h2-md;
+    // }
 }
 
 h3, .h3 {
     @apply text-h3;
 
-    @screen md {
-        @apply text-h3-md;
-    }
+    // @screen md {
+    //     @apply text-h3-md;
+    // }
 }
 
 h4, .h4 {
     @apply text-h4;
 
-    @screen md {
-        @apply text-h4-md;
-    }
+    // @screen md {
+    //     @apply text-h4-md;
+    // }
 }
 
 h5, .h5 {
     @apply text-h5;
 
-    @screen md {
-        @apply text-h5-md;
-    }
+    // @screen md {
+    //     @apply text-h5-md;
+    // }
 }
 
 h6, .h6 {
     @apply text-h6;
 
-    @screen md {
-        @apply text-h6-md;
-    }
+    // @screen md {
+    //     @apply text-h6-md;
+    // }
 }
 
 ul.bullets {

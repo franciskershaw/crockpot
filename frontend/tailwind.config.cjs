@@ -107,7 +107,7 @@ module.exports = {
         'header': '12.5vh',
       },
       padding: {
-        'header-padding': '15vh'
+        'nav-padding': '15vh'
       },
       scale: {
         'sm': '1.025',

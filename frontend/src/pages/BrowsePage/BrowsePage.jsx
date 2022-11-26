@@ -133,89 +133,82 @@ const BrowsePage = () => {
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </Icon>
       </Header>
-      <div className='columns'>
-        <div className='column--33'>
-          <form
-            action=""
-            className="form container fixed lg:relative top-0 left-0 right-0 z-search pt-header-padding pb-6 lg:p-0 bg-opacity-80 bg-grey-bg">
-            <div className="form__input !flex-row items-center">
-              <label htmlFor="search" className="invisible w-0 h-0">
-                Search for a recipe
-              </label>
-              <input
-                type="text"
-                id="search"
-                name="search"
-                placeholder="Search for a recipe"
-                value={searchValue}
-                onChange={onChangeSearchBar}
-                className="w-full !border-purple"
-              />
-              <Icon classes={'ml-4 cursor-pointer'} type={'secondary'}>
-                <FontAwesomeIcon icon={faRefresh} />
-              </Icon>
-            </div>
-            <div className="flex items-center justify-center space-x-6">
-              <Button
-                onClick={openCategoriesModal}
-                type={'secondary'}
-                text={'Categories'}
-                tooltip={activeFilters.categories.length}
-              />
-              <Button
-                onClick={openIngredientsModal}
-                type={'secondary'}
-                text={'Ingredients'}
-                tooltip={activeFilters.ingredients.length}
-              />
-            </div>
-            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
-          </form>
+      <form
+        action=""
+        className="form container fixed top-0 left-0 right-0 z-search pt-nav-padding pb-6 bg-opacity-80 bg-grey-bg md:px-8 md:py-4 md:flex">
+        <div className="form__input !flex-row items-center md:w-1/2">
+          <label htmlFor="search" className="invisible w-0 h-0">
+            Search for a recipe
+          </label>
+          <input
+            type="text"
+            id="search"
+            name="search"
+            placeholder="Search for a recipe"
+            value={searchValue}
+            onChange={onChangeSearchBar}
+            className="w-full !border-purple"
+          />
+          <Icon classes={'ml-4 cursor-pointer'} type={'secondary'}>
+            <FontAwesomeIcon icon={faRefresh} />
+          </Icon>
         </div>
-        <div className='column--66'>
-          <div className="flex flex-wrap justify-evenly pt-32 lg:pt-0">
-            {filteredResults.active && filteredResults.results.length ? (
-              filteredResults.results.map((recipe) => (
-                <RecipeCard key={recipe._id} recipe={recipe} />
-              ))
-            ) : filteredResults.active && !filteredResults.length ? (
-              <h4>No results available</h4>
-            ) : (
-              allRecipes.map((recipe) => (
-                <RecipeCard key={recipe._id} recipe={recipe} />
-              ))
-            )}
-          </div>
-          <Modal
-            isModalOpen={isCategoriesModalOpen}
-            setIsModalOpen={setIsCategoriesModalOpen}
-            heading={'Categories'}
-            noPadding>
-            <ToggleAndScrollPillsCategories
-              data={recipeCategories}
-              scrollTheme="secondary"
-              filterType={'categories'}
-              filters={activeFilters}
-              setFilters={setActiveFilters}
-              setModalOpen={setIsCategoriesModalOpen}
-            />
-          </Modal>
-          <Modal
-            isModalOpen={isIngredientsModalOpen}
-            setIsModalOpen={setIsIngredientsModalOpen}
-            heading={'Ingredients'}
-            noPadding>
-            <ToggleAndScrollPillsIngredients
-              data={ingredients}
-              scrollTheme="secondary"
-              filterType={'ingredients'}
-              filters={activeFilters}
-              setFilters={setActiveFilters}
-              setModalOpen={setIsIngredientsModalOpen}
-            />
-          </Modal>
+        <div className="flex items-center justify-center space-x-6 md:w-1/2 md:!mt-0 md:justify-end">
+          <Button
+            onClick={openCategoriesModal}
+            type={'secondary'}
+            text={'Categories'}
+            tooltip={activeFilters.categories.length}
+          />
+          <Button
+            onClick={openIngredientsModal}
+            type={'secondary'}
+            text={'Ingredients'}
+            tooltip={activeFilters.ingredients.length}
+          />
         </div>
+      </form>
+      <div className="container flex flex-wrap justify-evenly pt-32 md:pt-20">
+        {filteredResults.active && filteredResults.results.length ? (
+          filteredResults.results.map((recipe) => (
+            <RecipeCard key={recipe._id} recipe={recipe} />
+          ))
+        ) : filteredResults.active && !filteredResults.length ? (
+          <h4>No results available</h4>
+        ) : (
+          allRecipes.map((recipe) => (
+            <RecipeCard key={recipe._id} recipe={recipe} />
+          ))
+        )}
       </div>
+      <Modal
+        isModalOpen={isCategoriesModalOpen}
+        setIsModalOpen={setIsCategoriesModalOpen}
+        heading={'Categories'}
+        noPadding>
+        <ToggleAndScrollPillsCategories
+          data={recipeCategories}
+          scrollTheme="secondary"
+          filterType={'categories'}
+          filters={activeFilters}
+          setFilters={setActiveFilters}
+          setModalOpen={setIsCategoriesModalOpen}
+        />
+      </Modal>
+      <Modal
+        isModalOpen={isIngredientsModalOpen}
+        setIsModalOpen={setIsIngredientsModalOpen}
+        heading={'Ingredients'}
+        noPadding>
+        <ToggleAndScrollPillsIngredients
+          data={ingredients}
+          scrollTheme="secondary"
+          filterType={'ingredients'}
+          filters={activeFilters}
+          setFilters={setActiveFilters}
+          setModalOpen={setIsIngredientsModalOpen}
+        />
+      </Modal>
     </>
   );
 };

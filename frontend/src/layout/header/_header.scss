@@ -3,5 +3,9 @@
 }
 
 main {
-    @apply pt-header-padding;
+    @apply pt-nav-padding;
+
+    @screen md {
+        @apply pt-0;
+    }
 }
