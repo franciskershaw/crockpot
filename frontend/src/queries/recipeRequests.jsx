@@ -6,6 +6,12 @@ export const fetchAllRecipes = async () => {
   return response.data;
 };
 
+export const fetchSingleRecipe = async (recipeId) => {
+  const response = await axios.get(`/api/recipes/${recipeId}`);
+
+  return response.data;
+};
+
 export const fetchAllRecipeCategories = async () => {
   const response = await axios.get(`/api/recipeCategories`);
 

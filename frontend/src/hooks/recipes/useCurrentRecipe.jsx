@@ -1,44 +1,38 @@
-import { useRecipes } from '../../hooks/recipes/useRecipes';
 import { useParams } from 'react-router-dom';
-import { useRecipeCategories } from './useRecipeCategories';
 import { useItems } from '../items/useItems';
+import { useQuery } from '@tanstack/react-query';
+import { fetchSingleRecipe } from '../../queries/recipeRequests';
+import { queryKeys } from '../../reactQuery/queryKeys';
 
 //Hook
-export function useCurrentRecipe() {
-  const { allRecipes } = useRecipes();
-  const { recipeCategories } = useRecipeCategories();
+export function useCurrentRecipe(recipeId) {
   const { ingredients } = useItems();
-
+  let id;
   const params = useParams();
-  const recipe = allRecipes.find((recipe) => recipe._id === params.id);
-  
-  let currentRecipeCategories = [];
-  let currentRecipeIngredients = [];
+  if (params.id) {
+    id = params.id;
+  } else if (!params.id) {
+    id = recipeId;
+  }
+
+  const { data: recipe } = useQuery([queryKeys.recipes, id], () =>
+    fetchSingleRecipe(id)
+  );
 
   if (recipe) {
-    for (let category of recipe.categories) {
-      for (let object of recipeCategories) {
-        if (object._id === category) {
-          currentRecipeCategories.push(object)
-        }
-      }
-    }
-    if (currentRecipeCategories.length) {
-      recipe.categories = currentRecipeCategories;
-    }
-
+    let currentRecipeIngredients = [];
     for (let ingredient of recipe.ingredients) {
       for (let object of ingredients) {
         if (object._id === ingredient._id) {
           currentRecipeIngredients.push({
             ...ingredient,
-            name: object.name
-          })
+            name: object.name,
+          });
         }
       }
     }
     if (currentRecipeIngredients.length) {
-      recipe.ingredients = currentRecipeIngredients
+      recipe.ingredients = currentRecipeIngredients;
     }
   }
 

@@ -6,7 +6,7 @@ import RecipeCard from '../../components/recipeCard/RecipeCard';
 import ToggleAndScrollPillsCategories from './ToggleAndScrollPillsCategories';
 import ToggleAndScrollPillsIngredients from './ToggleAndScrollPillsIngredients';
 import { useState, useEffect } from 'react';
-import { useRecipes } from '../../hooks/recipes/useRecipes';
+import { useRecipes, useFetchIndividualRecipes } from '../../hooks/recipes/useRecipes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMagnifyingGlass,
@@ -17,6 +17,7 @@ import { useItems } from '../../hooks/items/useItems';
 
 const BrowsePage = () => {
   let { allRecipes } = useRecipes();
+  useFetchIndividualRecipes(allRecipes)
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
 

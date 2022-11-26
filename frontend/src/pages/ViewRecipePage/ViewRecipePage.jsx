@@ -1,5 +1,4 @@
 import { useCurrentRecipe } from '../../hooks/recipes/useCurrentRecipe';
-import { useEffect, useState } from 'react';
 import Icon from '../../components/icons/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -12,95 +11,16 @@ import {
 import Header from '../../layout/header/Header';
 import Toggle from '../../components/toggles/Toggle';
 import QuantityInput from '../../components/forms/QuantityInput';
-import { fetchSingleUser } from '../../queries/userRequests';
 import { useUser } from '../../hooks/auth/useUser';
-import { useEditUser } from '../../hooks/user/useEditUser';
+import { useEditMenu } from '../../hooks/user/useEditMenu';
+import { useEditFavourites } from '../../hooks/user/useEditFavourites';
 
 const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
-  const [createdBy, setCreatedBy] = useState('');
-  const [formData, setFormData] = useState({
-    inMenu: false,
-    recipeId: '',
-    serves: 4,
-  });
-
   const { user } = useUser();
 
-  const editUser = useEditUser();
-
-  useEffect(() => {
-    if (recipe) {
-      const getCreatedBy = async (id) => {
-        let user = await fetchSingleUser(id);
-        setCreatedBy(user.username);
-      };
-      getCreatedBy(recipe.createdBy);
-
-      setFormData((prev) => ({
-        ...prev,
-        recipeId: recipe._id,
-      }));
-    }
-  }, [recipe]);
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
-  useEffect(() => {
-    console.log(user)
-  },[user])
-
-  const onChange = (e) => {
-    console.log(formData.inMenu)
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const onFavourite = () => {
-    if (!user.favouriteRecipes.includes(recipe._id)) {
-      editUser({
-        favouriteRecipes: [...user.favouriteRecipes, recipe._id],
-      });
-    } else if (user.favouriteRecipes.includes(recipe._id)) {
-      editUser({
-        favouriteRecipes: user.favouriteRecipes.filter(
-          (id) => id !== recipe._id
-        ),
-      });
-    }
-  };
-
-  const onAddToMenu = () => {
-    // if (formData.inMenu) {
-    //   editUser({
-    //     recipeMenu: user.recipeMenu.filter(
-    //       (menuRecipe) => menuRecipe._id !== recipe._id
-    //     ),
-    //   });
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     inMenu: false,
-    //   }));
-    // } else if (!formData.inMenu) {
-    //   editUser({
-    //     recipeMenu: [
-    //       ...user.recipeMenu,
-    //       {
-    //         _id: formData.recipeId,
-    //         serves: formData.serves,
-    //       },
-    //     ],
-    //   });
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     inMenu: true,
-    //   }));
-    // }
-  };
+  const onFavourite = useEditFavourites(recipe, user)
+  const { onClickMenu, menuData, setMenuData } = useEditMenu();
 
   if (recipe) {
     return (
@@ -108,7 +28,9 @@ const ViewRecipePage = () => {
         <Header title={recipe.name}>
           <></>
           <div>
-            <span className="italic mr-3 lowercase">By {createdBy}</span>
+            <span className="italic mr-3 lowercase">
+              By {recipe.createdBy.name}
+            </span>
             <span>
               <FontAwesomeIcon icon={faClock} className="mr-1" />
               {recipe.timeInMinutes} mins
@@ -128,8 +50,11 @@ const ViewRecipePage = () => {
               />
               {user && (
                 <div className="absolute m-1.5 space-x-1.5 flex right-0">
-                  <Icon type={'secondary'} outline>
-                    <FontAwesomeIcon onClick={onAddToMenu} icon={faUtensils} />
+                  <Icon
+                    state={menuData.inMenu ? 'active' : ''}
+                    type={'secondary'}
+                    outline>
+                    <FontAwesomeIcon onClick={onClickMenu} icon={faUtensils} />
                   </Icon>
                   <Icon
                     state={
@@ -164,9 +89,8 @@ const ViewRecipePage = () => {
           {/* Quantity toggle */}
           <QuantityInput
             nameAndId={'serves'}
-            value={formData.serves}
-            setValue={setFormData}
-            onChange={onChange}
+            value={menuData.serves}
+            setValue={setMenuData}
             step={1}
             classes={'items-center'}
             maxValue={20}
@@ -178,7 +102,7 @@ const ViewRecipePage = () => {
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={`ingredient_${index}`}>
                   {ingredient.name} x{' '}
-                  {(ingredient.quantity * formData.serves)
+                  {(ingredient.quantity * menuData.serves)
                     .toFixed(2)
                     .replace(/[.,]00$/, '')}{' '}
                   {ingredient.unit}

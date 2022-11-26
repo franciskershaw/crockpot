@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 // Get user info
 export const getUser = async (user, signal) => {
   if (!user) return null;

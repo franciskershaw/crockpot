@@ -14,8 +14,10 @@ import AccordionCustom from '../../components/accordions/Accordion';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faBook, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from 'react';
+import { usePrefetchRecipes } from '../../hooks/recipes/useRecipes';
 
 const LandingPage = () => {
+	usePrefetchRecipes()
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const openModal = () => {
         document.body.classList.add("modal-is-open")

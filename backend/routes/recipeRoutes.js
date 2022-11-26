@@ -6,6 +6,9 @@ const { storage } = require('../config/cloudinary')
 const upload = multer({ storage })
 
 const Recipe = require('../models/Recipe')
+const User = require('../models/User')
+const Item = require('../models/Item')
+const RecipeCategory = require('../models/RecipeCategory')
 
 router.get('/', asyncHandler(async (req, res) => {
 	try {
@@ -27,6 +30,33 @@ router.post('/', upload.single('image'), asyncHandler(async (req, res) => {
 		}
 		await recipe.save()
 		res.status(201).json(recipe)
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
+	}
+}))
+
+// Get single recipe (and tweak return data to include everything needed on frontend)
+router.get('/:recipeId', asyncHandler(async (req, res) => {
+	try {
+		const recipe = await Recipe.findById(req.params.recipeId)
+		const categories = await RecipeCategory.find({ _id: recipe.categories})
+		const createdBy = await User.findById(recipe.createdBy)
+		
+		res.status(200).json({
+			_id: recipe._id,
+			name: recipe.name,
+			image: recipe.image,
+			timeInMinutes: recipe.timeInMinutes,
+			ingredients: recipe.ingredients,
+			instructions: recipe.instructions,
+			notes: recipe.notes,
+			categories,
+			createdBy: {
+				_id: createdBy._id,
+				name: createdBy.username
+			}
+		})
 	} catch (err) {
 		res.status(400)
 		throw new Error(err)

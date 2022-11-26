@@ -178,7 +178,6 @@ const AddRecipePage = () => {
                 nameAndId={'timeInMinutes'}
                 value={formData.timeInMinutes}
                 setValue={setFormData}
-                onChange={onChange}
                 label={'Time'}
                 step={5}
                 classes={'items-center'}
@@ -189,7 +188,6 @@ const AddRecipePage = () => {
                 nameAndId={'serves'}
                 value={formData.serves}
                 setValue={setFormData}
-                onChange={onChange}
                 label={'Serves'}
                 step={1}
                 classes={'items-center'}

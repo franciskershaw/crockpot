@@ -6,6 +6,7 @@ import {
   getStoredUser,
   setStoredUser,
 } from '../../reactQuery/userStorage.js';
+import { getUser } from '../../queries/authRequests.jsx';
 
 // Hook
 export function useUser() {
@@ -36,8 +37,6 @@ export function useUser() {
     // reset user to null
     queryClient.setQueryData([queryKeys.user], null);
     clearStoredUser();
-    // Remove user queries from cache
-    queryClient.resetQueries(queryKeys.user, { exact: true });
   }
 
   return { user, updateUser, clearUser };

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useRef } from 'react';
 
-const QuantityInput = ({ classes, step, label, nameAndId, value, onChange, setValue, maxValue = Infinity }) => {
+const QuantityInput = ({ classes, step, label, nameAndId, value, setValue, maxValue = Infinity }) => {
   const inputClasses = classes ? ` ${classes}` : '';
   const inputStep = step ? step : '1';
 
@@ -38,7 +38,6 @@ const QuantityInput = ({ classes, step, label, nameAndId, value, onChange, setVa
           <FontAwesomeIcon icon={faMinus} />
         </div>
         <input
-          onChange={onChange}
           value={value}
           name={nameAndId}
           id={nameAndId}
