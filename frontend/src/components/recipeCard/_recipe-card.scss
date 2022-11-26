@@ -4,6 +4,18 @@
     width: calc(50% - 1rem);
     margin-bottom: 1rem;
 
+    @screen md {
+        width: calc(33% - 1rem);
+    }
+
+    @screen lg {
+        width: calc(50% - 1rem);
+    }
+
+    @screen xl {
+        width: calc(33% - 1rem);
+    }
+
     &:hover {
         @apply scale-sm;
     }

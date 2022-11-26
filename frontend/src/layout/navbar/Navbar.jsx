@@ -5,7 +5,7 @@ import {faPlus, faMagnifyingGlass, faBook, faUtensils} from '@fortawesome/free-s
 
 const Navbar = () => {
   return (
-    <nav className='navbar'>
+    <nav className='navbar lg:hidden'>
       <Link className="w-1/4" to={'addrecipe'}>
         <Icon text={"Add recipe"} outline>
           <FontAwesomeIcon icon={faPlus}/>
