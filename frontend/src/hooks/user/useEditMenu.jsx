@@ -38,10 +38,15 @@ export function useEditMenu(recipeId) {
           menuRecipe._id === recipe._id &&
           menuRecipe.serves !== menuData.serves
         ) {
-          const shoppingList = generateShoppingList(user.shoppingList, 'amendServes', {
-            ingredients: recipe.ingredients,
-            serves: menuData.serves,
-          })
+          const shoppingList = generateShoppingList(
+            user.shoppingList,
+            'amendServes',
+            {
+              ingredients: recipe.ingredients,
+              serves: menuData.serves,
+              previousServes: menuRecipe.serves,
+            }
+          );
           editUser({
             recipeMenu: user.recipeMenu.map((menuRecipe) => {
               if (menuRecipe._id === recipe._id) {
@@ -49,7 +54,7 @@ export function useEditMenu(recipeId) {
               }
               return menuRecipe;
             }),
-            shoppingList
+            shoppingList,
           });
         }
       }
@@ -59,16 +64,14 @@ export function useEditMenu(recipeId) {
   const generateShoppingList = (prevShoppingList, method, newRecipe) => {
     let shoppingList = [];
     // Needs to return an array of objects: IDs, quantities, units, obtained
-    console.log('-----------------------------');
-    console.log('Generating shopping list...');
-    console.log('previous shoppingList:', prevShoppingList);
-    console.log('method:', method);
-    console.log('recipe:', newRecipe);
     if (method === 'add') {
       for (let ingredient of newRecipe.ingredients) {
-        let existingItem = prevShoppingList.find((item) => item._id === ingredient._id);
+        let existingItem = prevShoppingList.find(
+          (item) => item._id === ingredient._id
+        );
         if (existingItem) {
-          existingItem.quantity = existingItem.quantity + (ingredient.quantity * newRecipe.serves);
+          existingItem.quantity =
+            existingItem.quantity + ingredient.quantity * newRecipe.serves;
           shoppingList.push(existingItem);
         } else if (!existingItem) {
           shoppingList.push({
@@ -80,30 +83,58 @@ export function useEditMenu(recipeId) {
         }
       }
       for (let item of prevShoppingList) {
-        if (!newRecipe.ingredients.find((ingredient) => ingredient._id === item._id)) {
+        if (
+          !newRecipe.ingredients.find(
+            (ingredient) => ingredient._id === item._id
+          )
+        ) {
           shoppingList.push(item);
         }
       }
     } else if (method === 'remove') {
       prevShoppingList.forEach((item) => {
-        let itemToBeAmended = newRecipe.ingredients.find(ingredient => ingredient._id === item._id)
+        let itemToBeAmended = newRecipe.ingredients.find(
+          (ingredient) => ingredient._id === item._id
+        );
         if (itemToBeAmended) {
-          item.quantity = item.quantity - (itemToBeAmended.quantity * newRecipe.serves)
+          item.quantity =
+            item.quantity - itemToBeAmended.quantity * newRecipe.serves;
           if (item.quantity !== 0) {
-            shoppingList.push(item)
-          }     
+            shoppingList.push(item);
+          }
         } else {
-          shoppingList.push(item)
+          shoppingList.push(item);
         }
-      })
+      });
     } else if (method === 'amendServes') {
-      let temp = prevShoppingList.map((item) => {
-        return item
-      })
-      console.log(temp)
+      if (newRecipe.previousServes > newRecipe.serves) {
+        shoppingList = prevShoppingList.map((item) => {
+          let itemToBeAmended = newRecipe.ingredients.find(
+            (ingredient) => ingredient._id === item._id
+          );
+          if (itemToBeAmended) {
+            return {
+              ...item,
+              quantity: item.quantity - itemToBeAmended.quantity,
+            };
+          }
+          return item;
+        });
+      } else if (newRecipe.serves > newRecipe.previousServes) {
+        shoppingList = prevShoppingList.map((item) => {
+          let itemToBeAmended = newRecipe.ingredients.find(
+            (ingredient) => ingredient._id === item._id
+          );
+          if (itemToBeAmended) {
+            return {
+              ...item,
+              quantity: item.quantity + itemToBeAmended.quantity,
+            };
+          }
+          return item;
+        });
+      }
     }
-    console.log(shoppingList);
-    console.log('-----------------------------');
     return shoppingList;
   };
 
