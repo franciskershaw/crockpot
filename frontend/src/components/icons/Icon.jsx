@@ -11,7 +11,7 @@ const Icon = ({type, outline, noHover, classes, state, text, children}) => {
         {children}
         {iconText ? (
             <>
-                <h6 className='icon__text mt-2'>{text}</h6>
+                <h6 className='icon__text mt-2 md:mt-1 md:ml-2'>{text}</h6>
             </>
         ) : null}
     </div>

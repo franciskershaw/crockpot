@@ -1,5 +1,5 @@
 .icon {
-    @apply flex flex-col items-center duration-sm ease-in-out;
+    @apply flex flex-col md:flex-row items-center duration-sm ease-in-out;
 
     // SVGs
     svg {

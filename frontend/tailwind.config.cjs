@@ -30,6 +30,7 @@ module.exports = {
       },
       fontFamily: {
         body: ['Poppins', 'sans-serif'],
+        logo: ['Fredoka One', 'cursive'],
       },
       fontSize: {
         h1: ['32px', {

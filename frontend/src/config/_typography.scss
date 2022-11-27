@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
 body {
     @apply font-body text-body;
@@ -51,9 +52,9 @@ h5, .h5 {
 h6, .h6 {
     @apply text-h6;
 
-    // @screen md {
-    //     @apply text-h6-md;
-    // }
+    @screen md {
+        @apply text-h6-md;
+    }
 }
 
 ul.bullets {
