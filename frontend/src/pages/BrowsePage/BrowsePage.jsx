@@ -135,7 +135,7 @@ const BrowsePage = () => {
       </Header>
       <form
         action=""
-        className="form container fixed top-0 left-0 right-0 z-search pt-nav-padding pb-6 bg-opacity-80 bg-grey-bg md:px-8 md:py-4 md:flex">
+        className="form container fixed top-0 left-0 right-0 z-search pt-nav-padding pb-6 bg-opacity-80 bg-grey-bg md:px-8 md:py-4 md:flex md:top-[108px] lg:top-[68px]">
         <div className="form__input !flex-row items-center md:w-1/2">
           <label htmlFor="search" className="invisible w-0 h-0">
             Search for a recipe
@@ -168,7 +168,7 @@ const BrowsePage = () => {
           />
         </div>
       </form>
-      <div className="container flex flex-wrap justify-evenly pt-32 md:pt-20">
+      <div className="container flex flex-wrap justify-evenly pt-32 md:pt-14">
         {filteredResults.active && filteredResults.results.length ? (
           filteredResults.results.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />

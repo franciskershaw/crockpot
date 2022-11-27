@@ -42,6 +42,27 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
+
+    // Columns
+    .column--25 {
+        width: 25%;
+    }
+    
+    .column--33 {
+        width: 33%;
+    }
+    
+    .column--50 {
+        width: 50%;
+    }
+    
+    .column--66 {
+        width: 66%;
+    }
+    
+    .column--75 {
+        width: 75%;
+    }
 }
 
 @import './config/base';

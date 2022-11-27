@@ -22,6 +22,10 @@ main {
     @apply pb-nav-padding;
 
     @screen md {
-        @apply pb-0;
+        @apply pb-8 pt-nav-padding-md;
+    }
+
+    @screen lg {
+        @apply pt-nav-padding-lg;
     }
 }

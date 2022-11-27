@@ -147,7 +147,7 @@ const AddRecipePage = () => {
           <FontAwesomeIcon icon={faPlus}/>
         </Icon>
       </Header>
-      <div className="container container--sm">
+      <div className="container container--sm !max-w-[600px]">
         <form onSubmit={onSubmit} className="form" id="addRecipe">
           {/* Recipe name - 100 */}
           <div className="form__input">

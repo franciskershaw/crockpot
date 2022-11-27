@@ -43,7 +43,7 @@
 
     &--fixed {
         .toggle-switch-wrapper {
-            @apply container fixed top-0 left-0 right-0 z-search pt-nav-padding pb-6 bg-opacity-80 bg-grey-bg;
+            @apply container fixed top-0 left-0 right-0 z-search pt-nav-padding md:pt-nav-padding-md lg:pt-nav-padding-lg pb-6 bg-opacity-80 bg-grey-bg;
         }
 
         .toggle-box__content {

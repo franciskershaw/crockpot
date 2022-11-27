@@ -61,3 +61,11 @@
         }
     }
 }
+
+.Toastify__toast-container.Toastify__toast-container--top-right {
+    @screen md {
+        top: auto;
+        bottom: 1em;
+        right: 1em;
+    }
+}

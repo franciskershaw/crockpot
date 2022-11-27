@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 
-const Toggle = ({left, right, box, fixed, children}) => {
+const Toggle = ({left, right, box, index, fixed, children}) => {
   if (!left) {
     left = "left"
   }
@@ -13,8 +13,8 @@ const Toggle = ({left, right, box, fixed, children}) => {
     content = true
   }
 
-  const leftOption = left ? left.toLowerCase().replaceAll(' ', '-') : 'left';
-  const rightOption = right.toLowerCase().replaceAll(' ', '-');
+  const leftOption = left.toLowerCase().replaceAll(' ', '-') + index;
+  const rightOption = right.toLowerCase().replaceAll(' ', '-') + index;
   const toggleBox = box ? ` toggle--boxed` : '';
   const toggleFixed = fixed ? ` toggle--fixed` : '';
   const toggleContent = content ? ` toggle--content` : '';
