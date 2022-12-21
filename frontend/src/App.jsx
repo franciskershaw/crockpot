@@ -20,21 +20,21 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/browse" element={<BrowsePage />} />
-            <Route path="/cookbook" element={<PrivateRoute />}> {/*PrivateRoute*/}
+            <Route path="/cookbook" element={<PrivateRoute />}>
               <Route path="/cookbook" element={<CookbookPage />} />
             </Route>
             <Route path="/viewrecipe/:id" element={<ViewRecipePage />} />
-            <Route path='/addrecipe' element={<PrivateRoute />}> {/*PrivateRoute*/}
-              <Route path='/addrecipe' element={<AddRecipePage />} />
+            <Route path="/addrecipe" element={<PrivateRoute />}>
+              <Route path="/addrecipe" element={<AddRecipePage />} />
             </Route>
-            <Route path='/menu' element={<PrivateRoute />}> {/*PrivateRoute*/}
-              <Route path='/menu' element={<MenuPage/>} />
+            <Route path="/menu" element={<PrivateRoute />}>
+              <Route path="/menu" element={<MenuPage />} />
             </Route>
           </Route>
         </Routes>
       </BrowserRouter>
     </div>
-  )
+  );
 }
 
 export default App;
