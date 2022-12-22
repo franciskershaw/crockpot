@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 
 const User = require('../models/User');
+const Recipe = require ('../models/Recipe');
 
 // Register new user
 router.post('/', asyncHandler(async (req, res) => {
@@ -108,12 +109,56 @@ router.put('/:userId', asyncHandler(async (req, res) => {
 			req.body,
 			{ new: true }
 		);
+		if (req.body.recipeMenu) {
+			const newShoppingList = await generateShoppingList(updatedUser.recipeMenu)
+			updatedUser.shoppingList = newShoppingList
+			updatedUser.save()
+		}
 		res.status(200).json(updatedUser)
 	} catch (err) {
 		res.status(400)
 		throw new Error(err)
 	}
 }))
+
+const generateShoppingList = async (menu) => {
+  let shoppingList = [];
+  if (menu.length) {
+    for (let object of menu) {
+      const recipe = await Recipe.findById(object._id).select({ ingredients: 1 });
+      const ingredients = recipe.toObject().ingredients;
+      let ingredientsFormated = ingredients.map((ingredient) => {
+        return {
+          ...ingredient,
+          quantity: ingredient.quantity * object.serves,
+          obtained: false,
+        };
+      });
+      shoppingList = [
+        ...shoppingList.filter(
+          (obj) =>
+            !ingredientsFormated.some(
+              (newObj) => newObj._id.equals(obj._id) && newObj.unit === obj.unit
+            )
+        ),
+        ...ingredientsFormated.map((obj) => {
+          const originalObj = shoppingList.find(
+            (originalObj) =>
+              originalObj._id.equals(obj._id) && originalObj.unit === obj.unit
+          );
+          if (originalObj) {
+            return {
+              ...obj,
+              quantity: originalObj.quantity + obj.quantity,
+            };
+          }
+          return obj;
+        }),
+      ];
+    }
+  }
+  return shoppingList
+};
 
 // Generate token
 const generateToken = (id) => {
