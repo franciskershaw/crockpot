@@ -16,16 +16,15 @@ export function useEditUser() {
       onSuccess: (response, variables) => {
         const keys = Object.keys(variables);
         keys.forEach((key) => {
-          if (key === 'recipeMenu')
-            queryClient.setQueryData([queryKeys.user], (prevUserData) => {
-              const newUserData = prevUserData;
-              newUserData[key] = response[key];
-              if (key === 'recipeMenu') {
-                newUserData.shoppingList = response.shoppingList;
-              }
-              setStoredUser(newUserData);
-              return newUserData;
-            });
+          queryClient.setQueryData([queryKeys.user], (prevUserData) => {
+            const newUserData = prevUserData;
+            newUserData[key] = response[key];
+            if (key === 'recipeMenu') {
+              newUserData.shoppingList = response.shoppingList;
+            }
+            setStoredUser(newUserData);
+            return newUserData;
+          });
         });
       },
       onError: (data) => {
