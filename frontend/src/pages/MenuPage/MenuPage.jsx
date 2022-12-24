@@ -26,8 +26,11 @@ const MenuPage = () => {
           <div className="flex flex-wrap justify-evenly space-y-3">
             {/* <RecipeCardLong></RecipeCardLong> */}
             {/* <RecipeCard></RecipeCard> */}
+						recipes here
           </div>
-          <div className="flex flex-wrap justify-evenly"></div>
+          <div className="flex flex-wrap justify-evenly">
+						shopping list here
+					</div>
         </Toggle>
       </div>
     </>
