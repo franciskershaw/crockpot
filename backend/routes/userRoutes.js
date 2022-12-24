@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 
 const User = require('../models/User');
-const Recipe = require ('../models/Recipe');
+const Recipe = require('../models/Recipe');
+const Item = require('../models/Item')
 
 // Register new user
 router.post('/', asyncHandler(async (req, res) => {
@@ -123,7 +124,15 @@ router.get('/:userId/recipeMenu', asyncHandler(async (req, res) => {
 // Get shopping list  from user
 router.get('/:userId/shoppingList', asyncHandler(async (req, res) => {
 	try {
-		// needs t
+		const { shoppingList } = await User.findById(req.params.userId)
+		const shoppingListItems = await Item.find({ _id: { $in: shoppingList }});
+		const list = []
+
+		for (const item of shoppingListItems) {
+			const {quantity} = shoppingList.find(shoppingListItem => item._id.equals(shoppingListItem._id))
+			list.push({ item, quantity })
+		}
+		res.status(200).json(list)
 	} catch (err) {
 		res.status(400)
 		throw new Error(err);
