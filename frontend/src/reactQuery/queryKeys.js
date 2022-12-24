@@ -4,4 +4,5 @@ export const queryKeys = {
   recipes: 'recipes',
   recipeCategories: 'recipeCategories',
   recipeMenu: 'recipeMenu',
+  shoppingList: 'shoppingList',
 };

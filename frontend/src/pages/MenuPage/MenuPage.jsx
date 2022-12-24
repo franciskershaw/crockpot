@@ -8,8 +8,9 @@ import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from '../../hooks/user/useMenu';
 
 const MenuPage = () => {
-  const { recipeMenu } = useMenu();
-  console.log(recipeMenu);
+  const { recipeMenu, shoppingList } = useMenu();
+  console.log('menu', recipeMenu);
+  console.log('shoppingList', shoppingList);
   return (
     <>
       <Header title="Menu">

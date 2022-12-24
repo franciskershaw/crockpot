@@ -28,3 +28,14 @@ export const getUserRecipeMenu = async (id, token) => {
 
   return response.data;
 };
+
+export const getUserShoppingList = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(`/api/users/${id}/shoppingList`, config);
+
+  return response.data;
+};
