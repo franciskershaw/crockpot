@@ -3,4 +3,5 @@ export const queryKeys = {
   items: 'items',
   recipes: 'recipes',
   recipeCategories: 'recipeCategories',
+  recipeMenu: 'recipeMenu',
 };

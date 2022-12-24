@@ -5,8 +5,11 @@ import RecipeCardLong from '../../components/recipeCard/RecipeCardLong';
 import Toggle from '../../components/toggles/Toggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { useMenu } from '../../hooks/user/useMenu';
 
 const MenuPage = () => {
+  const { recipeMenu } = useMenu();
+  console.log(recipeMenu);
   return (
     <>
       <Header title="Menu">

@@ -17,3 +17,14 @@ export const editUser = async (id, token, body) => {
 
   return response.data;
 };
+
+export const getUserRecipeMenu = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(`/api/users/${id}/recipeMenu`, config);
+
+  return response.data;
+};
