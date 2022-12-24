@@ -101,6 +101,35 @@ router.get('/:userId', asyncHandler(async (req, res) => {
 	}
 }))
 
+// Get recipe menu from user
+router.get('/:userId/recipeMenu', asyncHandler(async (req, res) => {
+	try {
+		const { recipeMenu } = await User.findById(req.params.userId);
+		const recipes = await Recipe.find({ _id: { $in: recipeMenu } });
+		const menu = []
+
+		for (const recipe of recipes) {
+			const { serves } = recipeMenu.find(item => item._id.equals(recipe._id))
+			menu.push({ recipe, serves })
+		}
+		
+		res.status(200).json(menu);
+	} catch (err) {
+		res.status(400)
+		throw new Error(err);
+	}
+}))
+
+// Get shopping list  from user
+router.get('/:userId/shoppingList', asyncHandler(async (req, res) => {
+	try {
+		// needs t
+	} catch (err) {
+		res.status(400)
+		throw new Error(err);
+	}
+}))
+
 // Edit user
 router.put('/:userId', asyncHandler(async (req, res) => {
 	try {
