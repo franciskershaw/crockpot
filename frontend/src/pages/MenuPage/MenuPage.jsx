@@ -6,11 +6,14 @@ import Toggle from '../../components/toggles/Toggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { useMenu } from '../../hooks/user/useMenu';
+import { useItemCategories } from '../../hooks/items/useItemCategories';
 
 const MenuPage = () => {
   const { recipeMenu, shoppingList } = useMenu();
+  const { itemCategories } = useItemCategories();
   console.log('menu', recipeMenu);
   console.log('shoppingList', shoppingList);
+	console.log('categories', itemCategories)
   return (
     <>
       <Header title="Menu">
