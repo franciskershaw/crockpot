@@ -121,7 +121,7 @@ router.get('/:userId/recipeMenu', asyncHandler(async (req, res) => {
 	}
 }))
 
-// Get shopping list  from user
+// Get shopping list from user
 router.get('/:userId/shoppingList', asyncHandler(async (req, res) => {
 	try {
 		const { shoppingList } = await User.findById(req.params.userId)
@@ -136,6 +136,20 @@ router.get('/:userId/shoppingList', asyncHandler(async (req, res) => {
 	} catch (err) {
 		res.status(400)
 		throw new Error(err);
+	}
+}))
+
+// Get favourites from user
+router.get('/:userId/favourites', asyncHandler(async (req, res) => {
+	try {
+		const { favouriteRecipes } = await User.findById(req.params.userId)
+		const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } });
+
+		res.status(200).json(favourites)
+		
+	} catch (err) {
+		res.status(400)
+		throw new Error(err)
 	}
 }))
 
