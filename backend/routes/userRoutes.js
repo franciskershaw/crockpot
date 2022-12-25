@@ -129,8 +129,8 @@ router.get('/:userId/shoppingList', asyncHandler(async (req, res) => {
 		const list = []
 
 		for (const item of shoppingListItems) {
-			const {quantity} = shoppingList.find(shoppingListItem => item._id.equals(shoppingListItem._id))
-			list.push({ item, quantity })
+			const { quantity, unit } = shoppingList.find(shoppingListItem => item._id.equals(shoppingListItem._id))
+			list.push({ item, quantity, unit })
 		}
 		res.status(200).json(list)
 	} catch (err) {
