@@ -26,6 +26,12 @@ export function useEditUser() {
             return newUserData;
           });
         });
+        if (variables.favouriteRecipes) {
+          queryClient.refetchQueries([queryKeys.favourites]);
+        } else {
+          queryClient.refetchQueries([queryKeys.recipeMenu]);
+          queryClient.refetchQueries([queryKeys.shoppingList]);
+        }
       },
       onError: (data) => {
         toast.error(data);
