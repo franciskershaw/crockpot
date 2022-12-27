@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
+const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware')
 
 const ItemCategory = require('../models/ItemCategory')
 
@@ -16,7 +17,7 @@ router.get('/', asyncHandler(async (req, res) => {
 }))
 
 // Create a new item category
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/', isLoggedIn, isAdmin, asyncHandler(async (req, res) => {
 	try {
 		const itemCategory = new ItemCategory(req.body);
 		await itemCategory.save()

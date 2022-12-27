@@ -32,4 +32,21 @@ const isLoggedIn = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { isLoggedIn };
+// const isRightUser = asyncHandler(async (req, res, next) => {});
+
+const isAdmin = asyncHandler(async (req, res, next) => {
+  const user = req.user;
+
+  try {
+    if (user.isAdmin) {
+      next();
+    } else {
+      res.status(401);
+      throw new Error('You must be an administrator to do this');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+module.exports = { isLoggedIn, isAdmin };

@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const multer = require('multer');
 const { storage } = require('../config/cloudinary')
 const upload = multer({ storage })
+const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 
 const Recipe = require('../models/Recipe')
 const User = require('../models/User')
@@ -21,7 +22,7 @@ router.get('/', asyncHandler(async (req, res) => {
 }))
 
 // Create a new recipe 
-router.post('/', upload.single('image'), asyncHandler(async (req, res) => {
+router.post('/', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res) => {
 	try {
 		const recipe = new Recipe(req.body);
 		recipe.image = {
@@ -64,7 +65,7 @@ router.get('/:recipeId', asyncHandler(async (req, res) => {
 }))
 
 // Edit a recipe
-router.put('/:recipeId', upload.single('image'), asyncHandler(async (req, res) => {
+router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res) => {
 	try {
 		const recipe = await Recipe.findById(req.params.recipeId)
 
@@ -93,7 +94,7 @@ router.put('/:recipeId', upload.single('image'), asyncHandler(async (req, res) =
 }))
 
 // Delete a recipe
-router.delete('/:recipeId', asyncHandler(async (req, res) => {
+router.delete('/:recipeId', isLoggedIn, isAdmin, asyncHandler(async (req, res) => {
 	const { recipeId } = req.params
 	try {
 		await Recipe.findByIdAndDelete(recipeId)
