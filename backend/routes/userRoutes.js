@@ -7,7 +7,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 const Item = require('../models/Item');
-const { isLoggedIn } = require('../middleware/authMiddleware');
+const { isLoggedIn, isRightUser } = require('../middleware/authMiddleware');
 
 // Register new user
 router.post('/', asyncHandler(async (req, res) => {
@@ -99,12 +99,12 @@ router.get('/:userId', isLoggedIn, asyncHandler(async (req, res) => {
 			username: user.username
 		})
 	} catch (err) {
-		throw new Error('Cannee find user')
+		throw new Error("Can't find user")
 	}
 }))
 
 // Get recipe menu from user
-router.get('/:userId/recipeMenu', isLoggedIn, asyncHandler(async (req, res) => {
+router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 	try {
 		const { recipeMenu } = await User.findById(req.params.userId);
 		const recipes = await Recipe.find({ _id: { $in: recipeMenu } });
@@ -123,7 +123,7 @@ router.get('/:userId/recipeMenu', isLoggedIn, asyncHandler(async (req, res) => {
 }))
 
 // Get shopping list from user
-router.get('/:userId/shoppingList', isLoggedIn, asyncHandler(async (req, res) => {
+router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 	try {
 		const { shoppingList } = await User.findById(req.params.userId)
 		const shoppingListItems = await Item.find({ _id: { $in: shoppingList }});
@@ -141,7 +141,7 @@ router.get('/:userId/shoppingList', isLoggedIn, asyncHandler(async (req, res) =>
 }))
 
 // Get favourites from user
-router.get('/:userId/favourites', isLoggedIn, asyncHandler(async (req, res) => {
+router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 	try {
 		const { favouriteRecipes } = await User.findById(req.params.userId)
 		const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } });
@@ -155,7 +155,7 @@ router.get('/:userId/favourites', isLoggedIn, asyncHandler(async (req, res) => {
 }))
 
 // Edit user
-router.put('/:userId', isLoggedIn, asyncHandler(async (req, res) => {
+router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 	try {
 		const updatedUser = await User.findByIdAndUpdate(
 			req.params.userId,

@@ -32,7 +32,20 @@ const isLoggedIn = asyncHandler(async (req, res, next) => {
   }
 });
 
-// const isRightUser = asyncHandler(async (req, res, next) => {});
+const isRightUser = asyncHandler(async (req, res, next) => {
+  const loggedInUserId = req.user._id;
+  const { userId } = req.params;
+  try {
+    if (loggedInUserId.equals(userId)) {
+      next()
+    } else {
+      res.status(401)
+      throw new Error('Not authorized')
+    }
+  } catch (err) {
+    next(err)
+  }
+});
 
 const isAdmin = asyncHandler(async (req, res, next) => {
   const user = req.user;
@@ -49,4 +62,4 @@ const isAdmin = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { isLoggedIn, isAdmin };
+module.exports = { isLoggedIn, isRightUser, isAdmin };
