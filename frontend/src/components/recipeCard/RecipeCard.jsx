@@ -8,9 +8,11 @@ import { useEditFavourites } from '../../hooks/user/useEditFavourites';
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUser();
+  const { recipeMenu } = user;
+  const recipeIds = recipeMenu.map((obj) => obj._id);
   const { _id, name, image } = recipe;
-  const { onClickMenu, menuData } = useEditMenu(_id);
-  const onFavourite = useEditFavourites(recipe, user)
+  const { onClickMenu } = useEditMenu(_id);
+  const onFavourite = useEditFavourites(recipe, user);
 
   return (
     <div className="recipe-card">
@@ -18,7 +20,7 @@ const RecipeCard = ({ recipe }) => {
         {user && (
           <div className="recipe-card__icons flex justify-between p-1">
             <Icon
-              state={menuData.inMenu ? 'active' : ''}
+              state={recipeIds.includes(recipe._id) ? 'active' : ''}
               type={'secondary'}
               outline>
               <FontAwesomeIcon onClick={onClickMenu} icon={faUtensils} />
