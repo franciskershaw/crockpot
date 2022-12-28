@@ -8,8 +8,12 @@ import { useEditFavourites } from '../../hooks/user/useEditFavourites';
 
 const RecipeCard = ({ recipe }) => {
   const { user } = useUser();
-  const { recipeMenu } = user;
-  const recipeIds = recipeMenu.map((obj) => obj._id);
+  let recipeMenu
+  let recipeIds
+  if (user) {
+    recipeMenu = user.recipeMenu
+    recipeIds = recipeMenu.map((obj) => obj._id);
+  }
   const { _id, name, image } = recipe;
   const { onClickMenu } = useEditMenu(_id);
   const onFavourite = useEditFavourites(recipe, user);
