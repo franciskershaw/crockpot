@@ -14,26 +14,29 @@ export function useEditUser() {
     (body) => editUser(user._id, user.token, body),
     {
       onSuccess: (response, variables) => {
-        const keys = Object.keys(variables);
-        keys.forEach((key) => {
-          queryClient.setQueryData([queryKeys.user], (prevUserData) => {
-            const newUserData = prevUserData;
-            newUserData[key] = response[key];
-            if (key === 'recipeMenu') {
-              newUserData.shoppingList = response.shoppingList;
-            }
-            setStoredUser(newUserData);
-            return newUserData;
-          });
+        console.log({response, variables})
+        // Update user in both query cache and local storage
+        const key = Object.keys(variables)[0];
+        queryClient.setQueryData([queryKeys.user], (prevUserData) => {
+          const newUserData = prevUserData;
+          newUserData[key] = response[key];
+          if (key === 'recipeMenu') {
+            newUserData.shoppingList = response.shoppingList;
+          }
+          setStoredUser(newUserData);
+          return newUserData;
         });
+
+        // Ensure favourites, menu and shopping list are also updated
         if (variables.favouriteRecipes) {
           queryClient.refetchQueries([queryKeys.favourites]);
-        } else {
+        } else if (variables.recipeMenu) {
           queryClient.refetchQueries([queryKeys.recipeMenu]);
           queryClient.refetchQueries([queryKeys.shoppingList]);
         }
       },
       onError: (data) => {
+        console.log(data)
         toast.error(data);
       },
     }
