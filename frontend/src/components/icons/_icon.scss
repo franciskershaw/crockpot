@@ -82,6 +82,14 @@
             }
         }
 
+        // Active
+        &.icon--inactive {
+            // SVGs
+            svg {
+                @apply text-grey-inactive bg-white border-grey-inactive;
+            }
+        }
+
         &.icon--secondary {
             // SVGs
             svg {
@@ -111,6 +119,26 @@
                     @apply secondary;
                 }
             }
+        }
+    }
+
+    &--inactive {
+        // SVGs
+        svg {
+            @apply bg-grey-inactive border-grey-inactive;
+        }
+
+        // Text
+        .icon__text {
+            @apply bg-grey-inactive;
+
+            &:after {
+                @apply bg-grey-inactive;
+            }
+        }
+
+        &:hover {
+            transform: none;
         }
     }
 

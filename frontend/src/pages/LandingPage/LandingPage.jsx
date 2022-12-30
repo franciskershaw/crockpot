@@ -194,7 +194,7 @@ const LandingPage = () => {
 
 				<h3 className='text-blue-500 my-5'>Icons</h3>
 				<div className='flex justify-evenly'>
-					<Icon>
+					<Icon inactive>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
 					<Icon noHover={true}>
@@ -220,7 +220,7 @@ const LandingPage = () => {
 					</Icon>
 				</div>
 				<div className='flex justify-evenly'>
-					<Icon outline>
+					<Icon outline inactive>
 						<FontAwesomeIcon icon={faBook}/>
 					</Icon>
 					<Icon outline noHover={true}>

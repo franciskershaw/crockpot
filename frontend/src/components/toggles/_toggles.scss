@@ -2,7 +2,7 @@
     @apply overflow-hidden;
 
     .toggle-switch {
-        @apply flex text-center relative bg-gray-400 rounded-lg overflow-hidden;
+        @apply flex text-center relative bg-grey-inactive rounded-lg overflow-hidden;
     
         &__input {
             opacity: 0;
