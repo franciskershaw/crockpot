@@ -47,9 +47,9 @@ export function useEditMenu(recipeId) {
               return menuRecipe;
             }),
           });
+          toast.success(`${recipe.name} serves amount amended.`)
         }
       }
-      toast.success(`${recipe.name} serves amount amended.`)
     }
   }, [menuData.serves]);
 
