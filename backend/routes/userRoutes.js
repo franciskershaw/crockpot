@@ -157,20 +157,26 @@ router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (r
 // Edit user
 router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 	try {
+		let userToUpdate = await User.findById(req.params.userId);
+		let shoppingList;
+
+		if (req.body.recipeMenu) {
+			shoppingList = await generateShoppingList(req.body.recipeMenu);
+		} else {
+			shoppingList = userToUpdate.shoppingList;
+		}
+		
+		let updates = { ...req.body, shoppingList };
 		const updatedUser = await User.findByIdAndUpdate(
 			req.params.userId,
-			req.body,
+			updates,
 			{ new: true }
 		);
-		if (req.body.recipeMenu) {
-			const newShoppingList = await generateShoppingList(updatedUser.recipeMenu)
-			updatedUser.shoppingList = newShoppingList
-			updatedUser.save()
-		}
-		res.status(200).json(updatedUser)
+
+		res.status(200).json(updatedUser);
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		res.status(400);
+		throw new Error(err);
 	}
 }))
 
