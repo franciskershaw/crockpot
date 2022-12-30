@@ -14,7 +14,6 @@ export function useEditUser() {
     (body) => editUser(user._id, user.token, body),
     {
       onSuccess: (response, variables) => {
-        console.log({response, variables})
         // Update user in both query cache and local storage
         const key = Object.keys(variables)[0];
         queryClient.setQueryData([queryKeys.user], (prevUserData) => {
@@ -36,7 +35,7 @@ export function useEditUser() {
         }
       },
       onError: (data) => {
-        console.log(data)
+        console.log(data);
         toast.error(data);
       },
     }

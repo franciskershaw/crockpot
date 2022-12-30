@@ -2,6 +2,7 @@ import { useUser } from '../auth/useUser';
 import { useEditUser } from './useEditUser';
 import { useCurrentRecipe } from '../recipes/useCurrentRecipe';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export function useEditMenu(recipeId) {
   const { recipe } = useCurrentRecipe(recipeId);
@@ -48,6 +49,7 @@ export function useEditMenu(recipeId) {
           });
         }
       }
+      toast.success(`${recipe.name} serves amount amended.`)
     }
   }, [menuData.serves]);
 
@@ -67,6 +69,7 @@ export function useEditMenu(recipeId) {
         ...prev,
         inMenu: true,
       }));
+      toast.success(`${recipe.name} added to menu`);
 
       // Removes recipe from menu
     } else if (menuData.inMenu) {
@@ -79,6 +82,7 @@ export function useEditMenu(recipeId) {
         ...prev,
         inMenu: false,
       }));
+      toast.success(`${recipe.name} removed from menu`)
     }
   };
 
