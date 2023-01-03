@@ -50,7 +50,7 @@
     }
 
     &__image-container {
-        @apply relative w-1/2 h-full;
+        @apply relative w-1/2 h-full flex-shrink-0;
     }
 
     &__content-container {

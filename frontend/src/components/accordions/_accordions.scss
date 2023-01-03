@@ -10,7 +10,7 @@
     }
 
     &__trigger {
-        @apply w-full flex justify-between;
+        @apply w-full flex items-center justify-between;
 
         &:after {
             content: "❯";
