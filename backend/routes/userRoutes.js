@@ -151,10 +151,10 @@ router.get(
 			const list = [];
 
 			for (const item of shoppingListItems) {
-				const { quantity, unit } = shoppingList.find((shoppingListItem) =>
+				const { quantity, unit, obtained } = shoppingList.find((shoppingListItem) =>
 					item._id.equals(shoppingListItem._id)
 				);
-				list.push({ item, quantity, unit });
+				list.push({ item, quantity, unit, obtained });
 			}
 			res.status(200).json(list);
 		} catch (err) {
