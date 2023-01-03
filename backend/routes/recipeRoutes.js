@@ -29,6 +29,11 @@ router.post('/', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async
 			url: req.file.path,
 			filename: req.file.filename
 		}
+		if (req.user.isAdmin) {
+			recipe.approved = true
+		} else {
+			// TODO - send an email when new recipe has been added
+		}
 		await recipe.save()
 		res.status(201).json(recipe)
 	} catch (err) {
