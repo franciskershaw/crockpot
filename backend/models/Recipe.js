@@ -44,6 +44,11 @@ const RecipeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  approved: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);
