@@ -61,7 +61,8 @@ router.get('/:recipeId', asyncHandler(async (req, res) => {
 			createdBy: {
 				_id: createdBy._id,
 				name: createdBy.username
-			}
+			},
+			approved: recipe.approved
 		})
 	} catch (err) {
 		res.status(400)
