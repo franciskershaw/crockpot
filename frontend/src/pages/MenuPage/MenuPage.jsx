@@ -2,6 +2,7 @@ import Header from '../../layout/header/Header';
 import Icon from '../../components/icons/Icon';
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong';
 import Toggle from '../../components/toggles/Toggle';
+import TogglePills from '../../components/pills/TogglePills';
 import AccordionCustom from '../../components/accordions/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
@@ -11,15 +12,46 @@ import { useItemCategories } from '../../hooks/items/useItemCategories';
 const MenuPage = () => {
   const { recipeMenu, shoppingList } = useMenu();
   const { itemCategories } = useItemCategories();
-  console.log('menu', recipeMenu);
-  console.log('shoppingList', shoppingList);
-	console.log('categories', itemCategories)
+  // console.log('menu', recipeMenu);
+  // console.log('shoppingList', shoppingList);
+	// console.log('categories', itemCategories)
+
+  const categorisedShoppingList = itemCategories.map((category) =>
+    shoppingList.filter((item) => item.item.category === category._id)
+  );
 
   let shoppingListData = []
 
   for (let i = 0; i < itemCategories.length; i++) {
-    console.log(itemCategories[i].name)
+    if (categorisedShoppingList[i].length > 0) {
+      shoppingListData.push({
+        title: itemCategories[i].name,
+        icon: itemCategories[i].faIcon,
+        content: categorisedShoppingList[i]
+      })
+    }
   }
+
+  // console.log(shoppingListData)
+
+  // let shoppingListItems = []
+
+  // for (let i = 0; i < shoppingList.length; i++) {
+  //   const itemName = shoppingList[i].item.name
+  //   const itemQuantity = Math.round(shoppingList[i].quantity * 100) / 100
+  //   let itemUnit = shoppingList[i].unit
+
+  //   if (itemUnit == "cans") {
+  //     itemUnit = " cans"
+  //   }
+
+  //   shoppingListItems.push(
+  //     itemName.concat(" x ", itemQuantity, itemUnit)
+  //   )
+  // }
+
+  // console.log(shoppingListItems)
+
 
   return (
     <>
@@ -37,16 +69,7 @@ const MenuPage = () => {
             )}
           </div>
           <div className="">
-						<AccordionCustom data={
-              [
-                {
-                  title: "Title 1",
-                  content: "Bacon ipsum dolor amet turducken swine pancetta doner t-bone tongue, ground round landjaeger shoulder picanha. Meatloaf alcatra prosciutto pork. Ball tip shank leberkas, filet mignon sausage alcatra short loin bacon swine. Picanha pig bresaola fatback shoulder. Pork belly kevin landjaeger chislic ball tip. Shankle tri-tip cupim drumstick t-bone ribeye. Prosciutto shankle beef ribeye drumstick."
-                }
-              ]
-            }>
-
-            </AccordionCustom>
+						<AccordionCustom data={shoppingListData} />
 					</div>
         </Toggle>
       </div>

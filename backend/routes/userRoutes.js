@@ -165,7 +165,7 @@ router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) =>
 		if (req.body.recipeMenu) {
 			const newShoppingList = await generateShoppingList(updatedUser.recipeMenu)
 			updatedUser.shoppingList = newShoppingList
-			updatedUser.update()
+			updatedUser.save()
 		}
 		res.status(200).json(updatedUser)
 	} catch (err) {
