@@ -18,7 +18,11 @@ const Pill = ({ content, action }) => {
       />
       <label htmlFor={content.item._id}>
         {content.item.name} x {Math.round(content.quantity * 100) / 100}
-        {content.unit === 'cans' ? ' ' : ''}
+        {content.unit === 'cans' ||
+        content.unit === 'tbsp' ||
+        content.unit === 'Tbsp'
+          ? ' '
+          : ''}
         {content.unit}
       </label>
     </>
