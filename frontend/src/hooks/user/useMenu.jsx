@@ -1,13 +1,16 @@
 import { useUser } from '../auth/useUser';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getUserRecipeMenu,
   getUserShoppingList,
+  editUserShoppingList,
 } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
+import { setStoredUser } from '../../reactQuery/userStorage';
 
 export function useMenu() {
   const { user } = useUser();
+  const queryClient = useQueryClient();
 
   const menuFallback = [];
   const { data: recipeMenu = menuFallback } = useQuery(
@@ -21,5 +24,27 @@ export function useMenu() {
     () => getUserShoppingList(user._id, user.token)
   );
 
-  return { recipeMenu, shoppingList };
+  const { mutate } = useMutation(
+    (body) => editUserShoppingList(user._id, user.token, body),
+    {
+      onSuccess: (response) => {
+        queryClient.setQueryData([queryKeys.user], (prevUserData) => {
+          const newUserData = prevUserData;
+          newUserData.shoppingList = response;
+          setStoredUser(newUserData);
+          return newUserData;
+        });
+        queryClient.refetchQueries([queryKeys.shoppingList]);
+      },
+      onError: (data) => {
+        console.log(data);
+      },
+    }
+  );
+
+  const toggleItemObtained = (recipeId) => {
+    mutate({ recipeId });
+  };
+
+  return { recipeMenu, shoppingList, toggleItemObtained };
 }

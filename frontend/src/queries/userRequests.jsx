@@ -18,6 +18,18 @@ export const editUser = async (id, token, body) => {
   return response.data;
 };
 
+export const editUserShoppingList = async (id, token, body) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
+  const response = await axios.put(`/api/users/${id}/shoppingList`, body, config);
+
+  return response.data;
+};
+
 export const getUserRecipeMenu = async (id, token) => {
   const config = {
     headers: {

@@ -17,6 +17,7 @@ import {
   faToiletPaper,
   faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
+import { useMenu } from '../../hooks/user/useMenu';
 
 const open = keyframes({
   from: { height: 0 },
@@ -39,6 +40,7 @@ const AccordionContent = styled(Accordion.Content, {
 });
 
 const AccordionCustom = ({ data }) => {
+  const { toggleItemObtained } = useMenu();
   return (
     <Accordion.Root type="multiple" className="accordion">
       {data.map((dat, index) => (
@@ -88,7 +90,7 @@ const AccordionCustom = ({ data }) => {
               <ul className={`pills pills--toggle text-center`}>
                 {dat.content.map((pill, index) => (
                   <li key={`pill_${index}`}>
-                    <Pill content={pill} />
+                    <Pill content={pill} action={toggleItemObtained} />
                   </li>
                 ))}
               </ul>

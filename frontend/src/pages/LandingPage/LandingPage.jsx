@@ -277,12 +277,12 @@ const LandingPage = () => {
 				
 				<h3 className='text-blue-500 my-5'>Accordion</h3>
 				<div className='container'>
-					<AccordionCustom data={[
+					{/* <AccordionCustom data={[
 						{title: "Title",
 						 icon: "Hello",
 						 content: "Content"
 						}
-					]} />
+					]} /> */}
 				</div>
 			</div>
 
