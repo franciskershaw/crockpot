@@ -1,129 +1,27 @@
-import Button from '../../components/buttons/Button';
+import Button from '../../components/buttons/Button'; // Leave this here for version 2
 import Header from '../../layout/header/Header';
 import Icon from '../../components/icons/Icon';
-import Modal from '../../components/modals/Modal';
 import RecipeCard from '../../components/recipeCard/RecipeCard';
-import ToggleAndScrollPillsCategories from './ToggleAndScrollPillsCategories';
-import ToggleAndScrollPillsIngredients from './ToggleAndScrollPillsIngredients';
-import { useState, useEffect } from 'react';
-import { useRecipes, useFetchIndividualRecipes } from '../../hooks/recipes/useRecipes';
+import { useState } from 'react';
+import { useRecipes } from '../../hooks/recipes/useRecipes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMagnifyingGlass,
   faRefresh,
 } from '@fortawesome/free-solid-svg-icons';
-import { useRecipeCategories } from '../../hooks/recipes/useRecipeCategories';
-import { useItems } from '../../hooks/items/useItems';
 
 const BrowsePage = () => {
   let { allRecipes } = useRecipes();
-  useFetchIndividualRecipes(allRecipes)
-  const { recipeCategories } = useRecipeCategories();
-  const { ingredients } = useItems();
-
-  const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
-  const [isIngredientsModalOpen, setIsIngredientsModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [activeFilters, setActiveFilters] = useState({
-    categories: [],
-    ingredients: [],
-  });
-  const [filteredResults, setFilteredResults] = useState({
-    active: false,
-    results: [],
-  });
-  const [searchFilteredResults, setSearchFilteredResults] = useState([]);
-
-  // Filtering by categories and ingredients
-  // useEffect(() => {
-  //   let filteredRecipes = [];
-  //   const { categories, ingredients } = activeFilters;
-
-  //   // Either of the filters is active
-  //   if (categories.length || ingredients.length) {
-  //     // If categories chosen, filter all recipes by active category filters
-  //     let filteredByCategories = [];
-  //     if (categories.length) {
-  //       filteredByCategories = allRecipes.filter((recipe) =>
-  //         categories.every((category) =>
-  //           recipe.categories.includes(category._id)
-  //         )
-  //       );
-  //     }
-
-  //     // If ingredients chosen, filter all recipes by active ingredient filters
-  //     let filteredByIngredients = [];
-  //     if (ingredients.length) {
-  //       filteredByIngredients = allRecipes.filter((recipe) =>
-  //         ingredients.every((ingredient) =>
-  //           recipe.ingredients.some((value) => value._id === ingredient._id)
-  //         )
-  //       );
-  //     }
-
-  //     if (
-  //       categories.length &&
-  //       ingredients.length &&
-  //       filteredByCategories.length &&
-  //       filteredByIngredients.length
-  //     ) {
-  //       for (let object of filteredByCategories) {
-  //         for (let object2 of filteredByIngredients) {
-  //           if (object._id === object2._id) {
-  //             filteredRecipes.push(object);
-  //           }
-  //         }
-  //       }
-  //     } else if (
-  //       categories.length &&
-  //       !ingredients.length &&
-  //       filteredByCategories.length
-  //     ) {
-  //       filteredRecipes = filteredByCategories;
-  //     } else if (
-  //       !categories.length &&
-  //       ingredients.length &&
-  //       filteredByIngredients.length
-  //     ) {
-  //       filteredRecipes = filteredByIngredients;
-  //     }
-
-  //     setFilteredResults({
-  //       active: true,
-  //       results: filteredRecipes,
-  //     });
-  //   } else if (!categories.length && !ingredients.length) {
-  //     setFilteredResults({
-  //       active: false,
-  //       results: [],
-  //     });
-  //   }
-  // }, [activeFilters]);
-
-  // const openCategoriesModal = () => {
-  //   document.body.classList.add('modal-is-open');
-  //   setIsCategoriesModalOpen(true);
-  // };
-  // const openIngredientsModal = () => {
-  //   document.body.classList.add('modal-is-open');
-  //   setIsIngredientsModalOpen(true);
-  // };
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const onChangeSearchBar = (e) => {
-    let searchFilters = [];
-
     setSearchValue(e.target.value);
-
-    // if (filteredResults.results.length) {
-    //   searchFilters = filteredResults.results.filter((recipe) =>
-    //     recipe.name.toLowerCase().includes(e.target.value)
-    //   );
-    // }
-
-    // searchFilters = allRecipes.filter((recipe) =>
-    //   recipe.name.toLowerCase().includes(searchValue)
-    // );
-
+    setFilteredResults(
+      allRecipes.filter((recipe) =>
+        recipe.name.toLowerCase().includes(e.target.value)
+      )
+    );
   };
 
   return (
@@ -169,11 +67,11 @@ const BrowsePage = () => {
         </div> */}
       </form>
       <div className="container flex flex-wrap justify-evenly pt-32 md:pt-14">
-        {filteredResults.active && filteredResults.results.length ? (
-          filteredResults.results.map((recipe) => (
+        {filteredResults.length ? (
+          filteredResults.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))
-        ) : filteredResults.active && !filteredResults.length ? (
+        ) : searchValue.length && !filteredResults.length ? (
           <h4>No results available</h4>
         ) : (
           allRecipes.map((recipe) => (
@@ -181,34 +79,6 @@ const BrowsePage = () => {
           ))
         )}
       </div>
-      {/* <Modal
-        isModalOpen={isCategoriesModalOpen}
-        setIsModalOpen={setIsCategoriesModalOpen}
-        heading={'Categories'}
-        noPadding>
-        <ToggleAndScrollPillsCategories
-          data={recipeCategories}
-          scrollTheme="secondary"
-          filterType={'categories'}
-          filters={activeFilters}
-          setFilters={setActiveFilters}
-          setModalOpen={setIsCategoriesModalOpen}
-        />
-      </Modal>
-      <Modal
-        isModalOpen={isIngredientsModalOpen}
-        setIsModalOpen={setIsIngredientsModalOpen}
-        heading={'Ingredients'}
-        noPadding>
-        <ToggleAndScrollPillsIngredients
-          data={ingredients}
-          scrollTheme="secondary"
-          filterType={'ingredients'}
-          filters={activeFilters}
-          setFilters={setActiveFilters}
-          setModalOpen={setIsIngredientsModalOpen}
-        />
-      </Modal> */}
     </>
   );
 };

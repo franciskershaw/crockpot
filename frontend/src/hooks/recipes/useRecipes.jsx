@@ -20,12 +20,3 @@ export function usePrefetchRecipes() {
   const queryClient = useQueryClient();
   queryClient.prefetchQuery([queryKeys.recipes], fetchAllRecipes);
 }
-
-export function useFetchIndividualRecipes(recipes) {
-  const queryClient = useQueryClient();
-  recipes.forEach((recipe) => {
-    queryClient.prefetchQuery([queryKeys.recipes, recipe._id], () =>
-      fetchSingleRecipe(recipe._id)
-    );
-  });
-}
