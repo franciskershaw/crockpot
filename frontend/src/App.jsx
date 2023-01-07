@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SharedLayout from './layout/SharedLayout';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import PrivateRoute from './components/privateRoutes/PrivateRoute';
+import AdminRoute from './components/privateRoutes/AdminRoute';
 import AddRecipePage from './pages/AddRecipePage/AddRecipePage';
 import BrowsePage from './pages/BrowsePage/BrowsePage';
 import CookbookPage from './pages/CookbookPage/CookbookPage';
@@ -24,7 +25,7 @@ function App() {
               <Route path="/cookbook" element={<CookbookPage />} />
             </Route>
             <Route path="/viewrecipe/:id" element={<ViewRecipePage />} />
-            <Route path="/addrecipe" element={<PrivateRoute />}>
+            <Route path="/addrecipe" element={<AdminRoute />}>
               <Route path="/addrecipe" element={<AddRecipePage />} />
             </Route>
             <Route path="/menu" element={<PrivateRoute />}>
