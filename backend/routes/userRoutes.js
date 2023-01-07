@@ -168,6 +168,7 @@ router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) =>
 		try {
 			let userToUpdate = await User.findById(req.params.userId);
 			let shoppingList;
+			let extraItems;
 
 			if (req.body.recipeMenu) {
 				shoppingList = await generateShoppingList(req.body.recipeMenu);
@@ -175,7 +176,19 @@ router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) =>
 				shoppingList = userToUpdate.shoppingList;
 			}
 
-			let updates = { ...req.body, shoppingList };
+			if (req.body.extraItems) {
+				if (req.body.extraItems.length) {
+					extraItems = userToUpdate.extraItems
+					extraItems.push(req.body.extraItems[0])
+				} else if (!req.body.extraItems.length) {
+					// Pass in an empty array from the frontend if the user is to clear extraItems
+					extraItems = []
+				}
+			} else {
+				extraItems = userToUpdate.extraItems
+			}
+
+			let updates = { ...req.body, shoppingList, extraItems };
 			const updatedUser = await User.findByIdAndUpdate(
 				req.params.userId,
 				updates,
