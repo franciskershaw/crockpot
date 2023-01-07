@@ -51,7 +51,7 @@ const MenuPage = () => {
 							/>
 						))}
 					</div>
-					<div className="container container--xsm">
+					<div className="mx-auto max-w-4xl">
 						<AccordionCustom data={shoppingListData} />
 					</div>
 				</Toggle>
