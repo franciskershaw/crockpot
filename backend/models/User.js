@@ -45,6 +45,7 @@ const UserSchema = mongoose.Schema({
       _id: mongoose.Schema.Types.ObjectId,
       quantity: Number,
       unit: String,
+      obtained: Boolean,
     },
   ],
 });
