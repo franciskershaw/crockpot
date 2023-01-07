@@ -68,6 +68,7 @@ const RegisterPage = () => {
               required
               value={password}
               onChange={onChange}
+              autoComplete="on"
             />
           </div>
           <div className="form__input">
@@ -79,6 +80,7 @@ const RegisterPage = () => {
               required
               value={confirmPassword}
               onChange={onChange}
+              autoComplete="on"
             />
           </div>
         </form>

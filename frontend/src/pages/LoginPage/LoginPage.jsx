@@ -64,6 +64,7 @@ const LoginPage = () => {
               type="password"
               id="password"
               name="password"
+              autoComplete="on"
               required
             />
           </div>
