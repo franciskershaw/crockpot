@@ -5,7 +5,7 @@ import Header from '../../layout/header/Header';
 import RecipeCard from '../../components/recipeCard/RecipeCard';
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong';
 import ScrollPills from '../../components/pills/ScrollPills';
-import TogglePills from '../../components/pills/TogglePills';
+// import TogglePills from '../../components/pills/TogglePills';
 import QuantityInput from '../../components/forms/QuantityInput';
 import Toggle from '../../components/toggles/Toggle';
 import { toast } from 'react-toastify';
@@ -239,12 +239,12 @@ const LandingPage = () => {
 
 				<div>
 					{/* <TogglePills /> */}
-					{/* <TogglePills type={''} name={'one'} /> */}
+					{/* <TogglePills type={""} name={"one"}/> */}
 				</div>
 
 				<div>
 					{/* <TogglePills /> */}
-					{/* <TogglePills type={'secondary'} name={'two'} /> */}
+					{/* <TogglePills type={"secondary"} name={"two"}/> */}
 				</div>
 
 				<div>

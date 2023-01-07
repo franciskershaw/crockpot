@@ -10,9 +10,7 @@ const Item = require('../models/Item');
 const { isLoggedIn, isRightUser } = require('../middleware/authMiddleware');
 
 // Register new user
-router.post(
-	'/',
-	asyncHandler(async (req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
 		const { username, password } = req.body;
 
 		// Validation
@@ -65,9 +63,7 @@ router.post(
 );
 
 // Login a user
-router.post(
-	'/login',
-	asyncHandler(async (req, res) => {
+router.post('/login', asyncHandler(async (req, res) => {
 		try {
 			const { username, password } = req.body;
 
@@ -98,10 +94,7 @@ router.post(
 );
 
 // Get username by ID
-router.get(
-	'/:userId',
-	isLoggedIn,
-	asyncHandler(async (req, res) => {
+router.get('/:userId', isLoggedIn, asyncHandler(async (req, res) => {
 		try {
 			const user = await User.findById(req.params.userId);
 			res.status(200).json({
@@ -114,11 +107,7 @@ router.get(
 );
 
 // Get recipe menu from user
-router.get(
-	'/:userId/recipeMenu',
-	isLoggedIn,
-	isRightUser,
-	asyncHandler(async (req, res) => {
+router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
 			const { recipeMenu } = await User.findById(req.params.userId);
 			const recipes = await Recipe.find({ _id: { $in: recipeMenu } });
@@ -140,21 +129,17 @@ router.get(
 );
 
 // Get shopping list from user
-router.get(
-	'/:userId/shoppingList',
-	isLoggedIn,
-	isRightUser,
-	asyncHandler(async (req, res) => {
+router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
 			const { shoppingList } = await User.findById(req.params.userId);
 			const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
 			const list = [];
 
 			for (const item of shoppingListItems) {
-				const { quantity, unit } = shoppingList.find((shoppingListItem) =>
+				const { quantity, unit, obtained } = shoppingList.find((shoppingListItem) =>
 					item._id.equals(shoppingListItem._id)
 				);
-				list.push({ item, quantity, unit });
+				list.push({ item, quantity, unit, obtained });
 			}
 			res.status(200).json(list);
 		} catch (err) {
@@ -165,11 +150,7 @@ router.get(
 );
 
 // Get favourites from user
-router.get(
-	'/:userId/favourites',
-	isLoggedIn,
-	isRightUser,
-	asyncHandler(async (req, res) => {
+router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
 			const { favouriteRecipes } = await User.findById(req.params.userId);
 			const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } });
@@ -183,11 +164,7 @@ router.get(
 );
 
 // Edit user
-router.put(
-	'/:userId',
-	isLoggedIn,
-	isRightUser,
-	asyncHandler(async (req, res) => {
+router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
 			let userToUpdate = await User.findById(req.params.userId);
 			let shoppingList;
@@ -218,6 +195,26 @@ router.put(
 		}
 	})
 );
+
+router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+	try {
+		let userToUpdate = await User.findById(req.params.userId)
+		let shoppingList = userToUpdate.shoppingList
+		
+		for (let item of shoppingList) {
+			if (item._id.equals(req.body.recipeId)) {
+				item.obtained = !item.obtained
+			}
+		}
+		
+		userToUpdate.shoppingList = shoppingList
+		userToUpdate.save()
+		res.status(200).json(shoppingList)
+	} catch (err) {
+		res.status(400);
+		throw new Error(err);
+	}
+}))
 
 const generateShoppingList = async (menu) => {
 	let shoppingList = [];
