@@ -1,150 +1,155 @@
 .icon {
-    @apply flex flex-col md:flex-row items-center duration-sm ease-in-out;
+	@apply flex flex-col md:flex-row items-center duration-sm ease-in-out;
 
-    // SVGs
-    svg {
-        @apply primary inline-flex items-center justify-center flex-shrink-0 h-4 w-4 p-2 border-2 rounded-full duration-sm ease-in-out;
-    }
+	// SVGs
+	svg {
+		@apply primary inline-flex items-center justify-center flex-shrink-0 h-4 w-4 p-2 border-2 rounded-full duration-sm ease-in-out;
+	}
 
-    // Text
-    &__text {
-        @apply text-black inline-block relative capitalize;
+	// Text
+	&__text {
+		@apply text-black inline-block relative capitalize;
 
-        &:after {
-            @apply bg-black duration-sm ease-in-out;
+		&:after {
+			@apply bg-black duration-sm ease-in-out;
 
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            transform-origin: bottom left;
-        }
-    }
+			content: '';
+			position: absolute;
+			width: 100%;
+			transform: scaleX(0);
+			height: 2px;
+			bottom: 0;
+			left: 0;
+			transform-origin: bottom left;
+		}
+	}
 
-    // Hover
-    &:hover {
-        @apply scale-lg;
+	// Hover
+	&:hover {
+		@apply scale-lg;
 
-        .icon__text:after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-    }
+		.icon__text:after {
+			transform: scaleX(1);
+			transform-origin: bottom left;
+		}
+	}
 
-    // Secondary
-    &--secondary {
-        // SVGs
-        svg {
-            @apply secondary;
-        }
+	// Secondary
+	&--secondary {
+		// SVGs
+		svg {
+			@apply secondary;
+		}
 
-        // Text
-        .icon__text {
-            @apply text-purple;
+		// Text
+		.icon__text {
+			@apply text-purple;
 
-            &:after {
-                @apply bg-purple;
-            }
-        }
-    }
+			&:after {
+				@apply bg-purple;
+			}
+		}
+	}
 
-    // Outline
-    &--outline {
-        // SVGs
-        svg {
-            @apply primary-outline;
-        }
+	// Outline
+	&--outline {
+		// SVGs
+		svg {
+			@apply primary-outline;
+		}
 
-        // Text
-        .icon__text {
-            @apply text-black;
+		// Text
+		.icon__text {
+			@apply text-black;
 
-            &:after {
-                @apply bg-black;
-            }
-        }
+			&:after {
+				@apply bg-black;
+			}
+		}
 
-        // Hover
-        &:hover {
-            svg {
-                @apply primary-outline--hover;
-            }
-        }
+		// Hover
+		&:hover {
+			svg {
+				@apply primary-outline--hover;
+			}
+		}
 
-        // Active
-        &.icon--active {
-            // SVGs
-            svg {
-                @apply primary;
-            }
-        }
+		// Active
+		&.icon--active {
+			// SVGs
+			svg {
+				@apply primary;
+			}
 
-        // Active
-        &.icon--inactive {
-            // SVGs
-            svg {
-                @apply text-grey-inactive bg-white border-grey-inactive;
-            }
-        }
+			.icon__text:after {
+				transform: scaleX(1);
+				transform-origin: bottom left;
+			}
+		}
 
-        &.icon--secondary {
-            // SVGs
-            svg {
-                @apply secondary-outline;
-            }
+		// Active
+		&.icon--inactive {
+			// SVGs
+			svg {
+				@apply text-grey-inactive bg-white border-grey-inactive;
+			}
+		}
 
-            // Text
-            .icon__text {
-                @apply text-purple;
+		&.icon--secondary {
+			// SVGs
+			svg {
+				@apply secondary-outline;
+			}
 
-                &:after {
-                    @apply bg-purple;
-                }
-            }
+			// Text
+			.icon__text {
+				@apply text-purple;
 
-            // Hover
-            &:hover {
-                svg {
-                    @apply secondary-outline--hover;
-                }
-            }
+				&:after {
+					@apply bg-purple;
+				}
+			}
 
-            // Active
-            &.icon--active {
-                // SVGs
-                svg {
-                    @apply secondary;
-                }
-            }
-        }
-    }
+			// Hover
+			&:hover {
+				svg {
+					@apply secondary-outline--hover;
+				}
+			}
 
-    &--inactive {
-        // SVGs
-        svg {
-            @apply bg-grey-inactive border-grey-inactive;
-        }
+			// Active
+			&.icon--active {
+				// SVGs
+				svg {
+					@apply secondary;
+				}
+			}
+		}
+	}
 
-        // Text
-        .icon__text {
-            @apply bg-grey-inactive;
+	&--inactive {
+		// SVGs
+		svg {
+			@apply bg-grey-inactive border-grey-inactive;
+		}
 
-            &:after {
-                @apply bg-grey-inactive;
-            }
-        }
+		// Text
+		.icon__text {
+			@apply bg-grey-inactive;
 
-        &:hover {
-            transform: none;
-        }
-    }
+			&:after {
+				@apply bg-grey-inactive;
+			}
+		}
 
-    &--no-hover {
-        &:hover {
-            transform: none;
-        }
-    }
+		&:hover {
+			transform: none;
+		}
+	}
+
+	&--no-hover {
+		&:hover {
+			transform: none;
+		}
+	}
 }

@@ -9,6 +9,10 @@
 		grid-column: span 2;
 	}
 
+	.recipe-card-long {
+		grid-column: span 4;
+	}
+
 	// Center final recipe card if 1 left over
 	.recipe-card:last-child:nth-child(2n - 1) {
 		grid-column-end: 4;
@@ -35,6 +39,10 @@
 		// Center final recipe card if 1 left over
 		.recipe-card:last-child:nth-child(3n - 2) {
 			grid-column-end: 5;
+		}
+
+		.recipe-card-long {
+			grid-column: span 3;
 		}
 	}
 
@@ -73,6 +81,10 @@
 		.recipe-card:last-child:nth-child(4n - 3) {
 			grid-column-end: 6;
 		}
+
+		.recipe-card-long {
+			grid-column: span 4;
+		}
 	}
 }
 
@@ -107,9 +119,7 @@
 }
 
 .recipe-card-long {
-	@apply border-2 border-purple shadow-card rounded overflow-hidden flex items-center duration-md ease-in-out;
-
-	width: calc(100% - 1rem);
+	@apply border-2 border-purple shadow-card rounded overflow-hidden flex items-center duration-md ease-in-out w-full;
 
 	&:hover {
 		@apply scale-sm;

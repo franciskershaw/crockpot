@@ -1,31 +1,31 @@
 .navbar {
-    @apply flex bg-grey-bg shadow-top fixed bottom-0 left-0 right-0 z-nav md:top-0 md:bottom-auto md:shadow-bottom md:p-4;
+	@apply flex bg-grey-bg shadow-top fixed bottom-0 left-0 right-0 z-nav md:top-0 md:bottom-auto md:shadow-bottom md:p-4;
 
-    height: 12.5vh;
+	height: 12.5vh;
 
-    @screen md {
-        height: auto;
-    }
+	@screen md {
+		height: auto;
+	}
 
-    &__wrapper {
-        @apply flex items-center w-full md:justify-between md:flex-wrap lg:justify-end lg:space-x-4 lg:flex-nowrap;
+	&__wrapper {
+		@apply flex items-center justify-center w-full md:justify-between md:flex-wrap lg:justify-end lg:space-x-4 lg:flex-nowrap;
 
-        max-width: 900px;
+		max-width: 900px;
 
-        @screen lg {
-            max-width: 1200px;
-        }
-    }
+		@screen lg {
+			max-width: 1200px;
+		}
+	}
 }
 
 main {
-    @apply pb-nav-padding;
+	@apply pb-nav-padding;
 
-    @screen md {
-        @apply pb-8 pt-nav-padding-md;
-    }
+	@screen md {
+		@apply pb-8 pt-nav-padding-md;
+	}
 
-    @screen lg {
-        @apply pt-nav-padding-lg;
-    }
+	@screen lg {
+		@apply pt-nav-padding-lg;
+	}
 }
