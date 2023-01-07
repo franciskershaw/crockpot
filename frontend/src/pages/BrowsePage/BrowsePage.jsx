@@ -69,7 +69,7 @@ const BrowsePage = () => {
         </div> */}
       </form>
       <div className="recipe-card-container pt-32 md:pt-14">
-        {filteredResults.length ? (
+        {searchValue.length && filteredResults.length ? (
           filteredResults.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))
