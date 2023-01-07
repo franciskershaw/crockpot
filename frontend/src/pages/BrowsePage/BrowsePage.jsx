@@ -6,8 +6,8 @@ import { useState } from 'react';
 import { useRecipes } from '../../hooks/recipes/useRecipes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-	faMagnifyingGlass,
-	faRefresh,
+  faMagnifyingGlass,
+  faRefresh,
 } from '@fortawesome/free-solid-svg-icons';
 
 const BrowsePage = () => {
@@ -47,9 +47,11 @@ const BrowsePage = () => {
             onChange={onChangeSearchBar}
             className="w-full !border-purple"
           />
-          <Icon classes={'ml-4 cursor-pointer'} type={'secondary'}>
-            <FontAwesomeIcon icon={faRefresh} />
-          </Icon>
+          <div onClick={() => setSearchValue('')}>
+            <Icon classes={'ml-4 cursor-pointer'} type={'secondary'}>
+              <FontAwesomeIcon icon={faRefresh} />
+            </Icon>
+          </div>
         </div>
         {/* <div className="flex items-center justify-center space-x-6 md:w-1/2 md:!mt-0 md:justify-end">
           <Button
