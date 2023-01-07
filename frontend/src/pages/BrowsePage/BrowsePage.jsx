@@ -73,7 +73,9 @@ const BrowsePage = () => {
 						<RecipeCard key={recipe._id} recipe={recipe} />
 					))
 				) : searchValue.length && !filteredResults.length ? (
-					<h4>No results available</h4>
+					<h4 className="col-span-4 md:col-span-6 lg:col-span-8 text-center">
+						No results available
+					</h4>
 				) : (
 					allRecipes.map((recipe) => (
 						<RecipeCard key={recipe._id} recipe={recipe} />
