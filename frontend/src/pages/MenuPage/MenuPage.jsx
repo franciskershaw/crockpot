@@ -42,7 +42,7 @@ const MenuPage = () => {
 					right={'Shopping List'}
 					fixed
 				>
-					<div className="flex flex-wrap justify-evenly space-y-3">
+					<div className="recipe-card-container">
 						{recipeMenu.map((recipe) => (
 							<RecipeCardLong
 								key={recipe.recipe._id}
@@ -51,7 +51,7 @@ const MenuPage = () => {
 							/>
 						))}
 					</div>
-					<div className="">
+					<div className="container container--xsm">
 						<AccordionCustom data={shoppingListData} />
 					</div>
 				</Toggle>
