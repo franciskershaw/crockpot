@@ -35,79 +35,79 @@ const BrowsePage = () => {
   const [searchFilteredResults, setSearchFilteredResults] = useState([]);
 
   // Filtering by categories and ingredients
-  useEffect(() => {
-    let filteredRecipes = [];
-    const { categories, ingredients } = activeFilters;
+  // useEffect(() => {
+  //   let filteredRecipes = [];
+  //   const { categories, ingredients } = activeFilters;
 
-    // Either of the filters is active
-    if (categories.length || ingredients.length) {
-      // If categories chosen, filter all recipes by active category filters
-      let filteredByCategories = [];
-      if (categories.length) {
-        filteredByCategories = allRecipes.filter((recipe) =>
-          categories.every((category) =>
-            recipe.categories.includes(category._id)
-          )
-        );
-      }
+  //   // Either of the filters is active
+  //   if (categories.length || ingredients.length) {
+  //     // If categories chosen, filter all recipes by active category filters
+  //     let filteredByCategories = [];
+  //     if (categories.length) {
+  //       filteredByCategories = allRecipes.filter((recipe) =>
+  //         categories.every((category) =>
+  //           recipe.categories.includes(category._id)
+  //         )
+  //       );
+  //     }
 
-      // If ingredients chosen, filter all recipes by active ingredient filters
-      let filteredByIngredients = [];
-      if (ingredients.length) {
-        filteredByIngredients = allRecipes.filter((recipe) =>
-          ingredients.every((ingredient) =>
-            recipe.ingredients.some((value) => value._id === ingredient._id)
-          )
-        );
-      }
+  //     // If ingredients chosen, filter all recipes by active ingredient filters
+  //     let filteredByIngredients = [];
+  //     if (ingredients.length) {
+  //       filteredByIngredients = allRecipes.filter((recipe) =>
+  //         ingredients.every((ingredient) =>
+  //           recipe.ingredients.some((value) => value._id === ingredient._id)
+  //         )
+  //       );
+  //     }
 
-      if (
-        categories.length &&
-        ingredients.length &&
-        filteredByCategories.length &&
-        filteredByIngredients.length
-      ) {
-        for (let object of filteredByCategories) {
-          for (let object2 of filteredByIngredients) {
-            if (object._id === object2._id) {
-              filteredRecipes.push(object);
-            }
-          }
-        }
-      } else if (
-        categories.length &&
-        !ingredients.length &&
-        filteredByCategories.length
-      ) {
-        filteredRecipes = filteredByCategories;
-      } else if (
-        !categories.length &&
-        ingredients.length &&
-        filteredByIngredients.length
-      ) {
-        filteredRecipes = filteredByIngredients;
-      }
+  //     if (
+  //       categories.length &&
+  //       ingredients.length &&
+  //       filteredByCategories.length &&
+  //       filteredByIngredients.length
+  //     ) {
+  //       for (let object of filteredByCategories) {
+  //         for (let object2 of filteredByIngredients) {
+  //           if (object._id === object2._id) {
+  //             filteredRecipes.push(object);
+  //           }
+  //         }
+  //       }
+  //     } else if (
+  //       categories.length &&
+  //       !ingredients.length &&
+  //       filteredByCategories.length
+  //     ) {
+  //       filteredRecipes = filteredByCategories;
+  //     } else if (
+  //       !categories.length &&
+  //       ingredients.length &&
+  //       filteredByIngredients.length
+  //     ) {
+  //       filteredRecipes = filteredByIngredients;
+  //     }
 
-      setFilteredResults({
-        active: true,
-        results: filteredRecipes,
-      });
-    } else if (!categories.length && !ingredients.length) {
-      setFilteredResults({
-        active: false,
-        results: [],
-      });
-    }
-  }, [activeFilters]);
+  //     setFilteredResults({
+  //       active: true,
+  //       results: filteredRecipes,
+  //     });
+  //   } else if (!categories.length && !ingredients.length) {
+  //     setFilteredResults({
+  //       active: false,
+  //       results: [],
+  //     });
+  //   }
+  // }, [activeFilters]);
 
-  const openCategoriesModal = () => {
-    document.body.classList.add('modal-is-open');
-    setIsCategoriesModalOpen(true);
-  };
-  const openIngredientsModal = () => {
-    document.body.classList.add('modal-is-open');
-    setIsIngredientsModalOpen(true);
-  };
+  // const openCategoriesModal = () => {
+  //   document.body.classList.add('modal-is-open');
+  //   setIsCategoriesModalOpen(true);
+  // };
+  // const openIngredientsModal = () => {
+  //   document.body.classList.add('modal-is-open');
+  //   setIsIngredientsModalOpen(true);
+  // };
 
   const onChangeSearchBar = (e) => {
     let searchFilters = [];
@@ -135,7 +135,7 @@ const BrowsePage = () => {
       </Header>
       <form
         action=""
-        className="form container fixed top-0 left-0 right-0 z-search pt-nav-padding pb-6 bg-opacity-80 bg-grey-bg md:px-8 md:py-4 md:flex md:top-[108px] lg:top-[68px]">
+        className="form container fixed top-0 left-0 right-0 z-search pt-nav-padding pb-6 bg-opacity-80 bg-grey-bg md:px-8 md:py-4 md:flex md:justify-center md:top-[108px] lg:top-[68px]">
         <div className="form__input !flex-row items-center md:w-1/2">
           <label htmlFor="search" className="invisible w-0 h-0">
             Search for a recipe
@@ -153,7 +153,7 @@ const BrowsePage = () => {
             <FontAwesomeIcon icon={faRefresh} />
           </Icon>
         </div>
-        <div className="flex items-center justify-center space-x-6 md:w-1/2 md:!mt-0 md:justify-end">
+        {/* <div className="flex items-center justify-center space-x-6 md:w-1/2 md:!mt-0 md:justify-end">
           <Button
             onClick={openCategoriesModal}
             type={'secondary'}
@@ -166,7 +166,7 @@ const BrowsePage = () => {
             text={'Ingredients'}
             tooltip={activeFilters.ingredients.length}
           />
-        </div>
+        </div> */}
       </form>
       <div className="container flex flex-wrap justify-evenly pt-32 md:pt-14">
         {filteredResults.active && filteredResults.results.length ? (
@@ -181,7 +181,7 @@ const BrowsePage = () => {
           ))
         )}
       </div>
-      <Modal
+      {/* <Modal
         isModalOpen={isCategoriesModalOpen}
         setIsModalOpen={setIsCategoriesModalOpen}
         heading={'Categories'}
@@ -208,7 +208,7 @@ const BrowsePage = () => {
           setFilters={setActiveFilters}
           setModalOpen={setIsIngredientsModalOpen}
         />
-      </Modal>
+      </Modal> */}
     </>
   );
 };
