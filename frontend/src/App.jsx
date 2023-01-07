@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import MenuPage from './pages/MenuPage/MenuPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ViewRecipePage from './pages/ViewRecipePage/ViewRecipePage';
+import SandBoxPage from './pages/SandBoxPage/SandBoxPage';
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
             </Route>
             <Route path="/menu" element={<PrivateRoute />}>
               <Route path="/menu" element={<MenuPage />} />
+            </Route>
+            <Route path='/sandbox' element={<PrivateRoute />}>
+              <Route path='/sandbox' element={<SandBoxPage />} />
             </Route>
           </Route>
         </Routes>
