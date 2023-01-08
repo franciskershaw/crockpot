@@ -25,13 +25,14 @@ export function useEditUser() {
           setStoredUser(newUserData);
           return newUserData;
         });
-
         // Ensure favourites, menu and shopping list are also updated
         if (variables.favouriteRecipes) {
           queryClient.refetchQueries([queryKeys.favourites]);
         } else if (variables.recipeMenu) {
           queryClient.refetchQueries([queryKeys.recipeMenu]);
           queryClient.refetchQueries([queryKeys.shoppingList]);
+        } else if (variables.extraItems) {
+          queryClient.refetchQueries([queryKeys.extraItems]);
         }
       },
       onError: (data) => {

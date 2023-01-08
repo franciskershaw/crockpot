@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getUserRecipeMenu,
   getUserShoppingList,
+  getUserExtraItems,
   editUserShoppingList,
 } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
@@ -25,6 +26,12 @@ export function useMenu() {
   const { data: shoppingList = shoppingFallback } = useQuery(
     [queryKeys.shoppingList],
     () => getUserShoppingList(user._id, user.token)
+  );
+
+  const extraItemsFallback = [];
+  const { data: extraItems = extraItemsFallback } = useQuery(
+    [queryKeys.extraItems],
+    () => getUserExtraItems(user._id, user.token)
   );
 
   const { mutate: toggleObtained } = useMutation(
@@ -59,5 +66,11 @@ export function useMenu() {
     }
   };
 
-  return { recipeMenu, shoppingList, toggleItemObtained, addExtraShoppingItem };
+  return {
+    recipeMenu,
+    shoppingList,
+    toggleItemObtained,
+    addExtraShoppingItem,
+    extraItems,
+  };
 }
