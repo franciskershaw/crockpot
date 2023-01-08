@@ -7,4 +7,5 @@ export const queryKeys = {
   favourites: 'favourites',
   recipeMenu: 'recipeMenu',
   shoppingList: 'shoppingList',
+  extraItems: 'extraItems',
 };
