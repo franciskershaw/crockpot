@@ -1,16 +1,18 @@
 import { useUser } from '../auth/useUser';
+import { useEditUser } from './useEditUser';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getUserRecipeMenu,
   getUserShoppingList,
-  getUserExtraItems,
   editUserShoppingList,
 } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { setStoredUser } from '../../reactQuery/userStorage';
+import { toast } from 'react-toastify';
 
 export function useMenu() {
   const { user } = useUser();
+  const editUser = useEditUser();
   const queryClient = useQueryClient();
 
   const menuFallback = [];
@@ -25,13 +27,7 @@ export function useMenu() {
     () => getUserShoppingList(user._id, user.token)
   );
 
-  const extraItemsFallback = [];
-  const { data: extraItems = extraItemsFallback } = useQuery(
-    [queryKeys.extraItems],
-    () => getUserExtraItems(user._id, user.token)
-  );
-
-  const { mutate } = useMutation(
+  const { mutate: toggleObtained } = useMutation(
     (body) => editUserShoppingList(user._id, user.token, body),
     {
       onSuccess: (response) => {
@@ -42,7 +38,6 @@ export function useMenu() {
           return newUserData;
         });
         queryClient.refetchQueries([queryKeys.shoppingList]);
-        queryClient.refetchQueries([queryKeys.extraItems]);
       },
       onError: (data) => {
         console.log(data);
@@ -51,8 +46,18 @@ export function useMenu() {
   );
 
   const toggleItemObtained = (recipeId) => {
-    mutate({ recipeId });
+    toggleObtained({ recipeId });
   };
 
-  return { recipeMenu, shoppingList, extraItems, toggleItemObtained };
+  const addExtraShoppingItem = (extraItem) => {
+    if (extraItem) {
+      editUser({ extraItems: [extraItem] });
+      toast.success(`Added extra item to shopping list`);
+    } else {
+      editUser({ extraItems: [] });
+      toast.success('Extra items removed from shopping list');
+    }
+  };
+
+  return { recipeMenu, shoppingList, toggleItemObtained, addExtraShoppingItem };
 }
