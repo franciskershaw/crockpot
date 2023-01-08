@@ -149,6 +149,24 @@ router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 	})
 );
 
+// Get extra items from user
+router.get('/:userId/extraItems', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+	try {
+		const { extraItems } = await User.findById(req.params.userId);
+		const items = await Item.find({ _id: { $in: extraItems } });
+		const list = []
+
+		for (const item of items) {
+			const { quantity, unit, obtained } = extraItems.find((extraItem) => extraItem._id.equals(item._id))
+			list.push({ item, quantity, unit, obtained });
+		}
+		res.status(200).json(list);
+	} catch (err) {
+		res.status(400);
+		throw new Error(err);
+	}
+}))
+
 // Get favourites from user
 router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
@@ -213,14 +231,22 @@ router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 	try {
 		let userToUpdate = await User.findById(req.params.userId)
 		let shoppingList = userToUpdate.shoppingList
-		
+		let extraItems = userToUpdate.extraItems
+
 		for (let item of shoppingList) {
+			if (item._id.equals(req.body.recipeId)) {
+				item.obtained = !item.obtained
+			}
+		}
+
+		for (let item of extraItems) {
 			if (item._id.equals(req.body.recipeId)) {
 				item.obtained = !item.obtained
 			}
 		}
 		
 		userToUpdate.shoppingList = shoppingList
+		userToUpdate.extraItems = extraItems
 		userToUpdate.save()
 		res.status(200).json(shoppingList)
 	} catch (err) {
