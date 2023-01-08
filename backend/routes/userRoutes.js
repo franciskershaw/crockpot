@@ -213,14 +213,22 @@ router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 	try {
 		let userToUpdate = await User.findById(req.params.userId)
 		let shoppingList = userToUpdate.shoppingList
-		
+		let extraItems = userToUpdate.extraItems
+
 		for (let item of shoppingList) {
+			if (item._id.equals(req.body.recipeId)) {
+				item.obtained = !item.obtained
+			}
+		}
+
+		for (let item of extraItems) {
 			if (item._id.equals(req.body.recipeId)) {
 				item.obtained = !item.obtained
 			}
 		}
 		
 		userToUpdate.shoppingList = shoppingList
+		userToUpdate.extraItems = extraItems
 		userToUpdate.save()
 		res.status(200).json(shoppingList)
 	} catch (err) {
