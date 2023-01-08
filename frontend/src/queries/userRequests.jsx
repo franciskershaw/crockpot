@@ -25,7 +25,11 @@ export const editUserShoppingList = async (id, token, body) => {
       'Content-Type': 'application/json',
     },
   };
-  const response = await axios.put(`/api/users/${id}/shoppingList`, body, config);
+  const response = await axios.put(
+    `/api/users/${id}/shoppingList`,
+    body,
+    config
+  );
 
   return response.data;
 };
@@ -48,6 +52,17 @@ export const getUserShoppingList = async (id, token) => {
     },
   };
   const response = await axios.get(`/api/users/${id}/shoppingList`, config);
+
+  return response.data;
+};
+
+export const getUserExtraItems = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(`/api/users/${id}/extraItems`, config);
 
   return response.data;
 };
