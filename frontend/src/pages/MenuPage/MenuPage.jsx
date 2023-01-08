@@ -58,7 +58,7 @@ const MenuPage = () => {
 	};
 
 	useEffect(() => {
-		console.log(extraItems);
+		// console.log(allItems);
 	}, [extraItems]);
 
 	return (
@@ -87,7 +87,7 @@ const MenuPage = () => {
 						<AccordionCustom data={shoppingListData} />
 
 						{/* Extra items */}
-						<form onSubmit={onSubmit} className="form" id="addExtraItem">
+						<form onSubmit={onSubmit} className="form mt-5" id="addExtraItem">
 							{/* Ingredients - 50 25 25, select */}
 							<div className="space-y-1">
 								<label htmlFor="ingredients">Add Extra Items</label>
@@ -135,6 +135,19 @@ const MenuPage = () => {
 								</div>
 							</div>
 						</form>
+						<div className="mt-3 space-x-3 text-center">
+							<button
+								className="btn btn--secondary"
+								type="submit"
+								form="addExtraItem"
+								value="Add Item"
+							>
+								Add Item
+							</button>
+							<button className="btn btn--secondary" value="Clear Items">
+								Clear Items
+							</button>
+						</div>
 					</div>
 				</Toggle>
 			</div>
