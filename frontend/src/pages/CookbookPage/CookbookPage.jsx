@@ -7,6 +7,7 @@ import { faBook } from '@fortawesome/free-solid-svg-icons';
 import { useFavourites } from '../../hooks/user/useFavourites';
 
 const CookbookPage = () => {
+	document.title = 'Crockpot | Cookbook'
 	const { favourites } = useFavourites();
 
 	return (

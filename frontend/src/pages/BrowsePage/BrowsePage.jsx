@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const BrowsePage = () => {
+	document.title = 'Crockpot | Recipes'
 	let { allRecipes } = useRecipes();
 	const [searchValue, setSearchValue] = useState('');
 	const [filteredResults, setFilteredResults] = useState([]);

@@ -16,6 +16,7 @@ import { useEditMenu } from '../../hooks/user/useEditMenu';
 import { useEditFavourites } from '../../hooks/user/useEditFavourites';
 
 const ViewRecipePage = () => {
+  document.title = 'Crockpot | View recipe'
   const { recipe } = useCurrentRecipe();
   const { user } = useUser();
 

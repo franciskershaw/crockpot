@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useItems } from '../../hooks/items/useItems';
 
 const MenuPage = () => {
+  document.title = "Crockpot | This Week's Menu"
   const { recipeMenu, shoppingList, addExtraShoppingItem } = useMenu();
   const { itemCategories } = useItemCategories();
   const { allItems } = useItems();

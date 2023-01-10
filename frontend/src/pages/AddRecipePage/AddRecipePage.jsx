@@ -12,6 +12,7 @@ import { useItems } from '../../hooks/items/useItems';
 import { useUser } from '../../hooks/auth/useUser';
 
 const AddRecipePage = () => {
+  document.title = 'Crockpot | Add Recipe'
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
   const addRecipe = useAddRecipe();

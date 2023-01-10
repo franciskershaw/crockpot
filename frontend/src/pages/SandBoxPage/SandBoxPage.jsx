@@ -16,6 +16,7 @@ import { faBook, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 
 const SandBoxPage = () => {
+	document.title = 'Crockpot | Sandbox'
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const openModal = () => {
 		document.body.classList.add('modal-is-open');

@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/auth/useAuth';
 import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
+  document.title = 'Crockpot | Sign up!'
   const [formData, setFormData] = useState({
     username: '',
     password: '',

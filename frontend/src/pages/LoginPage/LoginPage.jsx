@@ -5,6 +5,7 @@ import { useUser } from '../../hooks/auth/useUser';
 import { usePrefetchRecipes } from '../../hooks/recipes/useRecipes';
 
 const LoginPage = () => {
+  document.title = 'Crockpot | Login'
   const [formData, setFormData] = useState({
     username: '',
     password: '',
