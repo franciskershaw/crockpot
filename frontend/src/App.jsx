@@ -11,6 +11,7 @@ import MenuPage from './pages/MenuPage/MenuPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ViewRecipePage from './pages/ViewRecipePage/ViewRecipePage';
 import SandBoxPage from './pages/SandBoxPage/SandBoxPage';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path='/sandbox' element={<PrivateRoute />}>
               <Route path='/sandbox' element={<SandBoxPage />} />
             </Route>
+            <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
