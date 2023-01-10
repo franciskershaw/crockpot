@@ -32,7 +32,7 @@ export function useEditUser() {
           queryClient.refetchQueries([queryKeys.recipeMenu]);
           queryClient.refetchQueries([queryKeys.shoppingList]);
         } else if (variables.extraItems) {
-          queryClient.refetchQueries([queryKeys.extraItems]);
+          queryClient.refetchQueries([queryKeys.shoppingList]);
         }
       },
       onError: (data) => {

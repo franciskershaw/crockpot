@@ -28,12 +28,6 @@ export function useMenu() {
     () => getUserShoppingList(user._id, user.token)
   );
 
-  const extraItemsFallback = [];
-  const { data: extraItems = extraItemsFallback } = useQuery(
-    [queryKeys.extraItems],
-    () => getUserExtraItems(user._id, user.token)
-  );
-
   const { mutate: toggleObtained } = useMutation(
     (body) => editUserShoppingList(user._id, user.token, body),
     {
@@ -66,11 +60,5 @@ export function useMenu() {
     }
   };
 
-  return {
-    recipeMenu,
-    shoppingList,
-    toggleItemObtained,
-    addExtraShoppingItem,
-    extraItems,
-  };
+  return { recipeMenu, shoppingList, toggleItemObtained, addExtraShoppingItem };
 }

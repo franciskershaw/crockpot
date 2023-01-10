@@ -9,11 +9,9 @@ import { useMenu } from '../../hooks/user/useMenu';
 import { useItemCategories } from '../../hooks/items/useItemCategories';
 import { useState } from 'react';
 import { useItems } from '../../hooks/items/useItems';
-import { useEffect } from 'react';
 
 const MenuPage = () => {
-  const { recipeMenu, shoppingList, addExtraShoppingItem, extraItems } = useMenu();
-  console.log({ shoppingList, extraItems });
+  const { recipeMenu, shoppingList, addExtraShoppingItem } = useMenu();
   const { itemCategories } = useItemCategories();
   const { allItems } = useItems();
 
@@ -24,33 +22,21 @@ const MenuPage = () => {
     obtained: false,
   });
 
-  // Combine everything here
-
   const categorisedShoppingList = itemCategories.map((category) =>
     shoppingList.filter((item) => item.item.category === category._id)
   );
 
   let shoppingListData = [];
 
-  for (let i = 0; i < itemCategories.length; i++) {
-    if (categorisedShoppingList[i].length > 0) {
+  itemCategories.forEach((itemCategory, i) => {
+    if (categorisedShoppingList[i].length) {
       shoppingListData.push({
-        title: itemCategories[i].name,
-        icon: itemCategories[i].faIcon,
+        title: itemCategory.name,
+        icon: itemCategory.faIcon,
         content: categorisedShoppingList[i],
       });
     }
-  }
-
-  // itemCategories.forEach((itemCategory, i) => {
-  //   if (categorisedShoppingList[i].length) {
-  //     shoppingListData.push({
-  //       title: itemCategory.name,
-  //       icon: itemCategory.faIcon,
-  //       content: categorisedShoppingList[i],
-  //     });
-  //   }
-  // });
+  });
 
   const onChange = (e) => {
     const { name, value } = e.target;

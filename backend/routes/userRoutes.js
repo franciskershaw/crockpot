@@ -131,9 +131,10 @@ router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (r
 // Get shopping list from user
 router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
-			const { shoppingList } = await User.findById(req.params.userId);
+			const { shoppingList, extraItems } = await User.findById(req.params.userId);
 			const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
-			const list = [];
+
+			let list = [];
 
 			for (const item of shoppingListItems) {
 				const { quantity, unit, obtained } = shoppingList.find((shoppingListItem) =>
@@ -141,6 +142,23 @@ router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 				);
 				list.push({ item, quantity, unit, obtained });
 			}
+
+			for (const item of extraItems) {
+				const existing = list.find(obj => obj.item._id.equals(item._id) && obj.unit === item.unit)
+				if (existing) {
+					list = list.map(obj => {
+						if (obj.item._id.equals(item._id) && obj.unit === item.unit) {
+							return {...obj, quantity: obj.quantity + item.quantity}
+						}
+						return obj
+					})
+				} else {
+					const { quantity, unit, obtained} = item
+					const additional = await Item.findById(item._id)
+					list.push({ item: additional, quantity, unit, obtained })
+				}
+			}
+			
 			res.status(200).json(list);
 		} catch (err) {
 			res.status(400);
