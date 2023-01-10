@@ -56,17 +56,6 @@ export const getUserShoppingList = async (id, token) => {
   return response.data;
 };
 
-export const getUserExtraItems = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.get(`/api/users/${id}/extraItems`, config);
-
-  return response.data;
-};
-
 export const getUserFavourites = async (id, token) => {
   const config = {
     headers: {

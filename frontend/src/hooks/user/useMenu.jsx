@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getUserRecipeMenu,
   getUserShoppingList,
-  getUserExtraItems,
   editUserShoppingList,
 } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';

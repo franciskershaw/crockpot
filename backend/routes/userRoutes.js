@@ -167,24 +167,6 @@ router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 	})
 );
 
-// Get extra items from user
-router.get('/:userId/extraItems', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
-	try {
-		const { extraItems } = await User.findById(req.params.userId);
-		const items = await Item.find({ _id: { $in: extraItems } });
-		const list = []
-
-		for (const item of items) {
-			const { quantity, unit, obtained } = extraItems.find((extraItem) => extraItem._id.equals(item._id))
-			list.push({ item, quantity, unit, obtained });
-		}
-		res.status(200).json(list);
-	} catch (err) {
-		res.status(400);
-		throw new Error(err);
-	}
-}))
-
 // Get favourites from user
 router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
 		try {
