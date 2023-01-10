@@ -54,8 +54,6 @@ const ToggleAndScrollPillsIngredients = ({ toggleTheme, scrollTheme, data, setFi
               id="search"
               name="search"
               placeholder="Search for an ingredient"
-              // value={searchValue}
-              // onChange={onChangeSearchBar}
               className="w-full !border-purple"
             />
           </div>

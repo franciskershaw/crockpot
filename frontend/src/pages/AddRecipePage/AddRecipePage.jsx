@@ -14,8 +14,8 @@ import { useUser } from '../../hooks/auth/useUser';
 const AddRecipePage = () => {
   const { recipeCategories } = useRecipeCategories();
   const { ingredients } = useItems();
-  const addRecipe = useAddRecipe()
-  const { user } = useUser() 
+  const addRecipe = useAddRecipe();
+  const { user } = useUser();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -69,8 +69,8 @@ const AddRecipePage = () => {
       };
     } else if (key === 'notes') {
       object = {
-        note: ''
-      }
+        note: '',
+      };
     }
     setFormData((prevState) => ({
       ...prevState,
@@ -90,7 +90,13 @@ const AddRecipePage = () => {
   const imageHandler = (e) => {
     const file = e.target.files[0];
 
-    if (!(file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg')) {
+    if (
+      !(
+        file.type === 'image/png' ||
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg'
+      )
+    ) {
       toast.error(
         'Please select from the following file types: jpg, jpeg, png'
       );
@@ -109,42 +115,56 @@ const AddRecipePage = () => {
   };
 
   const onSubmit = (e) => {
-    e.preventDefault()
-    const { name, image, timeInMinutes, serves, categories, ingredients, instructions, notes } = formData
+    e.preventDefault();
+    const {
+      name,
+      image,
+      timeInMinutes,
+      serves,
+      categories,
+      ingredients,
+      instructions,
+      notes,
+    } = formData;
 
-    const categoriesFormated = categories.map(object => object._id)
-    const instructionsFormated = instructions.map(object => object.instruction)
-    const notesFormated = notes.map(object => object.note)
-    
-    const data = new FormData()
+    const categoriesFormated = categories.map((object) => object._id);
+    const instructionsFormated = instructions.map(
+      (object) => object.instruction
+    );
+    const notesFormated = notes.map((object) => object.note);
 
-    data.append('name', name)
-    data.append('image', image)
-    data.append('timeInMinutes', timeInMinutes)
-    categoriesFormated.forEach((category) => data.append(`categories`, category))
-    // ingredients.forEach((ingredient => console.log(ingredient)))
+    const data = new FormData();
+
+    data.append('name', name);
+    data.append('image', image);
+    data.append('timeInMinutes', timeInMinutes);
+    categoriesFormated.forEach((category) =>
+      data.append(`categories`, category)
+    );
     ingredients.forEach((ingredient, index) => {
-      const keyValues = Object.entries(ingredient)
+      const keyValues = Object.entries(ingredient);
       for (let keyValue of keyValues) {
-        let key = keyValue[0]
-        let value = keyValue[1]
+        let key = keyValue[0];
+        let value = keyValue[1];
         if (key === 'quantity') {
-          value = (value / serves)
+          value = value / serves;
         }
-        data.append(`ingredients[${index}][${key}]`, value)
-      }      
-    })
-    instructionsFormated.forEach((instruction) => data.append(`instructions`, instruction))
-    notesFormated.forEach((note) => data.append(`notes`, note))
-    data.append('createdBy', user._id)
-    addRecipe(data)
-  }
+        data.append(`ingredients[${index}][${key}]`, value);
+      }
+    });
+    instructionsFormated.forEach((instruction) =>
+      data.append(`instructions`, instruction)
+    );
+    notesFormated.forEach((note) => data.append(`notes`, note));
+    data.append('createdBy', user._id);
+    addRecipe(data);
+  };
 
   return (
     <>
       <Header title="Add recipe">
-        <Icon classes={"mr-3"} type={"no-hover"}>
-          <FontAwesomeIcon icon={faPlus}/>
+        <Icon classes={'mr-3'} type={'no-hover'}>
+          <FontAwesomeIcon icon={faPlus} />
         </Icon>
       </Header>
       <div className="container container--sm !max-w-[600px]">
@@ -219,7 +239,7 @@ const AddRecipePage = () => {
                       <PlusMinus
                         minusInput={() => minusInput('categories')}
                         addInput={() => addInput('categories')}
-                        classes={"mt-1"}
+                        classes={'mt-1'}
                       />
                     )}
                   </div>
@@ -233,7 +253,9 @@ const AddRecipePage = () => {
             {formData.ingredients.length &&
               formData.ingredients.map((ingredient, index, rows) => (
                 // HI ZOE! Below DIV is a container housing the 3 inputs required for one 'set' of ingredients (name, quanity, unit)
-                <div key={`ingredientInput_${index}`} className="flex justify-between flex-wrap">
+                <div
+                  key={`ingredientInput_${index}`}
+                  className="flex justify-between flex-wrap">
                   <div className="form__input form__input--50">
                     {/* <label htmlFor="ingredient">Ingredients</label> */}
                     <select
@@ -263,7 +285,7 @@ const AddRecipePage = () => {
                       type="number"
                       min="0"
                       placeholder="0"
-                      step='any'
+                      step="any"
                     />
                   </div>
                   <div className="form__input form__input--25">
@@ -286,7 +308,7 @@ const AddRecipePage = () => {
                     <PlusMinus
                       addInput={() => addInput('ingredients')}
                       minusInput={() => minusInput('ingredients')}
-                      classes={"mt-1 w-full"}
+                      classes={'mt-1 w-full'}
                     />
                   )}
                 </div>
@@ -305,13 +327,15 @@ const AddRecipePage = () => {
                       name="instruction"
                       value={instruction.instruction}
                       required
-                      onChange={(e) => onChangeMultiple(e, index, 'instructions')}
+                      onChange={(e) =>
+                        onChangeMultiple(e, index, 'instructions')
+                      }
                     />
                     {index + 1 === rows.length && (
                       <PlusMinus
                         addInput={() => addInput('instructions')}
                         minusInput={() => minusInput('instructions')}
-                        classes={"mt-1"}
+                        classes={'mt-1'}
                       />
                     )}
                   </div>
@@ -336,7 +360,7 @@ const AddRecipePage = () => {
                       <PlusMinus
                         addInput={() => addInput('notes')}
                         minusInput={() => minusInput('notes')}
-                        classes={"mt-1"}
+                        classes={'mt-1'}
                       />
                     )}
                   </div>

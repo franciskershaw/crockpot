@@ -1,8 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  fetchAllRecipes,
-  fetchSingleRecipe,
-} from '../../queries/recipeRequests';
+import { fetchAllRecipes } from '../../queries/recipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 // Hooks

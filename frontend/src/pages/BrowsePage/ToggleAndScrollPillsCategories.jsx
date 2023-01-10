@@ -1,15 +1,23 @@
 import Button from '../../components/buttons/Button';
 import { useState, useEffect, useRef } from 'react';
 
-const ToggleAndScrollPillsCategories = ({ toggleTheme, scrollTheme, data, setFilters, filters, setModalOpen, filterType }) => {
+const ToggleAndScrollPillsCategories = ({
+  toggleTheme,
+  scrollTheme,
+  data,
+  setFilters,
+  filters,
+  setModalOpen,
+  filterType,
+}) => {
   const togglePillType = toggleTheme ? `pills--toggle--${toggleTheme}` : ''; // Primary, secondary
   const scrollPillType = scrollTheme ? `pills--scroll--${scrollTheme}` : ''; // Primary, secondary
 
   const [checkedPills, setCheckedPills] = useState([]);
 
   useEffect(() => {
-    setCheckedPills(filters[filterType])
-  },[filters])
+    setCheckedPills(filters[filterType]);
+  }, [filters]);
 
   const togglePillsList = useRef();
 
@@ -30,21 +38,19 @@ const ToggleAndScrollPillsCategories = ({ toggleTheme, scrollTheme, data, setFil
     });
   };
 
-	const onSubmit = () => {
+  const onSubmit = () => {
     setFilters((prev) => ({
       ...prev,
-      [filterType]: checkedPills
-    }))
-    document.body.classList.remove("modal-is-open")
-		setModalOpen(false)
-	}
+      [filterType]: checkedPills,
+    }));
+    document.body.classList.remove('modal-is-open');
+    setModalOpen(false);
+  };
 
   return (
     <>
-      <div className='bg-grey-bg/80 py-4 sticky top-[68px] z-1 shadow-bottom'>
-        <form
-          action=""
-          className="form px-4">
+      <div className="bg-grey-bg/80 py-4 sticky top-[68px] z-1 shadow-bottom">
+        <form action="" className="form px-4">
           <div className="form__input !flex-row items-center">
             <label htmlFor="search" className="invisible w-0 h-0">
               Search for a category
@@ -54,15 +60,14 @@ const ToggleAndScrollPillsCategories = ({ toggleTheme, scrollTheme, data, setFil
               id="search"
               name="search"
               placeholder="Search for a category"
-              // value={searchValue}
-              // onChange={onChangeSearchBar}
               className="w-full !border-purple"
             />
           </div>
         </form>
         {checkedPills.length > 0 && (
           <>
-            <ul className={`pills pills--scroll ${scrollPillType} bg-black/20 my-2`}>
+            <ul
+              className={`pills pills--scroll ${scrollPillType} bg-black/20 my-2`}>
               {checkedPills.map((pill, index) => (
                 <li
                   onClick={() => removeScrollPills(pill)}
@@ -71,14 +76,13 @@ const ToggleAndScrollPillsCategories = ({ toggleTheme, scrollTheme, data, setFil
                 </li>
               ))}
             </ul>
-            <div className='text-center'>
-              <Button 
+            <div className="text-center">
+              <Button
                 onClick={onSubmit}
-                type={"secondary"} 
-                text={"Apply filters"} 
+                type={'secondary'}
+                text={'Apply filters'}
                 tooltip={checkedPills.length}
-                classes={"!py-1"}>
-              </Button>
+                classes={'!py-1'}></Button>
             </div>
           </>
         )}

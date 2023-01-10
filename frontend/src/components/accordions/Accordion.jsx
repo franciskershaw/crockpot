@@ -3,7 +3,6 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Icon from '../../components/icons/Icon';
 import Pill from '../pills/Pill';
-import TogglePills from '../pills/TogglePills';
 import {
   faDrumstickBite,
   faLemon,
@@ -86,7 +85,6 @@ const AccordionCustom = ({ data }) => {
           </AccordionHeader>
           <AccordionContent className="accordion__content-wrapper">
             <div className="accordion__content">
-              {/* <TogglePills name={dat.icon} data={dat.content} /> */}
               <ul className={`pills pills--toggle text-center`}>
                 {dat.content.map((pill, index) => (
                   <li key={`pill_${index}`}>

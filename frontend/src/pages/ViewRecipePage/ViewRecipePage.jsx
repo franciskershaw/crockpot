@@ -19,7 +19,7 @@ const ViewRecipePage = () => {
   const { recipe } = useCurrentRecipe();
   const { user } = useUser();
 
-  const onFavourite = useEditFavourites(recipe, user)
+  const onFavourite = useEditFavourites(recipe, user);
   const { onClickMenu, menuData, setMenuData } = useEditMenu();
 
   if (recipe) {

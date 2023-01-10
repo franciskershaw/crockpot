@@ -88,7 +88,6 @@ const MenuPage = () => {
                 <label htmlFor="ingredients">Add Extra Items</label>
                 <div className="flex justify-between flex-wrap">
                   <div className="form__input form__input--50">
-                    {/* <label htmlFor="ingredient">Ingredients</label> */}
                     <select
                       name="_id"
                       onChange={onChange}
@@ -106,7 +105,6 @@ const MenuPage = () => {
                     </select>
                   </div>
                   <div className="form__input form__input--25">
-                    {/* <label htmlFor="ingredientNum" className="invisible">Quantities</label> */}
                     <input
                       name="quantity"
                       onChange={onChange}
@@ -117,7 +115,6 @@ const MenuPage = () => {
                     />
                   </div>
                   <div className="form__input form__input--25">
-                    {/* <label htmlFor="ingredientUnit" className="invisible">Units</label> */}
                     <select
                       name="unit"
                       value={extraItem.unit}
