@@ -50,5 +50,6 @@ Version 2 is going to improve and enhance the site in many ways, some of which h
 
 ## Known Bugs
 * We are aware that having two ingredients with the same _id but different units result in only one of these ingredients making it to the shopping list when adding multiple recipes to the menu.
+* The button that clears the search bar is not working.
 
 
