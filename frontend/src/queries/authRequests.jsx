@@ -1,5 +1,4 @@
 import axios from 'axios'
-import url from '../reactQuery/url';
 
 // Get user info
 export const getUser = async (user, signal) => {
@@ -10,6 +9,6 @@ export const getUser = async (user, signal) => {
     },
     signal,
   };
-  const response = await axios.get(`${url}/api/users/${user.id}`, config);
+  const response = await axios.get(`/api/users/${user.id}`, config);
   return response.data;
 };

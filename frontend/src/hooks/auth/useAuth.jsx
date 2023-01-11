@@ -1,14 +1,13 @@
 import { toast } from 'react-toastify';
 import { useUser } from './useUser';
 import axios from 'axios';
-import url from '../../reactQuery/url';
 
 export function useAuth() {
   const { clearUser, updateUser } = useUser();
 
   const signin = async (userData) => {
     try {
-      const response = await axios.post(`${url}/api/users/login`, userData);
+      const response = await axios.post('/api/users/login', userData);
 
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));
@@ -24,7 +23,7 @@ export function useAuth() {
   };
 
   const signup = async (userData) => {
-    const response = await axios.post(`${url}/api/users/`, userData);
+    const response = await axios.post('/api/users/', userData);
 
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
