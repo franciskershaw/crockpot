@@ -1,19 +1,20 @@
 import axios from 'axios';
+import url from '../reactQuery/url';
 
 export const fetchAllRecipes = async () => {
-  const response = await axios.get(`/api/recipes`);
+  const response = await axios.get(`${url}/api/recipes`);
 
   return response.data;
 };
 
 export const fetchSingleRecipe = async (recipeId) => {
-  const response = await axios.get(`/api/recipes/${recipeId}`);
+  const response = await axios.get(`${url}/api/recipes/${recipeId}`);
 
   return response.data;
 };
 
 export const fetchAllRecipeCategories = async () => {
-  const response = await axios.get(`/api/recipeCategories`);
+  const response = await axios.get(`${url}/api/recipeCategories`);
 
   return response.data;
 };
@@ -26,7 +27,7 @@ export const addNewRecipe = async (token, formData) => {
     },
   };
 
-  const response = await axios.post(`/api/recipes`, formData, config);
+  const response = await axios.post(`${url}/api/recipes`, formData, config);
 
   return response.data;
 };

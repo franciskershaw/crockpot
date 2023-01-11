@@ -1,7 +1,8 @@
 import axios from 'axios';
+import url from '../reactQuery/url';
 
 export const fetchSingleUser = async (id) => {
-  const response = await axios.get(`/api/users/${id}`);
+  const response = await axios.get(`${url}/api/users/${id}`);
 
   return response.data;
 };
@@ -13,7 +14,7 @@ export const editUser = async (id, token, body) => {
       'Content-Type': 'application/json',
     },
   };
-  const response = await axios.put(`/api/users/${id}`, body, config);
+  const response = await axios.put(`${url}/api/users/${id}`, body, config);
 
   return response.data;
 };
@@ -26,7 +27,7 @@ export const editUserShoppingList = async (id, token, body) => {
     },
   };
   const response = await axios.put(
-    `/api/users/${id}/shoppingList`,
+    `${url}/api/users/${id}/shoppingList`,
     body,
     config
   );
@@ -40,7 +41,7 @@ export const getUserRecipeMenu = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`/api/users/${id}/recipeMenu`, config);
+  const response = await axios.get(`${url}/api/users/${id}/recipeMenu`, config);
 
   return response.data;
 };
@@ -51,7 +52,7 @@ export const getUserShoppingList = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`/api/users/${id}/shoppingList`, config);
+  const response = await axios.get(`${url}/api/users/${id}/shoppingList`, config);
 
   return response.data;
 };
@@ -62,7 +63,7 @@ export const getUserFavourites = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`/api/users/${id}/favourites`, config);
+  const response = await axios.get(`${url}/api/users/${id}/favourites`, config);
 
   return response.data;
 };
