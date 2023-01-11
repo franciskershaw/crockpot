@@ -8,6 +8,8 @@ The site was created using NodeJs/Express on the backend with MongoDb as the dat
 
 This particular iteration of the application is very much a prototype, with fairly limited CRUD functions available to general users. However, now that the groundwork has been laid, the app has a lot of potential to scale up with plenty of new features on the way in version 2.
 
+You can find the link the repository [here](https://github.com/franciskershaw/crockpot-node), and the live website can be viewed [here](https://www.crockpot.app/) 
+
 ## Table of Contents
 
 * [Core Features](#core-features)
