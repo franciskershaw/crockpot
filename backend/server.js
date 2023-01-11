@@ -25,16 +25,12 @@ app.use('/api/itemCategories', require('./routes/itemCategoryRoutes'));
 app.use('/api/recipeCategories', require('./routes/recipeCategoryRoutes'));
 app.use('/api/recipes', require('./routes/recipeRoutes'));
 
-
 // Error handler
 app.use(errorHandler);
 
-// Serve Frontend
-if (process.env.NODE_ENV === 'development') {
-  app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Welcome to the crockpot API' });
-  });
-}
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Welcome to the crockpot API' });
+});
 
 // Listen for app
 app.listen(
