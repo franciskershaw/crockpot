@@ -87,17 +87,17 @@ router.post('/login', asyncHandler(async (req, res, next) => {
 }));
 
 // Get username by ID
-router.get('/:userId', isLoggedIn, asyncHandler(async (req, res) => {
-    try {
-      const user = await User.findById(req.params.userId);
-      res.status(200).json({
-        username: user.username,
-      });
-    } catch (err) {
-      throw new Error("Can't find user");
-    }
-  })
-);
+// router.get('/:userId', isLoggedIn, asyncHandler(async (req, res) => {
+//     try {
+//       const user = await User.findById(req.params.userId);
+//       res.status(200).json({
+//         username: user.username,
+//       });
+//     } catch (err) {
+//       throw new Error("Can't find user");
+//     }
+//   })
+// );
 
 // Get recipe menu from user
 router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
@@ -296,7 +296,7 @@ const generateShoppingList = async (menu) => {
 
 // Generate token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ _id: id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };
