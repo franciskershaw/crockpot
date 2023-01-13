@@ -8,30 +8,31 @@ export function useAuth() {
   const signin = async (userData) => {
     try {
       const response = await axios.post('/api/users/login', userData);
-
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));
       }
-
       updateUser(response.data);
       toast.success(`Logged in as ${response.data.username}`);
       return response.data;
-
     } catch (err) {
-      toast.error(err.response.data.message)
+      toast.error(err.response.data.message);
+      return null;
     }
   };
 
   const signup = async (userData) => {
-    const response = await axios.post('/api/users/', userData);
-
-    if (response.data) {
+    try {
+      const response = await axios.post('/api/users/', userData);
       localStorage.setItem('user', JSON.stringify(response.data));
+      updateUser(response.data);
+      toast.success(`Logged in as ${response.data.username}`);
+      return response.data;
+    } catch (err) {
+      if (err.response) {
+        toast.error(err.response.data.message);
+      }
+      return null;
     }
-
-    updateUser(response.data);
-    toast.success(`Logged in as ${response.data.username}`);
-    return response.data;
   };
 
   const signout = () => {
