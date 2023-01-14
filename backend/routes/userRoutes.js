@@ -100,7 +100,7 @@ router.post('/login', asyncHandler(async (req, res, next) => {
 // );
 
 // Get recipe menu from user
-router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
     try {
       const { recipeMenu } = await User.findById(req.params.userId);
       const recipes = await Recipe.find({ _id: { $in: recipeMenu } });
@@ -115,14 +115,13 @@ router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (r
 
       res.status(200).json(menu);
     } catch (err) {
-      res.status(400);
-      throw new Error(err);
+      next(err)
     }
   })
 );
 
 // Get shopping list from user
-router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
     try {
       const { shoppingList, extraItems } = await User.findById(
         req.params.userId
@@ -158,28 +157,26 @@ router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 
       res.status(200).json(list);
     } catch (err) {
-      res.status(400);
-      throw new Error(err);
+      next(err)
     }
   })
 );
 
 // Get favourites from user
-router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
     try {
       const { favouriteRecipes } = await User.findById(req.params.userId);
       const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } });
 
       res.status(200).json(favourites);
     } catch (err) {
-      res.status(400);
-      throw new Error(err);
+      next(err)
     }
   })
 );
 
 // Edit user
-router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
     try {
       let userToUpdate = await User.findById(req.params.userId);
       let shoppingList;
@@ -218,13 +215,12 @@ router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res) =>
       }
       res.status(200).json(updatedUser);
     } catch (err) {
-      res.status(400);
-      throw new Error(err);
+      next(err)
     }
   })
 );
 
-router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res) => {
+router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
     try {
       let userToUpdate = await User.findById(req.params.userId);
       let shoppingList = userToUpdate.shoppingList;
@@ -247,8 +243,7 @@ router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
       userToUpdate.save();
       res.status(200).json(shoppingList);
     } catch (err) {
-      res.status(400);
-      throw new Error(err);
+      next(err)
     }
   })
 );

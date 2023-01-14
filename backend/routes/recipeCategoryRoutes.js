@@ -6,26 +6,24 @@ const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 const RecipeCategory = require('../models/RecipeCategory')
 
 // Get all recipe categories
-router.get('/', asyncHandler(async (req, res) => {
+router.get('/', asyncHandler(async (req, res, next) => {
 	try {
 		const recipeCategories = await RecipeCategory.find()
 		res.status(200).json(recipeCategories);
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err)
 	}
 }))
 
 // Create a new recipe category
-router.post('/', isLoggedIn, isAdmin, asyncHandler(async (req, res) => {
+router.post('/', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	try {
 		const recipeCategory = new RecipeCategory(req.body);
 		await recipeCategory.save()
 
 		res.status(201).json(recipeCategory)
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err)
 	}
 }))
 

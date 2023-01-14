@@ -9,7 +9,8 @@ const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 const Recipe = require('../models/Recipe')
 const User = require('../models/User')
 const Item = require('../models/Item')
-const RecipeCategory = require('../models/RecipeCategory')
+const RecipeCategory = require('../models/RecipeCategory');
+const { NotFoundError } = require('../errors/errors');
 
 router.get('/', asyncHandler(async (req, res) => {
 	try {
@@ -22,7 +23,7 @@ router.get('/', asyncHandler(async (req, res) => {
 }))
 
 // Create a new recipe 
-router.post('/', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res) => {
+router.post('/', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res, next) => {
 	try {
 		const recipe = new Recipe(req.body);
 		recipe.image = {
@@ -37,13 +38,12 @@ router.post('/', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async
 		await recipe.save()
 		res.status(201).json(recipe)
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err)
 	}
 }))
 
 // Get single recipe (and tweak return data to include everything needed on frontend)
-router.get('/:recipeId', asyncHandler(async (req, res) => {
+router.get('/:recipeId', asyncHandler(async (req, res, next) => {
 	try {
 		const recipe = await Recipe.findById(req.params.recipeId)
 		const categories = await RecipeCategory.find({ _id: recipe.categories})
@@ -65,19 +65,17 @@ router.get('/:recipeId', asyncHandler(async (req, res) => {
 			approved: recipe.approved
 		})
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err)
 	}
 }))
 
 // Edit a recipe
-router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res) => {
+router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res, next) => {
 	try {
 		const recipe = await Recipe.findById(req.params.recipeId)
 
 		if (!recipe) {
-			res.status(404)
-			throw new Error('Recipe not found')
+			throw new NotFoundError('Recipe not found')
 		}
 
 		const updatedRecipe = await Recipe.findByIdAndUpdate(
@@ -94,20 +92,18 @@ router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandl
 		res.status(200).json(updatedRecipe)
 
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err);
 	}
 }))
 
 // Delete a recipe
-router.delete('/:recipeId', isLoggedIn, isAdmin, asyncHandler(async (req, res) => {
+router.delete('/:recipeId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	const { recipeId } = req.params
 	try {
 		await Recipe.findByIdAndDelete(recipeId)
 		res.status(200).json({ recipeId })
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err);
 	}
 }))
 

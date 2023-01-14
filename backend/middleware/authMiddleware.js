@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
-const { UnauthorizedError } = require('../errors/errors');
+const { UnauthorizedError, NotFoundError } = require('../errors/errors');
 
 const User = require('../models/User');
 
@@ -40,6 +40,9 @@ const isRightUser = asyncHandler(async (req, res, next) => {
   const loggedInUserId = req.user._id;
   const { userId } = req.params;
   try {
+    if (!loggedInUserId) {
+      throw NotFoundError('User not found');
+    }
     if (loggedInUserId.equals(userId)) {
       next();
     } else {
