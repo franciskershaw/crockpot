@@ -12,6 +12,8 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import ViewRecipePage from './pages/ViewRecipePage/ViewRecipePage';
 import SandBoxPage from './pages/SandBoxPage/SandBoxPage';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import AddItemPage from './pages/AddItemPage/AddItemPage';
 
 function App() {
   return (
@@ -27,9 +29,16 @@ function App() {
               <Route path="/cookbook" element={<CookbookPage />} />
             </Route>
             <Route path="/viewrecipe/:id" element={<ViewRecipePage />} />
+            <Route path="/admin" element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
             <Route path="/addrecipe" element={<AdminRoute />}>
               <Route path="/addrecipe" element={<AddRecipePage />} />
             </Route>
+            <Route path="/additem" element={<AdminRoute />}>
+              <Route path="/additem" element={<AddItemPage />} />
+            </Route>
+
             <Route path="/menu" element={<PrivateRoute />}>
               <Route path="/menu" element={<MenuPage />} />
             </Route>
