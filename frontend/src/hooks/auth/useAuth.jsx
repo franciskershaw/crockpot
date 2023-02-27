@@ -1,13 +1,13 @@
 import { toast } from 'react-toastify';
 import { useUser } from './useUser';
-import axios from 'axios';
+import api from '../../axios/api';
 
 export function useAuth() {
   const { clearUser, updateUser } = useUser();
 
   const signin = async (userData) => {
     try {
-      const response = await axios.post('/api/users/login', userData);
+      const response = await api.post('/api/users/login', userData);
       if (response.data) {
         localStorage.setItem('user', JSON.stringify(response.data));
       }
@@ -22,7 +22,7 @@ export function useAuth() {
 
   const signup = async (userData) => {
     try {
-      const response = await axios.post('/api/users/', userData);
+      const response = await api.post('/api/users/', userData);
       localStorage.setItem('user', JSON.stringify(response.data));
       updateUser(response.data);
       toast.success(`Logged in as ${response.data.username}`);

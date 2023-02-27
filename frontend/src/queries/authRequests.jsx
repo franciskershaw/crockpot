@@ -1,4 +1,4 @@
-import axios from 'axios'
+import api from '../axios/api';
 
 // Get user info
 export const getUser = async (user, signal) => {
@@ -9,6 +9,6 @@ export const getUser = async (user, signal) => {
     },
     signal,
   };
-  const response = await axios.get(`/api/users/${user.id}`, config);
+  const response = await api.get(`/api/users/${user.id}`, config);
   return response.data;
 };

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../axios/api';
 
 export const editUser = async (id, token, body) => {
   const config = {
@@ -7,7 +7,7 @@ export const editUser = async (id, token, body) => {
       'Content-Type': 'application/json',
     },
   };
-  const response = await axios.put(`/api/users/${id}`, body, config);
+  const response = await api.put(`/api/users/${id}`, body, config);
 
   return response.data;
 };
@@ -19,7 +19,7 @@ export const editUserShoppingList = async (id, token, body) => {
       'Content-Type': 'application/json',
     },
   };
-  const response = await axios.put(
+  const response = await api.put(
     `/api/users/${id}/shoppingList`,
     body,
     config
@@ -34,7 +34,7 @@ export const getUserRecipeMenu = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`/api/users/${id}/recipeMenu`, config);
+  const response = await api.get(`/api/users/${id}/recipeMenu`, config);
 
   return response.data;
 };
@@ -45,7 +45,7 @@ export const getUserShoppingList = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`/api/users/${id}/shoppingList`, config);
+  const response = await api.get(`/api/users/${id}/shoppingList`, config);
 
   return response.data;
 };
@@ -56,7 +56,7 @@ export const getUserFavourites = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(`/api/users/${id}/favourites`, config);
+  const response = await api.get(`/api/users/${id}/favourites`, config);
 
   return response.data;
 };
