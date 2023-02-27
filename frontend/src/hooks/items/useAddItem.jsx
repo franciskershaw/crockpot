@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 // Hook
-export function useAddRecipe() {
+export function useAddItem() {
   const { user } = useUser();
   const queryClient = useQueryClient();
   const navigate = useNavigate();

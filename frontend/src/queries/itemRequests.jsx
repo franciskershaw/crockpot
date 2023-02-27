@@ -14,10 +14,12 @@ export const fetchAllItemCategories = async () => {
 
 export const addNewItem = async (token, formData) => {
   const config = {
-    headers: `Bearer ${token}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   };
 
-  const response = await api.post('`/api/items', formData, config);
+  const response = await api.post(`/api/items`, formData, config);
   return response.data;
 };
 

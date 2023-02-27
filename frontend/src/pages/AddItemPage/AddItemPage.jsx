@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useItemCategories } from '../../hooks/items/useItemCategories';
 import { useState, useEffect } from 'react';
+import { useAddItem } from '../../hooks/items/useAddItem';
 
 const AddItemPage = () => {
   const { itemCategories } = useItemCategories();
@@ -12,6 +13,8 @@ const AddItemPage = () => {
     name: '',
     category: '',
   });
+
+  const addItem = useAddItem();
 
   useEffect(() => {
     console.log(formData);
@@ -23,6 +26,11 @@ const AddItemPage = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addItem(formData);
+  };
   return (
     <>
       <Header title="Add Item">
@@ -31,7 +39,7 @@ const AddItemPage = () => {
         </Icon>
       </Header>
       <div className="container container--sm !max-w-[600px]">
-        <form className="form" id="addItem">
+        <form onSubmit={onSubmit} className="form" id="addItem">
           <div className="form__input">
             <label htmlFor="name">Item name</label>
             <input
@@ -46,7 +54,7 @@ const AddItemPage = () => {
           <div className="form__input">
             <label htmlFor="category">Category</label>
             <select
-              name="_id"
+              name="category"
               defaultValue="Please select an item"
               onChange={onChange}>
               <option disabled value="Please select an item">
