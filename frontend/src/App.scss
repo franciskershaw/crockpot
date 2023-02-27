@@ -1,68 +1,71 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer utilities {
-    .primary {
-        @apply text-white border-black bg-black;
-    }
+  .training-wheels {
+    border: black 1px solid;
+    background: rgba(200, 200, 200, 0.2);
+  }
+  .primary {
+    @apply text-white border-black bg-black;
+  }
 
-    .primary--hover {
-        @apply text-black border-black bg-white;
-    }
+  .primary--hover {
+    @apply text-black border-black bg-white;
+  }
 
-    .primary-outline {
-        @apply text-black border-black bg-white;
-    }
+  .primary-outline {
+    @apply text-black border-black bg-white;
+  }
 
-    .primary-outline--hover {
-        @apply text-white border-black bg-black;
-    }
+  .primary-outline--hover {
+    @apply text-white border-black bg-black;
+  }
 
-    .secondary {
-        @apply text-white border-purple bg-purple;
-    }
+  .secondary {
+    @apply text-white border-purple bg-purple;
+  }
 
-    .secondary--hover {
-        @apply text-purple border-purple bg-white;
-    }
+  .secondary--hover {
+    @apply text-purple border-purple bg-white;
+  }
 
-    .secondary-outline {
-        @apply text-purple border-purple bg-white;
-    }
+  .secondary-outline {
+    @apply text-purple border-purple bg-white;
+  }
 
-    .secondary-outline--hover {
-        @apply text-white border-purple bg-purple;
-    }
+  .secondary-outline--hover {
+    @apply text-white border-purple bg-purple;
+  }
 
-    .centered {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-    // Columns
-    .column--25 {
-        width: 25%;
-    }
-    
-    .column--33 {
-        width: 33%;
-    }
-    
-    .column--50 {
-        width: 50%;
-    }
-    
-    .column--66 {
-        width: 66%;
-    }
-    
-    .column--75 {
-        width: 75%;
-    }
+  // Columns
+  .column--25 {
+    width: 25%;
+  }
+
+  .column--33 {
+    width: 33%;
+  }
+
+  .column--50 {
+    width: 50%;
+  }
+
+  .column--66 {
+    width: 66%;
+  }
+
+  .column--75 {
+    width: 75%;
+  }
 }
 
 @import './config/base';
