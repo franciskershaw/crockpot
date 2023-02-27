@@ -11,3 +11,25 @@ export const fetchAllItemCategories = async () => {
 
   return response.data;
 };
+
+export const addNewItem = async (token, formData) => {
+  const config = {
+    headers: `Bearer ${token}`,
+  };
+
+  const response = await api.post('`/api/items', formData, config);
+  return response.data;
+};
+
+// export const addNewRecipe = async (token, formData) => {
+//   const config = {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   };
+
+//   const response = await api.post(`/api/recipes`, formData, config);
+
+//   return response.data;
+// };
