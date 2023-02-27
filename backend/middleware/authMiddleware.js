@@ -21,16 +21,23 @@ const isLoggedIn = asyncHandler(async (req, res, next) => {
     }
 
     if (!token) {
-      throw new UnauthorizedError('Please log in to proceed');
+      throw new UnauthorizedError('Please log in to proceed', 'UNAUTHORIZED');
     }
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      throw new UnauthorizedError('Session expired, please log in again');
+      throw new UnauthorizedError(
+        'Session expired, please log in again',
+        'SESSION_EXPIRED'
+      );
     } else if (err.name === 'JsonWebTokenError') {
-      throw new UnauthorizedError('Invalid token, please log in again');
+      throw new UnauthorizedError(
+        'Invalid token, please log in again',
+        'INVALID_TOKEN'
+      );
     } else {
-      throw new Error(
-        'An error occurred while trying to authenticate the token'
+      throw new UnauthorizedError(
+        'An error occurred while trying to authenticate the token',
+        'INVALID_TOKEN'
       );
     }
   }
@@ -47,7 +54,8 @@ const isRightUser = asyncHandler(async (req, res, next) => {
       next();
     } else {
       throw new UnauthorizedError(
-        'You must be the owner of this account to continue'
+        'You must be the owner of this account to continue',
+        'UNAUTHORIZED'
       );
     }
   } catch (err) {
@@ -62,7 +70,10 @@ const isAdmin = asyncHandler(async (req, res, next) => {
     if (user.isAdmin) {
       next();
     } else {
-      throw new UnauthorizedError('You must be administrator to continue');
+      throw new UnauthorizedError(
+        'You must be administrator to continue',
+        'UNAUTHORIZED'
+      );
     }
   } catch (err) {
     next(err);

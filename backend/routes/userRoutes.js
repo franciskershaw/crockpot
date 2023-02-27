@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
-const { BadRequestError, ConflictError, UnauthorizedError } = require('../errors/errors');
+const { BadRequestError, ConflictError } = require('../errors/errors');
 
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
@@ -64,11 +64,11 @@ router.post('/login', asyncHandler(async (req, res, next) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (!user) {
-      throw new UnauthorizedError('Username or password is incorrect');
+      throw new BadRequestError('Username or password is incorrect');
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      throw new UnauthorizedError('Username or password is incorrect');
+      throw new BadRequestError('Username or password is incorrect');
     }
     res.status(200).json({
       _id: user._id,

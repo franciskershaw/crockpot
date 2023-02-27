@@ -6,9 +6,10 @@ class BadRequestError extends Error {
 }
 
 class UnauthorizedError extends Error {
-  constructor(message) {
+  constructor(message, errorCode) {
     super(message);
     this.statusCode = 401;
+    this.errorCode = errorCode;
   }
 }
 

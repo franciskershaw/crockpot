@@ -1,3 +1,5 @@
+const { UnauthorizedError } = require('../errors/errors');
+
 const errorHandler = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     console.log(err);
@@ -11,10 +13,17 @@ const errorHandler = (err, req, res, next) => {
   }
   res.status(statusCode);
 
-  res.json({
-    message: message,
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
-  });
+  if (err instanceof UnauthorizedError) {
+    res.status(statusCode).json({
+      message: message,
+      errorCode: err.errorCode,
+    });
+  } else {
+    res.status(statusCode).json({
+      message: message,
+      stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    });
+  }
 };
 
 module.exports = {
