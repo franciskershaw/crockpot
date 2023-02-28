@@ -16,10 +16,6 @@ const AddItemPage = () => {
 
   const addItem = useAddItem();
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
