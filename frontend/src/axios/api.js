@@ -12,8 +12,7 @@ api.interceptors.response.use(
       (error.response.data.errorCode === 'SESSION_EXPIRED' ||
         error.response.data.errorCode === 'INVALID_TOKEN')
     ) {
-      // Clear user and redirect to login page
-      localStorage.removeItem('user');
+      // Redirect to login page
       window.location.href = '/login';
     }
     return Promise.reject(error);

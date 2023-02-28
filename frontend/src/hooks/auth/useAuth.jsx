@@ -8,9 +8,6 @@ export function useAuth() {
   const signin = async (userData) => {
     try {
       const response = await api.post('/api/users/login', userData);
-      if (response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data));
-      }
       updateUser(response.data);
       toast.success(`Logged in as ${response.data.username}`);
       return response.data;
@@ -23,7 +20,6 @@ export function useAuth() {
   const signup = async (userData) => {
     try {
       const response = await api.post('/api/users/', userData);
-      localStorage.setItem('user', JSON.stringify(response.data));
       updateUser(response.data);
       toast.success(`Logged in as ${response.data.username}`);
       return response.data;

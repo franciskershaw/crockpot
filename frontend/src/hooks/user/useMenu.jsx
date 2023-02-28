@@ -7,7 +7,6 @@ import {
   editUserShoppingList,
 } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
-import { setStoredUser } from '../../reactQuery/userStorage';
 import { toast } from 'react-toastify';
 
 export function useMenu() {
@@ -34,7 +33,6 @@ export function useMenu() {
         queryClient.setQueryData([queryKeys.user], (prevUserData) => {
           const newUserData = prevUserData;
           newUserData.shoppingList = response;
-          setStoredUser(newUserData);
           return newUserData;
         });
         queryClient.refetchQueries([queryKeys.shoppingList]);

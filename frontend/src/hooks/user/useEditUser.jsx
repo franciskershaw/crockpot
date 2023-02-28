@@ -3,7 +3,6 @@ import { editUser } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { useUser } from '../auth/useUser';
 import { toast } from 'react-toastify';
-import { setStoredUser } from '../../reactQuery/userStorage';
 
 // Hook
 export function useEditUser() {
@@ -14,7 +13,7 @@ export function useEditUser() {
     (body) => editUser(user._id, user.token, body),
     {
       onSuccess: (response, variables) => {
-        // Update user in both query cache and local storage
+        // Update user in query cache
         const key = Object.keys(variables)[0];
         queryClient.setQueryData([queryKeys.user], (prevUserData) => {
           const newUserData = prevUserData;
@@ -22,7 +21,6 @@ export function useEditUser() {
           if (key === 'recipeMenu') {
             newUserData.shoppingList = response.shoppingList;
           }
-          setStoredUser(newUserData);
           return newUserData;
         });
         // Ensure favourites, menu and shopping list are also updated
