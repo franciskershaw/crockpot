@@ -4,6 +4,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 const colors = require('colors');
 const { errorHandler } = require('./middleware/errorMiddleware');
+const cookieParser = require('cookie-parser');
 
 // Grab port info from config
 const PORT = process.env.PORT || 5000;
@@ -17,6 +18,9 @@ const app = express();
 // Body parser
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser())
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
