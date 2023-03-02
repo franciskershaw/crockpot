@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAllItems } from '../../queries/itemRequests';
+import { useItemRequests } from '../../queries/itemRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 // Hook
 export function useItems() {
+  const { fetchAllItems } = useItemRequests();
   const fallback = [];
   const { data: allItems = fallback } = useQuery(
     [queryKeys.items],

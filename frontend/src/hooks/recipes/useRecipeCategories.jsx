@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAllRecipeCategories } from '../../queries/recipeRequests';
+import { useRecipeRequests } from '../../queries/recipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 // Hook
 export function useRecipeCategories() {
+  const { fetchAllRecipeCategories } = useRecipeRequests();
   const fallback = [];
   const { data: recipeCategories = fallback } = useQuery(
     [queryKeys.recipeCategories],

@@ -1,14 +1,15 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../reactQuery/queryKeys.js';
-import { getUser } from '../../queries/authRequests.jsx';
+import { useUserRequests } from '../../queries/userRequests.jsx';
 
 // Hook
 export function useUser() {
   const queryClient = useQueryClient();
+  const { getUser } = useUserRequests();
 
-  const { data: user } = useQuery([queryKeys.user], () =>
-    getUser(user)
-  );
+  const { data: user } = useQuery([queryKeys.user], () => {
+    return getUser(user);
+  });
 
   // called from useAuth
   function updateUser(newUser) {

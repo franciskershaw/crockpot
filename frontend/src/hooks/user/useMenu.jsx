@@ -1,16 +1,13 @@
 import { useUser } from '../auth/useUser';
 import { useEditUser } from './useEditUser';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  getUserRecipeMenu,
-  getUserShoppingList,
-  editUserShoppingList,
-} from '../../queries/userRequests';
+import { useUserRequests } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { toast } from 'react-toastify';
 
 export function useMenu() {
   const { user } = useUser();
+  const { getUserRecipeMenu, editUserShoppingList, getUserShoppingList } = useUserRequests();
   const editUser = useEditUser();
   const queryClient = useQueryClient();
 

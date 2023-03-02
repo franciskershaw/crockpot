@@ -1,11 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { useItems } from '../items/useItems';
 import { useQuery } from '@tanstack/react-query';
-import { fetchSingleRecipe } from '../../queries/recipeRequests';
+import { useRecipeRequests } from '../../queries/recipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 //Hook
 export function useCurrentRecipe(recipeId) {
+  const { fetchSingleRecipe } = useRecipeRequests();
   const { ingredients } = useItems();
   let id;
   const params = useParams();

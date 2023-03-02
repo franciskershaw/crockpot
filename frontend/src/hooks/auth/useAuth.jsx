@@ -1,9 +1,10 @@
 import { toast } from 'react-toastify';
 import { useUser } from './useUser';
-import api from '../../axios/api';
+import useAxios from '../../axios/api';
 
 export function useAuth() {
   const { clearUser, updateUser } = useUser();
+  const api = useAxios()
 
   const signin = async (userData) => {
     try {

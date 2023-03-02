@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { addNewItem } from '../../queries/itemRequests';
+import { useItemRequests } from '../../queries/itemRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { useUser } from '../auth/useUser';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 // Hook
 export function useAddItem() {
   const { user } = useUser();
+  const { addNewItem } = useItemRequests();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 

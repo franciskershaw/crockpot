@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { editUser } from '../../queries/userRequests';
+// import { editUser } from '../../queries/userRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { useUser } from '../auth/useUser';
 import { toast } from 'react-toastify';
+import { useUserRequests } from '../../queries/userRequests';
 
 // Hook
 export function useEditUser() {
+  const { editUser } = useUserRequests();
   const { user } = useUser();
   const queryClient = useQueryClient();
 

@@ -1,62 +1,56 @@
-import api from '../axios/api';
+import useAxios from '../axios/api';
+import { createConfig } from './helper';
 
-export const editUser = async (id, token, body) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+export const useUserRequests = () => {
+  const api = useAxios();
+
+  const getUser = async (user) => {
+    if (!user) return null;
+    const config = createConfig(user.token);
+    const response = await api.get(`/api/users/${user.id}`, config);
+    return response.data;
   };
-  const response = await api.put(`/api/users/${id}`, body, config);
 
-  return response.data;
-};
-
-export const editUserShoppingList = async (id, token, body) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+  const editUser = async (id, token, body) => {
+    const config = createConfig(token);
+    const response = await api.put(`/api/users/${id}`, body, config);
+    return response.data;
   };
-  const response = await api.put(
-    `/api/users/${id}/shoppingList`,
-    body,
-    config
-  );
 
-  return response.data;
-};
-
-export const getUserRecipeMenu = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const editUserShoppingList = async (id, token, body) => {
+    const config = createConfig(token);
+    const response = await api.put(
+      `/api/users/${id}/shoppingList`,
+      body,
+      config
+    );
+    return response.data;
   };
-  const response = await api.get(`/api/users/${id}/recipeMenu`, config);
 
-  return response.data;
-};
-
-export const getUserShoppingList = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const getUserRecipeMenu = async (id, token) => {
+    const config = createConfig(token);
+    const response = await api.get(`/api/users/${id}/recipeMenu`, config);
+    return response.data;
   };
-  const response = await api.get(`/api/users/${id}/shoppingList`, config);
 
-  return response.data;
-};
-
-export const getUserFavourites = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  const getUserShoppingList = async (id, token) => {
+    const config = createConfig(token);
+    const response = await api.get(`/api/users/${id}/shoppingList`, config);
+    return response.data;
   };
-  const response = await api.get(`/api/users/${id}/favourites`, config);
 
-  return response.data;
+  const getUserFavourites = async (id, token) => {
+    const config = createConfig(token);
+    const response = await api.get(`/api/users/${id}/favourites`, config);
+    return response.data;
+  };
+
+  return {
+    getUser,
+    editUser,
+    editUserShoppingList,
+    getUserRecipeMenu,
+    getUserShoppingList,
+    getUserFavourites,
+  };
 };

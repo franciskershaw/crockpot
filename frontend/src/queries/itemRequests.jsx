@@ -1,37 +1,23 @@
-import api from '../axios/api';
+import useAxios from '../axios/api';
+import { createConfig } from './helper';
 
-export const fetchAllItems = async () => {
-  const response = await api.get(`/api/items`);
-
-  return response.data;
-};
-
-export const fetchAllItemCategories = async () => {
-  const response = await api.get(`/api/itemCategories`);
-
-  return response.data;
-};
-
-export const addNewItem = async (token, formData) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+export const useItemRequests = () => {
+  const api = useAxios()
+  const fetchAllItems = async () => {
+    const response = await api.get(`/api/items`);
+    return response.data;
   };
 
-  const response = await api.post(`/api/items`, formData, config);
-  return response.data;
+  const fetchAllItemCategories = async () => {
+    const response = await api.get(`/api/itemCategories`);
+    return response.data;
+  };
+
+  const addNewItem = async (token, formData) => {
+    const config = createConfig(token);
+    const response = await api.post(`/api/items`, formData, config);
+    return response.data;
+  };
+
+  return { fetchAllItems, fetchAllItemCategories, addNewItem };
 };
-
-// export const addNewRecipe = async (token, formData) => {
-//   const config = {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//       'Content-Type': 'multipart/form-data',
-//     },
-//   };
-
-//   const response = await api.post(`/api/recipes`, formData, config);
-
-//   return response.data;
-// };
