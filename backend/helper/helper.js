@@ -1,4 +1,4 @@
-const Recipe = require('../models/Recipe')
+const Recipe = require('../models/Recipe');
 
 const jwt = require('jsonwebtoken');
 
@@ -50,4 +50,26 @@ const generateToken = (id) => {
   });
 };
 
-module.exports = { generateShoppingList, generateToken };
+const generateAccessToken = (id) => {
+  return jwt.sign({ _id: id }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '5s',
+  });
+};
+
+const generateRefreshToken = (id) => {
+  return jwt.sign({ _id: id }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: '7d',
+  });
+};
+
+const verifyToken = (token, secret) => {
+  return jwt.verify(token, secret);
+};
+
+module.exports = {
+  generateShoppingList,
+  generateToken,
+  generateAccessToken,
+  generateRefreshToken,
+  verifyToken,
+};
