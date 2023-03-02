@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { generateShoppingList, generateToken } = require('../helper/helper')
+const { generateShoppingList, generateAccessToken, generateRefreshToken, verifyToken } = require('../helper/helper');
 const asyncHandler = require('express-async-handler');
-const { BadRequestError, ConflictError } = require('../errors/errors');
+const { BadRequestError, ConflictError, UnauthorizedError } = require('../errors/errors');
 
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
@@ -38,6 +38,12 @@ router.post('/', asyncHandler(async (req, res, next) => {
         extraItems: [],
       });
       if (user) {
+        // Add refresh token to browser cookie
+        const refreshToken = generateRefreshToken(user._id);
+        res.cookie('refreshToken', refreshToken, {
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000 // 7 days
+        });
         res.status(201).json({
           _id: user._id,
           username: user.username,
@@ -47,7 +53,8 @@ router.post('/', asyncHandler(async (req, res, next) => {
           shoppingList: user.shoppingList,
           regularItems: user.regularItems,
           extraItems: user.extraItems,
-          token: generateToken(user._id),
+          // Send access token with response
+          token: generateAccessToken(user._id),
         });
       } else {
         throw new BadRequestError('Invalid user data', 400);
@@ -60,44 +67,51 @@ router.post('/', asyncHandler(async (req, res, next) => {
 
 // Login a user
 router.post('/login', asyncHandler(async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) {
-      throw new BadRequestError('Username or password is incorrect');
+    try {
+      const { username, password } = req.body;
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new BadRequestError('Username or password is incorrect');
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        throw new BadRequestError('Username or password is incorrect');
+      }
+      const refreshToken = generateRefreshToken(user._id);
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 7 days
+      });
+      res.status(200).json({
+        _id: user._id,
+        username: user.username,
+        isAdmin: user.isAdmin,
+        favouriteRecipes: user.favouriteRecipes,
+        recipeMenu: user.recipeMenu,
+        shoppingList: user.shoppingList,
+        regularItems: user.regularItems,
+        extraItems: user.extraItems,
+        token: generateAccessToken(user._id),
+      });
+    } catch (err) {
+      next(err);
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      throw new BadRequestError('Username or password is incorrect');
-    }
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      isAdmin: user.isAdmin,
-      favouriteRecipes: user.favouriteRecipes,
-      recipeMenu: user.recipeMenu,
-      shoppingList: user.shoppingList,
-      regularItems: user.regularItems,
-      extraItems: user.extraItems,
-      token: generateToken(user._id),
-    });
-  } catch (err) {
-    next(err);
-  }
-}));
+  })
+);
 
-// Get username by ID
-// router.get('/:userId', isLoggedIn, asyncHandler(async (req, res) => {
-//     try {
-//       const user = await User.findById(req.params.userId);
-//       res.status(200).json({
-//         username: user.username,
-//       });
-//     } catch (err) {
-//       throw new Error("Can't find user");
-//     }
-//   })
-// );
+router.get('/refreshToken', (req, res) => {
+    const cookies = req.cookies;
+    if (!cookies?.refreshToken) throw UnauthorizedError('No refresh token');
+    const refreshToken = cookies.refreshToken;
+    try {
+      const { _id } = verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+      const accessToken = generateAccessToken(_id);
+      res.json({ token: accessToken });
+    } catch (error) {
+      throw new UnauthorizedError('Issues validating the token');
+    }
+  }
+);
 
 // Get recipe menu from user
 router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
@@ -115,7 +129,7 @@ router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (r
 
       res.status(200).json(menu);
     } catch (err) {
-      next(err)
+      next(err);
     }
   })
 );
@@ -157,7 +171,7 @@ router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 
       res.status(200).json(list);
     } catch (err) {
-      next(err)
+      next(err);
     }
   })
 );
@@ -170,7 +184,7 @@ router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (r
 
       res.status(200).json(favourites);
     } catch (err) {
-      next(err)
+      next(err);
     }
   })
 );
@@ -215,7 +229,7 @@ router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, ne
       }
       res.status(200).json(updatedUser);
     } catch (err) {
-      next(err)
+      next(err);
     }
   })
 );
@@ -243,7 +257,7 @@ router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
       userToUpdate.save();
       res.status(200).json(shoppingList);
     } catch (err) {
-      next(err)
+      next(err);
     }
   })
 );
