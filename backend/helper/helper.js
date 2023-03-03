@@ -43,22 +43,15 @@ const generateShoppingList = async (menu) => {
   return shoppingList;
 };
 
-// Generate token
-const generateToken = (id) => {
-  return jwt.sign({ _id: id }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
-  });
-};
-
 const generateAccessToken = (id) => {
   return jwt.sign({ _id: id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '5s',
+    expiresIn: '15m',
   });
 };
 
 const generateRefreshToken = (id) => {
   return jwt.sign({ _id: id }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: '7d',
+    expiresIn: '30d',
   });
 };
 
@@ -68,7 +61,6 @@ const verifyToken = (token, secret) => {
 
 module.exports = {
   generateShoppingList,
-  generateToken,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,

@@ -42,7 +42,7 @@ router.post('/', asyncHandler(async (req, res, next) => {
         const refreshToken = generateRefreshToken(user._id);
         res.cookie('refreshToken', refreshToken, {
           httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000 // 7 days
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
         res.status(201).json({
           _id: user._id,
@@ -80,7 +80,7 @@ router.post('/login', asyncHandler(async (req, res, next) => {
       const refreshToken = generateRefreshToken(user._id);
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 7 days
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
       res.status(200).json({
         _id: user._id,
@@ -108,6 +108,7 @@ router.get('/refreshToken', (req, res) => {
       const accessToken = generateAccessToken(_id);
       res.json({ token: accessToken });
     } catch (error) {
+      res.clearCookie('refreshToken');
       throw new UnauthorizedError('Issues validating the token');
     }
   }
