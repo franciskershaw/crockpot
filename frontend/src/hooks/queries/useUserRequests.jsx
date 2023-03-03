@@ -5,10 +5,22 @@ export const useUserRequests = () => {
   const api = useAxios();
 
   const getUser = async (user) => {
-    if (!user) return null;
-    const config = createConfig(user.token);
-    const response = await api.get(`/api/users/${user.id}`, config);
-    return response.data;
+    if (!user) {
+      try {
+        const response = await api.get(`/api/users/refreshToken`);
+        if (response.status === 200) {
+          const config = createConfig(response.data.token)
+          const user = await api.get(`/api/users/${response.data._id}`, config)
+          return user.data
+        }
+      } catch (error) {
+        return null;
+      }
+    } else {
+      const config = createConfig(user.token);
+      const response = await api.get(`/api/users/${user.id}`, config);
+      return response.data;
+    }
   };
 
   const editUser = async (id, token, body) => {

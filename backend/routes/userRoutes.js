@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { generateShoppingList, generateAccessToken, generateRefreshToken, verifyToken } = require('../helper/helper');
 const asyncHandler = require('express-async-handler');
-const { BadRequestError, ConflictError, UnauthorizedError } = require('../errors/errors');
+const { BadRequestError, ConflictError, UnauthorizedError, NotFoundError } = require('../errors/errors');
 
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
@@ -106,13 +106,35 @@ router.get('/refreshToken', (req, res) => {
     try {
       const { _id } = verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET);
       const accessToken = generateAccessToken(_id);
-      res.json({ token: accessToken });
+      res.json({ token: accessToken, _id });
     } catch (error) {
       res.clearCookie('refreshToken');
       throw new UnauthorizedError('Issues validating the token');
     }
   }
 );
+
+router.get('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+  try {
+    if (!req.params.userId) {
+      throw new NotFoundError('User not found')
+    }
+    const user = await User.findById(req.params.userId)
+    res.status(200).json({
+      _id: user._id,
+      username: user.username,
+      isAdmin: user.isAdmin,
+      favouriteRecipes: user.favouriteRecipes,
+      recipeMenu: user.recipeMenu,
+      shoppingList: user.shoppingList,
+      regularItems: user.regularItems,
+      extraItems: user.extraItems,
+      token: generateAccessToken(user._id),
+    })
+  } catch (err) {
+    next(err)
+  }
+}))
 
 // Get recipe menu from user
 router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
