@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useItems } from '../items/useItems';
 import { useQuery } from '@tanstack/react-query';
-import { useRecipeRequests } from '../../queries/recipeRequests';
+import { useRecipeRequests } from '../queries/useRecipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 //Hook

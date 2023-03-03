@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useItemRequests } from '../../queries/itemRequests';
+import { useItemRequests } from '../queries/useItemRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 // Hook

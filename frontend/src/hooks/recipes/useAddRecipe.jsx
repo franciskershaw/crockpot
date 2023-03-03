@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRecipeRequests } from '../../queries/recipeRequests';
+import { useRecipeRequests } from '../queries/useRecipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { useUser } from '../auth/useUser';
 import { toast } from 'react-toastify';

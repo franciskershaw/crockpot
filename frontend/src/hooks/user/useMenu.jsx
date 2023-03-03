@@ -1,7 +1,7 @@
 import { useUser } from '../auth/useUser';
 import { useEditUser } from './useEditUser';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useUserRequests } from '../../queries/userRequests';
+import { useUserRequests } from '../queries/useUserRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { toast } from 'react-toastify';
 

@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRecipeRequests } from '../../queries/recipeRequests';
+import { useRecipeRequests } from '../queries/useRecipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 // Hooks

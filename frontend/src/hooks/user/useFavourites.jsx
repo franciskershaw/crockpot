@@ -1,6 +1,6 @@
 import { useUser } from '../auth/useUser';
 import { useQuery } from '@tanstack/react-query';
-import { useUserRequests } from '../../queries/userRequests';
+import { useUserRequests } from '../queries/useUserRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
 export function useFavourites() {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../reactQuery/queryKeys';
+import { queryKeys } from '../../reactQuery/queryKeys';
 import { useNavigate } from 'react-router-dom';
 
 const useAxios = () => {

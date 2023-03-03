@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../reactQuery/queryKeys.js';
-import { useUserRequests } from '../../queries/userRequests.jsx';
+import { useUserRequests } from '../queries/useUserRequests.jsx';
 
 // Hook
 export function useUser() {
