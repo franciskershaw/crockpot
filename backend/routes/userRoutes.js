@@ -101,7 +101,7 @@ router.post('/login', asyncHandler(async (req, res, next) => {
 
 router.get('/refreshToken', (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.refreshToken) throw UnauthorizedError('No refresh token');
+    if (!cookies?.refreshToken) throw new UnauthorizedError('No refresh token', 'NO_TOKEN');
     const refreshToken = cookies.refreshToken;
     try {
       const { _id } = verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET);
@@ -113,6 +113,11 @@ router.get('/refreshToken', (req, res) => {
     }
   }
 );
+
+router.post('/logout', (req, res) => {
+  res.clearCookie('refreshToken')
+  res.status(200).json({ message: 'User logged out'})
+})
 
 router.get('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
   try {
