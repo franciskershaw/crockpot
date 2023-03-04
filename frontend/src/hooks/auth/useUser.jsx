@@ -9,9 +9,10 @@ export function useUser() {
   const queryClient = useQueryClient();
   const { getUser } = useUserRequests();
 
-  const { data: user } = useQuery([queryKeys.user], () => {
-    return getUser(user);
-  });
+  const { data: user, isFetching: fetchingUser } = useQuery(
+    [queryKeys.user],
+    () => getUser(user)
+  );
 
   // called from useAuth
   function updateUser(newUser) {
@@ -20,11 +21,9 @@ export function useUser() {
 
   // called from useAuth
   async function clearUser() {
-    console.log('Clearing refreshToken cookie...');
     // Make a POST request to the logout endpoint
     const logout = await api.post('/api/users/logout');
     if (logout.status === 200) {
-      console.log('refreshToken cookie cleared.');
       // Reset user to null
       queryClient.setQueryData([queryKeys.user], null);
     } else {
@@ -32,5 +31,5 @@ export function useUser() {
     }
   }
 
-  return { user, updateUser, clearUser };
+  return { user, fetchingUser, updateUser, clearUser };
 }
