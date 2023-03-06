@@ -9,7 +9,6 @@ const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 
 const Recipe = require('../models/Recipe')
 const User = require('../models/User')
-const Item = require('../models/Item')
 const RecipeCategory = require('../models/RecipeCategory');
 const { NotFoundError } = require('../errors/errors');
 

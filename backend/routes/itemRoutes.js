@@ -8,7 +8,7 @@ const Item = require('../models/Item');
 // Get all items
 router.get('/', asyncHandler(async (req, res, next) => {
 	try {
-		const items = await Item.find().sort({'name': 1})
+		const items = await Item.find().sort({ 'name': 1 })
 		res.status(200).json(items)
 	} catch (err) {
 		next(err);
@@ -24,6 +24,18 @@ router.post('/', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 		res.status(201).json(item)
 	} catch (err) {
 		next(err)
+	}
+}))
+
+// Edit existing item
+router.put('/:itemId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
+	try {
+		const item = await Item.findByIdAndUpdate(req.params.itemId, req.body, {
+			new: true,
+		});
+		res.status(200).json(item)
+	} catch (err) {
+		next(err);
 	}
 }))
 
