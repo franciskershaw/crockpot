@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const multer = require('multer');
 const { storage } = require('../config/cloudinary')
 const upload = multer({ storage })
+const cloudinary = require('cloudinary').v2;
 const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 
 const Recipe = require('../models/Recipe')
@@ -83,11 +84,19 @@ router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandl
 			req.body,
 			{ new: true }
 		)
-		updatedRecipe.image = {
-			url: req.file.path,
-			filename: req.file.filename
+		if (req.file) {
+			if (recipe.image && recipe.image.filename) {
+				// Delete the previous image from cloudinary
+				await cloudinary.uploader.destroy(recipe.image.filename)
+			}
+
+			updatedRecipe.image = {
+				url: req.file.path,
+				filename: req.file.filename
+			}
+
+			await updatedRecipe.save()	
 		}
-		await updatedRecipe.save()
 
 		res.status(200).json(updatedRecipe)
 
