@@ -109,8 +109,12 @@ router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandl
 router.delete('/:recipeId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	const { recipeId } = req.params
 	try {
-		await Recipe.findByIdAndDelete(recipeId)
-		res.status(200).json({ recipeId })
+		const deleted = await Recipe.findByIdAndDelete(recipeId)
+		if (deleted.image && deleted.image.filename) {
+			// Delete image from cloudinary
+			await cloudinary.uploader.destroy(deleted.image.filename)
+		}
+		res.status(200).json({ msg: 'Recipe deleted' })
 	} catch (err) {
 		next(err);
 	}
