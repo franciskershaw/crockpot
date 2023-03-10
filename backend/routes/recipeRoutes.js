@@ -12,13 +12,12 @@ const User = require('../models/User')
 const RecipeCategory = require('../models/RecipeCategory');
 const { NotFoundError } = require('../errors/errors');
 
-router.get('/', asyncHandler(async (req, res) => {
+router.get('/', asyncHandler(async (req, res, next) => {
 	try {
 		const recipes = await Recipe.find();
 		res.status(200).json(recipes);
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err)
 	}
 }))
 
