@@ -18,7 +18,7 @@ const ItemSchema = mongoose.Schema({
 ItemSchema.pre('remove', async function (next) {
   try {
     const itemId = this._id;
-    // Update Recipe to remove this item if there
+    // Update any recipes and users that contain this item
     await Recipe.updateMany(
       { 'ingredients._id': itemId },
       { $pull: { ingredients: { _id: itemId } } }

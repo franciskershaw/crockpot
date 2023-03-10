@@ -27,4 +27,26 @@ router.post('/', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	}
 }))
 
+// Edit existing recipe category
+router.put('/:recipeCategoryId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
+	try {
+		const recipeCategory = await RecipeCategory.findByIdAndUpdate(req.params.recipeCategoryId, req.body, {
+			new: true,
+		});
+		res.status(200).json(recipeCategory)
+	} catch (err) {
+		next(err);
+	}
+}))
+
+router.delete('/:recipeCategoryId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
+	try {
+		const recipeCategory = await RecipeCategory.findById(req.params.recipeCategoryId)
+		await recipeCategory.remove()
+		res.status(200).json({ msg: 'Recipe category deleted'})
+	} catch (err) {
+		next(err)
+	}
+}))
+
 module.exports = router;
