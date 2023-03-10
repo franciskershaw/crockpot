@@ -39,6 +39,7 @@ router.put('/:itemId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) 
 	}
 }))
 
+// Delete an item
 router.delete('/:itemId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	try {
 		const item = await Item.findById(req.params.itemId)

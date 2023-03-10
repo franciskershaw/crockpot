@@ -39,6 +39,7 @@ router.put('/:recipeCategoryId', isLoggedIn, isAdmin, asyncHandler(async (req, r
 	}
 }))
 
+// Delete recipe category
 router.delete('/:recipeCategoryId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	try {
 		const recipeCategory = await RecipeCategory.findById(req.params.recipeCategoryId)
