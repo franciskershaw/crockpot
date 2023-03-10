@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Recipe = require('./Recipe');
+const User = require('./User');
 
 const ItemSchema = mongoose.Schema({
   name: {
@@ -11,6 +13,26 @@ const ItemSchema = mongoose.Schema({
     ref: 'IngredientCategory',
     required: true,
   },
+});
+
+ItemSchema.pre('remove', async function (next) {
+  try {
+    const itemId = this._id;
+    // Update Recipe to remove this item if there
+    await Recipe.updateMany(
+      { 'ingredients._id': itemId },
+      { $pull: { ingredients: { _id: itemId } } }
+    );
+
+    await User.updateMany(
+      { 'shoppingList._id': itemId },
+      { $pull: { shoppingList: { _id: itemId } } }
+    );
+
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = mongoose.model('Item', ItemSchema);
