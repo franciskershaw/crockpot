@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./User');
 
 const ingredientSchema = mongoose.Schema(
   {
@@ -49,6 +50,27 @@ const RecipeSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+});
+
+RecipeSchema.pre('remove', async function (next) {
+  try {
+    const recipeId = this._id;
+    // remove recipe id from user's 'favouriteRecipes'
+    await User.updateMany(
+      { favouriteRecipes: recipeId },
+      { $pull: { favouriteRecipes: recipeId } }
+    );
+
+    // remove recipe id from user's 'recipeMenu'
+    await User.updateMany(
+      { 'recipeMenu._id': recipeId },
+      { $pull: { recipeMenu: { _id: recipeId } } }
+    );
+
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);
