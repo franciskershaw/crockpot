@@ -1,4 +1,4 @@
-import useAxios from '../axios/api';
+import useAxios from '../axios/useAxios';
 import { createConfig } from './helper';
 
 export const useUserRequests = () => {

@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import useAxios from '../axios/api.jsx';
+import useAxios from '../axios/useAxios.jsx';
 import { queryKeys } from '../../reactQuery/queryKeys.js';
 import { useUserRequests } from '../queries/useUserRequests.jsx';
 
