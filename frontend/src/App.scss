@@ -68,9 +68,9 @@
   }
 }
 
-@import './config/base';
-@import './config/containers';
-@import './config/typography';
+@import './styles/base';
+@import './styles/containers';
+@import './styles/typography';
 
 @import './components/accordions/accordions';
 @import './components/buttons/button';
