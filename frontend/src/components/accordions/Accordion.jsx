@@ -1,3 +1,4 @@
+import './_accordions.scss'
 import { styled, keyframes } from '@stitches/react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

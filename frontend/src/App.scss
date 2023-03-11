@@ -68,14 +68,19 @@
   }
 }
 
-// Base/global styles
-@import './styles/base';
-@import './styles/containers';
-@import './styles/forms';
-@import './styles/typography';
+// Bases tyles
+@import './styles/base/base';
+@import './styles/base/typography';
+
+// Global styles
+@import './styles/global/containers';
+@import './styles/global/forms';
 
 // Styles for individual components
-@import './components/accordions/accordions';
+/*
+  TODO - We are going to import these directly in the components they apply to
+  See the Accordion component for an example
+*/
 @import './components/buttons/button';
 @import './components/icons/icon';
 @import './components/modals/modal';
