@@ -68,13 +68,15 @@
   }
 }
 
+// Base/global styles
 @import './styles/base';
 @import './styles/containers';
+@import './styles/forms';
 @import './styles/typography';
 
+// Styles for individual components
 @import './components/accordions/accordions';
 @import './components/buttons/button';
-@import './components/forms/forms';
 @import './components/icons/icon';
 @import './components/modals/modal';
 @import './components/pills/pills';
