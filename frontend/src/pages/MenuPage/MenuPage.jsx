@@ -2,12 +2,10 @@ import Header from '../../layout/header/Header';
 import Icon from '../../components/icons/Icon';
 import RecipeCardLong from '../../components/recipeCard/RecipeCardLong';
 import Toggle from '../../components/toggles/Toggle';
-import AccordionCustom from '../../components/accordions/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { useRecipeMenu } from '../../hooks/user/useRecipeMenu';
 import { useShoppingList } from '../../hooks/user/useShoppingList';
-import { useItemCategories } from '../../hooks/items/useItemCategories';
 import { useState } from 'react';
 import { useItems } from '../../hooks/items/useItems';
 
@@ -15,7 +13,6 @@ const MenuPage = () => {
   document.title = "Crockpot | This Week's Menu";
   const recipeMenu = useRecipeMenu();
   const { shoppingList, addExtraShoppingItem } = useShoppingList();
-  const { itemCategories } = useItemCategories();
   const { allItems } = useItems();
 
   const [extraItem, setExtraItem] = useState({
@@ -23,22 +20,6 @@ const MenuPage = () => {
     quantity: 1,
     unit: '',
     obtained: false,
-  });
-
-  const categorisedShoppingList = itemCategories.map((category) =>
-    shoppingList.filter((item) => item.item.category === category._id)
-  );
-
-  let shoppingListData = [];
-
-  itemCategories.forEach((itemCategory, i) => {
-    if (categorisedShoppingList[i].length) {
-      shoppingListData.push({
-        title: itemCategory.name,
-        icon: itemCategory.faIcon,
-        content: categorisedShoppingList[i],
-      });
-    }
   });
 
   const onChange = (e) => {
@@ -59,6 +40,8 @@ const MenuPage = () => {
   const onClear = () => {
     addExtraShoppingItem();
   };
+
+  console.log(shoppingList)
 
   return (
     <>
@@ -82,7 +65,6 @@ const MenuPage = () => {
             ))}
           </div>
           <div className="mx-auto max-w-4xl">
-            <AccordionCustom data={shoppingListData} />
 
             {/* Extra items */}
             <div className="form mt-5" id="addExtraItem">

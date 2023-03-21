@@ -27,7 +27,10 @@ const UserSchema = mongoose.Schema({
   ],
   shoppingList: [
     {
-      _id: mongoose.Schema.Types.ObjectId,
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Item',
+      },
       quantity: Number,
       unit: String,
       obtained: Boolean,
@@ -42,8 +45,10 @@ const UserSchema = mongoose.Schema({
   ],
   extraItems: [
     {
-      _id: mongoose.Schema.Types.ObjectId,
-      quantity: Number,
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Item',
+      },
       unit: String,
       obtained: Boolean,
     },
@@ -55,7 +60,7 @@ UserSchema.pre('findOneAndDelete', async function (next) {
   try {
     const deletedRecipe = await this.findOne();
     const recipeId = deletedRecipe._id;
-    
+
     // remove recipe id from user's 'favouriteRecipes'
     await User.updateMany(
       { favouriteRecipes: recipeId },

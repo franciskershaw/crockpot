@@ -163,46 +163,101 @@ router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (r
 );
 
 // Get shopping list from user
+// router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+//     try {
+//       const { shoppingList, extraItems } = await User.findById(
+//         req.params.userId
+//       );
+//       const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
+
+//       let list = [];
+
+//       for (const item of shoppingListItems) {
+//         const { quantity, unit, obtained } = shoppingList.find(
+//           (shoppingListItem) => item._id.equals(shoppingListItem._id)
+//         );
+//         list.push({ item, quantity, unit, obtained });
+//       }
+
+//       for (const item of extraItems) {
+//         const existing = list.find(
+//           (obj) => obj.item._id.equals(item._id) && obj.unit === item.unit
+//         );
+//         if (existing) {
+//           list = list.map((obj) => {
+//             if (obj.item._id.equals(item._id) && obj.unit === item.unit) {
+//               return { ...obj, quantity: obj.quantity + item.quantity };
+//             }
+//             return obj;
+//           });
+//         } else {
+//           const { quantity, unit, obtained } = item;
+//           const additional = await Item.findById(item._id);
+//           list.push({ item: additional, quantity, unit, obtained });
+//         }
+//       }
+
+//       res.status(200).json(list);
+//     } catch (err) {
+//       next(err);
+//     }
+//   })
+// );
+
 router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
-    try {
-      const { shoppingList, extraItems } = await User.findById(
-        req.params.userId
-      );
-      const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
-
-      let list = [];
-
-      for (const item of shoppingListItems) {
-        const { quantity, unit, obtained } = shoppingList.find(
-          (shoppingListItem) => item._id.equals(shoppingListItem._id)
-        );
-        list.push({ item, quantity, unit, obtained });
-      }
-
-      for (const item of extraItems) {
-        const existing = list.find(
-          (obj) => obj.item._id.equals(item._id) && obj.unit === item.unit
-        );
-        if (existing) {
-          list = list.map((obj) => {
-            if (obj.item._id.equals(item._id) && obj.unit === item.unit) {
-              return { ...obj, quantity: obj.quantity + item.quantity };
-            }
-            return obj;
-          });
-        } else {
-          const { quantity, unit, obtained } = item;
-          const additional = await Item.findById(item._id);
-          list.push({ item: additional, quantity, unit, obtained });
+  try {
+    const {shoppingList, extraItems} = await User.findById(req.params.userId)
+      .populate({
+        path: 'shoppingList._id extraItems._id',
+        model: 'Item',
+        populate: {
+          path: 'category',
+          model: 'ItemCategory'
         }
-      }
+      }).lean();
+      
+      const allItems = [...shoppingList, ...extraItems].reduce((acc, item) => {
+        const existingItem = acc.find(i => (i._id._id.toString() === item._id._id.toString() && i.unit === item.unit));
+        if (existingItem) {
+          existingItem.quantity += item.quantity;
+        } else {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
 
-      res.status(200).json(list);
-    } catch (err) {
-      next(err);
-    }
-  })
-);
+      const categories = [];
+
+      for (const item of allItems) {
+        const { _id, name, faIcon } = item._id.category;
+        const categoryId = _id.toString();
+
+        let category = categories.find((cat) => cat._id.toString() === categoryId);
+
+        if (!category) {
+          category = {
+            _id,
+            name,
+            faIcon,
+            items: [],
+          };
+          categories.push(category);
+        }
+        
+        category.items.push({
+          _id: item._id._id,
+          name: item._id.name,
+          quantity: item.quantity,
+          unit: item.unit,
+          obtained: item.obtained
+        });
+      }
+    res.status(200).json(categories);
+  } catch (err) {
+    next(err);
+  }
+}));
+
 
 // Get favourites from user
 router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
