@@ -5,14 +5,16 @@ import Toggle from '../../components/toggles/Toggle';
 import AccordionCustom from '../../components/accordions/Accordion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUtensils } from '@fortawesome/free-solid-svg-icons';
-import { useMenu } from '../../hooks/user/useMenu';
+import { useRecipeMenu } from '../../hooks/user/useRecipeMenu';
+import { useShoppingList } from '../../hooks/user/useShoppingList';
 import { useItemCategories } from '../../hooks/items/useItemCategories';
 import { useState } from 'react';
 import { useItems } from '../../hooks/items/useItems';
 
 const MenuPage = () => {
-  document.title = "Crockpot | This Week's Menu"
-  const { recipeMenu, shoppingList, addExtraShoppingItem } = useMenu();
+  document.title = "Crockpot | This Week's Menu";
+  const recipeMenu = useRecipeMenu();
+  const { shoppingList, addExtraShoppingItem } = useShoppingList();
   const { itemCategories } = useItemCategories();
   const { allItems } = useItems();
 

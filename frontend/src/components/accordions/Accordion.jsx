@@ -17,7 +17,7 @@ import {
   faToiletPaper,
   faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
-import { useMenu } from '../../hooks/user/useMenu';
+import { useShoppingList } from '../../hooks/user/useShoppingList';
 
 const open = keyframes({
   from: { height: 0 },
@@ -40,7 +40,7 @@ const AccordionContent = styled(Accordion.Content, {
 });
 
 const AccordionCustom = ({ data }) => {
-  const { toggleItemObtained } = useMenu();
+  const { toggleItemObtained } = useShoppingList();
   return (
     <Accordion.Root type="multiple" className="accordion">
       {data.map((dat, index) => (

@@ -5,22 +5,14 @@ import { useUserRequests } from '../queries/useUserRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 import { toast } from 'react-toastify';
 
-export function useMenu() {
+export function useShoppingList() {
   const { user } = useUser();
-  const { getUserRecipeMenu, editUserShoppingList, getUserShoppingList } = useUserRequests();
+  const { editUserShoppingList, getUserShoppingList } = useUserRequests();
   const editUser = useEditUser();
   const queryClient = useQueryClient();
 
-  const menuFallback = [];
-  const { data: recipeMenu = menuFallback } = useQuery(
-    [queryKeys.recipeMenu],
-    () => getUserRecipeMenu(user._id, user.token)
-  );
-
-  const shoppingFallback = [];
-  const { data: shoppingList = shoppingFallback } = useQuery(
-    [queryKeys.shoppingList],
-    () => getUserShoppingList(user._id, user.token)
+  const { data: shoppingList = [] } = useQuery([queryKeys.shoppingList], () =>
+    getUserShoppingList(user._id, user.token)
   );
 
   const { mutate: toggleObtained } = useMutation(
@@ -54,5 +46,5 @@ export function useMenu() {
     }
   };
 
-  return { recipeMenu, shoppingList, toggleItemObtained, addExtraShoppingItem };
+  return { shoppingList, toggleItemObtained, addExtraShoppingItem };
 }

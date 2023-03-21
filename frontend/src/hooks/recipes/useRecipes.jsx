@@ -1,8 +1,8 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRecipeRequests } from '../queries/useRecipeRequests';
 import { queryKeys } from '../../reactQuery/queryKeys';
 
-// Hooks
+// Returns all recipes
 export function useRecipes() {
   const { fetchAllRecipes } = useRecipeRequests();
   const fallback = [];
