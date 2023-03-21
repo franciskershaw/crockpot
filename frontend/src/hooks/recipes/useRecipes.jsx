@@ -13,9 +13,3 @@ export function useRecipes() {
 
   return { allRecipes };
 }
-
-export function usePrefetchRecipes() {
-  const { fetchAllRecipes } = useRecipeRequests();
-  const queryClient = useQueryClient();
-  queryClient.prefetchQuery([queryKeys.recipes], fetchAllRecipes);
-}
