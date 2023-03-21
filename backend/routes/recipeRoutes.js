@@ -14,12 +14,40 @@ const { NotFoundError } = require('../errors/errors');
 
 router.get('/', asyncHandler(async (req, res, next) => {
 	try {
-		const recipes = await Recipe.find();
+		const recipes = await Recipe.find()
+			.populate('categories', 'name')
+			.populate({
+				path: 'ingredients._id',
+				model: 'Item',
+				select: 'name',
+				populate: {
+					path: 'category',
+					select: 'name faIcon',
+				},
+			})
+			.lean();
+
+		recipes.forEach((recipe) => {
+			recipe.ingredients.forEach((ingredient, i) => {
+				recipe.ingredients[i] = {
+					_id: ingredient._id._id,
+					name: ingredient._id.name,
+					quantity: ingredient.quantity,
+					unit: ingredient.unit,
+					category: {
+						_id: ingredient._id.category._id,
+						name: ingredient._id.category.name,
+						faIcon: ingredient._id.category.faIcon,
+					},
+				};
+			});
+		});
+
 		res.status(200).json(recipes);
 	} catch (err) {
-		next(err)
+		next(err);
 	}
-}))
+}));
 
 // Create a new recipe 
 router.post('/', isLoggedIn, isAdmin, upload.single('image'), asyncHandler(async (req, res, next) => {
