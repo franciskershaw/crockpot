@@ -4,21 +4,20 @@ const asyncHandler = require('express-async-handler');
 const multer = require('multer');
 const { storage } = require('../config/cloudinary')
 const upload = multer({ storage })
+const cloudinary = require('cloudinary').v2;
 const { isLoggedIn, isAdmin } = require('../middleware/authMiddleware');
 
 const Recipe = require('../models/Recipe')
 const User = require('../models/User')
-const Item = require('../models/Item')
 const RecipeCategory = require('../models/RecipeCategory');
 const { NotFoundError } = require('../errors/errors');
 
-router.get('/', asyncHandler(async (req, res) => {
+router.get('/', asyncHandler(async (req, res, next) => {
 	try {
 		const recipes = await Recipe.find();
 		res.status(200).json(recipes);
 	} catch (err) {
-		res.status(400)
-		throw new Error(err)
+		next(err)
 	}
 }))
 
@@ -83,11 +82,19 @@ router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandl
 			req.body,
 			{ new: true }
 		)
-		updatedRecipe.image = {
-			url: req.file.path,
-			filename: req.file.filename
+		if (req.file) {
+			if (recipe.image && recipe.image.filename) {
+				// Delete the previous image from cloudinary
+				await cloudinary.uploader.destroy(recipe.image.filename)
+			}
+
+			updatedRecipe.image = {
+				url: req.file.path,
+				filename: req.file.filename
+			}
+
+			await updatedRecipe.save()	
 		}
-		await updatedRecipe.save()
 
 		res.status(200).json(updatedRecipe)
 
@@ -100,8 +107,13 @@ router.put('/:recipeId', isLoggedIn, isAdmin, upload.single('image'), asyncHandl
 router.delete('/:recipeId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	const { recipeId } = req.params
 	try {
-		await Recipe.findByIdAndDelete(recipeId)
-		res.status(200).json({ recipeId })
+		const recipe = await Recipe.findById(recipeId)
+		await recipe.remove()
+		if (recipe.image && recipe.image.filename) {
+			// Delete image from cloudinary
+			await cloudinary.uploader.destroy(recipe.image.filename)
+		}
+		res.status(200).json({ msg: 'Recipe deleted' })
 	} catch (err) {
 		next(err);
 	}

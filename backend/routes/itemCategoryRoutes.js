@@ -27,4 +27,16 @@ router.post('/', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
 	}
 }))
 
+// Edit existing recipe category
+router.put('/:itemCategoryId', isLoggedIn, isAdmin, asyncHandler(async (req, res, next) => {
+	try {
+		const itemCategory = await ItemCategory.findByIdAndUpdate(req.params.itemCategoryId, req.body, {
+			new: true,
+		});
+		res.status(200).json(itemCategory)
+	} catch (err) {
+		next(err);
+	}
+}))
+
 module.exports = router;
