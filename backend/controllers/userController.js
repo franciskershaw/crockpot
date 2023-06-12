@@ -13,6 +13,7 @@ const {
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
+  generateUserObject,
 } = require('../helper/helper');
 
 const registerUser = async (req, res, next) => {
@@ -31,16 +32,7 @@ const registerUser = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await User.create({
-      username,
-      password: hashedPassword,
-      isAdmin: false,
-      favouriteRecipes: [],
-      recipeMenu: [],
-      shoppingList: [],
-      regularItems: [],
-      extraItems: [],
-    });
+    const user = await User.create({ username, password: hashedPassword });
 
     if (user) {
       const refreshToken = generateRefreshToken(user._id);
@@ -50,17 +42,7 @@ const registerUser = async (req, res, next) => {
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
-      res.status(201).json({
-        _id: user._id,
-        username: user.username,
-        isAdmin: user.isAdmin,
-        favouriteRecipes: user.favouriteRecipes,
-        recipeMenu: user.recipeMenu,
-        shoppingList: user.shoppingList,
-        regularItems: user.regularItems,
-        extraItems: user.extraItems,
-        accessToken: generateAccessToken(user._id),
-      });
+      res.status(201).json(generateUserObject(user));
     } else {
       throw new BadRequestError('Invalid user data');
     }
@@ -92,17 +74,7 @@ const loginUser = async (req, res, next) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      isAdmin: user.isAdmin,
-      favouriteRecipes: user.favouriteRecipes,
-      recipeMenu: user.recipeMenu,
-      shoppingList: user.shoppingList,
-      regularItems: user.regularItems,
-      extraItems: user.extraItems,
-      accessToken: generateAccessToken(user._id),
-    });
+    res.status(200).json(generateUserObject(user));
   } catch (err) {
     next(err);
   }
@@ -137,17 +109,7 @@ const checkRefreshToken = (req, res, next) => {
 const getUserInfo = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      isAdmin: user.isAdmin,
-      favouriteRecipes: user.favouriteRecipes,
-      recipeMenu: user.recipeMenu,
-      shoppingList: user.shoppingList,
-      regularItems: user.regularItems,
-      extraItems: user.extraItems,
-      accessToken: generateAccessToken(user._id),
-    });
+    res.status(200).json(generateUserObject(user));
   } catch (err) {
     next(err);
   }

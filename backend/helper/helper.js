@@ -59,9 +59,24 @@ const verifyToken = (token, secret) => {
   return jwt.verify(token, secret);
 };
 
+const generateUserObject = (user) => {
+  return {
+    _id: user._id,
+    username: user.username,
+    isAdmin: user.isAdmin,
+    favouriteRecipes: user.favouriteRecipes,
+    recipeMenu: user.recipeMenu,
+    shoppingList: user.shoppingList,
+    regularItems: user.regularItems,
+    extraItems: user.extraItems,
+    accessToken: generateAccessToken(user._id),
+  };
+};
+
 module.exports = {
   generateShoppingList,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
+  generateUserObject,
 };
