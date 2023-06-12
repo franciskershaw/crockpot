@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const { UnauthorizedError, NotFoundError } = require('../errors/errors');
-const { verifyToken } = require('../helper/helper')
+const { verifyToken } = require('../helper/helper');
 
 const User = require('../models/User');
 
@@ -36,10 +36,7 @@ const isLoggedIn = asyncHandler(async (req, res, next) => {
         'INVALID_TOKEN'
       );
     } else {
-      throw new UnauthorizedError(
-        'An error occurred while trying to authenticate the token',
-        'INVALID_TOKEN'
-      );
+      next(err);
     }
   }
 });

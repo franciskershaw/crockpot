@@ -1,8 +1,7 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
-const path = require('path');
+require('dotenv').config();
 const connectDB = require('./config/db');
-const colors = require('colors');
+require('colors');
 const { errorHandler } = require('./middleware/errorMiddleware');
 const cookieParser = require('cookie-parser');
 

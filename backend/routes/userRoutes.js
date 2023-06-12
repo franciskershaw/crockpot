@@ -54,10 +54,10 @@ router.post('/', asyncHandler(async (req, res, next) => {
           regularItems: user.regularItems,
           extraItems: user.extraItems,
           // Send access token with response
-          token: generateAccessToken(user._id),
+          accessToken: generateAccessToken(user._id),
         });
       } else {
-        throw new BadRequestError('Invalid user data', 400);
+        throw new BadRequestError('Invalid user data');
       }
     } catch (err) {
       next(err);
@@ -91,7 +91,7 @@ router.post('/login', asyncHandler(async (req, res, next) => {
         shoppingList: user.shoppingList,
         regularItems: user.regularItems,
         extraItems: user.extraItems,
-        token: generateAccessToken(user._id),
+        accessToken: generateAccessToken(user._id),
       });
     } catch (err) {
       next(err);
@@ -106,7 +106,7 @@ router.get('/refreshToken', (req, res) => {
     try {
       const { _id } = verifyToken(refreshToken, process.env.REFRESH_TOKEN_SECRET);
       const accessToken = generateAccessToken(_id);
-      res.json({ token: accessToken, _id });
+      res.json({ accessToken, _id });
     } catch (error) {
       res.clearCookie('refreshToken');
       throw new UnauthorizedError('Issues validating the token');
@@ -119,12 +119,9 @@ router.post('/logout', (req, res) => {
   res.status(200).json({ message: 'User logged out'})
 })
 
-router.get('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+router.get('/', isLoggedIn, asyncHandler(async (req, res, next) => {
   try {
-    if (!req.params.userId) {
-      throw new NotFoundError('User not found')
-    }
-    const user = await User.findById(req.params.userId)
+    const user = await User.findById(req.user._id);
     res.status(200).json({
       _id: user._id,
       username: user.username,
@@ -134,7 +131,7 @@ router.get('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, ne
       shoppingList: user.shoppingList,
       regularItems: user.regularItems,
       extraItems: user.extraItems,
-      token: generateAccessToken(user._id),
+      accessToken: generateAccessToken(user._id),
     })
   } catch (err) {
     next(err)
@@ -142,9 +139,9 @@ router.get('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, ne
 }))
 
 // Get recipe menu from user
-router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+router.get('/recipeMenu', isLoggedIn, asyncHandler(async (req, res, next) => {
     try {
-      const { recipeMenu } = await User.findById(req.params.userId);
+      const { recipeMenu } = await User.findById(req.user._id);
       const recipes = await Recipe.find({ _id: { $in: recipeMenu } });
       const menu = [];
 
@@ -163,11 +160,9 @@ router.get('/:userId/recipeMenu', isLoggedIn, isRightUser, asyncHandler(async (r
 );
 
 // Get shopping list from user
-router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+router.get('/shoppingList', isLoggedIn, asyncHandler(async (req, res, next) => {
     try {
-      const { shoppingList, extraItems } = await User.findById(
-        req.params.userId
-      );
+      const { shoppingList, extraItems } = await User.findById(req.user._id);
       const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
 
       let list = [];
@@ -205,9 +200,9 @@ router.get('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async 
 );
 
 // Get favourites from user
-router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+router.get('/favourites', isLoggedIn, asyncHandler(async (req, res, next) => {
     try {
-      const { favouriteRecipes } = await User.findById(req.params.userId);
+      const { favouriteRecipes } = await User.findById(req.user._id);
       const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } });
 
       res.status(200).json(favourites);
@@ -218,9 +213,9 @@ router.get('/:userId/favourites', isLoggedIn, isRightUser, asyncHandler(async (r
 );
 
 // Edit user
-router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+router.put('/', isLoggedIn, asyncHandler(async (req, res, next) => {
     try {
-      let userToUpdate = await User.findById(req.params.userId);
+      let userToUpdate = await User.findById(req.user._id);
       let shoppingList;
       let extraItems;
 
@@ -262,9 +257,9 @@ router.put('/:userId', isLoggedIn, isRightUser, asyncHandler(async (req, res, ne
   })
 );
 
-router.put('/:userId/shoppingList', isLoggedIn, isRightUser, asyncHandler(async (req, res, next) => {
+router.put('/shoppingList', isLoggedIn, asyncHandler(async (req, res, next) => {
     try {
-      let userToUpdate = await User.findById(req.params.userId);
+      let userToUpdate = await User.findById(req.user._id);
       let shoppingList = userToUpdate.shoppingList;
       let extraItems = userToUpdate.extraItems;
 
