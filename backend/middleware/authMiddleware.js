@@ -41,26 +41,6 @@ const isLoggedIn = asyncHandler(async (req, res, next) => {
   }
 });
 
-const isRightUser = asyncHandler(async (req, res, next) => {
-  const loggedInUserId = req.user._id;
-  const { userId } = req.params;
-  try {
-    if (!loggedInUserId) {
-      throw NotFoundError('User not found');
-    }
-    if (loggedInUserId.equals(userId)) {
-      next();
-    } else {
-      throw new UnauthorizedError(
-        'You must be the owner of this account to continue',
-        'UNAUTHORIZED'
-      );
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
 const isAdmin = asyncHandler(async (req, res, next) => {
   const user = req.user;
 
@@ -78,4 +58,4 @@ const isAdmin = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { isLoggedIn, isRightUser, isAdmin };
+module.exports = { isLoggedIn, isAdmin };

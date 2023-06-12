@@ -8,7 +8,7 @@ const { BadRequestError, ConflictError, UnauthorizedError, NotFoundError } = req
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 const Item = require('../models/Item');
-const { isLoggedIn, isRightUser } = require('../middleware/authMiddleware');
+const { isLoggedIn } = require('../middleware/authMiddleware');
 
 // Register new user
 router.post('/', asyncHandler(async (req, res, next) => {
