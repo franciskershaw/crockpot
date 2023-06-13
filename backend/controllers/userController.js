@@ -19,7 +19,7 @@ const {
   generateUserObject,
 } = require('../helper/helper');
 
-const { createUserSchema } = require('../joiSchemas/schemas');
+const { createUserSchema, loginUserSchema } = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
   try {
