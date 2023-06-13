@@ -186,7 +186,9 @@ const getUserShoppingList = async (req, res, next) => {
 const getUserFavourites = async (req, res, next) => {
   try {
     const { favouriteRecipes } = await User.findById(req.user._id);
-    const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } });
+    const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } })
+      .populate('createdBy', 'username') // 'username' is the field you want to include from User model
+      .populate('categories');
 
     res.status(200).json(favourites);
   } catch (err) {
@@ -194,48 +196,48 @@ const getUserFavourites = async (req, res, next) => {
   }
 };
 
-const editUser = async (req, res, next) => {
-  try {
-    let userToUpdate = await User.findById(req.user._id);
-    let shoppingList;
-    let extraItems;
+// const editUser = async (req, res, next) => {
+//   try {
+//     let userToUpdate = await User.findById(req.user._id);
+//     let shoppingList;
+//     let extraItems;
 
-    if (req.body.recipeMenu) {
-      shoppingList = await generateShoppingList(req.body.recipeMenu);
-    } else {
-      shoppingList = userToUpdate.shoppingList;
-    }
+//     if (req.body.recipeMenu) {
+//       shoppingList = await generateShoppingList(req.body.recipeMenu);
+//     } else {
+//       shoppingList = userToUpdate.shoppingList;
+//     }
 
-    if (req.body.extraItems) {
-      if (req.body.extraItems.length) {
-        extraItems = userToUpdate.extraItems;
-        extraItems.push(req.body.extraItems[0]);
-      } else if (!req.body.extraItems.length) {
-        // Pass in an empty array from the frontend if the user is to clear extraItems
-        extraItems = [];
-      }
-    } else {
-      extraItems = userToUpdate.extraItems;
-    }
+//     if (req.body.extraItems) {
+//       if (req.body.extraItems.length) {
+//         extraItems = userToUpdate.extraItems;
+//         extraItems.push(req.body.extraItems[0]);
+//       } else if (!req.body.extraItems.length) {
+//         // Pass in an empty array from the frontend if the user is to clear extraItems
+//         extraItems = [];
+//       }
+//     } else {
+//       extraItems = userToUpdate.extraItems;
+//     }
 
-    let updates = { ...req.body, shoppingList, extraItems };
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.userId,
-      updates,
-      { new: true }
-    );
-    if (req.body.recipeMenu) {
-      const newShoppingList = await generateShoppingList(
-        updatedUser.recipeMenu
-      );
-      updatedUser.shoppingList = newShoppingList;
-      updatedUser.save();
-    }
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    next(err);
-  }
-};
+//     let updates = { ...req.body, shoppingList, extraItems };
+//     const updatedUser = await User.findByIdAndUpdate(
+//       req.params.userId,
+//       updates,
+//       { new: true }
+//     );
+//     if (req.body.recipeMenu) {
+//       const newShoppingList = await generateShoppingList(
+//         updatedUser.recipeMenu
+//       );
+//       updatedUser.shoppingList = newShoppingList;
+//       updatedUser.save();
+//     }
+//     res.status(200).json(updatedUser);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 const editShoppingList = async (req, res, next) => {
   try {
@@ -273,6 +275,5 @@ module.exports = {
   getUserRecipeMenu,
   getUserShoppingList,
   getUserFavourites,
-  editUser,
   editShoppingList,
 };
