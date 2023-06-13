@@ -12,7 +12,6 @@ const {
 } = require('../errors/errors');
 
 const {
-  generateShoppingList,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
@@ -245,33 +244,6 @@ const editUserFavourites = async (req, res, next) => {
   }
 };
 
-const editShoppingList = async (req, res, next) => {
-  try {
-    let userToUpdate = await User.findById(req.user._id);
-    let shoppingList = userToUpdate.shoppingList;
-    let extraItems = userToUpdate.extraItems;
-
-    for (let item of shoppingList) {
-      if (item._id.equals(req.body.recipeId)) {
-        item.obtained = !item.obtained;
-      }
-    }
-
-    for (let item of extraItems) {
-      if (item._id.equals(req.body.recipeId)) {
-        item.obtained = !item.obtained;
-      }
-    }
-
-    userToUpdate.shoppingList = shoppingList;
-    userToUpdate.extraItems = extraItems;
-    userToUpdate.save();
-    res.status(200).json(shoppingList);
-  } catch (err) {
-    next(err);
-  }
-};
-
 module.exports = {
   registerUser,
   loginUser,
@@ -283,5 +255,4 @@ module.exports = {
   getUserShoppingList,
   getUserFavourites,
   editUserFavourites,
-  editShoppingList,
 };

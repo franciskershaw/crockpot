@@ -14,34 +14,42 @@ const {
   getUserShoppingList,
   getUserFavourites,
   editUserFavourites,
-  editShoppingList,
 } = require('../controllers/userController');
 
 // Create a user
-router.post('/', asyncHandler(registerUser));
+router
+  .route('/')
+  .post(asyncHandler(registerUser))
+  .get(isLoggedIn, asyncHandler(getUserInfo));
 
-// Get user info
-router.get('/', isLoggedIn, asyncHandler(getUserInfo));
+router.route('/login').post(asyncHandler(loginUser));
 
-// Flagged for deletion
-// router.put('/', isLoggedIn, asyncHandler(editUser));
+router.route('/logout').post(logoutUser);
 
-router.post('/login', asyncHandler(loginUser));
-router.post('/logout', logoutUser);
-router.get('/refreshToken', checkRefreshToken);
+router.route('/refreshToken').get(checkRefreshToken);
 
-// Get favourites from user object
-router.get('/favourites', isLoggedIn, asyncHandler(getUserFavourites));
-router.put('/favourites', isLoggedIn, asyncHandler(editUserFavourites));
+// User favourites routes
+router
+  .route('/favourites')
+  .get(isLoggedIn, asyncHandler(getUserFavourites))
+  .put(isLoggedIn, asyncHandler(editUserFavourites));
 
-// Get a user's recipe menu from their user object
-router.get('/recipeMenu', isLoggedIn, asyncHandler(getUserRecipeMenu));
-// TODO - edit user's recipe menu by either adding one in, removing one, or amending the serves quantity of a recipe
-router.put('/recipeMenu', isLoggedIn, asyncHandler(editUserRecipeMenu));
+// User recipe menu routes
+router
+  .route('/recipeMenu')
+  .get(isLoggedIn, asyncHandler(getUserRecipeMenu))
+  .put(isLoggedIn, asyncHandler(editUserRecipeMenu));
 
-// Get a user's shoppingList array from user object (populated with proper information)
-router.get('/shoppingList', isLoggedIn, asyncHandler(getUserShoppingList));
+// User shopping list routes
+router
+  .route('/shoppingList')
+  .get(isLoggedIn, asyncHandler(getUserShoppingList));
 // TODO - rework, this endpoint and controller to be for toggling items as obtained or not, and also to remove an item
-router.put('/shoppingList', isLoggedIn, asyncHandler(editShoppingList));
+// .put(isLoggedIn, asyncHandler(editShoppingList));
+
+// Extra item routes
+// TODO - add endpoint and logic for getting and editting extraItems
+// router.route('/extraItems')
+//   .get(isLoggedIn, asyncHandler(getUserExtraItems));
 
 module.exports = router;
