@@ -134,12 +134,16 @@ const getUserInfo = async (req, res, next) => {
 
 const getUserRecipeMenu = async (req, res, next) => {
   try {
-    const { recipeMenu } = await User.findById(req.user._id);
-    const recipes = await Recipe.find({ _id: { $in: recipeMenu } });
+    const user = await User.findById(req.user._id);
+    const recipes = await Recipe.find({ _id: { $in: user.recipeMenu } })
+      .populate('createdBy', 'username')
+      .populate('categories');
     const menu = [];
 
     for (const recipe of recipes) {
-      const { serves } = recipeMenu.find((item) => item._id.equals(recipe._id));
+      const { serves } = user.recipeMenu.find((item) =>
+        item._id.equals(recipe._id)
+      );
       menu.push({ recipe, serves });
     }
 
