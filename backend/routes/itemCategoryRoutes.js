@@ -10,15 +10,13 @@ const {
   editItemCategory,
 } = require('../controllers/itemCategoryController');
 
-router.get('/', asyncHandler(getAllItemCategories));
+router
+  .route('/')
+  .get(asyncHandler(getAllItemCategories))
+  .post(isLoggedIn, isAdmin, asyncHandler(createNewItemCategory));
 
-router.post('/', isLoggedIn, isAdmin, asyncHandler(createNewItemCategory));
-
-router.put(
-  '/:itemCategoryId',
-  isLoggedIn,
-  isAdmin,
-  asyncHandler(editItemCategory)
-);
+router
+  .route('/:itemCategoryId')
+  .put(isLoggedIn, isAdmin, asyncHandler(editItemCategory));
 
 module.exports = router;

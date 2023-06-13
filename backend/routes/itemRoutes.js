@@ -10,12 +10,14 @@ const {
   deleteItem,
 } = require('../controllers/itemController');
 
-router.get('/', asyncHandler(getAllItems));
+router
+  .route('/')
+  .get(asyncHandler(getAllItems))
+  .post(isLoggedIn, isAdmin, asyncHandler(createNewItem));
 
-router.post('/', isLoggedIn, isAdmin, asyncHandler(createNewItem));
-
-router.put('/:itemId', isLoggedIn, isAdmin, asyncHandler(editItem));
-
-router.delete('/:itemId', isLoggedIn, isAdmin, asyncHandler(deleteItem));
+router
+  .route('/:itemId')
+  .put(isLoggedIn, isAdmin, asyncHandler(editItem))
+  .delete(isLoggedIn, isAdmin, asyncHandler(deleteItem));
 
 module.exports = router;

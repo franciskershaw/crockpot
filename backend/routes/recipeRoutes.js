@@ -16,26 +16,20 @@ const {
   deleteRecipe,
 } = require('../controllers/recipeController');
 
-router.get('/', asyncHandler(getAllRecipes));
+router
+  .route('/')
+  .get(asyncHandler(getAllRecipes))
+  .post(
+    isLoggedIn,
+    isAdmin,
+    upload.single('image'),
+    asyncHandler(createNewRecipe)
+  );
 
-router.post(
-  '/',
-  isLoggedIn,
-  isAdmin,
-  upload.single('image'),
-  asyncHandler(createNewRecipe)
-);
-
-router.get('/:recipeId', asyncHandler(getSingleRecipe));
-
-router.put(
-  '/:recipeId',
-  isLoggedIn,
-  isAdmin,
-  upload.single('image'),
-  asyncHandler(editRecipe)
-);
-
-router.delete('/:recipeId', isLoggedIn, isAdmin, asyncHandler(deleteRecipe));
+router
+  .route('/:recipeId')
+  .get(asyncHandler(getSingleRecipe))
+  .put(isLoggedIn, isAdmin, upload.single('image'), asyncHandler(editRecipe))
+  .delete(isLoggedIn, isAdmin, asyncHandler(deleteRecipe));
 
 module.exports = router;

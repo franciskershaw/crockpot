@@ -10,23 +10,14 @@ const {
   deleteRecipeCategory,
 } = require('../controllers/recipeCategoryController');
 
-router.get('/', asyncHandler(getAllRecipeCategories));
+router
+  .route('/')
+  .get(asyncHandler(getAllRecipeCategories))
+  .post(isLoggedIn, isAdmin, asyncHandler(createNewRecipeCategory));
 
-router.post('/', isLoggedIn, isAdmin, asyncHandler(createNewRecipeCategory));
-
-router.put(
-  '/:recipeCategoryId',
-  isLoggedIn,
-  isAdmin,
-  asyncHandler(editRecipeCategory)
-);
-
-// Delete recipe category
-router.delete(
-  '/:recipeCategoryId',
-  isLoggedIn,
-  isAdmin,
-  asyncHandler(deleteRecipeCategory)
-);
+router
+  .route('/:recipeCategoryId')
+  .put(isLoggedIn, isAdmin, asyncHandler(editRecipeCategory))
+  .delete(isLoggedIn, isAdmin, asyncHandler(deleteRecipeCategory));
 
 module.exports = router;
