@@ -12,6 +12,7 @@ const {
   getUserRecipeMenu,
   getUserShoppingList,
   getUserFavourites,
+  editUserFavourites,
   editShoppingList,
 } = require('../controllers/userController');
 
@@ -30,7 +31,7 @@ router.get('/refreshToken', checkRefreshToken);
 
 // Get favourites from user object
 router.get('/favourites', isLoggedIn, asyncHandler(getUserFavourites));
-// TODO - edit user favourites either by adding one or removing one
+router.put('/favourites', isLoggedIn, asyncHandler(editUserFavourites));
 
 // Get a user's recipe menu from their user object
 router.get('/recipeMenu', isLoggedIn, asyncHandler(getUserRecipeMenu));

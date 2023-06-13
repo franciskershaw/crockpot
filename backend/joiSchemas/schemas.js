@@ -22,6 +22,18 @@ const loginUserSchema = Joi.object({
   }),
 });
 
+const userFavouritesSchema = Joi.object({
+  favouriteRecipes: Joi.array()
+    .items(
+      Joi.string()
+        .pattern(/^[0-9a-fA-F]{24}$/)
+        .messages({
+          'string.pattern.base': 'Must be a valid ObjectId',
+        })
+    )
+    .required(),
+});
+
 const createRecipeSchema = Joi.object({
   name: Joi.string()
     .required()
@@ -146,6 +158,7 @@ const editItemCategorySchema = Joi.object({
 module.exports = {
   createUserSchema,
   loginUserSchema,
+  userFavouritesSchema,
   createRecipeSchema,
   editRecipeSchema,
   recipeCategorySchema,
