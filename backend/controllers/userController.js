@@ -23,6 +23,7 @@ const {
   createUserSchema,
   loginUserSchema,
   userFavouritesSchema,
+  userRecipeMenuSchema,
 } = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
@@ -153,6 +154,26 @@ const getUserRecipeMenu = async (req, res, next) => {
   }
 };
 
+const editUserRecipeMenu = async (req, res, next) => {
+  try {
+    const { value, error } = userRecipeMenuSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const user = await User.findById(req.user._id);
+
+    user.recipeMenu = value.recipeMenu;
+
+    await user.save();
+
+    res.status(200).json(user.recipeMenu);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getUserShoppingList = async (req, res, next) => {
   try {
     const { shoppingList, extraItems } = await User.findById(req.user._id);
@@ -258,6 +279,7 @@ module.exports = {
   logoutUser,
   getUserInfo,
   getUserRecipeMenu,
+  editUserRecipeMenu,
   getUserShoppingList,
   getUserFavourites,
   editUserFavourites,

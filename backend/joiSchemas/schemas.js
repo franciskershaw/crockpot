@@ -1,5 +1,7 @@
 const Joi = require('joi');
 
+const objectIdPattern = /^[0-9a-fA-F]{24}$/;
+
 const createUserSchema = Joi.object({
   username: Joi.string().alphanum().min(3).required().messages({
     'string.empty': 'Username cannot be empty',
@@ -25,11 +27,25 @@ const loginUserSchema = Joi.object({
 const userFavouritesSchema = Joi.object({
   favouriteRecipes: Joi.array()
     .items(
-      Joi.string()
-        .pattern(/^[0-9a-fA-F]{24}$/)
-        .messages({
-          'string.pattern.base': 'Must be a valid ObjectId',
-        })
+      Joi.string().pattern(objectIdPattern).messages({
+        'string.pattern.base': 'Must be a valid ObjectId',
+      })
+    )
+    .required(),
+});
+
+const userRecipeMenuSchema = Joi.object({
+  recipeMenu: Joi.array()
+    .items(
+      Joi.object({
+        _id: Joi.string()
+          .pattern(objectIdPattern)
+          .messages({
+            'string.pattern.base': 'Must be a valid ObjectId',
+          })
+          .required(),
+        serves: Joi.number().integer().positive().required(),
+      })
     )
     .required(),
 });
@@ -44,13 +60,10 @@ const createRecipeSchema = Joi.object({
   ingredients: Joi.array()
     .items(
       Joi.object({
-        _id: Joi.string()
-          .pattern(/^[0-9a-fA-F]{24}$/)
-          .required()
-          .messages({
-            'string.pattern.base': 'Must be a valid ObjectId',
-            'any.required': 'This field is required',
-          }),
+        _id: Joi.string().pattern(objectIdPattern).required().messages({
+          'string.pattern.base': 'Must be a valid ObjectId',
+          'any.required': 'This field is required',
+        }),
         quantity: Joi.number().required(),
         unit: Joi.string().required(),
       })
@@ -69,21 +82,15 @@ const createRecipeSchema = Joi.object({
     }),
   notes: Joi.array().items(Joi.string()),
   categories: Joi.array().items(
-    Joi.string()
-      .pattern(/^[0-9a-fA-F]{24}$/)
-      .required()
-      .messages({
-        'string.pattern.base': 'Must be a valid ObjectId',
-        'any.required': 'This field is required',
-      })
-  ),
-  createdBy: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
-    .required()
-    .messages({
+    Joi.string().pattern(objectIdPattern).required().messages({
       'string.pattern.base': 'Must be a valid ObjectId',
       'any.required': 'This field is required',
-    }),
+    })
+  ),
+  createdBy: Joi.string().pattern(objectIdPattern).required().messages({
+    'string.pattern.base': 'Must be a valid ObjectId',
+    'any.required': 'This field is required',
+  }),
   approved: Joi.boolean(),
 }).unknown(true);
 
@@ -92,11 +99,9 @@ const editRecipeSchema = Joi.object({
   timeInMinutes: Joi.number(),
   ingredients: Joi.array().items(
     Joi.object({
-      _id: Joi.string()
-        .pattern(/^[0-9a-fA-F]{24}$/)
-        .messages({
-          'string.pattern.base': 'Must be a valid ObjectId',
-        }),
+      _id: Joi.string().pattern(objectIdPattern).messages({
+        'string.pattern.base': 'Must be a valid ObjectId',
+      }),
       quantity: Joi.number(),
       unit: Joi.string(),
     })
@@ -104,19 +109,13 @@ const editRecipeSchema = Joi.object({
   instructions: Joi.array().items(Joi.string().empty('')),
   notes: Joi.array().items(Joi.string().empty('')),
   categories: Joi.array().items(
-    Joi.string()
-      .pattern(/^[0-9a-fA-F]{24}$/)
-      .empty('')
-      .messages({
-        'string.pattern.base': 'Must be a valid ObjectId',
-      })
-  ),
-  createdBy: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
-    .empty('')
-    .messages({
+    Joi.string().pattern(objectIdPattern).empty('').messages({
       'string.pattern.base': 'Must be a valid ObjectId',
-    }),
+    })
+  ),
+  createdBy: Joi.string().pattern(objectIdPattern).empty('').messages({
+    'string.pattern.base': 'Must be a valid ObjectId',
+  }),
   approved: Joi.boolean(),
 }).unknown(true);
 
@@ -126,23 +125,18 @@ const recipeCategorySchema = Joi.object({
 
 const itemSchema = Joi.object({
   name: Joi.string().required(),
-  category: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
-    .required()
-    .messages({
-      'string.pattern.base': 'Must be a valid ObjectId',
-      'any.required': 'This field is required',
-    }),
+  category: Joi.string().pattern(objectIdPattern).required().messages({
+    'string.pattern.base': 'Must be a valid ObjectId',
+    'any.required': 'This field is required',
+  }),
 });
 
 const editItemSchema = Joi.object({
   name: Joi.string(),
-  category: Joi.string()
-    .pattern(/^[0-9a-fA-F]{24}$/)
-    .messages({
-      'string.pattern.base': 'Must be a valid ObjectId',
-      'any.required': 'This field is required',
-    }),
+  category: Joi.string().pattern(objectIdPattern).messages({
+    'string.pattern.base': 'Must be a valid ObjectId',
+    'any.required': 'This field is required',
+  }),
 }).or('name', 'category');
 
 const itemCategorySchema = Joi.object({
@@ -159,6 +153,7 @@ module.exports = {
   createUserSchema,
   loginUserSchema,
   userFavouritesSchema,
+  userRecipeMenuSchema,
   createRecipeSchema,
   editRecipeSchema,
   recipeCategorySchema,

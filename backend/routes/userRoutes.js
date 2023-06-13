@@ -10,6 +10,7 @@ const {
   checkRefreshToken,
   getUserInfo,
   getUserRecipeMenu,
+  editUserRecipeMenu,
   getUserShoppingList,
   getUserFavourites,
   editUserFavourites,
@@ -36,6 +37,7 @@ router.put('/favourites', isLoggedIn, asyncHandler(editUserFavourites));
 // Get a user's recipe menu from their user object
 router.get('/recipeMenu', isLoggedIn, asyncHandler(getUserRecipeMenu));
 // TODO - edit user's recipe menu by either adding one in, removing one, or amending the serves quantity of a recipe
+router.put('/recipeMenu', isLoggedIn, asyncHandler(editUserRecipeMenu));
 
 // Get a user's shoppingList array from user object (populated with proper information)
 router.get('/shoppingList', isLoggedIn, asyncHandler(getUserShoppingList));
