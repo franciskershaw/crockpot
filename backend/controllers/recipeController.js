@@ -15,7 +15,13 @@ const getAllRecipes = async (req, res, next) => {
 
 const createNewRecipe = async (req, res, next) => {
   try {
-    const recipe = new Recipe(req.body);
+    const { error, value } = recipeSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const recipe = new Recipe(value);
     recipe.image = {
       url: req.file.path,
       filename: req.file.filename,

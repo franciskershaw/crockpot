@@ -1,3 +1,7 @@
+const {
+  itemCategorySchema,
+  editItemCategorySchema,
+} = require('../joiSchemas/schemas');
 const ItemCategory = require('../models/ItemCategory');
 
 const getAllItemCategories = async (req, res, next) => {
@@ -11,7 +15,13 @@ const getAllItemCategories = async (req, res, next) => {
 
 const createNewItemCategory = async (req, res, next) => {
   try {
-    const itemCategory = new ItemCategory(req.body);
+    const { error, value } = itemCategorySchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const itemCategory = new ItemCategory(value);
     await itemCategory.save();
 
     res.status(201).json(ItemCategory);
@@ -22,13 +32,20 @@ const createNewItemCategory = async (req, res, next) => {
 
 const editItemCategory = async (req, res, next) => {
   try {
+    const { error, value } = itemCategorySchemaPartial.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
     const itemCategory = await ItemCategory.findByIdAndUpdate(
       req.params.itemCategoryId,
-      req.body,
+      value,
       {
         new: true,
       }
     );
+
     res.status(200).json(itemCategory);
   } catch (err) {
     next(err);

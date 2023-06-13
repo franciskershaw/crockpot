@@ -1,3 +1,4 @@
+const { itemSchema, editItemSchema } = require('../joiSchemas/schemas');
 const Item = require('../models/Item');
 
 const getAllItems = async (req, res, next) => {
@@ -11,7 +12,13 @@ const getAllItems = async (req, res, next) => {
 
 const createNewItem = async (req, res, next) => {
   try {
-    const item = new Item(req.body);
+    const { error, value } = itemSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const item = new Item(value);
     await item.save();
 
     res.status(201).json(item);
@@ -22,9 +29,16 @@ const createNewItem = async (req, res, next) => {
 
 const editItem = async (req, res, next) => {
   try {
-    const item = await Item.findByIdAndUpdate(req.params.itemId, req.body, {
+    const { error, value } = editItemSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const item = await Item.findByIdAndUpdate(req.params.itemId, value, {
       new: true,
     });
+
     res.status(200).json(item);
   } catch (err) {
     next(err);

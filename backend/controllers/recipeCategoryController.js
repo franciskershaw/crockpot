@@ -1,4 +1,5 @@
 const RecipeCategory = require('../models/RecipeCategory');
+const { recipeCategorySchema } = require('../joiSchemas/schemas');
 
 const getAllRecipeCategories = async (req, res, next) => {
   try {
@@ -11,7 +12,13 @@ const getAllRecipeCategories = async (req, res, next) => {
 
 const createNewRecipeCategory = async (req, res, next) => {
   try {
-    const recipeCategory = new RecipeCategory(req.body);
+    const { error, value } = recipeCategorySchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const recipeCategory = new RecipeCategory(value);
     await recipeCategory.save();
 
     res.status(201).json(recipeCategory);
@@ -22,9 +29,15 @@ const createNewRecipeCategory = async (req, res, next) => {
 
 const editRecipeCategory = async (req, res, next) => {
   try {
+    const { error, value } = recipeCategorySchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
     const recipeCategory = await RecipeCategory.findByIdAndUpdate(
       req.params.recipeCategoryId,
-      req.body,
+      value,
       {
         new: true,
       }

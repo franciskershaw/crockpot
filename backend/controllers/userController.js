@@ -1,13 +1,16 @@
 const bcrypt = require('bcryptjs');
+
 const User = require('../models/User');
 const Recipe = require('../models/Recipe');
 const Item = require('../models/Item');
+
 const {
   BadRequestError,
   ConflictError,
   UnauthorizedError,
-  NotFoundError,
+  InternalServerError,
 } = require('../errors/errors');
+
 const {
   generateShoppingList,
   generateAccessToken,
@@ -16,13 +19,17 @@ const {
   generateUserObject,
 } = require('../helper/helper');
 
+const { createUserSchema } = require('../joiSchemas/schemas');
+
 const registerUser = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { error, value } = createUserSchema.validate(req.body);
 
-    if (!username || !password) {
-      throw new BadRequestError('Please include all fields');
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
     }
+
+    const { username, password } = value;
 
     const userExists = await User.findOne({ username });
     if (userExists) {
@@ -44,7 +51,7 @@ const registerUser = async (req, res, next) => {
 
       res.status(201).json(generateUserObject(user));
     } else {
-      throw new BadRequestError('Invalid user data');
+      throw new InternalServerError('Error creating user');
     }
   } catch (err) {
     next(err);
@@ -53,7 +60,13 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const { error, value } = loginUserSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    const { username, password } = value;
 
     const user = await User.findOne({ username });
 
