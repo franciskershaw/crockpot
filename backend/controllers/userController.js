@@ -176,8 +176,19 @@ const editUserRecipeMenu = async (req, res, next) => {
 
 const getUserShoppingList = async (req, res, next) => {
   try {
-    const shoppingList = await generateShoppingListFromUserId(req.user._id);
-    res.status(200).json(shoppingList);
+    const list = await formatItemList(req.user._id, 'shoppingList');
+
+    res.status(200).json(list);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getUserExtraItems = async (req, res, next) => {
+  try {
+    const list = await formatItemList(req.user._id, 'extraItems');
+
+    res.status(200).json(list);
   } catch (err) {
     next(err);
   }
@@ -194,7 +205,6 @@ const editUserShoppingList = async (req, res, next) => {
       throw new BadRequestError(error.details[0].message);
     }
 
-    let newShoppingList;
     if (value.hasOwnProperty('obtained')) {
       let update = {
         'shoppingList.$[item].obtained': value.obtained,
@@ -209,16 +219,48 @@ const editUserShoppingList = async (req, res, next) => {
         { $set: update },
         arrayFilters
       );
-
-      newShoppingList = await generateShoppingListFromUserId(req.user._id);
     } else {
       await User.updateOne(
         { _id: req.user._id },
         { $pull: { shoppingList: { _id: value._id } } }
       );
-
-      newShoppingList = await generateShoppingListFromUserId(req.user._id);
     }
+    const newShoppingList = await formatItemList(req.user._id, 'shoppingList');
+    res.status(200).json(newShoppingList);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const editUserExtraItems = async (req, res, next) => {
+  try {
+    const { value, error } = editShoppingListSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
+    if (value.hasOwnProperty('obtained')) {
+      let update = {
+        'extraItems.$[item].obtained': value.obtained,
+      };
+
+      let arrayFilters = {
+        arrayFilters: [{ 'item._id': value._id }],
+      };
+
+      await User.updateOne(
+        { _id: req.user._id },
+        { $set: update },
+        arrayFilters
+      );
+    } else {
+      await User.updateOne(
+        { _id: req.user._id },
+        { $pull: { extraItems: { _id: value._id } } }
+      );
+    }
+    const newShoppingList = await formatItemList(req.user._id, 'extraItems');
     res.status(200).json(newShoppingList);
   } catch (err) {
     next(err);
@@ -258,35 +300,19 @@ const editUserFavourites = async (req, res, next) => {
   }
 };
 
-async function generateShoppingListFromUserId(userId) {
-  const { shoppingList, extraItems } = await User.findById(userId);
-  const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
+// Used for either extraItems or shoppingList, to return required item information
+async function formatItemList(userId, type) {
+  const user = await User.findById(userId);
+  const itemsArray = user[type];
+  const itemsDetails = await Item.find({ _id: { $in: itemsArray } });
 
   let list = [];
 
-  for (const item of shoppingListItems) {
-    const { quantity, unit, obtained } = shoppingList.find((shoppingListItem) =>
-      item._id.equals(shoppingListItem._id)
+  for (const item of itemsDetails) {
+    const { quantity, unit, obtained } = itemsArray.find((extraItem) =>
+      item._id.equals(extraItem._id)
     );
     list.push({ item, quantity, unit, obtained });
-  }
-
-  for (const item of extraItems) {
-    const existing = list.find(
-      (obj) => obj.item._id.equals(item._id) && obj.unit === item.unit
-    );
-    if (existing) {
-      list = list.map((obj) => {
-        if (obj.item._id.equals(item._id) && obj.unit === item.unit) {
-          return { ...obj, quantity: obj.quantity + item.quantity };
-        }
-        return obj;
-      });
-    } else {
-      const { quantity, unit, obtained } = item;
-      const additional = await Item.findById(item._id);
-      list.push({ item: additional, quantity, unit, obtained });
-    }
   }
 
   return list;
@@ -301,7 +327,9 @@ module.exports = {
   getUserRecipeMenu,
   editUserRecipeMenu,
   getUserShoppingList,
+  getUserExtraItems,
   editUserShoppingList,
+  editUserExtraItems,
   getUserFavourites,
   editUserFavourites,
 };
