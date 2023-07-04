@@ -12,6 +12,7 @@ const {
   getUserRecipeMenu,
   editUserRecipeMenu,
   getUserShoppingList,
+  editUserShoppingList,
   getUserFavourites,
   editUserFavourites,
 } = require('../controllers/userController');
@@ -43,12 +44,13 @@ router
 // User shopping list routes
 router
   .route('/shoppingList')
-  .get(isLoggedIn, asyncHandler(getUserShoppingList));
-// TODO - rework, this endpoint and controller to be for toggling items as obtained or not, and also to remove an item
-// .put(isLoggedIn, asyncHandler(editShoppingList));
+  .get(isLoggedIn, asyncHandler(getUserShoppingList))
+  .put(isLoggedIn, asyncHandler(editUserShoppingList));
 
 // Extra item routes
 // TODO - add endpoint and logic for getting and editting extraItems
+// ALSO TODO - I don't think there's anything for adding items to the shoppingList in the first place
+// Note - extra items can be in the minus to account for editing the shoppingList down
 // router.route('/extraItems')
 //   .get(isLoggedIn, asyncHandler(getUserExtraItems));
 

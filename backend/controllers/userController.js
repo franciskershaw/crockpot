@@ -23,6 +23,7 @@ const {
   loginUserSchema,
   userFavouritesSchema,
   userRecipeMenuSchema,
+  editShoppingListSchema,
 } = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
@@ -175,37 +176,50 @@ const editUserRecipeMenu = async (req, res, next) => {
 
 const getUserShoppingList = async (req, res, next) => {
   try {
-    const { shoppingList, extraItems } = await User.findById(req.user._id);
-    const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
+    const shoppingList = await generateShoppingListFromUserId(req.user._id);
+    res.status(200).json(shoppingList);
+  } catch (err) {
+    next(err);
+  }
+};
 
-    let list = [];
+/* 
+  Either going to toggle 'obtained' from true to false, or remove an item entirely
+*/
+const editUserShoppingList = async (req, res, next) => {
+  try {
+    const { value, error } = editShoppingListSchema.validate(req.body);
 
-    for (const item of shoppingListItems) {
-      const { quantity, unit, obtained } = shoppingList.find(
-        (shoppingListItem) => item._id.equals(shoppingListItem._id)
-      );
-      list.push({ item, quantity, unit, obtained });
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
     }
 
-    for (const item of extraItems) {
-      const existing = list.find(
-        (obj) => obj.item._id.equals(item._id) && obj.unit === item.unit
-      );
-      if (existing) {
-        list = list.map((obj) => {
-          if (obj.item._id.equals(item._id) && obj.unit === item.unit) {
-            return { ...obj, quantity: obj.quantity + item.quantity };
-          }
-          return obj;
-        });
-      } else {
-        const { quantity, unit, obtained } = item;
-        const additional = await Item.findById(item._id);
-        list.push({ item: additional, quantity, unit, obtained });
-      }
-    }
+    let newShoppingList;
+    if (value.hasOwnProperty('obtained')) {
+      let update = {
+        'shoppingList.$[item].obtained': value.obtained,
+      };
 
-    res.status(200).json(list);
+      let arrayFilters = {
+        arrayFilters: [{ 'item._id': value._id }],
+      };
+
+      await User.updateOne(
+        { _id: req.user._id },
+        { $set: update },
+        arrayFilters
+      );
+
+      newShoppingList = await generateShoppingListFromUserId(req.user._id);
+    } else {
+      await User.updateOne(
+        { _id: req.user._id },
+        { $pull: { shoppingList: { _id: value._id } } }
+      );
+
+      newShoppingList = await generateShoppingListFromUserId(req.user._id);
+    }
+    res.status(200).json(newShoppingList);
   } catch (err) {
     next(err);
   }
@@ -244,6 +258,40 @@ const editUserFavourites = async (req, res, next) => {
   }
 };
 
+async function generateShoppingListFromUserId(userId) {
+  const { shoppingList, extraItems } = await User.findById(userId);
+  const shoppingListItems = await Item.find({ _id: { $in: shoppingList } });
+
+  let list = [];
+
+  for (const item of shoppingListItems) {
+    const { quantity, unit, obtained } = shoppingList.find((shoppingListItem) =>
+      item._id.equals(shoppingListItem._id)
+    );
+    list.push({ item, quantity, unit, obtained });
+  }
+
+  for (const item of extraItems) {
+    const existing = list.find(
+      (obj) => obj.item._id.equals(item._id) && obj.unit === item.unit
+    );
+    if (existing) {
+      list = list.map((obj) => {
+        if (obj.item._id.equals(item._id) && obj.unit === item.unit) {
+          return { ...obj, quantity: obj.quantity + item.quantity };
+        }
+        return obj;
+      });
+    } else {
+      const { quantity, unit, obtained } = item;
+      const additional = await Item.findById(item._id);
+      list.push({ item: additional, quantity, unit, obtained });
+    }
+  }
+
+  return list;
+}
+
 module.exports = {
   registerUser,
   loginUser,
@@ -253,6 +301,7 @@ module.exports = {
   getUserRecipeMenu,
   editUserRecipeMenu,
   getUserShoppingList,
+  editUserShoppingList,
   getUserFavourites,
   editUserFavourites,
 };
