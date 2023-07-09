@@ -194,10 +194,7 @@ const getUserExtraItems = async (req, res, next) => {
   }
 };
 
-/* 
-  Either going to toggle 'obtained' from true to false, or remove an item entirely
-*/
-const editUserShoppingList = async (req, res, next) => {
+const toggleObtainedUserShoppingList = async (req, res, next) => {
   try {
     const { value, error } = editShoppingListSchema.validate(req.body);
 
@@ -205,26 +202,16 @@ const editUserShoppingList = async (req, res, next) => {
       throw new BadRequestError(error.details[0].message);
     }
 
-    if (value.hasOwnProperty('obtained')) {
-      let update = {
-        'shoppingList.$[item].obtained': value.obtained,
-      };
+    let update = {
+      'shoppingList.$[item].obtained': value.obtained,
+    };
 
-      let arrayFilters = {
-        arrayFilters: [{ 'item._id': value._id }],
-      };
+    let arrayFilters = {
+      arrayFilters: [{ 'item._id': value._id }],
+    };
 
-      await User.updateOne(
-        { _id: req.user._id },
-        { $set: update },
-        arrayFilters
-      );
-    } else {
-      await User.updateOne(
-        { _id: req.user._id },
-        { $pull: { shoppingList: { _id: value._id } } }
-      );
-    }
+    await User.updateOne({ _id: req.user._id }, { $set: update }, arrayFilters);
+
     const newShoppingList = await formatItemList(req.user._id, 'shoppingList');
     res.status(200).json(newShoppingList);
   } catch (err) {
@@ -328,7 +315,7 @@ module.exports = {
   editUserRecipeMenu,
   getUserShoppingList,
   getUserExtraItems,
-  editUserShoppingList,
+  toggleObtainedUserShoppingList,
   editUserExtraItems,
   getUserFavourites,
   editUserFavourites,

@@ -55,7 +55,7 @@ const editShoppingListSchema = Joi.object({
     'string.pattern.base': 'Must be a valid ObjectId',
     'any.required': 'This field is required',
   }),
-  obtained: Joi.boolean().optional(),
+  obtained: Joi.boolean().required(),
 });
 
 const createRecipeSchema = Joi.object({
