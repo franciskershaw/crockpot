@@ -1,4 +1,6 @@
 const Recipe = require('../models/Recipe');
+const User = require('../models/User');
+const Item = require('../models/Item');
 
 const jwt = require('jsonwebtoken');
 
@@ -43,6 +45,24 @@ const generateShoppingList = async (menu) => {
   return shoppingList;
 };
 
+// Used for either extraItems or shoppingList, to return required item information
+const formatItemList = async (userId, type) => {
+  const user = await User.findById(userId);
+  const itemsArray = user[type];
+  const itemsDetails = await Item.find({ _id: { $in: itemsArray } });
+
+  let list = [];
+
+  for (const item of itemsDetails) {
+    const { quantity, unit, obtained } = itemsArray.find((extraItem) =>
+      item._id.equals(extraItem._id)
+    );
+    list.push({ item, quantity, unit, obtained });
+  }
+
+  return list;
+};
+
 const generateAccessToken = (id) => {
   return jwt.sign({ _id: id }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
@@ -75,6 +95,7 @@ const generateUserObject = (user) => {
 
 module.exports = {
   generateShoppingList,
+  formatItemList,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,

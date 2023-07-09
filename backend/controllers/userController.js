@@ -17,6 +17,7 @@ const {
   verifyToken,
   generateUserObject,
   generateShoppingList,
+  formatItemList,
 } = require('../helper/helper');
 
 const {
@@ -277,24 +278,6 @@ const editUserFavourites = async (req, res, next) => {
     next(err);
   }
 };
-
-// Used for either extraItems or shoppingList, to return required item information
-async function formatItemList(userId, type) {
-  const user = await User.findById(userId);
-  const itemsArray = user[type];
-  const itemsDetails = await Item.find({ _id: { $in: itemsArray } });
-
-  let list = [];
-
-  for (const item of itemsDetails) {
-    const { quantity, unit, obtained } = itemsArray.find((extraItem) =>
-      item._id.equals(extraItem._id)
-    );
-    list.push({ item, quantity, unit, obtained });
-  }
-
-  return list;
-}
 
 module.exports = {
   registerUser,
