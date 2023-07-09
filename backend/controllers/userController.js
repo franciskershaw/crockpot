@@ -24,6 +24,7 @@ const {
   userFavouritesSchema,
   userRecipeMenuSchema,
   editShoppingListSchema,
+  editExtraItemsSchema,
 } = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
@@ -184,16 +185,6 @@ const getUserShoppingList = async (req, res, next) => {
   }
 };
 
-const getUserExtraItems = async (req, res, next) => {
-  try {
-    const list = await formatItemList(req.user._id, 'extraItems');
-
-    res.status(200).json(list);
-  } catch (err) {
-    next(err);
-  }
-};
-
 const toggleObtainedUserShoppingList = async (req, res, next) => {
   try {
     const { value, error } = editShoppingListSchema.validate(req.body);
@@ -219,40 +210,37 @@ const toggleObtainedUserShoppingList = async (req, res, next) => {
   }
 };
 
+const getUserExtraItems = async (req, res, next) => {
+  try {
+    const extraItems = await formatItemList(req.user._id, 'extraItems');
+
+    res.status(200).json(extraItems);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const editUserExtraItems = async (req, res, next) => {
   try {
-    const { value, error } = editShoppingListSchema.validate(req.body);
+    const { value, error } = editExtraItemsSchema.validate(req.body);
 
     if (error) {
       throw new BadRequestError(error.details[0].message);
     }
 
-    if (value.hasOwnProperty('obtained')) {
-      let update = {
-        'extraItems.$[item].obtained': value.obtained,
-      };
+    // Replace the existing extraItems array with the new one
+    await User.updateOne(
+      { _id: req.user._id },
+      { $set: { extraItems: value } }
+    );
 
-      let arrayFilters = {
-        arrayFilters: [{ 'item._id': value._id }],
-      };
-
-      await User.updateOne(
-        { _id: req.user._id },
-        { $set: update },
-        arrayFilters
-      );
-    } else {
-      await User.updateOne(
-        { _id: req.user._id },
-        { $pull: { extraItems: { _id: value._id } } }
-      );
-    }
-    const newShoppingList = await formatItemList(req.user._id, 'extraItems');
-    res.status(200).json(newShoppingList);
+    const newExtraItems = await formatItemList(req.user._id, 'extraItems');
+    res.status(200).json(newExtraItems);
   } catch (err) {
     next(err);
   }
 };
+
 
 const getUserFavourites = async (req, res, next) => {
   try {
