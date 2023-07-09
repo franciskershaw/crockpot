@@ -16,6 +16,7 @@ const {
   generateRefreshToken,
   verifyToken,
   generateUserObject,
+  generateShoppingList,
 } = require('../helper/helper');
 
 const {
@@ -165,7 +166,10 @@ const editUserRecipeMenu = async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
 
-    user.recipeMenu = value.recipeMenu;
+    const newShoppingList = await generateShoppingList(value);
+
+    user.recipeMenu = value;
+    user.shoppingList = newShoppingList;
 
     await user.save();
 
@@ -240,7 +244,6 @@ const editUserExtraItems = async (req, res, next) => {
     next(err);
   }
 };
-
 
 const getUserFavourites = async (req, res, next) => {
   try {
