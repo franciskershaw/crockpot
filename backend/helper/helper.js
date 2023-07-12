@@ -6,19 +6,22 @@ const jwt = require('jsonwebtoken');
 
 const generateShoppingList = async (menu) => {
   let shoppingList = [];
+  const waterId = '6310ad7242687f4a1cf7f26a'; // The ID of the water ingredient.
   if (menu.length) {
     for (let object of menu) {
       const recipe = await Recipe.findById(object._id).select({
         ingredients: 1,
       });
       const ingredients = recipe.toObject().ingredients;
-      let ingredientsFormated = ingredients.map((ingredient) => {
-        return {
-          ...ingredient,
-          quantity: ingredient.quantity * object.serves,
-          obtained: false,
-        };
-      });
+      let ingredientsFormated = ingredients
+        .filter((ingredient) => ingredient._id.toString() !== waterId) // Filter out the water ingredient
+        .map((ingredient) => {
+          return {
+            ...ingredient,
+            quantity: ingredient.quantity * object.serves,
+            obtained: false,
+          };
+        });
       shoppingList = [
         ...shoppingList.filter(
           (obj) =>
