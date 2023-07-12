@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const { UnauthorizedError, NotFoundError } = require('../errors/errors');
 const { verifyToken } = require('../helper/helper');
@@ -15,7 +14,7 @@ const isLoggedIn = asyncHandler(async (req, res, next) => {
       // Get token from header
       token = req.headers.authorization.split(' ')[1];
       // Verify token
-      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      const decoded = verifyToken(token, process.env.ACCESS_TOKEN_SECRET);
       // Get user from token
       req.user = await User.findById(decoded._id).select('-password');
       next();
