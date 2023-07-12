@@ -14,22 +14,27 @@ const {
   getSingleRecipe,
   editRecipe,
   deleteRecipe,
+  getUnapprovedRecipes,
+  toggleApprovedStatus,
 } = require('../controllers/recipeController');
 
 router
   .route('/')
   .get(asyncHandler(getAllRecipes))
-  .post(
-    isLoggedIn,
-    isAdmin,
-    upload.single('image'),
-    asyncHandler(createNewRecipe)
-  );
+  .post(isLoggedIn, upload.single('image'), asyncHandler(createNewRecipe));
+
+router
+  .route('/unapproved')
+  .get(isLoggedIn, isAdmin, asyncHandler(getUnapprovedRecipes));
 
 router
   .route('/:recipeId')
   .get(asyncHandler(getSingleRecipe))
   .put(isLoggedIn, isAdmin, upload.single('image'), asyncHandler(editRecipe))
   .delete(isLoggedIn, isAdmin, asyncHandler(deleteRecipe));
+
+router
+  .route('/:recipeId/toggle')
+  .post(isLoggedIn, isAdmin, asyncHandler(toggleApprovedStatus));
 
 module.exports = router;

@@ -4,9 +4,18 @@ const RecipeCategory = require('../models/RecipeCategory');
 const { NotFoundError } = require('../errors/errors');
 const cloudinary = require('cloudinary').v2;
 
+// Needs to only return recipes that are approved and also created by the user
 const getAllRecipes = async (req, res, next) => {
   try {
-    const recipes = await Recipe.find();
+    let filter = { approved: true };
+
+    if (req.user) {
+      filter = {
+        $or: [{ approved: true }, { createdBy: req.user._id }],
+      };
+    }
+
+    const recipes = await Recipe.find(filter);
     res.status(200).json(recipes);
   } catch (err) {
     next(err);
@@ -26,10 +35,9 @@ const createNewRecipe = async (req, res, next) => {
       url: req.file.path,
       filename: req.file.filename,
     };
+    recipe.createdBy = req.user._id;
     if (req.user.isAdmin) {
       recipe.approved = true;
-    } else {
-      // TODO - send an email when new recipe has been added
     }
     await recipe.save();
     res.status(201).json(recipe);
@@ -72,14 +80,28 @@ const editRecipe = async (req, res, next) => {
       throw new NotFoundError('Recipe not found');
     }
 
+    if (
+      recipe.createdBy.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
+      throw new UnauthorizedError(
+        'You do not have permission to edit this recipe'
+      );
+    }
+
+    const { error, value } = recipeSchema.validate(req.body);
+
+    if (error) {
+      throw new BadRequestError(error.details[0].message);
+    }
+
     const updatedRecipe = await Recipe.findByIdAndUpdate(
       req.params.recipeId,
-      req.body,
+      value,
       { new: true }
     );
     if (req.file) {
       if (recipe.image && recipe.image.filename) {
-        // Delete the previous image from cloudinary
         await cloudinary.uploader.destroy(recipe.image.filename);
       }
 
@@ -103,10 +125,36 @@ const deleteRecipe = async (req, res, next) => {
     const recipe = await Recipe.findById(recipeId);
     await recipe.remove();
     if (recipe.image && recipe.image.filename) {
-      // Delete image from cloudinary
       await cloudinary.uploader.destroy(recipe.image.filename);
     }
     res.status(200).json({ msg: 'Recipe deleted' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Admin only
+const getUnapprovedRecipes = async (req, res, next) => {
+  try {
+    const recipes = await Recipe.find({ approved: false });
+    res.status(200).json(recipes);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const toggleApprovedStatus = async (req, res, next) => {
+  try {
+    const recipe = await Recipe.findById(req.params.recipeId);
+
+    if (!recipe) {
+      throw new NotFoundError('Recipe not found');
+    }
+
+    recipe.approved = !recipe.approved;
+    await recipe.save();
+
+    res.status(200).json(recipe);
   } catch (err) {
     next(err);
   }
@@ -118,4 +166,6 @@ module.exports = {
   getSingleRecipe,
   editRecipe,
   deleteRecipe,
+  getUnapprovedRecipes,
+  toggleApprovedStatus,
 };

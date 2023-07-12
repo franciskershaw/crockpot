@@ -110,12 +110,8 @@ const createRecipeSchema = Joi.object({
       'any.required': 'This field is required',
     })
   ),
-  createdBy: Joi.string().pattern(objectIdPattern).required().messages({
-    'string.pattern.base': 'Must be a valid ObjectId',
-    'any.required': 'This field is required',
-  }),
-  approved: Joi.boolean(),
-}).unknown(true);
+  approved: Joi.boolean().default(false),
+});
 
 const editRecipeSchema = Joi.object({
   name: Joi.string().empty(''),
@@ -129,18 +125,25 @@ const editRecipeSchema = Joi.object({
       unit: Joi.string(),
     })
   ),
-  instructions: Joi.array().items(Joi.string().empty('')),
+  instructions: Joi.array().items(Joi.string().required()).min(1).messages({
+    'array.min': 'At least one instruction is required',
+  }),
   notes: Joi.array().items(Joi.string().empty('')),
   categories: Joi.array().items(
     Joi.string().pattern(objectIdPattern).empty('').messages({
       'string.pattern.base': 'Must be a valid ObjectId',
     })
   ),
-  createdBy: Joi.string().pattern(objectIdPattern).empty('').messages({
-    'string.pattern.base': 'Must be a valid ObjectId',
-  }),
   approved: Joi.boolean(),
-}).unknown(true);
+}).or(
+  'name',
+  'timeInMinutes',
+  'ingredients',
+  'instructions',
+  'notes',
+  'categories',
+  'approved'
+);
 
 const recipeCategorySchema = Joi.object({
   name: Joi.string().required().min(1).max(100),
