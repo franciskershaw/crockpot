@@ -1,7 +1,7 @@
-export default function Home() {
+export default function HomePage() {
   return (
-    <main className="">
+    
       <h1>Crockpot</h1>
-    </main>
+    
   );
 }
