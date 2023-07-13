@@ -38,7 +38,7 @@ const RecipeSchema = new mongoose.Schema({
   categories: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: 'RecipeCategory',
     },
   ],
   createdBy: {

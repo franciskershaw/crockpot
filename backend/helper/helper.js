@@ -1,22 +1,27 @@
 const Recipe = require('../models/Recipe');
+const User = require('../models/User');
+const Item = require('../models/Item');
 
 const jwt = require('jsonwebtoken');
 
 const generateShoppingList = async (menu) => {
   let shoppingList = [];
+  const waterId = '6310ad7242687f4a1cf7f26a'; // The ID of the water ingredient.
   if (menu.length) {
     for (let object of menu) {
       const recipe = await Recipe.findById(object._id).select({
         ingredients: 1,
       });
       const ingredients = recipe.toObject().ingredients;
-      let ingredientsFormated = ingredients.map((ingredient) => {
-        return {
-          ...ingredient,
-          quantity: ingredient.quantity * object.serves,
-          obtained: false,
-        };
-      });
+      let ingredientsFormated = ingredients
+        .filter((ingredient) => ingredient._id.toString() !== waterId) // Filter out the water ingredient
+        .map((ingredient) => {
+          return {
+            ...ingredient,
+            quantity: ingredient.quantity * object.serves,
+            obtained: false,
+          };
+        });
       shoppingList = [
         ...shoppingList.filter(
           (obj) =>
@@ -43,6 +48,24 @@ const generateShoppingList = async (menu) => {
   return shoppingList;
 };
 
+// Used for either extraItems or shoppingList, to return required item information
+const formatItemList = async (userId, type) => {
+  const user = await User.findById(userId);
+  const itemsArray = user[type];
+  const itemsDetails = await Item.find({ _id: { $in: itemsArray } });
+
+  let list = [];
+
+  for (const item of itemsDetails) {
+    const { quantity, unit, obtained } = itemsArray.find((extraItem) =>
+      item._id.equals(extraItem._id)
+    );
+    list.push({ item, quantity, unit, obtained });
+  }
+
+  return list;
+};
+
 const generateAccessToken = (id) => {
   return jwt.sign({ _id: id }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '15m',
@@ -59,9 +82,25 @@ const verifyToken = (token, secret) => {
   return jwt.verify(token, secret);
 };
 
+const generateUserObject = (user) => {
+  return {
+    _id: user._id,
+    username: user.username,
+    isAdmin: user.isAdmin,
+    favouriteRecipes: user.favouriteRecipes,
+    recipeMenu: user.recipeMenu,
+    shoppingList: user.shoppingList,
+    regularItems: user.regularItems,
+    extraItems: user.extraItems,
+    accessToken: generateAccessToken(user._id),
+  };
+};
+
 module.exports = {
   generateShoppingList,
+  formatItemList,
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
+  generateUserObject,
 };
