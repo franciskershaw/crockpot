@@ -1,7 +1,7 @@
-export default function HomePage() {
+const HomePage = () => {
   return (
-    
-      <h1>Crockpot</h1>
-    
-  );
+    <div>Crockpot landing page</div>
+  )
 }
+
+export default HomePage
