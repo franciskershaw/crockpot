@@ -2,7 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+// Don't delete!
 .tw {
   border: black 1px solid;
   background: rgba(200, 200, 200, 0.2);
+}
+
+// Containers
+.container {
+  @apply mx-auto px-4;
+
+  &--full {
+    @apply w-full;
+  }
+}
+
+// Typography
+body {
+  @apply text-body text-base;
+}
+
+h1 {
+  @apply text-2xl;
+}
+
+h2 {
+  @apply text-xl;
+}
+
+h3 {
+  @apply text-lg;
+}
+
+h4 {
+  @apply text-base;
+}
+
+h5 {
+  @apply text-sm;
+}
+
+h6 {
+  @apply text-xs;
+}
+
+a {
+  @apply cursor-pointer;
+
+  &:hover {
+    @apply underline;
+  }
 }
