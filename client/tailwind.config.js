@@ -22,6 +22,10 @@ module.exports = {
         black: "#000000",
         body: "#000000",
       },
+      fontFamily: {
+        title: "Caprasimo",
+        body: "Lato",
+      },
     },
   },
   plugins: [require("tailwindcss"), require("autoprefixer")],

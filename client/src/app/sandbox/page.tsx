@@ -1,10 +1,13 @@
+"use client";
+
+import Slider from "@/src/components/Slider/Slider";
 import { FC } from "react";
 
 const SandBoxPage: FC = () => {
   return (
     <div className="space-y-2">
       <div className="container container--full">
-        <h1>Sandbox Page!</h1>
+        <h1>Crockpot</h1>
         <h2>Sandbox Page!</h2>
         <h3>Sandbox Page!</h3>
         <h4>Sandbox Page!</h4>
@@ -22,6 +25,9 @@ const SandBoxPage: FC = () => {
         <div className="h-10 w-10 rounded-full bg-secondary-dark"></div>
         <div className="h-10 w-10 rounded-full bg-black"></div>
         <div className="h-10 w-10 rounded-full bg-white border-black border-2"></div>
+      </div>
+      <div className="mx-4">
+        <Slider />
       </div>
     </div>
   );

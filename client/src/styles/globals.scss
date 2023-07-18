@@ -8,6 +8,11 @@
   background: rgba(200, 200, 200, 0.2);
 }
 
+// Add general styles here!
+main {
+
+}
+
 // Containers
 .container {
   @apply mx-auto px-4;
@@ -17,13 +22,16 @@
   }
 }
 
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Caprasimo&family=Lato:wght@300;400;500&display=swap');
+
 // Typography
 body {
-  @apply text-body text-base;
+  @apply text-body text-base font-body font-thin;
 }
 
 h1 {
-  @apply text-2xl;
+  @apply text-2xl font-title;
 }
 
 h2 {
