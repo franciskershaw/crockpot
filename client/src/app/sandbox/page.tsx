@@ -1,6 +1,7 @@
 "use client";
 
 import Slider from "@/src/components/Slider/Slider";
+import Switch from "@/src/components/Switch/Switch";
 import { FC } from "react";
 
 const SandBoxPage: FC = () => {
@@ -26,11 +27,17 @@ const SandBoxPage: FC = () => {
         <div className="h-10 w-10 rounded-full bg-black"></div>
         <div className="h-10 w-10 rounded-full bg-white border-black border-2"></div>
       </div>
-      <div className="mx-8 pt-8">
+      <div className="container container--full pt-8">
         <Slider
           min={25}
           max={75}
           onChange={(values: number[]) => console.log(values)}
+        />
+      </div>
+      <div className="container container--full pt-8">
+        <Switch
+          label={"Switch"}
+          onChange={(values: boolean) => console.log(values)}
         />
       </div>
     </div>
