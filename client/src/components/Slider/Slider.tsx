@@ -1,5 +1,7 @@
 // Slider component used on Browse page - recipe filter
 
+// TODO - Add focus styles, stop thumbs crossing over each other, add on change event
+
 import { useState, useEffect, useRef } from "react";
 import * as SliderRadix from "@radix-ui/react-slider";
 import "./styles.scss";
@@ -37,13 +39,18 @@ function SliderThumbWithValue() {
   );
 }
 
-export default function Slider() {
+type SliderProps = {
+  onChange: (values: number[]) => void;
+};
+
+export default function Slider({ onChange }: SliderProps) {
   return (
     <SliderRadix.Root
       className="SliderRoot"
       defaultValue={[25, 75]}
       step={5}
       minStepsBetweenThumbs={1}
+      onValueChange={onChange}
     >
       <SliderRadix.Track className="SliderTrack">
         <SliderRadix.Range className="SliderRange" />
