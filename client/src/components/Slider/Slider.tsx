@@ -40,14 +40,16 @@ function SliderThumbWithValue() {
 }
 
 type SliderProps = {
+  min: number;
+  max: number;
   onChange: (values: number[]) => void;
 };
 
-export default function Slider({ onChange }: SliderProps) {
+export default function Slider({ min, max, onChange }: SliderProps) {
   return (
     <SliderRadix.Root
       className="SliderRoot"
-      defaultValue={[25, 75]}
+      defaultValue={[min, max]}
       step={5}
       minStepsBetweenThumbs={1}
       onValueChange={onChange}

@@ -27,7 +27,11 @@ const SandBoxPage: FC = () => {
         <div className="h-10 w-10 rounded-full bg-white border-black border-2"></div>
       </div>
       <div className="mx-8 pt-8">
-        <Slider onChange={(values: number[]) => console.log(values)} />
+        <Slider
+          min={25}
+          max={75}
+          onChange={(values: number[]) => console.log(values)}
+        />
       </div>
     </div>
   );
