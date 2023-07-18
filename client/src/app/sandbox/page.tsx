@@ -1,5 +1,6 @@
 "use client";
 
+import Checkbox from "@/src/components/Checkbox/Checkbox";
 import Slider from "@/src/components/Slider/Slider";
 import Switch from "@/src/components/Switch/Switch";
 import { FC } from "react";
@@ -37,6 +38,24 @@ const SandBoxPage: FC = () => {
       <div className="container container--full pt-8">
         <Switch
           label={"Switch"}
+          id={"switch"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+      </div>
+      <div className="container container--full pt-8 space-y-2">
+        <Checkbox
+          label={"Checkbox"}
+          id={"checkbox-1"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+        <Checkbox
+          label={"Checkbox"}
+          id={"checkbox-2"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+        <Checkbox
+          label={"Checkbox"}
+          id={"checkbox-3"}
           onChange={(values: boolean) => console.log(values)}
         />
       </div>

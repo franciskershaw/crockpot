@@ -1,0 +1,19 @@
+/* reset */
+button {
+  all: unset;
+}
+
+.CheckboxRoot {
+  @apply bg-blue-100 h-6 w-6 rounded flex items-center justify-center cursor-pointer;
+}
+
+.CheckboxRoot:hover {
+  // background-color: black;
+}
+.CheckboxRoot:focus {
+  // box-shadow: 0 0 0 2px black;
+}
+
+.CheckboxIndicator {
+  @apply text-black;
+}

@@ -7,18 +7,19 @@ import "./styles.scss";
 
 type SwitchProps = {
   label: string;
+  id: string;
   onChange: (values: boolean) => void;
 };
 
-export default function Switch({ label, onChange }: SwitchProps) {
+export default function Switch({ label, id, onChange }: SwitchProps) {
   return (
     <div className="flex items-center">
-      <label className="pr-2" htmlFor="airplane-mode">
+      <label className="pr-2" htmlFor={id}>
         {label}
       </label>
       <SwitchRadix.Root
         className="SwitchRoot"
-        id="airplane-mode"
+        id={id}
         onCheckedChange={onChange}
       >
         <SwitchRadix.Thumb className="SwitchThumb" />
