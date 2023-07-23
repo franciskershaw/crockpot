@@ -1,10 +1,32 @@
+"use client";
+
+import Checkbox from "@/src/components/Checkbox/Checkbox";
+import Slider from "@/src/components/Slider/Slider";
+import Switch from "@/src/components/Switch/Switch";
+import Accordion from "@/src/components/Accordion/Accordion";
 import { FC } from "react";
 
 const SandBoxPage: FC = () => {
+  const accordionItems = [
+    {
+      value: "item-1",
+      heading: "Heading 1",
+      content:
+        "Bacon ipsum dolor amet chislic prosciutto biltong chicken shoulder swine salami rump alcatra bresaola, tenderloin cow andouille beef. Meatball tri-tip chicken leberkas. Beef landjaeger chuck ham hock. Jowl flank landjaeger ground round, prosciutto tri-tip ribeye meatball cupim buffalo pastrami. Buffalo sausage fatback picanha strip steak alcatra filet mignon pancetta ham hock flank frankfurter pastrami burgdoggen short ribs prosciutto.",
+    },
+    {
+      value: "item-2",
+      heading: "Heading 2",
+      content:
+        "Bacon ipsum dolor amet chislic prosciutto biltong chicken shoulder swine salami rump alcatra bresaola, tenderloin cow andouille beef. Meatball tri-tip chicken leberkas. Beef landjaeger chuck ham hock. Jowl flank landjaeger ground round, prosciutto tri-tip ribeye meatball cupim buffalo pastrami. Buffalo sausage fatback picanha strip steak alcatra filet mignon pancetta ham hock flank frankfurter pastrami burgdoggen short ribs prosciutto.",
+    },
+    // Add more items here if needed
+  ];
+
   return (
     <div className="space-y-2">
       <div className="container container--full">
-        <h1>Sandbox Page!</h1>
+        <h1>Crockpot</h1>
         <h2>Sandbox Page!</h2>
         <h3>Sandbox Page!</h3>
         <h4>Sandbox Page!</h4>
@@ -22,6 +44,40 @@ const SandBoxPage: FC = () => {
         <div className="h-10 w-10 rounded-full bg-secondary-dark"></div>
         <div className="h-10 w-10 rounded-full bg-black"></div>
         <div className="h-10 w-10 rounded-full bg-white border-black border-2"></div>
+      </div>
+      <div className="container container--full pt-8">
+        <Slider
+          min={25}
+          max={75}
+          onChange={(values: number[]) => console.log(values)}
+        />
+      </div>
+      <div className="container container--full pt-8">
+        <Switch
+          label={"Switch"}
+          id={"switch"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+      </div>
+      <div className="container container--full pt-8 space-y-2">
+        <Checkbox
+          label={"Checkbox"}
+          id={"checkbox-1"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+        <Checkbox
+          label={"Checkbox"}
+          id={"checkbox-2"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+        <Checkbox
+          label={"Checkbox"}
+          id={"checkbox-3"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+      </div>
+      <div className="container container--full pt-8 space-y-2">
+        <Accordion items={accordionItems} />
       </div>
     </div>
   );

@@ -1,0 +1,23 @@
+.SliderRoot {
+  @apply relative flex items-center w-full;
+}
+
+.SliderTrack {
+  @apply relative flex-grow bg-black h-0.5 rounded-full;
+}
+
+.SliderRange {
+  @apply absolute bg-black w-full;
+}
+
+.SliderThumb {
+  @apply relative flex items-center justify-center w-10 h-10 rounded-full border-black border-2 bg-white cursor-pointer;
+
+  // &:focus {
+  //   @apply bg-black;
+  // }
+}
+
+.SliderThumbValue {
+  @apply absolute text-black;
+}
