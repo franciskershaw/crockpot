@@ -3,23 +3,23 @@
 // TODO - Styling (normal)
 
 import * as SwitchRadix from "@radix-ui/react-switch";
+import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 
 type SwitchProps = {
   label: string;
-  id: string;
   onChange: (values: boolean) => void;
 };
 
-export default function Switch({ label, id, onChange }: SwitchProps) {
+export default function Switch({ label, onChange }: SwitchProps) {
   return (
     <div className="flex items-center">
-      <label className="pr-2" htmlFor={id}>
+      <label className="pr-2" htmlFor={uuidv4()}>
         {label}
       </label>
       <SwitchRadix.Root
         className="SwitchRoot"
-        id={id}
+        id={uuidv4()}
         onCheckedChange={onChange}
       >
         <SwitchRadix.Thumb className="SwitchThumb" />
