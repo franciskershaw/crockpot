@@ -10,6 +10,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import ButtonFav from "@/src/components/ButtonFav/ButtonFav";
 import ButtonCart from "@/src/components/ButtonCart/ButtonCart";
 import Button from "@/src/components/Button/Button";
+import QuantityInput from "@/src/components/QuantityInput/QuantityInput";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -32,6 +33,10 @@ const SandBoxPage: FC = () => {
       ),
     },
   ];
+
+  const handleQuantityChange = (value: number) => {
+    console.log("Quantity changed:", value);
+  };
 
   return (
     <div className="space-y-2">
@@ -126,7 +131,12 @@ const SandBoxPage: FC = () => {
             text="Button"
             onPress={() => console.log("Hello!")}
           ></Button>
-          <Button border text="Button" onPress={() => console.log("Hello!")}>
+          <Button
+            border
+            text="Button"
+            inverse
+            onPress={() => console.log("Hello!")}
+          >
             <AiOutlineSearch />
           </Button>
         </div>
@@ -143,6 +153,7 @@ const SandBoxPage: FC = () => {
           <Button
             type="secondary"
             border
+            inverse
             text="Button"
             onPress={() => console.log("Hello!")}
           >
@@ -162,12 +173,14 @@ const SandBoxPage: FC = () => {
           <Button
             type="tertiary"
             border
+            inverse
             text="Button"
             onPress={() => console.log("Hello!")}
           >
             <AiOutlineSearch />
           </Button>
         </div>
+        <QuantityInput initialValue={10} onChange={handleQuantityChange} />
       </div>
     </div>
   );

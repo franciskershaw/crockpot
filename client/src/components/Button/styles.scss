@@ -29,6 +29,34 @@
                 }
             }
         }
+
+        &.btn--inverse {
+            @apply bg-black text-white;
+
+            .icon {
+                @apply bg-black;
+
+                svg {
+                    @apply text-white;
+                }
+            }
+
+            &.btn--border {
+                @apply border-black;
+            }
+    
+            &:hover {
+                @apply border-black bg-white text-black;
+    
+                .icon {
+                    @apply bg-white;
+    
+                    svg {
+                        @apply text-black;
+                    }
+                }
+            }
+        }
     }
 
     &--secondary {
@@ -53,6 +81,34 @@
                 }
             }
         }
+
+        &.btn--inverse {
+            @apply bg-primary text-white;
+
+            .icon {
+                @apply bg-primary;
+
+                svg {
+                    @apply text-white;
+                }
+            }
+
+            &.btn--border {
+                @apply border-primary;
+            }
+
+            &:hover {
+                @apply border-primary bg-white text-primary;
+
+                .icon {
+                    @apply bg-white;
+
+                    svg {
+                        @apply text-primary;
+                    }
+                }
+            }
+        }
     }
 
     &--tertiary {
@@ -74,6 +130,34 @@
 
                 svg {
                     @apply text-white;
+                }
+            }
+        }
+
+        &.btn--inverse {
+            @apply bg-secondary text-white;
+
+            .icon {
+                @apply bg-secondary;
+
+                svg {
+                    @apply text-white;
+                }
+            }
+
+            &.btn--border {
+                @apply border-secondary;
+            }
+
+            &:hover {
+                @apply border-secondary bg-white text-secondary;
+
+                .icon {
+                    @apply bg-white;
+
+                    svg {
+                        @apply text-secondary;
+                    }
                 }
             }
         }

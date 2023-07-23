@@ -4,7 +4,7 @@ import Icon from "../Icon/Icon";
 
 type ButtonProps = {
   type?: "primary" | "secondary" | "tertiary";
-  active?: boolean;
+  inverse?: boolean;
   border?: boolean;
   onPress: () => void;
   text?: string;
@@ -13,7 +13,7 @@ type ButtonProps = {
 
 const Button = ({
   type,
-  active,
+  inverse,
   border,
   onPress,
   text,
@@ -21,7 +21,7 @@ const Button = ({
 }: ButtonProps) => {
   const buttonClasses = `btn btn--${type || "primary"} ${
     border ? "btn--border" : ""
-  } ${active ? "btn--active " : ""}`;
+  } ${inverse ? "btn--inverse " : ""}`;
 
   const handlePress = () => {
     if (onPress) {
