@@ -12,7 +12,6 @@
 
 // Add general styles here!
 main {
-
   // Hide number arrows
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button,
@@ -67,6 +66,6 @@ a {
   @apply cursor-pointer;
 
   &:hover {
-    @apply underline;
+    @apply no-underline;
   }
 }

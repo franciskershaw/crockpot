@@ -1,6 +1,7 @@
 import "../styles/globals.scss";
 import type { Metadata } from "next";
-import Navbar from "../components/Navbar/Navbar";
+import NavbarTop from "../components/NavbarTop/NavbarTop";
+import NavbarBottom from "../components/NavbarBottom/NavbarBottom";
 
 export const metadata: Metadata = {
   title: "Crockpot",
@@ -15,8 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
+        <NavbarTop />
         <main>{children}</main>
+        <NavbarBottom />
       </body>
     </html>
   );
