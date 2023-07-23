@@ -1,6 +1,6 @@
-// Switch component used on...
+// Switch component used on Browse page - Recipe filter
 
-// TODO -
+// TODO - Styling (normal)
 
 import * as SwitchRadix from "@radix-ui/react-switch";
 import "./styles.scss";

@@ -1,4 +1,4 @@
-// Switch component used on...
+// Checkbox component used on Browse page - Recipe filter, Shopping list page
 
 // TODO -
 

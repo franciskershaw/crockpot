@@ -1,6 +1,6 @@
-// Slider component used on Browse page - recipe filter
+// Slider component used on Browse page - Recipe filter
 
-// TODO - Add focus styles, stop thumbs crossing over each other, add on change event
+// TODO - Styling (normal, focus)
 
 import { useState, useEffect, useRef } from "react";
 import * as SliderRadix from "@radix-ui/react-slider";

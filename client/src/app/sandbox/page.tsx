@@ -3,9 +3,26 @@
 import Checkbox from "@/src/components/Checkbox/Checkbox";
 import Slider from "@/src/components/Slider/Slider";
 import Switch from "@/src/components/Switch/Switch";
+import Accordion from "@/src/components/Accordion/Accordion";
 import { FC } from "react";
 
 const SandBoxPage: FC = () => {
+  const accordionItems = [
+    {
+      value: "item-1",
+      heading: "Heading 1",
+      content:
+        "Bacon ipsum dolor amet chislic prosciutto biltong chicken shoulder swine salami rump alcatra bresaola, tenderloin cow andouille beef. Meatball tri-tip chicken leberkas. Beef landjaeger chuck ham hock. Jowl flank landjaeger ground round, prosciutto tri-tip ribeye meatball cupim buffalo pastrami. Buffalo sausage fatback picanha strip steak alcatra filet mignon pancetta ham hock flank frankfurter pastrami burgdoggen short ribs prosciutto.",
+    },
+    {
+      value: "item-2",
+      heading: "Heading 2",
+      content:
+        "Bacon ipsum dolor amet chislic prosciutto biltong chicken shoulder swine salami rump alcatra bresaola, tenderloin cow andouille beef. Meatball tri-tip chicken leberkas. Beef landjaeger chuck ham hock. Jowl flank landjaeger ground round, prosciutto tri-tip ribeye meatball cupim buffalo pastrami. Buffalo sausage fatback picanha strip steak alcatra filet mignon pancetta ham hock flank frankfurter pastrami burgdoggen short ribs prosciutto.",
+    },
+    // Add more items here if needed
+  ];
+
   return (
     <div className="space-y-2">
       <div className="container container--full">
@@ -58,6 +75,9 @@ const SandBoxPage: FC = () => {
           id={"checkbox-3"}
           onChange={(values: boolean) => console.log(values)}
         />
+      </div>
+      <div className="container container--full pt-8 space-y-2">
+        <Accordion items={accordionItems} />
       </div>
     </div>
   );
