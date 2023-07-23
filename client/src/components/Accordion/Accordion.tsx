@@ -8,11 +8,11 @@ import "./styles.scss";
 
 type AccordionItemProps = {
   heading: string;
-  content: string;
+  children: React.ReactNode;
   value: string;
 };
 
-const AccordionItem = ({ heading, content, value }: AccordionItemProps) => (
+const AccordionItem = ({ heading, children, value }: AccordionItemProps) => (
   <AccordionRadix.Item
     value={value}
     className="border-2 border-black border-b-0 p-2"
@@ -24,7 +24,7 @@ const AccordionItem = ({ heading, content, value }: AccordionItemProps) => (
       </AccordionRadix.Trigger>
     </AccordionRadix.Header>
     <AccordionRadix.Content className="AccordionContent pt-1">
-      {content}
+      {children}
     </AccordionRadix.Content>
   </AccordionRadix.Item>
 );
@@ -44,7 +44,7 @@ const Accordion = ({ items }: AccordionProps) => {
         <AccordionItem
           key={item.value}
           heading={item.heading}
-          content={item.content}
+          children={item.children}
           value={item.value}
         />
       ))}

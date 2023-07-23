@@ -11,16 +11,25 @@ const SandBoxPage: FC = () => {
     {
       value: "item-1",
       heading: "Heading 1",
-      content:
+      children:
         "Bacon ipsum dolor amet chislic prosciutto biltong chicken shoulder swine salami rump alcatra bresaola, tenderloin cow andouille beef. Meatball tri-tip chicken leberkas. Beef landjaeger chuck ham hock. Jowl flank landjaeger ground round, prosciutto tri-tip ribeye meatball cupim buffalo pastrami. Buffalo sausage fatback picanha strip steak alcatra filet mignon pancetta ham hock flank frankfurter pastrami burgdoggen short ribs prosciutto.",
     },
     {
       value: "item-2",
       heading: "Heading 2",
-      content:
-        "Bacon ipsum dolor amet chislic prosciutto biltong chicken shoulder swine salami rump alcatra bresaola, tenderloin cow andouille beef. Meatball tri-tip chicken leberkas. Beef landjaeger chuck ham hock. Jowl flank landjaeger ground round, prosciutto tri-tip ribeye meatball cupim buffalo pastrami. Buffalo sausage fatback picanha strip steak alcatra filet mignon pancetta ham hock flank frankfurter pastrami burgdoggen short ribs prosciutto.",
+      children: <p>Paragraph paragraph!</p>,
     },
-    // Add more items here if needed
+    {
+      value: "item-3",
+      heading: "Heading 3",
+      children: (
+        <Switch
+          label={"Switch"}
+          id={"switch-accordion"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+      ),
+    },
   ];
 
   return (
