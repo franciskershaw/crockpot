@@ -2,32 +2,42 @@
 
 // TODO -
 
+import React from "react";
 import * as AccordionRadix from "@radix-ui/react-accordion";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import Icon from "@/src/components/Icon/Icon";
+import { BsChevronDown } from "react-icons/bs";
+import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 
 type AccordionItemProps = {
   heading: string;
-  content: string;
-  value: string;
+  children: React.ReactNode;
 };
 
-const AccordionItem = ({ heading, content, value }: AccordionItemProps) => (
-  <AccordionRadix.Item
-    value={value}
-    className="border-2 border-black border-b-0 p-2"
-  >
-    <AccordionRadix.Header>
-      <AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
-        <span>{heading}</span>
-        <ChevronDownIcon className="AccordionChevron" aria-hidden />
-      </AccordionRadix.Trigger>
-    </AccordionRadix.Header>
-    <AccordionRadix.Content className="AccordionContent pt-1">
-      {content}
-    </AccordionRadix.Content>
-  </AccordionRadix.Item>
-);
+const AccordionItem = ({ heading, children }: AccordionItemProps) => {
+  const value = React.useMemo(() => uuidv4(), []);
+
+  return (
+    <AccordionRadix.Item
+      value={value}
+      className="border-2 border-black border-b-0 p-2"
+    >
+      <AccordionRadix.Header>
+        <AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
+          <span>{heading}</span>
+          <div className="AccordionChevron">
+            <Icon>
+              <BsChevronDown />
+            </Icon>
+          </div>
+        </AccordionRadix.Trigger>
+      </AccordionRadix.Header>
+      <AccordionRadix.Content className="AccordionContent pt-1">
+        {children}
+      </AccordionRadix.Content>
+    </AccordionRadix.Item>
+  );
+};
 
 interface AccordionProps {
   items: AccordionItemProps[];
@@ -35,17 +45,12 @@ interface AccordionProps {
 
 const Accordion = ({ items }: AccordionProps) => {
   return (
-    <AccordionRadix.Root
-      type="single"
-      collapsible
-      className="border-b-2 border-black"
-    >
+    <AccordionRadix.Root type="multiple" className="border-b-2 border-black">
       {items.map((item) => (
         <AccordionItem
-          key={item.value}
+          key={uuidv4()}
           heading={item.heading}
-          content={item.content}
-          value={item.value}
+          children={item.children}
         />
       ))}
     </AccordionRadix.Root>

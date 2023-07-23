@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+// TODO - need global values for primary/secondary/tertiary components, focus/hover states, animation speeds, padding/margins
+
 // Don't delete!
 .tw {
   border: black 1px solid;
@@ -11,6 +13,13 @@
 // Add general styles here!
 main {
 
+  // Hide number arrows
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number'] {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 // Containers
