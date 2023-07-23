@@ -187,16 +187,19 @@ const SandBoxPage: FC = () => {
         <div className="grid grid-cols-2 gap-5">
           <RecipeCard
             imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/553654b06ced6ebf798b4567.jpg"
+            cookingTime={20}
             recipeName="Ginger Beef Stir Fry"
             categories={["Delicious", "Steamy"]}
           />
           <RecipeCard
             imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/5508664c6ced6efa2e8b457e.jpg"
+            cookingTime={30}
             recipeName="Spring Time Crispy Chicken Parmigiana Salad"
             categories={["Delicious", "Healthy", "Steamy", "Saucy"]}
           />
           <RecipeCard
             imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/54f744b26ced6e83388b4567.jpg"
+            cookingTime={40}
             recipeName="Strolling Rigatoni with Cherry Tomatoes and Mozzarella"
             categories={["Delicious", "Healthy", "Steamy"]}
           />
