@@ -1,7 +1,5 @@
 .AccordionChevron {
     transition: transform 300ms;
-
-    @apply h-6 w-6;
   }
   .AccordionTrigger[data-state='open'] > .AccordionChevron {
     transform: rotate(180deg);

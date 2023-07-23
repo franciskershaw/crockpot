@@ -6,6 +6,8 @@ import Switch from "@/src/components/Switch/Switch";
 import Accordion from "@/src/components/Accordion/Accordion";
 import { v4 as uuidv4 } from "uuid";
 import { FC } from "react";
+import Icon from "@/src/components/Icon/Icon";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -80,6 +82,17 @@ const SandBoxPage: FC = () => {
       </div>
       <div className="container container--full pt-8 space-y-2">
         <Accordion items={accordionItems} />
+      </div>
+      <div className="container container--full pt-8 flex space-x-2">
+        <Icon border size="sm">
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border>
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border size="lg">
+          <MagnifyingGlassIcon />
+        </Icon>
       </div>
     </div>
   );

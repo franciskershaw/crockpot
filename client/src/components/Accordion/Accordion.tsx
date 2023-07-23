@@ -4,6 +4,7 @@
 
 import React from "react";
 import * as AccordionRadix from "@radix-ui/react-accordion";
+import Icon from "@/src/components/Icon/Icon";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
@@ -24,7 +25,9 @@ const AccordionItem = ({ heading, children }: AccordionItemProps) => {
       <AccordionRadix.Header>
         <AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
           <span>{heading}</span>
-          <ChevronDownIcon className="AccordionChevron" aria-hidden />
+          <Icon>
+            <ChevronDownIcon className="AccordionChevron" aria-hidden />
+          </Icon>
         </AccordionRadix.Trigger>
       </AccordionRadix.Header>
       <AccordionRadix.Content className="AccordionContent pt-1">
