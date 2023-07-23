@@ -9,6 +9,7 @@ import Icon from "@/src/components/Icon/Icon";
 import { AiOutlineSearch } from "react-icons/ai";
 import ButtonFav from "@/src/components/ButtonFav/ButtonFav";
 import ButtonCart from "@/src/components/ButtonCart/ButtonCart";
+import Button from "@/src/components/Button/Button";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -116,6 +117,57 @@ const SandBoxPage: FC = () => {
       <div className="container container--full pt-8 space-x-2">
         <ButtonFav recipeId="halluomi-tacos" />
         <ButtonCart recipeId="sheperds-pie" />
+        <div className="flex space-x-2">
+          <Button border onPress={() => console.log("Hello!")}>
+            <AiOutlineSearch />
+          </Button>
+          <Button
+            border
+            text="Button"
+            onPress={() => console.log("Hello!")}
+          ></Button>
+          <Button border text="Button" onPress={() => console.log("Hello!")}>
+            <AiOutlineSearch />
+          </Button>
+        </div>
+        <div className="flex space-x-2">
+          <Button type="secondary" border onPress={() => console.log("Hello!")}>
+            <AiOutlineSearch />
+          </Button>
+          <Button
+            border
+            text="Button"
+            onPress={() => console.log("Hello!")}
+            type="secondary"
+          ></Button>
+          <Button
+            type="secondary"
+            border
+            text="Button"
+            onPress={() => console.log("Hello!")}
+          >
+            <AiOutlineSearch />
+          </Button>
+        </div>
+        <div className="flex space-x-2">
+          <Button type="tertiary" border onPress={() => console.log("Hello!")}>
+            <AiOutlineSearch />
+          </Button>
+          <Button
+            type="tertiary"
+            border
+            text="Button"
+            onPress={() => console.log("Hello!")}
+          ></Button>
+          <Button
+            type="tertiary"
+            border
+            text="Button"
+            onPress={() => console.log("Hello!")}
+          >
+            <AiOutlineSearch />
+          </Button>
+        </div>
       </div>
     </div>
   );

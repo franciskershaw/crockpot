@@ -1,0 +1,81 @@
+.btn {
+    @apply border-none rounded-full text-black bg-white flex items-center p-1;
+
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        @apply cursor-pointer;
+    }
+
+    // Border
+    &--border {
+        @apply border-2 border-solid;
+    }
+
+    // Types
+    &--primary {
+        &.btn--border {
+            @apply border-black;
+        }
+
+        &:hover {
+            @apply border-black bg-black text-white;
+
+            .icon {
+                @apply bg-black;
+
+                svg {
+                    @apply text-white;
+                }
+            }
+        }
+    }
+
+    &--secondary {
+        @apply text-primary;
+
+        svg {
+            @apply text-primary;
+        }
+
+        &.btn--border {
+            @apply border-primary;
+        }
+
+        &:hover {
+            @apply border-primary bg-primary text-white;
+
+            .icon {
+                @apply bg-primary;
+
+                svg {
+                    @apply text-white;
+                }
+            }
+        }
+    }
+
+    &--tertiary {
+        @apply text-secondary;
+
+        svg {
+            @apply text-secondary;
+        }
+
+        &.btn--border {
+            @apply border-secondary;
+        }
+
+        &:hover {
+            @apply border-secondary bg-secondary text-white;
+
+            .icon {
+                @apply bg-secondary;
+
+                svg {
+                    @apply text-white;
+                }
+            }
+        }
+    }
+  }
