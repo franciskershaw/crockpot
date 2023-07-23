@@ -113,7 +113,7 @@ const SandBoxPage: FC = () => {
           <AiOutlineSearch />
         </Icon>
       </div>
-      <div className="container container--full pt-8">
+      <div className="container container--full pt-8 space-x-2">
         <ButtonFav recipeId="halluomi-tacos" />
         <ButtonCart recipeId="sheperds-pie" />
       </div>

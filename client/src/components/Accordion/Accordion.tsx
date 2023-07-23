@@ -25,9 +25,11 @@ const AccordionItem = ({ heading, children }: AccordionItemProps) => {
       <AccordionRadix.Header>
         <AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
           <span>{heading}</span>
-          <Icon>
-            <BsChevronDown className="AccordionChevron" aria-hidden />
-          </Icon>
+          <div className="AccordionChevron">
+            <Icon>
+              <BsChevronDown />
+            </Icon>
+          </div>
         </AccordionRadix.Trigger>
       </AccordionRadix.Header>
       <AccordionRadix.Content className="AccordionContent pt-1">

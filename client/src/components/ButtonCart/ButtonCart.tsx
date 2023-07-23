@@ -1,4 +1,4 @@
-import { AiFillHeart } from "react-icons/ai";
+import { RiShoppingBasketLine } from "react-icons/ri";
 import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
 import Icon from "../Icon/Icon";
@@ -18,9 +18,13 @@ const ButtonCart = ({ recipeId }: ButtonCartProps) => {
 
   return (
     <Toggle.Root onPressedChange={handleCartChange}>
-      <Icon border active={isPressed}>
-        <AiFillHeart />
-      </Icon>
+      {isPressed ? (
+        <>Quantity input</>
+      ) : (
+        <Icon border active={isPressed}>
+          <RiShoppingBasketLine />
+        </Icon>
+      )}
     </Toggle.Root>
   );
 };
