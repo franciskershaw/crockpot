@@ -1,13 +1,17 @@
 .icon {
-    @apply h-8 w-8 bg-white border-none rounded-full p-1;
+    @apply h-8 w-8 border-none rounded-full p-1 bg-white;
+
+    transition: background-color 0.3s ease;
   
     svg {
       @apply w-full h-full;
+
+      transition: color 0.3s ease;
     }
 
     // Border
     &--border {
-        @apply border-2 border-black;
+        @apply border-2 border-solid;
     }
 
     // Sizes
@@ -20,15 +24,57 @@
     }
 
     // Types
-    &--secondary {
-        .icon--border {
+    &--primary {
+        svg {
+            @apply text-black;
+        }
+
+        &.icon--border {
             @apply border-black;
+        }
+
+        &.icon--active {
+            @apply bg-black;
+
+            svg {
+                @apply text-white;
+            }
+        }
+    }
+
+    &--secondary {
+        svg {
+            @apply text-primary;
+        }
+
+        &.icon--border {
+            @apply border-primary;
+        }
+
+        &.icon--active {
+            @apply bg-primary;
+
+            svg {
+                @apply text-white;
+            }
         }
     }
 
     &--tertiary {
-        .icon--border {
-            @apply border-black;
+        svg {
+            @apply text-secondary;
+        }
+
+        &.icon--border {
+            @apply border-secondary;
+        }
+
+        &.icon--active {
+            @apply bg-secondary;
+
+            svg {
+                @apply text-white;
+            }
         }
     }
   }

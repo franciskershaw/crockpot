@@ -3,14 +3,14 @@ import "./styles.scss";
 type IconProps = {
   type?: "primary" | "secondary" | "tertiary";
   size?: "sm" | "md" | "lg";
+  active?: boolean;
   border?: boolean;
   children: React.ReactNode;
 };
 
-const Icon = ({ type, size, border, children }: IconProps) => {
-  const iconClasses = `icon ${border ? "icon--border" : ""} icon--${
-    type || "primary"
-  } icon--${size || "md"}`;
+const Icon = ({ type, size, active, border, children }: IconProps) => {
+  const iconClasses = `icon icon--${type || "primary"} icon--${size || "md"}
+  ${border ? "icon--border" : ""} ${active ? "icon--active" : ""}`;
 
   return <div className={iconClasses}>{children}</div>;
 };

@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FC } from "react";
 import Icon from "@/src/components/Icon/Icon";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import ButtonFav from "@/src/components/ButtonFav/ButtonFav";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -90,9 +91,30 @@ const SandBoxPage: FC = () => {
         <Icon border>
           <MagnifyingGlassIcon />
         </Icon>
-        <Icon border size="lg">
+        <Icon border active size="lg">
           <MagnifyingGlassIcon />
         </Icon>
+        <Icon border type="secondary" size="sm">
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border type="secondary">
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border active type="secondary" size="lg">
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border type="tertiary" size="sm">
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border type="tertiary">
+          <MagnifyingGlassIcon />
+        </Icon>
+        <Icon border active type="tertiary" size="lg">
+          <MagnifyingGlassIcon />
+        </Icon>
+      </div>
+      <div className="container container--full pt-8">
+        <ButtonFav recipeId="halluomi-tacos" />
       </div>
     </div>
   );
