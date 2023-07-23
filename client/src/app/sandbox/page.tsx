@@ -11,6 +11,7 @@ import ButtonFav from "@/src/components/ButtonFav/ButtonFav";
 import ButtonCart from "@/src/components/ButtonCart/ButtonCart";
 import Button from "@/src/components/Button/Button";
 import QuantityInput from "@/src/components/QuantityInput/QuantityInput";
+import RecipeCard from "@/src/components/RecipeCard/RecipeCard";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -181,6 +182,25 @@ const SandBoxPage: FC = () => {
           </Button>
         </div>
         <QuantityInput initialValue={10} onChange={handleQuantityChange} />
+      </div>
+      <div className="container container--full">
+        <div className="grid grid-cols-2 gap-5">
+          <RecipeCard
+            imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/553654b06ced6ebf798b4567.jpg"
+            recipeName="Ginger Beef Stir Fry"
+            categories={["Delicious", "Steamy"]}
+          />
+          <RecipeCard
+            imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/5508664c6ced6efa2e8b457e.jpg"
+            recipeName="Spring Time Crispy Chicken Parmigiana Salad"
+            categories={["Delicious", "Healthy", "Steamy", "Saucy"]}
+          />
+          <RecipeCard
+            imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/54f744b26ced6e83388b4567.jpg"
+            recipeName="Strolling Rigatoni with Cherry Tomatoes and Mozzarella"
+            categories={["Delicious", "Healthy", "Steamy"]}
+          />
+        </div>
       </div>
     </div>
   );
