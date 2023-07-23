@@ -16,11 +16,11 @@
 
     // Sizes
     &--sm {
-        @apply h-6 w-6 p-0.5 border;
+        @apply h-6 w-6 border;
     }
 
     &--lg {
-        @apply h-10 w-10 p-1.5;
+        @apply h-10 w-10;
     }
 
     // Types

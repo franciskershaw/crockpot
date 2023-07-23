@@ -3,21 +3,21 @@ import * as Toggle from "@radix-ui/react-toggle";
 import { useState } from "react";
 import Icon from "../Icon/Icon";
 
-type ButtonFavProps = {
+type ButtonCartProps = {
   recipeId: string;
 };
 
-const ButtonFav = ({ recipeId }: ButtonFavProps) => {
+const ButtonCart = ({ recipeId }: ButtonCartProps) => {
   const [isPressed, setIsPressed] = useState(false);
 
-  const handleFavChange = (pressed: boolean) => {
+  const handleCartChange = (pressed: boolean) => {
     setIsPressed(pressed);
 
     console.log(pressed, recipeId);
   };
 
   return (
-    <Toggle.Root onPressedChange={handleFavChange}>
+    <Toggle.Root onPressedChange={handleCartChange}>
       <Icon border active={isPressed}>
         <AiFillHeart />
       </Icon>
@@ -25,4 +25,4 @@ const ButtonFav = ({ recipeId }: ButtonFavProps) => {
   );
 };
 
-export default ButtonFav;
+export default ButtonCart;

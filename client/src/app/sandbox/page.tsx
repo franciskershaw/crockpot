@@ -4,11 +4,11 @@ import Checkbox from "@/src/components/Checkbox/Checkbox";
 import Slider from "@/src/components/Slider/Slider";
 import Switch from "@/src/components/Switch/Switch";
 import Accordion from "@/src/components/Accordion/Accordion";
-import { v4 as uuidv4 } from "uuid";
 import { FC } from "react";
 import Icon from "@/src/components/Icon/Icon";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { AiOutlineSearch } from "react-icons/ai";
 import ButtonFav from "@/src/components/ButtonFav/ButtonFav";
+import ButtonCart from "@/src/components/ButtonCart/ButtonCart";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -86,35 +86,36 @@ const SandBoxPage: FC = () => {
       </div>
       <div className="container container--full pt-8 flex space-x-2">
         <Icon border size="sm">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border>
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border active size="lg">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border type="secondary" size="sm">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border type="secondary">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border active type="secondary" size="lg">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border type="tertiary" size="sm">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border type="tertiary">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
         <Icon border active type="tertiary" size="lg">
-          <MagnifyingGlassIcon />
+          <AiOutlineSearch />
         </Icon>
       </div>
       <div className="container container--full pt-8">
         <ButtonFav recipeId="halluomi-tacos" />
+        <ButtonCart recipeId="sheperds-pie" />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
 // TODO -
 
 import * as CheckboxRadix from "@radix-ui/react-checkbox";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { AiOutlineCheck } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../Icon/Icon";
 import "./styles.scss";
@@ -24,7 +24,7 @@ export default function Checkbox({ label, onChange }: CheckboxProps) {
       >
         <CheckboxRadix.Indicator className="CheckboxIndicator">
           <Icon size="sm">
-            <CheckIcon />
+            <AiOutlineCheck />
           </Icon>
         </CheckboxRadix.Indicator>
       </CheckboxRadix.Root>
