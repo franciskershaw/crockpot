@@ -13,7 +13,6 @@ const NavbarSharedLinks = () => {
     <>
       <Link href="/browse">
         <Button
-          type="secondary"
           border
           inverse={pathname.startsWith("/browse")}
           text="Browse Recipes"
@@ -21,7 +20,6 @@ const NavbarSharedLinks = () => {
       </Link>
       <Link href="/your-crockpot">
         <Button
-          type="secondary"
           border
           inverse={pathname.startsWith("/your-crockpot")}
           text="Your Crockpot"

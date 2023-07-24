@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NavbarTop />
-        <main className="mt-16 md:mt-20">{children}</main>
+        <main className="mt-20 md:mt-24">{children}</main>
         <NavbarBottom />
       </body>
     </html>
