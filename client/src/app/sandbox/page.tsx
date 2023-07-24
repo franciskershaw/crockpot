@@ -41,7 +41,22 @@ const SandBoxPage: FC = () => {
 
   return (
     <div className="space-y-2">
-      <div className="container container--full">
+      <div className="container border-2 border-black">
+        <h2>Container</h2>
+      </div>
+      <div className="container container--sm border-2 border-black">
+        <h2>Container sm</h2>
+      </div>
+      <div className="container container--md border-2 border-black">
+        <h2>Container md</h2>
+      </div>
+      <div className="container container--lg border-2 border-black">
+        <h2>Container lg</h2>
+      </div>
+      <div className="container container--full border-2 border-black">
+        <h2>Container full</h2>
+      </div>
+      <div className="container">
         <h1>Crockpot</h1>
         <h2>Sandbox Page!</h2>
         <h3>Sandbox Page!</h3>
@@ -51,7 +66,7 @@ const SandBoxPage: FC = () => {
         <p>Sandbox Page! Sandbox Page! Sandbox Page!</p>
         <a href="">Sandbox Page!</a>
       </div>
-      <div className="container container--full flex">
+      <div className="container flex">
         <div className="h-10 w-10 rounded-full bg-primary-light"></div>
         <div className="h-10 w-10 rounded-full bg-primary"></div>
         <div className="h-10 w-10 rounded-full bg-primary-dark"></div>
@@ -61,20 +76,20 @@ const SandBoxPage: FC = () => {
         <div className="h-10 w-10 rounded-full bg-black"></div>
         <div className="h-10 w-10 rounded-full bg-white border-black border-2"></div>
       </div>
-      <div className="container container--full pt-8">
+      <div className="container pt-8">
         <Slider
           min={25}
           max={75}
           onChange={(values: number[]) => console.log(values)}
         />
       </div>
-      <div className="container container--full pt-8">
+      <div className="container pt-8">
         <Switch
           label={"Switch"}
           onChange={(values: boolean) => console.log(values)}
         />
       </div>
-      <div className="container container--full pt-8 space-y-2">
+      <div className="container pt-8 space-y-2">
         <Checkbox
           label={"Checkbox"}
           onChange={(values: boolean) => console.log(values)}
@@ -88,10 +103,10 @@ const SandBoxPage: FC = () => {
           onChange={(values: boolean) => console.log(values)}
         />
       </div>
-      <div className="container container--full pt-8 space-y-2">
+      <div className="container pt-8 space-y-2">
         <Accordion items={accordionItems} />
       </div>
-      <div className="container container--full pt-8 flex space-x-2">
+      <div className="container pt-8 flex space-x-2">
         <Icon border size="sm">
           <AiOutlineSearch />
         </Icon>
@@ -120,7 +135,7 @@ const SandBoxPage: FC = () => {
           <AiOutlineSearch />
         </Icon>
       </div>
-      <div className="container container--full pt-8 space-x-2">
+      <div className="container pt-8 space-x-2">
         <ButtonFav recipeId="halluomi-tacos" />
         <ButtonCart recipeId="sheperds-pie" />
         <div className="flex space-x-2">
@@ -183,7 +198,7 @@ const SandBoxPage: FC = () => {
         </div>
         <QuantityInput initialValue={10} onChange={handleQuantityChange} />
       </div>
-      <div className="container container--full">
+      <div className="container">
         <div className="grid grid-cols-2 gap-5">
           <RecipeCard
             imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/553654b06ced6ebf798b4567.jpg"

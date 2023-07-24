@@ -23,10 +23,22 @@ main {
 
 // Containers
 .container {
-  @apply mx-auto px-4;
+  @apply mx-auto px-4 max-w-7xl;
+
+  &--sm {
+    @apply max-w-2xl
+  }
+
+  &--md {
+    @apply max-w-3xl
+  }
+
+  &--lg {
+    @apply max-w-5xl
+  }
 
   &--full {
-    @apply w-full;
+    @apply w-full max-w-full;
   }
 }
 

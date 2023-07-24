@@ -16,8 +16,8 @@ const NavbarTop = () => {
   };
 
   return (
-    <nav className="nav px-4 py-5 bg-white border-2 border-black fixed top-0 left-0 w-full flex justify-evenly z-10">
-      <div className="flex justify-between items-center w-full">
+    <nav className="nav py-5 bg-white border-2 border-black fixed top-0 left-0 w-full flex justify-evenly z-10">
+      <div className="container xl:px-0 flex justify-between items-center w-full">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center space-x-2">
             <h1>Crockpot</h1>
