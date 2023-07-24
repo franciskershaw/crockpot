@@ -1,7 +1,12 @@
+"use-client";
+
 import "../styles/globals.scss";
 import type { Metadata } from "next";
 import NavbarTop from "../components/NavbarTop/NavbarTop";
 import NavbarBottom from "../components/NavbarBottom/NavbarBottom";
+import Button from "../components/Button/Button";
+import { AiOutlineSearch } from "react-icons/ai";
+import ButtonAddRecipe from "../components/ButtonAddRecipe/ButtonAddRecipe";
 
 export const metadata: Metadata = {
   title: "Crockpot",
@@ -17,7 +22,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NavbarTop />
-        <main className="mt-20 md:mt-24">{children}</main>
+        <main className="my-24 md:my-28">{children}</main>
+        <ButtonAddRecipe />
         <NavbarBottom />
       </body>
     </html>

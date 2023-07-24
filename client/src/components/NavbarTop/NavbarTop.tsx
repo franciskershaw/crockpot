@@ -53,10 +53,17 @@ const NavbarTop = () => {
       </div>
       {/* Mobile menu items */}
       <div
-        className={`border-4 border-black flex items-center justify-center nav__menu ${
+        className={`border-2 border-black bg-white flex flex-col items-center justify-center space-y-4 nav__menu ${
           isOpen ? "nav__menu--open" : ""
         } `}
       >
+        <Link href="/sandbox">
+          <Button
+            border
+            inverse={pathname.startsWith("/sandbox")}
+            text="Sandbox"
+          />
+        </Link>
         <Link href="/logout">
           <Button
             border

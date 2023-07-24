@@ -23,6 +23,10 @@
         @apply h-10 w-10;
     }
 
+    &--xl {
+        @apply h-14 w-14;
+    }
+
     // Types
     &--primary {
         svg {
