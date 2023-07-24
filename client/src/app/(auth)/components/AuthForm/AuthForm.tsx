@@ -14,8 +14,41 @@ const AuthForm = (props: Props) => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const loginData = {
+      username,
+      password,
+    };
+
+    const registerData = {username, password, confirmPassword}
+
+    try {
+      const response = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+
+      if (!response.ok) {
+        // error handling logic here
+        throw new Error('Error during login');
+      }
+
+      const data = await response.json();
+      console.log(data); // log the received data
+      // handle the received data (e.g., save token in the local storage, navigate to another page, etc.)
+    } catch (err) {
+      console.error(err);
+      // handle error, for example show a notification or change some state
+    }
+  };
+
   return (
-    <form className="auth-form">
+    <form onSubmit={handleSubmit} className="auth-form">
       <h2 className="auth-form__title">
         {props.type === 'login' ? 'Login' : 'Sign up for an account'}
       </h2>
@@ -74,7 +107,7 @@ const AuthForm = (props: Props) => {
         ) : (
           <div>
             <p>Already have an account?</p>
-            <Link href='/login'>Log In</Link>
+            <Link href="/login">Log In</Link>
           </div>
         )}
       </div>
