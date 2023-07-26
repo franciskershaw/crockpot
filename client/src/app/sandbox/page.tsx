@@ -12,6 +12,7 @@ import ButtonCart from "@/src/components/ButtonCart/ButtonCart";
 import Button from "@/src/components/Button/Button";
 import QuantityInput from "@/src/components/QuantityInput/QuantityInput";
 import RecipeCard from "@/src/components/RecipeCard/RecipeCard";
+import SearchBar from "@/src/components/FormSearchBar/SearchBar";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -218,6 +219,9 @@ const SandBoxPage: FC = () => {
             recipeName="Strolling Rigatoni with Cherry Tomatoes and Mozzarella"
             categories={["Delicious", "Healthy", "Steamy"]}
           />
+        </div>
+        <div>
+          <SearchBar label="Label!" placeholder="Hello!" />
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ const RecipeCard = ({
   const remainingCategoriesCount = categories.length - 3;
 
   return (
-    <div className=" rounded-lg overflow-hidden">
+    <div className="rounded-lg overflow-hidden">
       <div className="relative">
         {/* Background image */}
         <div

@@ -46,7 +46,7 @@ const QuantityInput = ({
   };
 
   return (
-    <div className="quantity-input bg-transparent">
+    <div className="quantity-input bg-white">
       <Button inverse type="secondary" onPress={handleDecrease}>
         <AiOutlineMinus />
       </Button>
