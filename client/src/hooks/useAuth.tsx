@@ -1,21 +1,25 @@
-import { mutate } from 'swr';
 import useAxios from './useAxios';
 
-export function useLogin() {
+export function useAuth() {
   const api = useAxios();
 
   const login = async (data: { username: string; password: string }) => {
-    // Use mutate to optimistically update the UI, then make a POST request to login.
-    mutate('/api/login', data, false);
     try {
-      const result = await api.post('/api/users/login', data);
-      console.log(result);
-      mutate('/api/login', result.data);
+      const user = await api.post('/api/users/login', data);
+      console.log(user);
     } catch (error) {
-      console.error('Error logging in:', error);
-      // Handle error...
+      console.error(error);
     }
   };
 
-  return { login };
+  const register = async (data: { username: string; password: string }) => {
+    try {
+      const user = await api.post('/api/users', data);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return { login, register };
 }

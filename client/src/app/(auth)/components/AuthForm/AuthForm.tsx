@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useLogin } from '@/src/hooks/useAuth';
+import { useAuth } from '@/src/hooks/useAuth';
 
 import './_authform.scss';
 
@@ -15,23 +15,27 @@ const AuthForm = (props: Props) => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  const { login } = useLogin();
+  const auth = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const loginData = {
+    const authData = {
       username,
       password,
     };
 
-    const registerData = { username, password, confirmPassword };
-
-    if (props.type === 'login') {
-      // Use the login function from the useLogin hook.
-      await login(loginData);
-    } else {
-      // Handle registration...
+    try {
+      if (props.type === 'login') {
+        await auth.login(authData);
+      } else {
+        if (confirmPassword !== password) {
+          throw new Error('Boo');
+        }
+        await auth.register(authData);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
