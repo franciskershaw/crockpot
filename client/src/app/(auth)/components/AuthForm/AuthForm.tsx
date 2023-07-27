@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useLogin } from '@/src/hooks/useAuth';
 
 import './_authform.scss';
 
@@ -14,6 +15,8 @@ const AuthForm = (props: Props) => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+  const { login } = useLogin();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -22,28 +25,13 @@ const AuthForm = (props: Props) => {
       password,
     };
 
-    const registerData = {username, password, confirmPassword}
+    const registerData = { username, password, confirmPassword };
 
-    try {
-      const response = await fetch('/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
-      });
-
-      if (!response.ok) {
-        // error handling logic here
-        throw new Error('Error during login');
-      }
-
-      const data = await response.json();
-      console.log(data); // log the received data
-      // handle the received data (e.g., save token in the local storage, navigate to another page, etc.)
-    } catch (err) {
-      console.error(err);
-      // handle error, for example show a notification or change some state
+    if (props.type === 'login') {
+      // Use the login function from the useLogin hook.
+      await login(loginData);
+    } else {
+      // Handle registration...
     }
   };
 
