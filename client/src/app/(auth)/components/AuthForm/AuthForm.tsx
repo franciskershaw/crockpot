@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/src/hooks/useAuth';
+import { useAuth } from '@/src/hooks/auth/useAuth';
+import { useRouter } from 'next/navigation'
 
 import './_authform.scss';
 
@@ -14,6 +15,8 @@ const AuthForm = (props: Props) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  const router = useRouter()
 
   const auth = useAuth();
 
@@ -28,6 +31,7 @@ const AuthForm = (props: Props) => {
     try {
       if (props.type === 'login') {
         await auth.login(authData);
+        router.push('/')
       } else {
         if (confirmPassword !== password) {
           throw new Error('Boo');
