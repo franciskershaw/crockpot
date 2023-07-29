@@ -2,7 +2,7 @@ import "./styles.scss";
 
 type IconProps = {
   type?: "primary" | "secondary" | "tertiary";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   active?: boolean;
   border?: boolean;
   children: React.ReactNode;

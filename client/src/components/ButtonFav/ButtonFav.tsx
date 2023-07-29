@@ -17,8 +17,8 @@ const ButtonFav = ({ recipeId }: ButtonFavProps) => {
   };
 
   return (
-    <Toggle.Root onPressedChange={handleFavChange}>
-      <Icon border active={isPressed}>
+    <Toggle.Root onPressedChange={handleFavChange} className="cursor-pointer">
+      <Icon border active={isPressed} size="lg">
         <AiFillHeart />
       </Icon>
     </Toggle.Root>

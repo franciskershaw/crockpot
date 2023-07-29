@@ -47,11 +47,9 @@ const Accordion = ({ items }: AccordionProps) => {
   return (
     <AccordionRadix.Root type="multiple" className="border-b-2 border-black">
       {items.map((item) => (
-        <AccordionItem
-          key={uuidv4()}
-          heading={item.heading}
-          children={item.children}
-        />
+        <AccordionItem key={uuidv4()} heading={item.heading}>
+          {item.children}
+        </AccordionItem>
       ))}
     </AccordionRadix.Root>
   );

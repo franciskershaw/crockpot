@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import "./styles.scss";
 import Icon from "../Icon/Icon";
@@ -6,7 +8,7 @@ type ButtonProps = {
   type?: "primary" | "secondary" | "tertiary";
   inverse?: boolean;
   border?: boolean;
-  onPress: () => void;
+  onPress?: () => void;
   text?: string;
   children?: React.ReactNode;
 };
@@ -21,7 +23,7 @@ const Button = ({
 }: ButtonProps) => {
   const buttonClasses = `btn btn--${type || "primary"} ${
     border ? "btn--border" : ""
-  } ${inverse ? "btn--inverse " : ""}`;
+  } ${inverse ? "btn--inverse " : ""} ${text ? "min-w-[125px]" : ""}`;
 
   const handlePress = () => {
     if (onPress) {
@@ -31,7 +33,7 @@ const Button = ({
 
   return (
     <button className={buttonClasses} onClick={handlePress} aria-label={text}>
-      {text && <span className="btn__text p-1">{text}</span>}
+      {text && <span className="w-full p-1">{text}</span>}
       {children && <Icon>{children}</Icon>}
     </button>
   );
