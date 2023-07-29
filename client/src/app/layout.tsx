@@ -19,12 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen flex flex-col">
-          <NavbarTop />
-          <main className="my-24 md:my-28">{children}</main>
-          <ButtonAddRecipe />
-          <NavbarBottom />
-        </div>
+        <NavbarTop />
+        <main className="my-24 md:my-28">{children}</main>
+        <ButtonAddRecipe />
+        <NavbarBottom />
       </body>
     </html>
   );

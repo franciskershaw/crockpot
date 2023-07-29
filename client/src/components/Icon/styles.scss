@@ -1,84 +1,84 @@
 .icon {
-    @apply h-8 w-8 border-none rounded-full p-1 bg-white;
+  @apply h-8 w-8 border-none rounded-full p-1 bg-white;
 
-    transition: background-color 0.3s ease;
-  
+  transition: background-color 0.3s ease;
+
+  svg {
+    @apply w-full h-full;
+
+    transition: color 0.3s ease;
+  }
+
+  // Border
+  &--border {
+    @apply border-2 border-solid;
+  }
+
+  // Sizes
+  &--sm {
+    @apply h-6 w-6 border;
+  }
+
+  &--lg {
+    @apply h-10 w-10 p-1.5;
+  }
+
+  &--xl {
+    @apply h-14 w-14;
+  }
+
+  // Types
+  &--primary {
     svg {
-      @apply w-full h-full;
-
-      transition: color 0.3s ease;
+      @apply text-black;
     }
 
-    // Border
-    &--border {
-        @apply border-2 border-solid;
+    &.icon--border {
+      @apply border-black;
     }
 
-    // Sizes
-    &--sm {
-        @apply h-6 w-6 border;
-    }
+    &.icon--active {
+      @apply bg-black;
 
-    &--lg {
-        @apply h-10 w-10;
-    }
-
-    &--xl {
-        @apply h-14 w-14;
-    }
-
-    // Types
-    &--primary {
-        svg {
-            @apply text-black;
-        }
-
-        &.icon--border {
-            @apply border-black;
-        }
-
-        &.icon--active {
-            @apply bg-black;
-
-            svg {
-                @apply text-white;
-            }
-        }
-    }
-
-    &--secondary {
-        svg {
-            @apply text-primary;
-        }
-
-        &.icon--border {
-            @apply border-primary;
-        }
-
-        &.icon--active {
-            @apply bg-primary;
-
-            svg {
-                @apply text-white;
-            }
-        }
-    }
-
-    &--tertiary {
-        svg {
-            @apply text-secondary;
-        }
-
-        &.icon--border {
-            @apply border-secondary;
-        }
-
-        &.icon--active {
-            @apply bg-secondary;
-
-            svg {
-                @apply text-white;
-            }
-        }
+      svg {
+        @apply text-white;
+      }
     }
   }
+
+  &--secondary {
+    svg {
+      @apply text-primary;
+    }
+
+    &.icon--border {
+      @apply border-primary;
+    }
+
+    &.icon--active {
+      @apply bg-primary;
+
+      svg {
+        @apply text-white;
+      }
+    }
+  }
+
+  &--tertiary {
+    svg {
+      @apply text-secondary;
+    }
+
+    &.icon--border {
+      @apply border-secondary;
+    }
+
+    &.icon--active {
+      @apply bg-secondary;
+
+      svg {
+        @apply text-white;
+      }
+    }
+  }
+}

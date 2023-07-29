@@ -1,0 +1,44 @@
+[
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/553654b06ced6ebf798b4567.jpg",
+    "cookingTime": 20,
+    "recipeName": "Ginger Beef Stir Fry",
+    "categories": ["Delicious", "Steamy"]
+  },
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/HF221212_R1102_W51_UK_ASD3995-5_Add-On_MB_Main_Reshot_low-4116f1ad.jpg",
+    "cookingTime": 30,
+    "recipeName": "Spring Time Crispy Chicken Parmigiana Salad",
+    "categories": ["Delicious", "Healthy", "Steamy", "Saucy"]
+  },
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/54f744b26ced6e83388b4567.jpg",
+    "cookingTime": 40,
+    "recipeName": "Strolling Rigatoni with Cherry Tomatoes and Mozzarella",
+    "categories": ["Delicious", "Healthy", "Steamy"]
+  },
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/HF221215_R01_W04_UK_F12371-6_KB_Main_low-bdb63d4b.jpg",
+    "cookingTime": 25,
+    "recipeName": "Lemon Herb Grilled Salmon",
+    "categories": ["Delicious", "Healthy", "Seafood"]
+  },
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/bacon-cheddar-and-pesto-pinwheels-d1172b59-5052c360.jpg",
+    "cookingTime": 35,
+    "recipeName": "Spicy Mango Tango Tacos",
+    "categories": ["Delicious", "Exotic", "Spicy"]
+  },
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/HF_Y23_A_R1605_W29_UK_ASD15570-6_Main_low-a528528f.jpg",
+    "cookingTime": 30,
+    "recipeName": "Creamy Garlic Mushroom Pasta",
+    "categories": ["Delicious", "Vegetarian", "Creamy"]
+  },
+  {
+    "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/HF_Y23_A_R1601_W29_UK_ASD15038-5_Main_low-8c23d00f.jpg",
+    "cookingTime": 45,
+    "recipeName": "Zesty Orange Glazed Chicken",
+    "categories": ["Delicious", "Healthy", "Citrus", "Saucy"]
+  }
+]

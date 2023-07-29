@@ -13,9 +13,9 @@
 // Add general styles here!
 main {
   // Hide number arrows
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number'] {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"] {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -23,18 +23,18 @@ main {
 
 // Containers
 .container {
-  @apply mx-auto px-4 max-w-7xl;
+  @apply mx-auto px-4 max-w-7xl xl:px-0;
 
   &--sm {
-    @apply max-w-2xl
+    @apply max-w-2xl;
   }
 
   &--md {
-    @apply max-w-3xl
+    @apply max-w-3xl;
   }
 
   &--lg {
-    @apply max-w-5xl
+    @apply max-w-5xl;
   }
 
   &--full {
@@ -43,7 +43,7 @@ main {
 }
 
 // Fonts
-@import url('https://fonts.googleapis.com/css2?family=Caprasimo&family=Lato:wght@300;400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Caprasimo&family=Lato:wght@300;400;500&display=swap");
 
 // Typography
 body {
@@ -62,7 +62,8 @@ h3 {
   @apply text-lg;
 }
 
-h4, label {
+h4,
+label {
   @apply text-base;
 }
 
