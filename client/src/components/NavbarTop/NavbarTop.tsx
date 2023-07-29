@@ -26,6 +26,13 @@ const NavbarTop = () => {
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-2">
+            <Link href="/sandbox">
+              <Button
+                border
+                inverse={pathname.startsWith("/sandbox")}
+                text="Sandbox"
+              />
+            </Link>
             <Link href="/logout">
               <Button
                 border
