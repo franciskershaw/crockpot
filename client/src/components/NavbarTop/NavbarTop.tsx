@@ -21,6 +21,11 @@ const NavbarTop = () => {
     setIsOpen((prev) => !prev);
   };
 
+  const handleLogout = () => {
+    logout();
+    toggleMenu();
+  };
+
   return (
     <nav className="nav py-5 bg-white border-2 border-black fixed top-0 left-0 w-full flex justify-evenly z-10">
       <div className="container xl:px-0 flex justify-between items-center w-full">
@@ -37,6 +42,7 @@ const NavbarTop = () => {
                 border
                 inverse={pathname.startsWith('/sandbox')}
                 text="Sandbox"
+                onClick={toggleMenu}
               />
             </Link>
             <Link href="/login">
@@ -44,6 +50,7 @@ const NavbarTop = () => {
                 border
                 inverse={pathname.startsWith('/login')}
                 text="Login"
+                onClick={toggleMenu}
               />
             </Link>
           </div>
@@ -73,6 +80,7 @@ const NavbarTop = () => {
             border
             inverse={pathname.startsWith('/sandbox')}
             text="Sandbox"
+            onClick={toggleMenu}
           />
         </Link>
         {user ? (
@@ -80,7 +88,7 @@ const NavbarTop = () => {
             border
             inverse={pathname.startsWith('/logout')}
             text="Logout"
-            onClick={logout}
+            onClick={handleLogout}
           />
         ) : (
           <Link href="/login">
@@ -88,6 +96,7 @@ const NavbarTop = () => {
               border
               inverse={pathname.startsWith('/login')}
               text="Login"
+              onClick={toggleMenu}
             />
           </Link>
         )}
