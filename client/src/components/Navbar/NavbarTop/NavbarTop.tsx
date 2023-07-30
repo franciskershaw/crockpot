@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import NavbarSharedLinks from '../NavbarSharedLinks/NavbarSharedLinks';
-import Button from '../Button/Button';
+import Button from '../../Button/Button';
 import { usePathname } from 'next/navigation';
 import './styles.scss';
-import useUser from '../../hooks/auth/useUser';
+import useUser from '@/src/hooks/auth/useUser';
 import useAuth from '@/src/hooks/auth/useAuth';
 
 const NavbarTop = () => {

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Button from "../Button/Button";
+import Button from "../../Button/Button";
 import NavbarSharedLinks from "../NavbarSharedLinks/NavbarSharedLinks";
 
 const NavbarBottom = () => {

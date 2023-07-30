@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import Button from "../Button/Button";
+import Button from '../../Button/Button';
 
 const NavbarSharedLinks = () => {
   const pathname = usePathname();
@@ -14,14 +14,14 @@ const NavbarSharedLinks = () => {
       <Link href="/browse">
         <Button
           border
-          inverse={pathname.startsWith("/browse")}
+          inverse={pathname.startsWith('/browse')}
           text="Browse Recipes"
         />
       </Link>
       <Link href="/your-crockpot">
         <Button
           border
-          inverse={pathname.startsWith("/your-crockpot")}
+          inverse={pathname.startsWith('/your-crockpot')}
           text="Your Crockpot"
         />
       </Link>
