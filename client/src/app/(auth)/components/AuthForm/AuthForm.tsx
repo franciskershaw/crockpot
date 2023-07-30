@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/src/hooks/auth/useAuth';
-import { useRouter } from 'next/navigation'
+import useAuth from '../../../../hooks/auth/useAuth';
+import useUser from '@/src/hooks/auth/useUser';
+import { useRouter } from 'next/navigation';
 
 import './_authform.scss';
 
@@ -16,9 +17,21 @@ const AuthForm = (props: Props) => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-  const router = useRouter()
+  const router = useRouter();
 
   const auth = useAuth();
+  const { user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      console.log('user', user);
+      router.push('/browse');
+    }
+  }, [user, router]);
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +44,6 @@ const AuthForm = (props: Props) => {
     try {
       if (props.type === 'login') {
         await auth.login(authData);
-        router.push('/')
       } else {
         if (confirmPassword !== password) {
           throw new Error('Boo');
