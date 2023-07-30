@@ -25,7 +25,7 @@ const AuthForm = (props: Props) => {
   useEffect(() => {
     if (user) {
       console.log('user', user);
-      router.push('/browse');
+      router.push('/your-crockpot');
     }
   }, [user, router]);
 

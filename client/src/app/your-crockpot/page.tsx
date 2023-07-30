@@ -1,5 +1,11 @@
+import Header from './components/Header/Header';
+
 const YourCrockpotPage = () => {
-  return <div>Your crockpot page</div>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 };
 
 export default YourCrockpotPage;

@@ -91,14 +91,24 @@ const NavbarTop = () => {
             onClick={handleLogout}
           />
         ) : (
-          <Link href="/login">
-            <Button
-              border
-              inverse={pathname.startsWith('/login')}
-              text="Login"
-              onClick={toggleMenu}
-            />
-          </Link>
+          <>
+            <Link href="/login">
+              <Button
+                border
+                inverse={pathname.startsWith('/login')}
+                text="Login"
+                onClick={toggleMenu}
+              />
+            </Link>
+            <Link href="/register">
+              <Button
+                border
+                inverse={pathname.startsWith('/register')}
+                text="Register"
+                onClick={toggleMenu}
+              />
+            </Link>
+          </>
         )}
       </div>
     </nav>
