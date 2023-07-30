@@ -1,9 +1,9 @@
 // TODO - Decide on styling, add disabled prop to - button on 0
 
-import React, { useState } from "react";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import Button from "../Button/Button";
-import "./styles.scss";
+import React, { useState } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import Button from '../Button/Button';
+import './styles.scss';
 
 type QuantityInputProps = {
   initialValue: number;
@@ -47,7 +47,7 @@ const QuantityInput = ({
 
   return (
     <div className="quantity-input bg-white">
-      <Button inverse type="secondary" onPress={handleDecrease}>
+      <Button inverse type="secondary" onClick={handleDecrease}>
         <AiOutlineMinus />
       </Button>
       <input
@@ -56,7 +56,7 @@ const QuantityInput = ({
         value={quantity}
         onChange={handleChange}
       />
-      <Button inverse type="secondary" onPress={handleIncrease}>
+      <Button inverse type="secondary" onClick={handleIncrease}>
         <AiOutlinePlus />
       </Button>
     </div>

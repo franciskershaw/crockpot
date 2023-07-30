@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import "./styles.scss";
-import Icon from "../Icon/Icon";
+import React from 'react';
+import './styles.scss';
+import Icon from '../Icon/Icon';
 
 type ButtonProps = {
-  type?: "primary" | "secondary" | "tertiary";
+  type?: 'primary' | 'secondary' | 'tertiary';
   inverse?: boolean;
   border?: boolean;
-  onPress?: () => void;
+  onClick?: () => void;
   text?: string;
   children?: React.ReactNode;
 };
@@ -17,22 +17,16 @@ const Button = ({
   type,
   inverse,
   border,
-  onPress,
+  onClick,
   text,
   children,
 }: ButtonProps) => {
-  const buttonClasses = `btn btn--${type || "primary"} ${
-    border ? "btn--border" : ""
-  } ${inverse ? "btn--inverse " : ""} ${text ? "min-w-[125px]" : ""}`;
-
-  const handlePress = () => {
-    if (onPress) {
-      onPress();
-    }
-  };
+  const buttonClasses = `btn btn--${type || 'primary'} ${
+    border ? 'btn--border' : ''
+  } ${inverse ? 'btn--inverse ' : ''} ${text ? 'min-w-[125px]' : ''}`;
 
   return (
-    <button className={buttonClasses} onClick={handlePress} aria-label={text}>
+    <button className={buttonClasses} onClick={onClick} aria-label={text}>
       {text && <span className="w-full p-1">{text}</span>}
       {children && <Icon>{children}</Icon>}
     </button>

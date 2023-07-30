@@ -1,16 +1,22 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
-import NavbarSharedLinks from "../NavbarSharedLinks/NavbarSharedLinks";
-import Button from "../Button/Button";
-import { usePathname } from "next/navigation";
-import "./styles.scss";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import NavbarSharedLinks from '../NavbarSharedLinks/NavbarSharedLinks';
+import Button from '../Button/Button';
+import { usePathname } from 'next/navigation';
+import './styles.scss';
+import useUser from '../../hooks/auth/useUser';
+import useAuth from '@/src/hooks/auth/useAuth';
 
 const NavbarTop = () => {
   const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const { user } = useUser();
+  const { logout } = useAuth();
+
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
   };
@@ -29,15 +35,15 @@ const NavbarTop = () => {
             <Link href="/sandbox">
               <Button
                 border
-                inverse={pathname.startsWith("/sandbox")}
+                inverse={pathname.startsWith('/sandbox')}
                 text="Sandbox"
               />
             </Link>
-            <Link href="/logout">
+            <Link href="/login">
               <Button
                 border
-                inverse={pathname.startsWith("/logout")}
-                text="Logout"
+                inverse={pathname.startsWith('/login')}
+                text="Login"
               />
             </Link>
           </div>
@@ -46,11 +52,10 @@ const NavbarTop = () => {
         <div className="md:hidden">
           <button
             className={`nav__hamburger z-10 ${
-              isOpen ? "nav__hamburger--open" : ""
+              isOpen ? 'nav__hamburger--open' : ''
             }`}
             onClick={toggleMenu}
-            aria-label="Menu"
-          >
+            aria-label="Menu">
             <span></span>
             <span></span>
             <span></span>
@@ -61,23 +66,31 @@ const NavbarTop = () => {
       {/* Mobile menu items */}
       <div
         className={`border-2 border-black bg-white flex flex-col items-center justify-center space-y-4 nav__menu ${
-          isOpen ? "nav__menu--open" : ""
-        } `}
-      >
+          isOpen ? 'nav__menu--open' : ''
+        } `}>
         <Link href="/sandbox">
           <Button
             border
-            inverse={pathname.startsWith("/sandbox")}
+            inverse={pathname.startsWith('/sandbox')}
             text="Sandbox"
           />
         </Link>
-        <Link href="/logout">
+        {user ? (
           <Button
             border
-            inverse={pathname.startsWith("/logout")}
+            inverse={pathname.startsWith('/logout')}
             text="Logout"
+            onClick={logout}
           />
-        </Link>
+        ) : (
+          <Link href="/login">
+            <Button
+              border
+              inverse={pathname.startsWith('/login')}
+              text="Login"
+            />
+          </Link>
+        )}
       </div>
     </nav>
   );
