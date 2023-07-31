@@ -16,7 +16,7 @@ const NavbarTop = () => {
   };
 
   return (
-    <nav className="nav py-5 bg-white border-2 border-black fixed top-0 left-0 w-full flex justify-evenly z-10">
+    <nav className="nav py-5 bg-white border-2 border-black fixed top-0 left-0 w-full flex justify-evenly z-20">
       <div className="container flex justify-between items-center w-full">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center space-x-2">
@@ -45,7 +45,7 @@ const NavbarTop = () => {
         {/* On mobile devices, display hamburger menu */}
         <div className="md:hidden">
           <button
-            className={`nav__hamburger z-10 ${
+            className={`nav__hamburger z-20 ${
               isOpen ? "nav__hamburger--open" : ""
             }`}
             onClick={toggleMenu}

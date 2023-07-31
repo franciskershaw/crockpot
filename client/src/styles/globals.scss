@@ -46,39 +46,51 @@ main {
 @import url("https://fonts.googleapis.com/css2?family=Caprasimo&family=Lato:wght@300;400;500&display=swap");
 
 // Typography
-body {
+body,
+.body {
   @apply text-body text-base font-body font-thin;
 }
 
-h1 {
+h1,
+.h1 {
   @apply text-2xl font-title;
 }
 
-h2 {
+h2,
+.h2 {
   @apply text-xl;
 }
 
-h3 {
+h3,
+.h3,
+label {
   @apply text-lg;
 }
 
 h4,
-label {
+.h4 {
   @apply text-base;
 }
 
-h5 {
+h5,
+.h5 {
   @apply text-sm;
 }
 
-h6 {
+h6,
+.h6 {
   @apply text-xs;
 }
 
-a {
+a,
+.a {
   @apply cursor-pointer;
 
   &:hover {
     @apply no-underline;
   }
+}
+
+hr {
+  @apply border-black;
 }

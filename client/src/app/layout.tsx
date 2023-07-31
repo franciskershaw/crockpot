@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NavbarTop />
-        <main className="my-24 md:my-28">{children}</main>
+        <main className="mt-[77px] mb-24 md:my-28">{children}</main>
         <ButtonAddRecipe />
         <NavbarBottom />
       </body>

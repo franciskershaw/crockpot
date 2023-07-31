@@ -11,7 +11,7 @@ const SearchBar = ({ label, placeholder }: SearchBarProps) => {
   const [isSearching, setIsSearching] = useState("");
 
   return (
-    <div className="relative w-fit">
+    <div className="relative">
       {label ? (
         <label className="mr-2" htmlFor="">
           {label}
@@ -20,11 +20,11 @@ const SearchBar = ({ label, placeholder }: SearchBarProps) => {
         ""
       )}
       <input
-        className="border-black border-2 bg-white p-2 rounded"
+        className="border-black border-2 bg-white p-2 rounded w-full"
         type="text"
         placeholder={placeholder || "Search for..."}
       />
-      <div className="absolute top-0 right-0 p-1.5 pl-10">
+      <div className="absolute bottom-0 right-0 p-1.5 pl-10">
         <Icon>
           <AiOutlineSearch />
         </Icon>
