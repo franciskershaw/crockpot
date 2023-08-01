@@ -50,6 +50,8 @@ export default function Slider({ min, max, onChange }: SliderProps) {
     <SliderRadix.Root
       className="SliderRoot"
       defaultValue={[min, max]}
+      min={min - 10 > 5 ? min - 10 : 5}
+      max={max + 10}
       step={5}
       minStepsBetweenThumbs={1}
       onValueChange={onChange}

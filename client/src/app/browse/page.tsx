@@ -10,7 +10,11 @@ import Slider from "@/src/components/Slider/Slider";
 import Accordion from "@/src/components/Accordion/Accordion";
 import Checkbox from "@/src/components/Checkbox/Checkbox";
 import recipesData from "../../data/recipes.json";
-import { getCategories, getIngredients } from "@/src/hooks/recipeFunctions";
+import {
+  getCategories,
+  getIngredients,
+  getMinMaxCookingTime,
+} from "@/src/hooks/recipeFunctions";
 
 interface Recipe {
   imageUrl: string;
@@ -24,6 +28,7 @@ const BrowsePage = () => {
   const recipes: Recipe[] = recipesData;
   const categories = getCategories(recipes);
   const ingredients = getIngredients(recipes);
+  const cookingTime = getMinMaxCookingTime(recipes);
 
   const accordionItems = [
     {
@@ -112,8 +117,8 @@ const BrowsePage = () => {
           <div>
             <h3>Serving Time</h3>
             <Slider
-              min={25}
-              max={75}
+              min={cookingTime.min}
+              max={cookingTime.max}
               onChange={(values: number[]) => console.log(values)}
             />
           </div>

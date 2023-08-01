@@ -33,3 +33,25 @@ export const getIngredients = (recipes: Recipe[]): string[] => {
 
   return ingredients;
 };
+
+export const getMinMaxCookingTime = (
+  recipes: Recipe[]
+): { min: number; max: number } => {
+  if (recipes.length === 0) {
+    return { min: 0, max: 0 };
+  }
+
+  let minTime = recipes[0].cookingTime;
+  let maxTime = recipes[0].cookingTime;
+
+  for (const recipe of recipes) {
+    if (recipe.cookingTime < minTime) {
+      minTime = recipe.cookingTime;
+    }
+    if (recipe.cookingTime > maxTime) {
+      maxTime = recipe.cookingTime;
+    }
+  }
+
+  return { min: minTime, max: maxTime };
+};

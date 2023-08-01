@@ -49,7 +49,7 @@
   },
   {
     "imageUrl": "https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/HF_Y23_A_R1601_W29_UK_ASD15038-5_Main_low-8c23d00f.jpg",
-    "cookingTime": 45,
+    "cookingTime": 5,
     "recipeName": "Zesty Orange Glazed Chicken",
     "categories": ["Delicious", "Healthy", "Citrus", "Saucy"],
     "ingredients": ["Beef", "Bell Pepper", "Onion", "Cumin", "Tortilla"]
