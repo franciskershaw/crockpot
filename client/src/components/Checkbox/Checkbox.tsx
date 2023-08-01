@@ -18,7 +18,6 @@ export default function Checkbox({ label, onChange }: CheckboxProps) {
     <div className="flex items-center">
       <CheckboxRadix.Root
         className="CheckboxRoot"
-        defaultChecked
         id={uuidv4()}
         onCheckedChange={onChange}
       >

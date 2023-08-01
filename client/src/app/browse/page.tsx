@@ -9,8 +9,22 @@ import Switch from "@/src/components/Switch/Switch";
 import Slider from "@/src/components/Slider/Slider";
 import Accordion from "@/src/components/Accordion/Accordion";
 import Checkbox from "@/src/components/Checkbox/Checkbox";
+import recipesData from "../../data/recipes.json";
+import { getCategories, getIngredients } from "@/src/hooks/recipeFunctions";
+
+interface Recipe {
+  imageUrl: string;
+  cookingTime: number;
+  recipeName: string;
+  ingredients: string[];
+  categories: string[]; // Assuming categories are strings in the JSON data
+}
 
 const BrowsePage = () => {
+  const recipes: Recipe[] = recipesData;
+  const categories = getCategories(recipes);
+  const ingredients = getIngredients(recipes);
+
   const accordionItems = [
     {
       heading: "Categories",
@@ -19,20 +33,22 @@ const BrowsePage = () => {
           <SearchBar placeholder="Search for a category..." />
           <div className="space-y-1">
             <Checkbox
-              label={"Checkbox"}
+              label={categories[0]}
               onChange={(values: boolean) => console.log(values)}
             />
             <Checkbox
-              label={"Checkbox"}
+              label={categories[1]}
               onChange={(values: boolean) => console.log(values)}
             />
             <Checkbox
-              label={"Checkbox"}
+              label={categories[2]}
               onChange={(values: boolean) => console.log(values)}
             />
           </div>
           <div>
-            <a className="h3 underline">Show 5 more categories</a>
+            <a className="h3 underline">
+              Show {categories.slice(3).length} more categories
+            </a>
           </div>
         </div>
       ),
@@ -45,20 +61,22 @@ const BrowsePage = () => {
             <SearchBar placeholder="Search for an ingredient..." />
             <div className="space-y-1">
               <Checkbox
-                label={"Checkbox"}
+                label={ingredients[0]}
                 onChange={(values: boolean) => console.log(values)}
               />
               <Checkbox
-                label={"Checkbox"}
+                label={ingredients[1]}
                 onChange={(values: boolean) => console.log(values)}
               />
               <Checkbox
-                label={"Checkbox"}
+                label={ingredients[2]}
                 onChange={(values: boolean) => console.log(values)}
               />
             </div>
             <div>
-              <a className="h3 underline">Show 7 more ingredients</a>
+              <a className="h3 underline">
+                Show {ingredients.slice(3).length} more ingredients
+              </a>
             </div>
           </div>
         </>
