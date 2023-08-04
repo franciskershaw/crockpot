@@ -140,31 +140,31 @@ const SandBoxPage: FC = () => {
         <ButtonFav recipeId="halluomi-tacos" />
         <ButtonCart recipeId="sheperds-pie" />
         <div className="flex space-x-2">
-          <Button border onPress={() => console.log("Hello!")}>
+          <Button border onClick={() => console.log("Hello!")}>
             <AiOutlineSearch />
           </Button>
           <Button
             border
             text="Button"
-            onPress={() => console.log("Hello!")}
+            onClick={() => console.log("Hello!")}
           ></Button>
           <Button
             border
             text="Button"
             inverse
-            onPress={() => console.log("Hello!")}
+            onClick={() => console.log("Hello!")}
           >
             <AiOutlineSearch />
           </Button>
         </div>
         <div className="flex space-x-2">
-          <Button type="secondary" border onPress={() => console.log("Hello!")}>
+          <Button type="secondary" border onClick={() => console.log("Hello!")}>
             <AiOutlineSearch />
           </Button>
           <Button
             border
             text="Button"
-            onPress={() => console.log("Hello!")}
+            onClick={() => console.log("Hello!")}
             type="secondary"
           ></Button>
           <Button
@@ -172,27 +172,27 @@ const SandBoxPage: FC = () => {
             border
             inverse
             text="Button"
-            onPress={() => console.log("Hello!")}
+            onClick={() => console.log("Hello!")}
           >
             <AiOutlineSearch />
           </Button>
         </div>
         <div className="flex space-x-2">
-          <Button type="tertiary" border onPress={() => console.log("Hello!")}>
+          <Button type="tertiary" border onClick={() => console.log("Hello!")}>
             <AiOutlineSearch />
           </Button>
           <Button
             type="tertiary"
             border
             text="Button"
-            onPress={() => console.log("Hello!")}
+            onClick={() => console.log("Hello!")}
           ></Button>
           <Button
             type="tertiary"
             border
             inverse
             text="Button"
-            onPress={() => console.log("Hello!")}
+            onClick={() => console.log("Hello!")}
           >
             <AiOutlineSearch />
           </Button>

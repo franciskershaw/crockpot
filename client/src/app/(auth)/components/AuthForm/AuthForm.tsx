@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import useAuth from '../../../../hooks/auth/useAuth';
+import useUser from '@/src/hooks/auth/useUser';
+import { useRouter } from 'next/navigation';
 
 import './_authform.scss';
 
@@ -14,8 +17,46 @@ const AuthForm = (props: Props) => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+  const router = useRouter();
+
+  const auth = useAuth();
+  const { user, isLoading } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      console.log('user', user);
+      router.push('/your-crockpot');
+    }
+  }, [user, router]);
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const authData = {
+      username,
+      password,
+    };
+
+    try {
+      if (props.type === 'login') {
+        await auth.login(authData);
+      } else {
+        if (confirmPassword !== password) {
+          throw new Error('Boo');
+        }
+        await auth.register(authData);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <form className="auth-form">
+    <form onSubmit={handleSubmit} className="auth-form">
       <h2 className="auth-form__title">
         {props.type === 'login' ? 'Login' : 'Sign up for an account'}
       </h2>
@@ -74,7 +115,7 @@ const AuthForm = (props: Props) => {
         ) : (
           <div>
             <p>Already have an account?</p>
-            <Link href='/login'>Log In</Link>
+            <Link href="/login">Log In</Link>
           </div>
         )}
       </div>

@@ -2,8 +2,8 @@
 
 import "../styles/globals.scss";
 import type { Metadata } from "next";
-import NavbarTop from "../components/NavbarTop/NavbarTop";
-import NavbarBottom from "../components/NavbarBottom/NavbarBottom";
+import NavbarTop from '../components/Navbar/NavbarTop/NavbarTop';
+import NavbarBottom from "../components/Navbar/NavbarBottom/NavbarBottom";
 import ButtonAddRecipe from "../components/ButtonAddRecipe/ButtonAddRecipe";
 
 export const metadata: Metadata = {

@@ -1,7 +1,9 @@
 const HomePage = () => {
   return (
-    <div>Crockpot landing page</div>
-  )
-}
+    <div>
+      <h1>Crockpot landing page</h1>
+    </div>
+  );
+};
 
-export default HomePage
+export default HomePage;

@@ -3,16 +3,27 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import NavbarSharedLinks from "../NavbarSharedLinks/NavbarSharedLinks";
-import Button from "../Button/Button";
+import Button from "../../Button/Button";
 import { usePathname } from "next/navigation";
 import "./styles.scss";
+import useUser from "@/src/hooks/auth/useUser";
+import useAuth from "@/src/hooks/auth/useAuth";
 
 const NavbarTop = () => {
   const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const { user } = useUser();
+  const { logout } = useAuth();
+
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    logout();
+    toggleMenu();
   };
 
   return (
@@ -31,13 +42,15 @@ const NavbarTop = () => {
                 border
                 inverse={pathname.startsWith("/sandbox")}
                 text="Sandbox"
+                onClick={toggleMenu}
               />
             </Link>
-            <Link href="/logout">
+            <Link href="/login">
               <Button
                 border
-                inverse={pathname.startsWith("/logout")}
-                text="Logout"
+                inverse={pathname.startsWith("/login")}
+                text="Login"
+                onClick={toggleMenu}
               />
             </Link>
           </div>
@@ -45,7 +58,7 @@ const NavbarTop = () => {
         {/* On mobile devices, display hamburger menu */}
         <div className="md:hidden">
           <button
-            className={`nav__hamburger z-20 ${
+            className={`nav__hamburger z-10 ${
               isOpen ? "nav__hamburger--open" : ""
             }`}
             onClick={toggleMenu}
@@ -69,15 +82,36 @@ const NavbarTop = () => {
             border
             inverse={pathname.startsWith("/sandbox")}
             text="Sandbox"
+            onClick={toggleMenu}
           />
         </Link>
-        <Link href="/logout">
+        {user ? (
           <Button
             border
             inverse={pathname.startsWith("/logout")}
             text="Logout"
+            onClick={handleLogout}
           />
-        </Link>
+        ) : (
+          <>
+            <Link href="/login">
+              <Button
+                border
+                inverse={pathname.startsWith("/login")}
+                text="Login"
+                onClick={toggleMenu}
+              />
+            </Link>
+            <Link href="/register">
+              <Button
+                border
+                inverse={pathname.startsWith("/register")}
+                text="Register"
+                onClick={toggleMenu}
+              />
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );
