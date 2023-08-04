@@ -15,6 +15,7 @@ import {
   getIngredients,
   getMinMaxCookingTime,
 } from "@/src/hooks/recipeFunctions";
+import { useState } from "react";
 
 interface Recipe {
   imageUrl: string;
@@ -30,70 +31,17 @@ const BrowsePage = () => {
   const ingredients = getIngredients(recipes);
   const cookingTime = getMinMaxCookingTime(recipes);
 
-  const accordionItems = [
-    {
-      heading: "Categories",
-      children: (
-        <div className="space-y-2">
-          <SearchBar placeholder="Search for a category..." />
-          <div className="space-y-1">
-            <Checkbox
-              label={categories[0]}
-              onChange={(values: boolean) => console.log(values)}
-            />
-            <Checkbox
-              label={categories[1]}
-              onChange={(values: boolean) => console.log(values)}
-            />
-            <Checkbox
-              label={categories[2]}
-              onChange={(values: boolean) => console.log(values)}
-            />
-          </div>
-          <div>
-            <a className="h3 underline">
-              Show {categories.slice(3).length} more categories
-            </a>
-          </div>
-        </div>
-      ),
-    },
-    {
-      heading: "Ingredients",
-      children: (
-        <>
-          <div className="space-y-2">
-            <SearchBar placeholder="Search for an ingredient..." />
-            <div className="space-y-1">
-              <Checkbox
-                label={ingredients[0]}
-                onChange={(values: boolean) => console.log(values)}
-              />
-              <Checkbox
-                label={ingredients[1]}
-                onChange={(values: boolean) => console.log(values)}
-              />
-              <Checkbox
-                label={ingredients[2]}
-                onChange={(values: boolean) => console.log(values)}
-              />
-            </div>
-            <div>
-              <a className="h3 underline">
-                Show {ingredients.slice(3).length} more ingredients
-              </a>
-            </div>
-          </div>
-        </>
-      ),
-    },
-  ];
+  const [showRemainingCategories, setShowRemainingCategories] = useState(false);
+  const toggleShowRemainingCategories = () => {
+    setShowRemainingCategories(!showRemainingCategories);
+  };
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <>
       <div className="container flex py-4 space-x-2 bg-white bg-opacity-90 fixed z-10">
         <div className="w-full">
-          <SearchBar />
+          <SearchBar setSearchQuery={setSearchQuery} />
         </div>
         <Button border onPress={() => console.log("Hello!")}>
           <AiFillFilter />
@@ -103,7 +51,7 @@ const BrowsePage = () => {
         </Button>
       </div>
       <div className="container pt-20">
-        <div className="tw p-4 pb-1 space-y-3">
+        <div className="tw p-4 space-y-3">
           <Switch
             label="My Favourites (3)"
             onChange={() => console.log("Hello!")}
@@ -122,7 +70,61 @@ const BrowsePage = () => {
               onChange={(values: number[]) => console.log(values)}
             />
           </div>
-          <Accordion items={accordionItems} />
+          <hr />
+          <div>
+            <h3 className="mb-2">Categories</h3>
+            <div className="space-y-2">
+              {/* Search functionality needs rethinking!! */}
+              <SearchBar
+                placeholder="Search for a category..."
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+              <div className="space-y-1">
+                {categories
+                  .filter((category) =>
+                    category.toLowerCase().includes(searchQuery.toLowerCase())
+                  )
+                  .slice(0, 3)
+                  .map((category, index) => (
+                    <Checkbox
+                      key={index}
+                      label={category}
+                      onChange={(value: boolean) => console.log(value)}
+                    />
+                  ))}
+              </div>
+              {categories.length > 3 && !showRemainingCategories && (
+                <div>
+                  <p
+                    className="h3 underline"
+                    onClick={toggleShowRemainingCategories}
+                  >
+                    Show {categories.slice(3).length} more categories
+                  </p>
+                </div>
+              )}
+              {showRemainingCategories && (
+                <>
+                  {categories.slice(3).map((category, index) => (
+                    <Checkbox
+                      key={index}
+                      label={category}
+                      onChange={(value: boolean) => console.log(value)}
+                    />
+                  ))}
+                  <div>
+                    <p
+                      className="h3 underline"
+                      onClick={toggleShowRemainingCategories}
+                    >
+                      Hide {categories.slice(3).length} categories
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
       <div className="container mt-5">

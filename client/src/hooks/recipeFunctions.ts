@@ -17,7 +17,7 @@ export const getCategories = (recipes: Recipe[]): string[] => {
     });
   });
 
-  return categories;
+  return categories.sort();
 };
 
 export const getIngredients = (recipes: Recipe[]): string[] => {
@@ -31,7 +31,7 @@ export const getIngredients = (recipes: Recipe[]): string[] => {
     });
   });
 
-  return ingredients;
+  return ingredients.sort();
 };
 
 export const getMinMaxCookingTime = (

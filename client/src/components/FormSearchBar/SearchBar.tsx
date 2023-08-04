@@ -5,10 +5,21 @@ import Icon from "../Icon/Icon";
 type SearchBarProps = {
   label?: string;
   placeholder?: string;
+  searchQuery?: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const SearchBar = ({ label, placeholder }: SearchBarProps) => {
+const SearchBar = ({
+  label,
+  placeholder,
+  searchQuery,
+  setSearchQuery,
+}: SearchBarProps) => {
   const [isSearching, setIsSearching] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value); // Update the searchQuery state
+  };
 
   return (
     <div className="relative">
@@ -23,6 +34,8 @@ const SearchBar = ({ label, placeholder }: SearchBarProps) => {
         className="border-black border-2 bg-white p-2 rounded w-full"
         type="text"
         placeholder={placeholder || "Search for..."}
+        value={searchQuery}
+        onChange={handleInputChange}
       />
       <div className="absolute bottom-0 right-0 p-1.5 pl-10">
         <Icon>
