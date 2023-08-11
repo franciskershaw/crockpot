@@ -6,7 +6,9 @@ const useAuth = () => {
 
   const login = async (credentials: { username: string; password: string }) => {
     try {
-      const response = await api.post('/api/users/login', credentials);
+      const response = await api.post('/api/users/login', credentials, {
+        withCredentials: true,
+      });
       mutate('/api/users', response.data, false);
       return response.data;
     } catch (error) {
