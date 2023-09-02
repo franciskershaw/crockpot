@@ -1,20 +1,29 @@
 .recipe-card-list {
   @apply grid gap-5;
 
-  // Small screen, 2 columns
-  grid-template-columns: repeat(4, 1fr);
+  // XS screen, 1 column
+  grid-template-columns: repeat(2, 1fr);
 
   .recipe-card {
     grid-column: span 2;
   }
 
-  // Center final recipe card if 1 left over
-  .recipe-card:last-child:nth-child(2n - 1) {
-    grid-column-end: 4;
+  // Small/medium screen, 2 columns
+  @screen sm {
+    grid-template-columns: repeat(4, 1fr);
+
+    .recipe-card {
+      grid-column: span 2;
+    }
+
+    // Center final recipe card if 1 left over
+    .recipe-card:last-child:nth-child(2n - 1) {
+      grid-column-end: 4;
+    }
   }
 
-  // Medium screen, 3 columns
-  @screen md {
+  // Large screen, 3 columns
+  @screen lg {
     grid-template-columns: repeat(6, 1fr);
 
     // Remove sm styling
@@ -37,8 +46,8 @@
     }
   }
 
-  // Large screen, 4 columns
-  @screen lg {
+  // XL screen, 4 columns
+  @screen xl {
     grid-template-columns: repeat(8, 1fr);
 
     // Remove md styling

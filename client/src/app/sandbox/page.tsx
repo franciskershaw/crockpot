@@ -13,6 +13,7 @@ import Button from "@/src/components/Button/Button";
 import QuantityInput from "@/src/components/QuantityInput/QuantityInput";
 import RecipeCard from "@/src/components/RecipeCard/RecipeCard";
 import SearchBar from "@/src/components/FormSearchBar/SearchBar";
+import Modal from "@/src/components/Modal/Modal";
 
 const SandBoxPage: FC = () => {
   const accordionItems = [
@@ -220,9 +221,12 @@ const SandBoxPage: FC = () => {
             categories={["Delicious", "Healthy", "Steamy"]}
           />
         </div>
-        <div>
+        {/* <div>
           <SearchBar label="Label!" placeholder="Hello!" />
-        </div>
+        </div> */}
+      </div>
+      <div className="container">
+        <Modal />
       </div>
     </div>
   );
