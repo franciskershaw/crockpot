@@ -2,9 +2,10 @@
 
 import "../styles/globals.scss";
 import type { Metadata } from "next";
-import NavbarTop from '../components/Navbar/NavbarTop/NavbarTop';
+import NavbarTop from "../components/Navbar/NavbarTop/NavbarTop";
 import NavbarBottom from "../components/Navbar/NavbarBottom/NavbarBottom";
 import ButtonAddRecipe from "../components/ButtonAddRecipe/ButtonAddRecipe";
+import Providers from "../providers/Providers";
 
 export const metadata: Metadata = {
   title: "Crockpot",
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavbarTop />
-        <main className="mt-[77px] mb-24 md:my-28">{children}</main>
-        <ButtonAddRecipe />
-        <NavbarBottom />
+        <Providers>
+          <NavbarTop />
+          <main className="mt-[77px] mb-24 md:my-28">{children}</main>
+          <ButtonAddRecipe />
+          <NavbarBottom />
+        </Providers>
       </body>
     </html>
   );

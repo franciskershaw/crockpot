@@ -1,15 +1,14 @@
-import { mutate } from 'swr';
-import useAxios from '../axios/useAxios';
+import useAxios from "../axios/useAxios";
+import useUser from "./useUser";
 
 const useAuth = () => {
   const api = useAxios();
+  const { updateUser, clearUser } = useUser();
 
   const login = async (credentials: { username: string; password: string }) => {
     try {
-      const response = await api.post('/api/users/login', credentials, {
-        withCredentials: true,
-      });
-      mutate('/api/users', response.data, false);
+      const response = await api.post("/api/users/login", credentials);
+      updateUser(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -18,8 +17,8 @@ const useAuth = () => {
 
   const register = async (data: { username: string; password: string }) => {
     try {
-      const response = await api.post('/api/users', data);
-      mutate('/api/users', response.data, false);
+      const response = await api.post("/api/users", data);
+      updateUser(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -27,13 +26,7 @@ const useAuth = () => {
   };
 
   const logout = async () => {
-    try {
-      const response = await api.post('/api/users/logout');
-      mutate('/api/users', null, false);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
+    clearUser();
   };
 
   return { login, register, logout };
