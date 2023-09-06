@@ -1,19 +1,18 @@
-// hooks/useProtectedRoute.js
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useUser from "@/src/hooks/auth/useUser";
 
-const useProtectedRoute = (redirectTo = "/login") => {
+const useProtectedRoute = (redirectTo = "/login", adminOnly = false) => {
   const router = useRouter();
-  const { user, fetchingUser } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
-    if (!user && !fetchingUser) {
+    if (!user || (adminOnly && !user.isAdmin)) {
       router.push(redirectTo);
     }
-  }, [user, router, redirectTo, fetchingUser]);
+  }, [user, router, redirectTo, adminOnly]);
 
-  return { user };
+  return { user, isAdmin: user?.isAdmin || false };
 };
 
 export default useProtectedRoute;
