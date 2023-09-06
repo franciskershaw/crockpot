@@ -20,16 +20,12 @@ interface Recipe {
   categories: string[]; // Assuming categories are strings in the JSON data
 }
 
-function FiltersMenu() {
+function BrowsePageFiltersMenu() {
   const recipes: Recipe[] = recipesData;
   const categories = getCategories(recipes);
   const cookingTime = getMinMaxCookingTime(recipes);
-
-  const [showRemainingCategories, setShowRemainingCategories] = useState(false);
-  const toggleShowRemainingCategories = () => {
-    setShowRemainingCategories(!showRemainingCategories);
-  };
   const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <div className="tw p-4 space-y-3">
       <Switch
@@ -62,7 +58,6 @@ function FiltersMenu() {
               .filter((category) =>
                 category.toLowerCase().includes(searchQuery.toLowerCase())
               )
-              .slice(0, 3)
               .map((category, index) => (
                 <Checkbox
                   key={index}
@@ -71,39 +66,10 @@ function FiltersMenu() {
                 />
               ))}
           </div>
-          {categories.length > 3 && !showRemainingCategories && (
-            <div>
-              <p
-                className="h3 underline"
-                onClick={toggleShowRemainingCategories}
-              >
-                Show {categories.slice(3).length} more categories
-              </p>
-            </div>
-          )}
-          {showRemainingCategories && (
-            <>
-              {categories.slice(3).map((category, index) => (
-                <Checkbox
-                  key={index}
-                  label={category}
-                  onChange={(value: boolean) => console.log(value)}
-                />
-              ))}
-              <div>
-                <p
-                  className="h3 underline"
-                  onClick={toggleShowRemainingCategories}
-                >
-                  Hide {categories.slice(3).length} categories
-                </p>
-              </div>
-            </>
-          )}
         </div>
       </div>
     </div>
   );
 }
 
-export default FiltersMenu;
+export default BrowsePageFiltersMenu;

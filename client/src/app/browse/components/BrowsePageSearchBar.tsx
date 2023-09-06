@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { AiFillFilter } from "react-icons/ai";
 import { GrRefresh } from "react-icons/gr";
 
-function SearchBarAndButtons() {
+function BrowsePageSearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -22,4 +22,4 @@ function SearchBarAndButtons() {
   );
 }
 
-export default SearchBarAndButtons;
+export default BrowsePageSearchBar;
