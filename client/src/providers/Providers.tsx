@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
 export const queryKeys = {
   user: "user",
   recipes: "recipes",
+  items: "items",
 };
 
 const Providers: FC<LayoutProps> = ({ children }) => {

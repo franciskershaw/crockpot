@@ -10,3 +10,9 @@ export interface User {
   extraItems: [];
   accessToken: string;
 }
+
+export interface Item {
+  _id: string;
+  name: string;
+  category: string;
+}
