@@ -17,7 +17,7 @@ interface Recipe {
   cookingTime: number;
   recipeName: string;
   ingredients: string[];
-  categories: string[]; // Assuming categories are strings in the JSON data
+  categories: string[];
 }
 
 function BrowsePageFiltersMenu() {
@@ -27,7 +27,7 @@ function BrowsePageFiltersMenu() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="tw p-4 space-y-3">
+    <div className="space-y-3">
       <Switch
         label="My Favourites (3)"
         onChange={() => console.log("Hello!")}
@@ -47,7 +47,6 @@ function BrowsePageFiltersMenu() {
       <div>
         <h3 className="mb-2">Categories</h3>
         <div className="space-y-2">
-          {/* Search functionality needs rethinking!! */}
           <SearchBar
             placeholder="Search for a category..."
             searchQuery={searchQuery}

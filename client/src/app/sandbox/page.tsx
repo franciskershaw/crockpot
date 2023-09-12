@@ -6,7 +6,7 @@ import Switch from "@/src/components/Switch/Switch";
 import Accordion from "@/src/components/Accordion/Accordion";
 import { FC } from "react";
 import Icon from "@/src/components/Icon/Icon";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiFillFilter, AiOutlineSearch } from "react-icons/ai";
 import ButtonFav from "@/src/components/ButtonFav/ButtonFav";
 import ButtonCart from "@/src/components/ButtonCart/ButtonCart";
 import Button from "@/src/components/Button/Button";
@@ -226,7 +226,15 @@ const SandBoxPage: FC = () => {
         </div> */}
       </div>
       <div className="container">
-        <Modal />
+      <Modal 
+        title="My Modal Title" 
+        trigger={
+          <Button border onClick={() => console.log("Hello!")}>
+            <AiFillFilter />
+          </Button>
+          }
+        children={<div>This is my modal content.</div>}
+      />
       </div>
     </div>
   );
