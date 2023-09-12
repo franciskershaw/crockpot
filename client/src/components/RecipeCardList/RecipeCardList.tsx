@@ -17,8 +17,8 @@ function RecipeCardList() {
 					<div className="recipe-card" key={uuidv4()}>
 						<RecipeCard
 							imageUrl={recipe.image?.url}
-							cookingTime={recipe.timeInMinutes}
-							recipeName={recipe.name}
+							timeInMinutes={recipe.timeInMinutes}
+							name={recipe.name}
 							categories={recipe.categories.map((category) => category.name)}
 						/>
 					</div>

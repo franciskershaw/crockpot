@@ -5,15 +5,15 @@ import TimingTag from '../TimingTag/TimingTag';
 
 type RecipeCardProps = {
 	imageUrl: any;
-	cookingTime: number;
-	recipeName: string;
+	timeInMinutes: number;
+	name: string;
 	categories: string[];
 };
 
 const RecipeCard = ({
 	imageUrl,
-	cookingTime,
-	recipeName,
+	timeInMinutes,
+	name,
 	categories,
 }: RecipeCardProps) => {
 	const firstThreeCategories = categories.slice(0, 3);
@@ -30,19 +30,19 @@ const RecipeCard = ({
 
 				{/* Absolute buttons */}
 				<div className="absolute top-1 left-1">
-					<ButtonFav recipeId={recipeName} />
+					<ButtonFav recipeId={name} />
 				</div>
 				<div className="absolute top-1 right-1">
-					<ButtonCart recipeId={recipeName} />
+					<ButtonCart recipeId={name} />
 				</div>
 				<div className="absolute bottom-[-12px] right-2">
-					<TimingTag time={cookingTime} />
+					<TimingTag time={timeInMinutes} />
 				</div>
 			</div>
 
-			{/* recipeName and categories */}
+			{/* name and categories */}
 			<div className="px-2 py-3 bg-white rounded-b-xl border border-gray-300">
-				<h3 className="truncate">{recipeName}</h3>
+				<h3 className="truncate">{name}</h3>
 				<p className="truncate">
 					{firstThreeCategories.join(' | ')}
 					{remainingCategoriesCount > 0 &&
