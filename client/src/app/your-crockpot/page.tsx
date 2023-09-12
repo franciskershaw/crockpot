@@ -7,7 +7,7 @@ const YourCrockpotPage = () => {
   const { user } = useProtectedRoute();
 
   if (!user) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return (

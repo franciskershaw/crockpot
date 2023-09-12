@@ -3,10 +3,10 @@
 import useProtectedRoute from "@/src/hooks/auth/useProtectedRoute";
 
 const AdminPage = () => {
-  const { isAdmin } = useProtectedRoute("/your-crockpot");
+  const { fetchingUser } = useProtectedRoute("/your-crockpot", true);
 
-  if (!isAdmin) {
-    return null;
+  if (fetchingUser) {
+    return <div>Loading...</div>;
   }
 
   return <div>Admin page</div>;

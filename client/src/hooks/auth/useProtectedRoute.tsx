@@ -4,15 +4,19 @@ import useUser from "@/src/hooks/auth/useUser";
 
 const useProtectedRoute = (redirectTo = "/login", adminOnly = false) => {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, fetchingUser } = useUser();
 
   useEffect(() => {
-    if (!user || (adminOnly && !user.isAdmin)) {
-      router.push(redirectTo);
-    }
-  }, [user, router, redirectTo, adminOnly]);
+    if (fetchingUser) return;
 
-  return { user, isAdmin: user?.isAdmin || false };
+    if (!user) {
+      router.push(redirectTo);
+    } else if (adminOnly && !user.isAdmin) {
+      router.push("/your-crockpot");
+    }
+  }, [user, fetchingUser, router, redirectTo, adminOnly]);
+
+  return { user, isAdmin: user?.isAdmin || false, fetchingUser };
 };
 
 export default useProtectedRoute;
