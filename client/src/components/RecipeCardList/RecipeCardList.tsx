@@ -16,10 +16,10 @@ function RecipeCardList() {
 				{recipes.map((recipe) => (
 					<div className="recipe-card" key={uuidv4()}>
 						<RecipeCard
-							imageUrl={recipe.imageUrl}
-							cookingTime={recipe.cookingTime}
-							recipeName={recipe.recipeName}
-							categories={recipe.categories}
+							imageUrl={recipe.image?.url}
+							cookingTime={recipe.timeInMinutes}
+							recipeName={recipe.name}
+							categories={recipe.categories.map((category) => category.name)}
 						/>
 					</div>
 				))}
