@@ -5,43 +5,13 @@ import Switch from '@/src/components/Switch/Switch';
 import Slider from '@/src/components/Slider/Slider';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import recipesData from '../../../data/recipes.json';
+import recipesData from '@/src/data/recipes.json';
 import {
 	getCategories,
 	getMinMaxTimeInMinutes,
 } from '@/src/hooks/recipeFunctions';
 import { useState } from 'react';
-
-interface Image {
-	url: string;
-	filename: string;
-}
-
-interface Ingredient {
-	_id: string;
-	quantity: number;
-	unit: string;
-}
-
-interface Category {
-	_id: string;
-	name: string;
-	__v: number;
-}
-
-interface Recipe {
-	image: Image;
-	_id: string;
-	name: string;
-	timeInMinutes: number;
-	ingredients: Ingredient[];
-	instructions: string[];
-	notes: string[];
-	categories: Category[];
-	createdBy: string;
-	approved: boolean;
-	__v: number;
-}
+import { Recipe } from '@/src/types/types';
 
 function BrowsePageFiltersMenu() {
 	const recipes: Recipe[] = recipesData;

@@ -1,33 +1,4 @@
-interface Image {
-	url: string;
-	filename: string;
-}
-
-interface Ingredient {
-	_id: string;
-	quantity: number;
-	unit: string;
-}
-
-interface Category {
-	_id: string;
-	name: string;
-	__v: number;
-}
-
-interface Recipe {
-	image: Image;
-	_id: string;
-	name: string;
-	timeInMinutes: number;
-	ingredients: Ingredient[];
-	instructions: string[];
-	notes: string[];
-	categories: Category[];
-	createdBy: string;
-	approved: boolean;
-	__v: number;
-}
+import { Recipe } from '@/src/types/types';
 
 export const getCategories = (recipes: Recipe[]): string[] => {
 	const categories: string[] = [];
