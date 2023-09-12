@@ -1,8 +1,8 @@
-const Recipe = require('../models/Recipe');
-const User = require('../models/User');
-const RecipeCategory = require('../models/RecipeCategory');
-const { NotFoundError } = require('../errors/errors');
-const cloudinary = require('cloudinary').v2;
+const Recipe = require("../models/Recipe");
+const User = require("../models/User");
+const RecipeCategory = require("../models/RecipeCategory");
+const { NotFoundError } = require("../errors/errors");
+const cloudinary = require("cloudinary").v2;
 
 // Needs to only return recipes that are approved and also created by the user
 const getAllRecipes = async (req, res, next) => {
@@ -15,7 +15,7 @@ const getAllRecipes = async (req, res, next) => {
       };
     }
 
-    const recipes = await Recipe.find(filter);
+    const recipes = await Recipe.find(filter).populate("categories");
     res.status(200).json(recipes);
   } catch (err) {
     next(err);
@@ -77,7 +77,7 @@ const editRecipe = async (req, res, next) => {
     const recipe = await Recipe.findById(req.params.recipeId);
 
     if (!recipe) {
-      throw new NotFoundError('Recipe not found');
+      throw new NotFoundError("Recipe not found");
     }
 
     if (
@@ -85,7 +85,7 @@ const editRecipe = async (req, res, next) => {
       !req.user.isAdmin
     ) {
       throw new UnauthorizedError(
-        'You do not have permission to edit this recipe'
+        "You do not have permission to edit this recipe"
       );
     }
 
@@ -127,7 +127,7 @@ const deleteRecipe = async (req, res, next) => {
     if (recipe.image && recipe.image.filename) {
       await cloudinary.uploader.destroy(recipe.image.filename);
     }
-    res.status(200).json({ msg: 'Recipe deleted' });
+    res.status(200).json({ msg: "Recipe deleted" });
   } catch (err) {
     next(err);
   }
@@ -148,7 +148,7 @@ const toggleApprovedStatus = async (req, res, next) => {
     const recipe = await Recipe.findById(req.params.recipeId);
 
     if (!recipe) {
-      throw new NotFoundError('Recipe not found');
+      throw new NotFoundError("Recipe not found");
     }
 
     recipe.approved = !recipe.approved;
