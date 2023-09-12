@@ -20,18 +20,13 @@ const AuthForm = (props: Props) => {
   const router = useRouter();
 
   const auth = useAuth();
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     if (user) {
-      console.log('user', user);
       router.push('/your-crockpot');
     }
   }, [user, router]);
-
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
