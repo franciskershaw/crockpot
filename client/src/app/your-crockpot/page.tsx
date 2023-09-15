@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "./components/Header/Header";
+import HeaderToggle from "./components/HeaderToggle/HeaderToggle";
 import useProtectedRoute from "@/src/hooks/auth/useProtectedRoute";
 
 const YourCrockpotPage = () => {
@@ -11,9 +11,9 @@ const YourCrockpotPage = () => {
   }
 
   return (
-    <div>
-      <Header />
-    </div>
+    <>
+      <HeaderToggle />
+    </>
   );
 };
 
