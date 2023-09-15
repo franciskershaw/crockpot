@@ -23,6 +23,7 @@ export const queryKeys = {
   user: "user",
   recipes: "recipes",
   recipeCategories: "recipeCategories",
+  recipeMenu: "recipeMenu",
   items: "items",
 };
 
