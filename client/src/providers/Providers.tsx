@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
 export const queryKeys = {
   user: "user",
   recipes: "recipes",
+  recipeCategories: "recipeCategories",
   items: "items",
 };
 
