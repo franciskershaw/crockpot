@@ -15,7 +15,22 @@ const getAllRecipes = async (req, res, next) => {
       };
     }
 
-    const recipes = await Recipe.find(filter).populate("categories");
+    // Find the total number of documents that match the filter
+    const total = await Recipe.countDocuments(filter);
+
+    const recipes = await Recipe.aggregate([
+      { $match: filter },
+      { $sample: { size: total } }, // Use the total count here
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categories",
+          foreignField: "_id",
+          as: "categories",
+        },
+      },
+    ]);
+
     res.status(200).json(recipes);
   } catch (err) {
     next(err);
