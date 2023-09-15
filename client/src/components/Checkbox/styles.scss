@@ -4,16 +4,16 @@
 // }
 
 .CheckboxRoot {
-  @apply border-2 border-solid border-black bg-white h-6 w-6 rounded flex items-center justify-center cursor-pointer;
+	@apply border-2 border-solid border-black bg-white h-6 w-6 rounded flex items-center justify-center cursor-pointer flex-shrink-0;
 }
 
 .CheckboxRoot:hover {
-  // background-color: black;
+	// background-color: black;
 }
 .CheckboxRoot:focus {
-  // box-shadow: 0 0 0 2px black;
+	// box-shadow: 0 0 0 2px black;
 }
 
 .CheckboxIndicator {
-  @apply text-black;
+	@apply text-black;
 }

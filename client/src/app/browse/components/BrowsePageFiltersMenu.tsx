@@ -8,14 +8,17 @@ import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import recipesData from '@/src/data/recipes.json';
 import {
 	getCategories,
+	getIngredients,
 	getMinMaxTimeInMinutes,
 } from '@/src/hooks/recipeFunctions';
 import { useState } from 'react';
 import { Recipe } from '@/src/types/types';
+import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 
 function BrowsePageFiltersMenu() {
 	const recipes: Recipe[] = recipesData;
 	const categories = getCategories(recipes);
+	const ingredients = getIngredients(recipes);
 	const cookingTime = getMinMaxTimeInMinutes(recipes);
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -37,29 +40,17 @@ function BrowsePageFiltersMenu() {
 				/>
 			</div>
 			<hr />
-			<div>
-				<h3 className="mb-2">Categories</h3>
-				<div className="space-y-2">
-					<SearchBar
-						placeholder="Search for a category..."
-						searchQuery={searchQuery}
-						setSearchQuery={setSearchQuery}
-					/>
-					<div className="space-y-1">
-						{categories
-							.filter((category) =>
-								category.toLowerCase().includes(searchQuery.toLowerCase()),
-							)
-							.map((category, index) => (
-								<Checkbox
-									key={index}
-									label={category}
-									onChange={(value: boolean) => console.log(value)}
-								/>
-							))}
-					</div>
-				</div>
-			</div>
+			<BrowsePageSearchableCheckboxList
+				title={'Categories'}
+				placeholderText={'Search for a category...'}
+				checkboxes={categories}
+			/>
+			{/* <hr />
+			<BrowsePageSearchableCheckboxList
+				title={'Ingredients'}
+				placeholderText={'Search for a ingredient...'}
+				checkboxes={ingredients}
+			/> */}
 		</div>
 	);
 }
