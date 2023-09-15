@@ -21,8 +21,7 @@ interface Item {
 
 function BrowsePageFiltersMenu() {
 	const recipes: Recipe[] = recipesData;
-	const categories = getCategories(recipes);
-	const categoriesApi = useRecipeCategories();
+	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
 	const cookingTime = getMinMaxTimeInMinutes(recipes);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -32,20 +31,13 @@ function BrowsePageFiltersMenu() {
 	};
 
 	const simplifiedIngredients = extractIdAndName(ingredients);
-	const simplifiedCategories = extractIdAndName(categoriesApi.recipeCategories);
-
-	useEffect(() => {
-		console.log(ingredients);
-	}, [ingredients]);
+	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
 		<div className="space-y-3">
-			<Switch
-				label="My Favourites (3)"
-				onChange={() => console.log('Hello!')}
-			/>
+			<Switch label="My Favourites (3)" />
 			<hr />
-			<Switch label="My Recipes (2)" onChange={() => console.log('Hello!')} />
+			<Switch label="My Recipes (2)" />
 			<hr />
 			<div>
 				<h3>Serving Time</h3>

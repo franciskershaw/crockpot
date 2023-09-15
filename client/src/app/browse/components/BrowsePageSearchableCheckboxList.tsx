@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
 
@@ -21,7 +21,7 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	BrowsePageSearchableCheckboxListProps
 > = ({ title, placeholderText, checkboxes }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('');
-	const [showAllCategories, setShowAllCategories] = useState(false);
+	const [showAllCheckboxes, setShowAllCheckboxes] = useState(false);
 	const [checkboxStates, setCheckboxStates] = useState<CheckboxState>({});
 
 	const initialVisibleCheckboxes = 5;
@@ -37,6 +37,10 @@ const BrowsePageSearchableCheckboxList: React.FC<
 		checkbox.name.toLowerCase().includes(searchQuery.toLowerCase()),
 	);
 
+	useEffect(() => {
+		console.log(title, checkboxStates);
+	}, [title, checkboxStates]);
+
 	return (
 		<div>
 			<div className="flex justify-between mb-2">
@@ -46,9 +50,9 @@ const BrowsePageSearchableCheckboxList: React.FC<
 				{checkboxes.length > initialVisibleCheckboxes ? (
 					<h4
 						className="cursor-pointer underline my-auto"
-						onClick={() => setShowAllCategories(!showAllCategories)}
+						onClick={() => setShowAllCheckboxes(!showAllCheckboxes)}
 					>
-						{showAllCategories ? 'Hide' : 'Show'}
+						{showAllCheckboxes ? 'Hide' : 'Show'}
 					</h4>
 				) : null}
 			</div>
@@ -58,24 +62,28 @@ const BrowsePageSearchableCheckboxList: React.FC<
 				setSearchQuery={setSearchQuery}
 			/>
 			<div className="mt-2 space-y-1 overflow-scroll max-h-[250px] bg-white p-2">
-				{filteredCheckboxes.map((checkbox, index) => (
-					<div
-						key={checkbox._id}
-						className={
-							index > initialVisibleCheckboxes && !showAllCategories
-								? 'hidden'
-								: ''
-						}
-					>
-						<Checkbox
-							label={checkbox.name}
-							onChange={(isChecked: boolean) =>
-								handleCheckboxChange(checkbox._id, isChecked)
+				{filteredCheckboxes.length === 0 ? (
+					<h4 className="text-center">0 results</h4>
+				) : (
+					filteredCheckboxes.map((checkbox, index) => (
+						<div
+							key={checkbox._id}
+							className={
+								index > initialVisibleCheckboxes && !showAllCheckboxes
+									? 'hidden'
+									: ''
 							}
-							isChecked={checkboxStates[checkbox._id] || false}
-						/>
-					</div>
-				))}
+						>
+							<Checkbox
+								label={checkbox.name}
+								onChange={(isChecked: boolean) =>
+									handleCheckboxChange(checkbox._id, isChecked)
+								}
+								isChecked={checkboxStates[checkbox._id] || false}
+							/>
+						</div>
+					))
+				)}
 			</div>
 		</div>
 	);
