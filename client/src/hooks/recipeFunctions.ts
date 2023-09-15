@@ -1,57 +1,51 @@
-interface Recipe {
-  imageUrl: string;
-  cookingTime: number;
-  recipeName: string;
-  ingredients: string[];
-  categories: string[];
-}
+import { Recipe } from '@/src/types/types';
 
 export const getCategories = (recipes: Recipe[]): string[] => {
-  const categories: string[] = [];
+	const categories: string[] = [];
 
-  recipes.forEach((recipe) => {
-    recipe.categories.forEach((category) => {
-      if (!categories.includes(category)) {
-        categories.push(category);
-      }
-    });
-  });
+	recipes.forEach((recipe) => {
+		recipe.categories.forEach((category) => {
+			if (!categories.includes(category.name)) {
+				categories.push(category.name);
+			}
+		});
+	});
 
-  return categories.sort();
+	return categories.sort();
 };
 
 export const getIngredients = (recipes: Recipe[]): string[] => {
-  const ingredients: string[] = [];
+	const ingredients: string[] = [];
 
-  recipes.forEach((recipe) => {
-    recipe.ingredients.forEach((ingredient) => {
-      if (!ingredients.includes(ingredient)) {
-        ingredients.push(ingredient);
-      }
-    });
-  });
+	recipes.forEach((recipe) => {
+		recipe.ingredients.forEach((ingredient) => {
+			if (!ingredients.includes(ingredient._id)) {
+				ingredients.push(ingredient._id);
+			}
+		});
+	});
 
-  return ingredients.sort();
+	return ingredients.sort();
 };
 
-export const getMinMaxCookingTime = (
-  recipes: Recipe[]
+export const getMinMaxTimeInMinutes = (
+	recipes: Recipe[],
 ): { min: number; max: number } => {
-  if (recipes.length === 0) {
-    return { min: 0, max: 0 };
-  }
+	if (recipes.length === 0) {
+		return { min: 0, max: 0 };
+	}
 
-  let minTime = recipes[0].cookingTime;
-  let maxTime = recipes[0].cookingTime;
+	let minTime = recipes[0].timeInMinutes;
+	let maxTime = recipes[0].timeInMinutes;
 
-  for (const recipe of recipes) {
-    if (recipe.cookingTime < minTime) {
-      minTime = recipe.cookingTime;
-    }
-    if (recipe.cookingTime > maxTime) {
-      maxTime = recipe.cookingTime;
-    }
-  }
+	for (const recipe of recipes) {
+		if (recipe.timeInMinutes < minTime) {
+			minTime = recipe.timeInMinutes;
+		}
+		if (recipe.timeInMinutes > maxTime) {
+			maxTime = recipe.timeInMinutes;
+		}
+	}
 
-  return { min: minTime, max: maxTime };
+	return { min: minTime, max: maxTime };
 };

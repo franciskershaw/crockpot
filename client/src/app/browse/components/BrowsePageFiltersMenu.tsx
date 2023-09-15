@@ -1,74 +1,66 @@
-"use client";
+'use client';
 
-import React from "react";
-import Switch from "@/src/components/Switch/Switch";
-import Slider from "@/src/components/Slider/Slider";
-import Checkbox from "@/src/components/Checkbox/Checkbox";
-import SearchBar from "@/src/components/FormSearchBar/SearchBar";
-import recipesData from "../../../data/recipes.json";
+import React, { useEffect } from 'react';
+import Switch from '@/src/components/Switch/Switch';
+import Slider from '@/src/components/Slider/Slider';
+import recipesData from '@/src/data/recipes.json';
 import {
-  getCategories,
-  getMinMaxCookingTime,
-} from "@/src/hooks/recipeFunctions";
-import { useState } from "react";
+	getCategories,
+	getMinMaxTimeInMinutes,
+} from '@/src/hooks/recipeFunctions';
+import { useState } from 'react';
+import { Recipe } from '@/src/types/types';
+import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
+import useItems from '@/src/hooks/items/useItems';
+import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 
-interface Recipe {
-  imageUrl: string;
-  cookingTime: number;
-  recipeName: string;
-  ingredients: string[];
-  categories: string[];
+interface Item {
+	_id: string;
+	name: string;
 }
 
 function BrowsePageFiltersMenu() {
-  const recipes: Recipe[] = recipesData;
-  const categories = getCategories(recipes);
-  const cookingTime = getMinMaxCookingTime(recipes);
-  const [searchQuery, setSearchQuery] = useState("");
+	const recipes: Recipe[] = recipesData;
+	const categories = useRecipeCategories();
+	const { ingredients } = useItems();
+	const cookingTime = getMinMaxTimeInMinutes(recipes);
+	const [searchQuery, setSearchQuery] = useState('');
 
-  return (
-    <div className="space-y-3">
-      <Switch
-        label="My Favourites (3)"
-        onChange={() => console.log("Hello!")}
-      />
-      <hr />
-      <Switch label="My Recipes (2)" onChange={() => console.log("Hello!")} />
-      <hr />
-      <div>
-        <h3>Serving Time</h3>
-        <Slider
-          min={cookingTime.min}
-          max={cookingTime.max}
-          onChange={(values: number[]) => console.log(values)}
-        />
-      </div>
-      <hr />
-      <div>
-        <h3 className="mb-2">Categories</h3>
-        <div className="space-y-2">
-          <SearchBar
-            placeholder="Search for a category..."
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-          <div className="space-y-1">
-            {categories
-              .filter((category) =>
-                category.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((category, index) => (
-                <Checkbox
-                  key={index}
-                  label={category}
-                  onChange={(value: boolean) => console.log(value)}
-                />
-              ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+	const extractIdAndName = (items: Item[]): { _id: string; name: string }[] => {
+		return items.map(({ _id, name }) => ({ _id, name }));
+	};
+
+	const simplifiedIngredients = extractIdAndName(ingredients);
+	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
+
+	return (
+		<div className="space-y-3">
+			<Switch label="My Favourites (3)" />
+			<hr />
+			<Switch label="My Recipes (2)" />
+			<hr />
+			<div>
+				<h3>Serving Time</h3>
+				<Slider
+					min={cookingTime.min}
+					max={cookingTime.max}
+					onChange={(values: number[]) => console.log(values)}
+				/>
+			</div>
+			<hr />
+			<BrowsePageSearchableCheckboxList
+				title={'Categories'}
+				placeholderText={'Search for a category...'}
+				checkboxes={simplifiedCategories}
+			/>
+			<hr />
+			<BrowsePageSearchableCheckboxList
+				title={'Ingredients'}
+				placeholderText={'Search for a ingredient...'}
+				checkboxes={simplifiedIngredients}
+			/>
+		</div>
+	);
 }
 
 export default BrowsePageFiltersMenu;
