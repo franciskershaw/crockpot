@@ -45,12 +45,12 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a category...'}
 				checkboxes={categories}
 			/>
-			{/* <hr />
+			<hr />
 			<BrowsePageSearchableCheckboxList
 				title={'Ingredients'}
 				placeholderText={'Search for a ingredient...'}
 				checkboxes={ingredients}
-			/> */}
+			/>
 		</div>
 	);
 }

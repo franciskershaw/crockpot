@@ -16,7 +16,10 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	BrowsePageSearchableCheckboxListProps
 > = ({ title, placeholderText, checkboxes }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('');
+	const [showAllCategories, setShowAllCategories] = useState(false);
 	const [checkboxStates, setCheckboxStates] = useState<CheckboxState>({});
+
+	const initialVisibleCheckboxes = 2;
 
 	const handleCheckboxChange = (label: string, isChecked: boolean) => {
 		setCheckboxStates((prevState) => ({
@@ -41,17 +44,39 @@ const BrowsePageSearchableCheckboxList: React.FC<
 					setSearchQuery={setSearchQuery}
 				/>
 				<div className="space-y-1">
-					{filteredCheckboxes.map((checkbox) => (
-						<Checkbox
+					{filteredCheckboxes.map((checkbox, index) => (
+						<div
 							key={checkbox}
-							label={checkbox}
-							onChange={(isChecked: boolean) =>
-								handleCheckboxChange(checkbox, isChecked)
+							className={
+								index > initialVisibleCheckboxes && !showAllCategories
+									? 'hidden'
+									: ''
 							}
-							isChecked={checkboxStates[checkbox] || false}
-						/>
+						>
+							<Checkbox
+								label={checkbox}
+								onChange={(isChecked: boolean) =>
+									handleCheckboxChange(checkbox, isChecked)
+								}
+								isChecked={checkboxStates[checkbox] || false}
+							/>
+						</div>
 					))}
 				</div>
+				{checkboxes.length > initialVisibleCheckboxes ? (
+					<h4
+						className="cursor-pointer underline"
+						onClick={() => setShowAllCategories(!showAllCategories)}
+					>
+						{showAllCategories
+							? `Hide ${
+									checkboxes.length - initialVisibleCheckboxes - 1
+							  } additional ${title.toLowerCase()}`
+							: `Show ${
+									checkboxes.length - initialVisibleCheckboxes - 1
+							  } additional ${title.toLowerCase()}`}
+					</h4>
+				) : null}
 			</div>
 		</div>
 	);
