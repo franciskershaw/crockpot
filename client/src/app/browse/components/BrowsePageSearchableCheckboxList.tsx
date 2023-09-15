@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
 
+type CheckboxData = {
+	_id: string;
+	name: string;
+};
+
 type BrowsePageSearchableCheckboxListProps = {
 	title: string;
 	placeholderText: string;
-	checkboxes: string[];
+	checkboxes: CheckboxData[];
 };
 
 type CheckboxState = {
@@ -29,54 +34,48 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	};
 
 	const filteredCheckboxes = checkboxes.filter((checkbox) =>
-		checkbox.toLowerCase().includes(searchQuery.toLowerCase()),
+		checkbox.name.toLowerCase().includes(searchQuery.toLowerCase()),
 	);
 
 	return (
 		<div>
-			<h3 className="mb-2">
-				{title} ({checkboxes.length})
-			</h3>
-			<div className="space-y-2">
-				<SearchBar
-					placeholder={placeholderText}
-					searchQuery={searchQuery}
-					setSearchQuery={setSearchQuery}
-				/>
-				<div className="space-y-1">
-					{filteredCheckboxes.map((checkbox, index) => (
-						<div
-							key={checkbox}
-							className={
-								index > initialVisibleCheckboxes && !showAllCategories
-									? 'hidden'
-									: ''
-							}
-						>
-							<Checkbox
-								label={checkbox}
-								onChange={(isChecked: boolean) =>
-									handleCheckboxChange(checkbox, isChecked)
-								}
-								isChecked={checkboxStates[checkbox] || false}
-							/>
-						</div>
-					))}
-				</div>
+			<div className="flex justify-between mb-2">
+				<h3>
+					{title} ({checkboxes.length})
+				</h3>
 				{checkboxes.length > initialVisibleCheckboxes ? (
 					<h4
-						className="cursor-pointer underline"
+						className="cursor-pointer underline my-auto"
 						onClick={() => setShowAllCategories(!showAllCategories)}
 					>
-						{showAllCategories
-							? `Hide ${
-									checkboxes.length - initialVisibleCheckboxes - 1
-							  } additional ${title.toLowerCase()}`
-							: `Show ${
-									checkboxes.length - initialVisibleCheckboxes - 1
-							  } additional ${title.toLowerCase()}`}
+						{showAllCategories ? 'Hide' : 'Show'}
 					</h4>
 				) : null}
+			</div>
+			<SearchBar
+				placeholder={placeholderText}
+				searchQuery={searchQuery}
+				setSearchQuery={setSearchQuery}
+			/>
+			<div className="mt-2 space-y-1 overflow-scroll max-h-[250px] bg-slate-200 p-2">
+				{filteredCheckboxes.map((checkbox, index) => (
+					<div
+						key={checkbox._id}
+						className={
+							index > initialVisibleCheckboxes && !showAllCategories
+								? 'hidden'
+								: ''
+						}
+					>
+						<Checkbox
+							label={checkbox.name}
+							onChange={(isChecked: boolean) =>
+								handleCheckboxChange(checkbox._id, isChecked)
+							}
+							isChecked={checkboxStates[checkbox._id] || false}
+						/>
+					</div>
+				))}
 			</div>
 		</div>
 	);

@@ -5,8 +5,8 @@ export const getCategories = (recipes: Recipe[]): string[] => {
 
 	recipes.forEach((recipe) => {
 		recipe.categories.forEach((category) => {
-			if (!categories.includes(category._id)) {
-				categories.push(category._id);
+			if (!categories.includes(category.name)) {
+				categories.push(category.name);
 			}
 		});
 	});
