@@ -1,18 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxios from "../axios/useAxios";
-import { queryKeys } from "@/src/providers/Providers";
+import { useQuery } from '@tanstack/react-query';
+import useAxios from '../axios/useAxios';
+import { queryKeys } from '@/src/providers/Providers';
 
 const useRecipes = () => {
-  const api = useAxios();
+	const api = useAxios();
 
-  const getRecipes = async () => {
-    const response = await api.get("/api/recipes");
-    return response.data;
-  };
+	const getRecipes = async () => {
+		const response = await api.get('/api/recipes');
+		return response.data;
+	};
 
-  const { data: allRecipes = [] } = useQuery([queryKeys.recipes], getRecipes);
+	const { data: allRecipes = [] } = useQuery([queryKeys.recipes], getRecipes);
 
-  return { allRecipes };
+	return { allRecipes };
 };
 
 export default useRecipes;

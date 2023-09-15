@@ -1,10 +1,14 @@
 'use client';
 
+import useRecipes from '@/src/hooks/recipes/useRecipes';
 import RecipeCardList from '../../components/RecipeCardList/RecipeCardList';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 
 const BrowsePage = () => {
+	const recipes = useRecipes();
+	console.log(recipes);
+
 	return (
 		<>
 			<div className="container flex py-4 space-x-2 bg-white bg-opacity-90 fixed z-10 md:hidden">
@@ -20,7 +24,7 @@ const BrowsePage = () => {
 					<div className="hidden md:flex space-x-2 mb-4">
 						<BrowsePageSearchBar />
 					</div>
-					<RecipeCardList />
+					<RecipeCardList recipes={recipes.allRecipes} />
 				</div>
 			</div>
 		</>

@@ -5,10 +5,13 @@ import RecipeCard from '../RecipeCard/RecipeCard';
 import recipesData from '@/src/data/recipes.json';
 import './styles.scss';
 import { v4 as uuidv4 } from 'uuid';
+import { Recipe } from '@/src/types/types';
 
-function RecipeCardList() {
-	const recipes = recipesData;
+type RecipeCardListProps = {
+	recipes: Recipe[];
+};
 
+function RecipeCardList({ recipes }: RecipeCardListProps) {
 	return (
 		<div className="tw">
 			<h3 className="font-bold mb-2">{recipes.length} recipes:</h3>
