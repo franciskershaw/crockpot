@@ -6,13 +6,13 @@ import Slider from '@/src/components/Slider/Slider';
 import recipesData from '@/src/data/recipes.json';
 import {
 	getCategories,
-	getIngredients,
 	getMinMaxTimeInMinutes,
 } from '@/src/hooks/recipeFunctions';
 import { useState } from 'react';
 import { Recipe } from '@/src/types/types';
 import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 import useItems from '@/src/hooks/items/useItems';
+import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 
 interface Item {
 	_id: string;
@@ -22,6 +22,7 @@ interface Item {
 function BrowsePageFiltersMenu() {
 	const recipes: Recipe[] = recipesData;
 	const categories = getCategories(recipes);
+	const categoriesApi = useRecipeCategories();
 	const { ingredients } = useItems();
 	const cookingTime = getMinMaxTimeInMinutes(recipes);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +32,7 @@ function BrowsePageFiltersMenu() {
 	};
 
 	const simplifiedIngredients = extractIdAndName(ingredients);
+	const simplifiedCategories = extractIdAndName(categoriesApi.recipeCategories);
 
 	useEffect(() => {
 		console.log(ingredients);
@@ -54,12 +56,12 @@ function BrowsePageFiltersMenu() {
 				/>
 			</div>
 			<hr />
-			{/* <BrowsePageSearchableCheckboxList
+			<BrowsePageSearchableCheckboxList
 				title={'Categories'}
 				placeholderText={'Search for a category...'}
-				checkboxes={categories}
+				checkboxes={simplifiedCategories}
 			/>
-			<hr /> */}
+			<hr />
 			<BrowsePageSearchableCheckboxList
 				title={'Ingredients'}
 				placeholderText={'Search for a ingredient...'}

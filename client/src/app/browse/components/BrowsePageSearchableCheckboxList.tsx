@@ -24,7 +24,7 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	const [showAllCategories, setShowAllCategories] = useState(false);
 	const [checkboxStates, setCheckboxStates] = useState<CheckboxState>({});
 
-	const initialVisibleCheckboxes = 2;
+	const initialVisibleCheckboxes = 5;
 
 	const handleCheckboxChange = (label: string, isChecked: boolean) => {
 		setCheckboxStates((prevState) => ({
@@ -57,7 +57,7 @@ const BrowsePageSearchableCheckboxList: React.FC<
 				searchQuery={searchQuery}
 				setSearchQuery={setSearchQuery}
 			/>
-			<div className="mt-2 space-y-1 overflow-scroll max-h-[250px] bg-slate-200 p-2">
+			<div className="mt-2 space-y-1 overflow-scroll max-h-[250px] bg-white p-2">
 				{filteredCheckboxes.map((checkbox, index) => (
 					<div
 						key={checkbox._id}
