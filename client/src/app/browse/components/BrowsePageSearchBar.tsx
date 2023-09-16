@@ -5,9 +5,10 @@ import React, { useState } from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
+import { useSearchQuery } from '../context/SearchQueryContext';
 
 function BrowsePageSearchBar() {
-	const [searchQuery, setSearchQuery] = useState('');
+	const { searchQuery, setSearchQuery } = useSearchQuery();
 
 	return (
 		<>

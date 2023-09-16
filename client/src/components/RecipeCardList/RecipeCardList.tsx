@@ -2,7 +2,6 @@
 
 import React from 'react';
 import RecipeCard from '../RecipeCard/RecipeCard';
-import recipesData from '@/src/data/recipes.json';
 import './styles.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { Recipe } from '@/src/types/types';

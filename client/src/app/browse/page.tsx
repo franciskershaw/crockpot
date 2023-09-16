@@ -4,10 +4,28 @@ import useRecipes from '@/src/hooks/recipes/useRecipes';
 import RecipeCardList from '../../components/RecipeCardList/RecipeCardList';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
+import { useSearchQuery } from './context/SearchQueryContext';
+import { useEffect } from 'react';
+import { Recipe } from '@/src/types/types';
 
 const BrowsePage = () => {
+	const { searchQuery, setSearchQuery } = useSearchQuery();
+
+	useEffect(() => {
+		console.log(searchQuery);
+	}, [searchQuery]);
+
 	const recipes = useRecipes();
-	console.log(recipes);
+
+	// Randomise recipe order
+	// useEffect(() => {
+	// 	recipes.allRecipes.sort(() => Math.random() - 0.5);
+	// }, [recipes.allRecipes]);
+
+	// Filter recipes based on search query
+	const filteredRecipes = recipes.allRecipes.filter((recipe: Recipe) => {
+		return recipe.name.toLowerCase().includes(searchQuery.toLowerCase());
+	});
 
 	return (
 		<>
@@ -24,7 +42,7 @@ const BrowsePage = () => {
 					<div className="hidden md:flex space-x-2 mb-4">
 						<BrowsePageSearchBar />
 					</div>
-					<RecipeCardList recipes={recipes.allRecipes} />
+					<RecipeCardList recipes={filteredRecipes} />
 				</div>
 			</div>
 		</>
