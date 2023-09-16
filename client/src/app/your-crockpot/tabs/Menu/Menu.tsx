@@ -4,10 +4,11 @@ import RecipeCardList from "@/src/components/RecipeCardList/RecipeCardList";
 
 const Menu = () => {
   const { recipeMenuRecipes } = useRecipeMenu();
+  const breakpoint = "xl";
 
   return (
     <div>
-      <div className="flex justify-center my-3">
+      <div className={`flex justify-center my-3 ${breakpoint}:hidden`}>
         <Button
           type="tertiary"
           border
