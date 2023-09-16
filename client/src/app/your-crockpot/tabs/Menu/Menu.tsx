@@ -1,9 +1,13 @@
 import Button from "@/src/components/Button/Button";
+import useRecipeMenu from "../../hooks/useRecipeMenu";
+import RecipeCardList from "@/src/components/RecipeCardList/RecipeCardList";
 
 const Menu = () => {
+  const { recipeMenuRecipes } = useRecipeMenu();
+
   return (
-    <div className="">
-      <div className="tw flex justify-center">
+    <div>
+      <div className="flex justify-center my-3">
         <Button
           type="tertiary"
           border
@@ -11,7 +15,9 @@ const Menu = () => {
           onClick={() => console.log("Hello!")}
         />
       </div>
-      <div className="tw">Recipes here</div>
+      <div>
+        <RecipeCardList recipes={recipeMenuRecipes} />
+      </div>
     </div>
   );
 };

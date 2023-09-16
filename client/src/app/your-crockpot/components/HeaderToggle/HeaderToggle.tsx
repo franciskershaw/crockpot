@@ -12,7 +12,7 @@ const HeaderToggle: FC<HeaderToggleProps> = ({ children, titles }) => {
   return (
     <Tabs.Root defaultValue={titles[0]}>
       <div className="max-w-screen-md mx-auto">
-        <Tabs.List className="flex justify-between bg-gray-200 p-2 rounded-t relative">
+        <Tabs.List className="flex justify-between p-3 pb-0 rounded-t relative">
           {titles.map((title, index) => (
             <Tabs.Trigger
               key={index}
@@ -28,10 +28,7 @@ const HeaderToggle: FC<HeaderToggleProps> = ({ children, titles }) => {
       </div>
 
       {Children.map(children, (child, index) => (
-        <Tabs.Content
-          value={titles[index]}
-          className="p-4 border rounded-b border-t-0 w-full"
-        >
+        <Tabs.Content className="px-4" value={titles[index]}>
           {child}
         </Tabs.Content>
       ))}
