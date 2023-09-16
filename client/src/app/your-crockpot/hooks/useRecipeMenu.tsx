@@ -4,6 +4,7 @@ import { queryKeys } from "@/src/providers/Providers";
 import useUser from "@/src/hooks/auth/useUser";
 import { useState, useEffect } from "react";
 import { MenuRecipe } from "@/src/types/types";
+import { createConfig } from "@/src/helper";
 
 const useRecipeMenu = () => {
   const [recipeMenuRecipes, setRecipeMenuRecipes] = useState([]);
@@ -12,12 +13,7 @@ const useRecipeMenu = () => {
   const { user } = useUser();
 
   const getRecipeMenu = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${user?.accessToken}`,
-      },
-    };
-
+    const config = createConfig(user);
     const response = await api.get(`/api/users/recipeMenu`, config);
     return response.data;
   };
