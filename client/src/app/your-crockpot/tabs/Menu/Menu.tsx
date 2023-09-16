@@ -1,6 +1,7 @@
 import Button from "@/src/components/Button/Button";
 import useRecipeMenu from "../../hooks/useRecipeMenu";
 import RecipeCardList from "@/src/components/RecipeCardList/RecipeCardList";
+import ShoppingList from "../../components/ShoppingList/ShoppingList";
 
 const Menu = () => {
   const { recipeMenuRecipes } = useRecipeMenu();
@@ -15,7 +16,9 @@ const Menu = () => {
           onClick={() => console.log("Hello!")}
         />
       </div>
-      <div className={`tw hidden ${bp}:block`}>Shopping list component</div>
+      <div className={`tw hidden ${bp}:block`}>
+        <ShoppingList />
+      </div>
 
       <RecipeCardList recipes={recipeMenuRecipes} />
     </div>

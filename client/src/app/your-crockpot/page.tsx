@@ -1,4 +1,3 @@
-// YourCrockpotPage.tsx
 "use client";
 
 import HeaderToggle from "./components/HeaderToggle/HeaderToggle";

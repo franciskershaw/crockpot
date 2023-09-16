@@ -5,7 +5,7 @@ import Icon from '../Icon/Icon';
 type SearchBarProps = {
 	label?: string;
 	placeholder?: string;
-	searchQuery?: string;
+	searchQuery: string;
 	setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -24,7 +24,7 @@ const SearchBar = ({
 	return (
 		<div className="relative">
 			{label ? (
-				<label className="mr-2" htmlFor="">
+				<label className="mr-2 text-xs" htmlFor="">
 					{label}
 				</label>
 			) : (
