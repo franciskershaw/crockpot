@@ -8,7 +8,7 @@ const Menu = () => {
   const bp = "xl";
 
   return (
-    <div className={`${bp}:flex ${bp}:mt-8 gap-4 justify-between`}>
+    <div className={`${bp}:flex ${bp}:mt-8 gap-4 mx-8`}>
       <div className={`flex justify-center my-3 ${bp}:hidden`}>
         <Button
           border
@@ -16,11 +16,12 @@ const Menu = () => {
           onClick={() => console.log("Hello!")}
         />
       </div>
-      <div className={`tw hidden ${bp}:block`}>
+      <div className={`tw hidden ${bp}:block w-1/3`}>
         <ShoppingList />
       </div>
-
-      <RecipeCardList recipes={recipeMenuRecipes} />
+      <div className="w-2/3">
+        <RecipeCardList recipes={recipeMenuRecipes} />
+      </div>
     </div>
   );
 };
