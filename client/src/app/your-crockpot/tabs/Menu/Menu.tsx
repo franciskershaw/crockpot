@@ -4,21 +4,20 @@ import RecipeCardList from "@/src/components/RecipeCardList/RecipeCardList";
 
 const Menu = () => {
   const { recipeMenuRecipes } = useRecipeMenu();
-  const breakpoint = "xl";
+  const bp = "xl";
 
   return (
-    <div>
-      <div className={`flex justify-center my-3 ${breakpoint}:hidden`}>
+    <div className={`${bp}:flex ${bp}:mt-8 gap-4 justify-between`}>
+      <div className={`flex justify-center my-3 ${bp}:hidden`}>
         <Button
-          type="tertiary"
           border
           text="Shopping List"
           onClick={() => console.log("Hello!")}
         />
       </div>
-      <div>
-        <RecipeCardList recipes={recipeMenuRecipes} />
-      </div>
+      <div className={`tw hidden ${bp}:block`}>Shopping list component</div>
+
+      <RecipeCardList recipes={recipeMenuRecipes} />
     </div>
   );
 };
