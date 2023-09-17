@@ -9,19 +9,19 @@ import { useEffect } from 'react';
 import { Recipe } from '@/src/types/types';
 
 const BrowsePage = () => {
+	const { allRecipes } = useRecipes();
+
+	// Randomise recipe order
+	// useEffect(() => {
+	// allRecipes.sort(() => Math.random() - 0.5);
+	// }, [recipes.allRecipes]);
+
 	const { recipeSearchQuery, cookingTimeMin, cookingTimeMax } =
 		useBrowsePageContext();
 
 	useEffect(() => {
 		console.log(recipeSearchQuery);
 	}, [recipeSearchQuery]);
-
-	const { allRecipes } = useRecipes();
-
-	// Randomise recipe order
-	// useEffect(() => {
-	// 	recipes.allRecipes.sort(() => Math.random() - 0.5);
-	// }, [recipes.allRecipes]);
 
 	// Filter recipes based on search query, cooking times
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {

@@ -15,7 +15,7 @@ export const useBrowsePageContext = () => {
 export const BrowsePageProvider = ({ children }) => {
 	const [recipeSearchQuery, setRecipeSearchQuery] = useState('');
 	const [cookingTimeMin, setCookingTimeMin] = useState(0);
-	const [cookingTimeMax, setCookingTimeMax] = useState(0);
+	const [cookingTimeMax, setCookingTimeMax] = useState(Infinity);
 
 	const setCookingTime = (min, max) => {
 		setCookingTimeMin(min);

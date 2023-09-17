@@ -2,12 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import useAxios from '../axios/useAxios';
 import { queryKeys } from '@/src/providers/Providers';
 import { useEffect, useState } from 'react';
+import { Recipe } from '@/src/types/types';
 
 const useRecipes = () => {
 	const [cookingTimeMinMax, setCookingTimeMinMax] = useState({
 		min: 0,
 		max: 0,
 	});
+	const [shuffledRecipes, setShuffledRecipes] = useState<Recipe[]>([]);
 
 	const api = useAxios();
 
@@ -19,6 +21,11 @@ const useRecipes = () => {
 	const { data: allRecipes = [] } = useQuery([queryKeys.recipes], getRecipes);
 
 	useEffect(() => {
+		const newshuffledRecipes: Recipe[] = [...allRecipes].sort(
+			() => Math.random() - 0.5,
+		);
+		setShuffledRecipes(newshuffledRecipes);
+
 		if (allRecipes.length) {
 			let minTime = allRecipes[0].timeInMinutes;
 			let maxTime = allRecipes[0].timeInMinutes;
@@ -35,7 +42,7 @@ const useRecipes = () => {
 		}
 	}, [allRecipes, setCookingTimeMinMax]);
 
-	return { allRecipes, cookingTimeMinMax };
+	return { allRecipes: shuffledRecipes, cookingTimeMinMax };
 };
 
 export default useRecipes;
