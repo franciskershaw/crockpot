@@ -5,18 +5,17 @@ import ShoppingList from "../../components/ShoppingList/ShoppingList";
 
 const Menu = () => {
   const { recipeMenuRecipes } = useRecipeMenu();
-  const bp = "xl";
 
   return (
-    <div className={`${bp}:flex ${bp}:mt-8 gap-4 mx-8`}>
-      <div className={`flex justify-center my-3 ${bp}:hidden`}>
+    <div className={`xl:flex xl:mt-8 gap-4 mx-8`}>
+      <div className={`flex justify-center my-3 xl:hidden`}>
         <Button
           border
           text="Shopping List"
           onClick={() => console.log("Hello!")}
         />
       </div>
-      <div className={`tw hidden ${bp}:block w-1/3`}>
+      <div className={`tw hidden xl:block w-1/3`}>
         <ShoppingList />
       </div>
       <div className="w-2/3">
