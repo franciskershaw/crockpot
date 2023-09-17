@@ -14,10 +14,20 @@ export const useBrowsePageContext = () => {
 
 export const BrowsePageProvider = ({ children }) => {
 	const [recipeSearchQuery, setRecipeSearchQuery] = useState('');
+	const [cookingTimeMin, setCookingTimeMin] = useState(0);
+	const [cookingTimeMax, setCookingTimeMax] = useState(0);
+
+	const setCookingTime = (min, max) => {
+		setCookingTimeMin(min);
+		setCookingTimeMax(max);
+	};
 
 	const value = {
 		recipeSearchQuery,
+		cookingTimeMin,
+		cookingTimeMax,
 		setRecipeSearchQuery,
+		setCookingTime,
 	};
 
 	return (

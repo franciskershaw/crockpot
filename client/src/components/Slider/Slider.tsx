@@ -42,16 +42,21 @@ type SliderProps = {
 };
 
 export default function Slider({ min, max, onChange }: SliderProps) {
+	const [sliderValue, setSliderValue] = useState([min, max]);
+
+	useEffect(() => {
+		setSliderValue([min, max]);
+	}, [min, max]);
+
 	const handleValueChange = (values: number[]) => {
-		const [currentMin, currentMax] = values;
-		console.log('Cooking time', currentMin, currentMax);
+		setSliderValue(values);
 		onChange(values);
 	};
 
 	return (
 		<SliderRadix.Root
 			className="SliderRoot"
-			value={[min, max]}
+			value={sliderValue}
 			min={min - 10 > 5 ? min - 10 : 5}
 			max={max + 10}
 			step={5}

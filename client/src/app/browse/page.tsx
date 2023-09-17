@@ -9,7 +9,8 @@ import { useEffect } from 'react';
 import { Recipe } from '@/src/types/types';
 
 const BrowsePage = () => {
-	const { recipeSearchQuery } = useBrowsePageContext();
+	const { recipeSearchQuery, cookingTimeMin, cookingTimeMax } =
+		useBrowsePageContext();
 
 	useEffect(() => {
 		console.log(recipeSearchQuery);
@@ -22,9 +23,13 @@ const BrowsePage = () => {
 	// 	recipes.allRecipes.sort(() => Math.random() - 0.5);
 	// }, [recipes.allRecipes]);
 
-	// Filter recipes based on search query
+	// Filter recipes based on search query, cooking times
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
-		return recipe.name.toLowerCase().includes(recipeSearchQuery.toLowerCase());
+		return (
+			recipe.name.toLowerCase().includes(recipeSearchQuery.toLowerCase()) &&
+			recipe.timeInMinutes >= cookingTimeMin &&
+			recipe.timeInMinutes <= cookingTimeMax
+		);
 	});
 
 	return (
