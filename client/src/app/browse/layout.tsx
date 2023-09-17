@@ -1,5 +1,5 @@
 // import type { Metadata } from 'next';
-import { SearchQueryProvider } from './context/SearchQueryContext';
+import { BrowsePageProvider } from './context/BrowsePageContext';
 
 // export const metadata: Metadata = {
 // 	title: 'Crockpot',
@@ -11,5 +11,5 @@ export default function BrowsePageLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	return <SearchQueryProvider>{children}</SearchQueryProvider>;
+	return <BrowsePageProvider>{children}</BrowsePageProvider>;
 }

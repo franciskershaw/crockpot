@@ -3,16 +3,11 @@
 import React, { useEffect } from 'react';
 import Switch from '@/src/components/Switch/Switch';
 import Slider from '@/src/components/Slider/Slider';
-import recipesData from '@/src/data/recipes.json';
-import {
-	getCategories,
-	getMinMaxTimeInMinutes,
-} from '@/src/hooks/recipeFunctions';
-import { useState } from 'react';
-import { Recipe } from '@/src/types/types';
 import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
+import { useBrowsePageContext } from '../context/BrowsePageContext';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
 
 interface Item {
 	_id: string;
@@ -20,11 +15,12 @@ interface Item {
 }
 
 function BrowsePageFiltersMenu() {
-	const recipes: Recipe[] = recipesData;
+	const { cookingTimeMinMax } = useRecipes();
+
+	console.log(cookingTimeMinMax);
+
 	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
-	const cookingTime = getMinMaxTimeInMinutes(recipes);
-	const [searchQuery, setSearchQuery] = useState('');
 
 	const extractIdAndName = (items: Item[]): { _id: string; name: string }[] => {
 		return items.map(({ _id, name }) => ({ _id, name }));
@@ -42,8 +38,8 @@ function BrowsePageFiltersMenu() {
 			<div>
 				<h3>Serving Time</h3>
 				<Slider
-					min={cookingTime.min}
-					max={cookingTime.max}
+					min={cookingTimeMinMax.min}
+					max={cookingTimeMinMax.max}
 					onChange={(values: number[]) => console.log(values)}
 				/>
 			</div>

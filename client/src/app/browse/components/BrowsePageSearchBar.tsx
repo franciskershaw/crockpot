@@ -5,15 +5,15 @@ import React, { useState } from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
-import { useSearchQuery } from '../context/SearchQueryContext';
+import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 function BrowsePageSearchBar() {
-	const { searchQuery, setSearchQuery } = useSearchQuery();
+	const { recipeSearchQuery, setRecipeSearchQuery } = useBrowsePageContext();
 
 	return (
 		<>
 			<div className="w-full">
-				<SearchBar setSearchQuery={setSearchQuery} />
+				<SearchBar setSearchQuery={setRecipeSearchQuery} />
 			</div>
 			<div className="md:hidden">
 				<Modal
