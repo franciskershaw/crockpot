@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
+import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 type CheckboxData = {
 	_id: string;
@@ -12,39 +13,44 @@ type BrowsePageSearchableCheckboxListProps = {
 	placeholderText: string;
 	checkboxes: CheckboxData[];
 	onCheckboxChange?: (id: string, isChecked: boolean) => void;
-};
-
-type CheckboxState = {
-	[key: string]: boolean;
+	listType: 'category' | 'ingredient';
 };
 
 const BrowsePageSearchableCheckboxList: React.FC<
 	BrowsePageSearchableCheckboxListProps
-> = ({ title, placeholderText, checkboxes, onCheckboxChange }) => {
+> = ({ title, placeholderText, checkboxes, listType }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('');
 	const [showAllCheckboxes, setShowAllCheckboxes] = useState(false);
-	const [checkboxStates, setCheckboxStates] = useState<CheckboxState>({});
+	const {
+		selectedCategories,
+		selectedIngredients,
+		setSelectedCategories,
+		setSelectedIngredients,
+	} = useBrowsePageContext();
+
+	// Choose the appropriate selected items based on listType
+	const selectedItems =
+		listType === 'category' ? selectedCategories : selectedIngredients;
+
+	// Choose the appropriate setSelected function based on listType
+	const setSelected =
+		listType === 'category' ? setSelectedCategories : setSelectedIngredients;
+
+	const handleCheckboxChange = (id: string, isChecked: boolean) => {
+		setSelected((prevSelected: string[]) => {
+			if (isChecked) {
+				return [...prevSelected, id];
+			} else {
+				return prevSelected.filter((itemId: string) => itemId !== id);
+			}
+		});
+	};
 
 	const initialVisibleCheckboxes = 5;
-
-	const handleCheckboxChange = (label: string, isChecked: boolean) => {
-		if (onCheckboxChange) {
-			onCheckboxChange(label, isChecked);
-		}
-
-		setCheckboxStates((prevState) => ({
-			...prevState,
-			[label]: isChecked,
-		}));
-	};
 
 	const filteredCheckboxes = checkboxes.filter((checkbox) =>
 		checkbox.name.toLowerCase().includes(searchQuery.toLowerCase()),
 	);
-
-	useEffect(() => {
-		console.log(title, checkboxStates);
-	}, [title, checkboxStates]);
 
 	return (
 		<div>
@@ -80,11 +86,12 @@ const BrowsePageSearchableCheckboxList: React.FC<
 							}
 						>
 							<Checkbox
+								key={checkbox._id}
 								label={checkbox.name}
 								onChange={(isChecked: boolean) =>
 									handleCheckboxChange(checkbox._id, isChecked)
 								}
-								isChecked={checkboxStates[checkbox._id] || false}
+								isChecked={selectedItems.includes(checkbox._id)} // <-- Change here
 							/>
 						</div>
 					))

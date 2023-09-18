@@ -77,6 +77,7 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a category...'}
 				checkboxes={simplifiedCategories}
 				onCheckboxChange={handleCategoryCheckboxChange}
+				listType="category"
 			/>
 			<hr />
 			<BrowsePageSearchableCheckboxList
@@ -84,6 +85,7 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a ingredient...'}
 				checkboxes={simplifiedIngredients}
 				onCheckboxChange={handleIngredientCheckboxChange}
+				listType="ingredient"
 			/>
 		</div>
 	);
