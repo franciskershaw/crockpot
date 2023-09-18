@@ -11,6 +11,7 @@ type BrowsePageSearchableCheckboxListProps = {
 	title: string;
 	placeholderText: string;
 	checkboxes: CheckboxData[];
+	onCheckboxChange?: (id: string, isChecked: boolean) => void;
 };
 
 type CheckboxState = {
@@ -19,7 +20,7 @@ type CheckboxState = {
 
 const BrowsePageSearchableCheckboxList: React.FC<
 	BrowsePageSearchableCheckboxListProps
-> = ({ title, placeholderText, checkboxes }) => {
+> = ({ title, placeholderText, checkboxes, onCheckboxChange }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('');
 	const [showAllCheckboxes, setShowAllCheckboxes] = useState(false);
 	const [checkboxStates, setCheckboxStates] = useState<CheckboxState>({});
@@ -27,6 +28,10 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	const initialVisibleCheckboxes = 5;
 
 	const handleCheckboxChange = (label: string, isChecked: boolean) => {
+		if (onCheckboxChange) {
+			onCheckboxChange(label, isChecked);
+		}
+
 		setCheckboxStates((prevState) => ({
 			...prevState,
 			[label]: isChecked,

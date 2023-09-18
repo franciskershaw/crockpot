@@ -15,10 +15,37 @@ interface Item {
 }
 
 function BrowsePageFiltersMenu() {
-	const { setCookingTime } = useBrowsePageContext();
+	const { setCookingTime, setSelectedCategories, setSelectedIngredients } =
+		useBrowsePageContext();
 	const { cookingTimeMinMax } = useRecipes();
 	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
+
+	const handleCategoryCheckboxChange = (
+		categoryId: string,
+		isChecked: boolean,
+	) => {
+		setSelectedCategories((prevSelected: string[]) => {
+			if (isChecked) {
+				return [...prevSelected, categoryId];
+			} else {
+				return prevSelected.filter((id: string) => id !== categoryId);
+			}
+		});
+	};
+
+	const handleIngredientCheckboxChange = (
+		ingredientId: string,
+		isChecked: boolean,
+	) => {
+		setSelectedIngredients((prevSelected: string[]) => {
+			if (isChecked) {
+				return [...prevSelected, ingredientId];
+			} else {
+				return prevSelected.filter((id: string) => id !== ingredientId);
+			}
+		});
+	};
 
 	const extractIdAndName = (items: Item[]): { _id: string; name: string }[] => {
 		return items.map(({ _id, name }) => ({ _id, name }));
@@ -49,12 +76,14 @@ function BrowsePageFiltersMenu() {
 				title={'Categories'}
 				placeholderText={'Search for a category...'}
 				checkboxes={simplifiedCategories}
+				onCheckboxChange={handleCategoryCheckboxChange}
 			/>
 			<hr />
 			<BrowsePageSearchableCheckboxList
 				title={'Ingredients'}
 				placeholderText={'Search for a ingredient...'}
 				checkboxes={simplifiedIngredients}
+				onCheckboxChange={handleIngredientCheckboxChange}
 			/>
 		</div>
 	);

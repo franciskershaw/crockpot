@@ -6,29 +6,39 @@ import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import { useBrowsePageContext } from './context/BrowsePageContext';
 import { useEffect } from 'react';
-import { Recipe } from '@/src/types/types';
+import { Category, Ingredient, Recipe } from '@/src/types/types';
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
 
-	// Randomise recipe order
-	// useEffect(() => {
-	// allRecipes.sort(() => Math.random() - 0.5);
-	// }, [recipes.allRecipes]);
-
-	const { recipeSearchQuery, cookingTimeMin, cookingTimeMax } =
-		useBrowsePageContext();
+	const {
+		recipeSearchQuery,
+		cookingTimeMin,
+		cookingTimeMax,
+		selectedCategories,
+		selectedIngredients,
+	} = useBrowsePageContext();
 
 	useEffect(() => {
 		console.log(recipeSearchQuery);
 	}, [recipeSearchQuery]);
 
-	// Filter recipes based on search query, cooking times
+	// Filter recipes based on search query, cooking time, categories and ingredients
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
 		return (
 			recipe.name.toLowerCase().includes(recipeSearchQuery.toLowerCase()) &&
 			recipe.timeInMinutes >= cookingTimeMin &&
-			recipe.timeInMinutes <= cookingTimeMax
+			recipe.timeInMinutes <= cookingTimeMax &&
+			(selectedCategories.length === 0 ||
+				selectedCategories.every((selectedCatId: string) =>
+					recipe.categories.some((cat: Category) => cat._id === selectedCatId),
+				)) &&
+			(selectedIngredients.length === 0 ||
+				selectedIngredients.every((selectedIngId: string) =>
+					recipe.ingredients.some(
+						(ing: Ingredient) => ing._id === selectedIngId,
+					),
+				))
 		);
 	});
 

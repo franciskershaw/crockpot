@@ -16,6 +16,8 @@ export const BrowsePageProvider = ({ children }) => {
 	const [recipeSearchQuery, setRecipeSearchQuery] = useState('');
 	const [cookingTimeMin, setCookingTimeMin] = useState(0);
 	const [cookingTimeMax, setCookingTimeMax] = useState(Infinity);
+	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [selectedIngredients, setSelectedIngredients] = useState([]);
 
 	const setCookingTime = (min, max) => {
 		setCookingTimeMin(min);
@@ -26,8 +28,12 @@ export const BrowsePageProvider = ({ children }) => {
 		recipeSearchQuery,
 		cookingTimeMin,
 		cookingTimeMax,
+		selectedCategories,
+		selectedIngredients,
 		setRecipeSearchQuery,
 		setCookingTime,
+		setSelectedCategories,
+		setSelectedIngredients,
 	};
 
 	return (
