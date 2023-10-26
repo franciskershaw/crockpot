@@ -34,19 +34,15 @@ const userFavouritesSchema = Joi.object({
     .required(),
 });
 
-const userRecipeMenuSchema = Joi.array()
-  .items(
-    Joi.object({
-      _id: Joi.string()
-        .pattern(objectIdPattern)
-        .messages({
-          'string.pattern.base': 'Must be a valid ObjectId',
-        })
-        .required(),
-      serves: Joi.number().integer().positive().required(),
+const userRecipeMenuSchema = Joi.object({
+  _id: Joi.string()
+    .pattern(objectIdPattern)
+    .messages({
+      'string.pattern.base': 'Must be a valid ObjectId',
     })
-  )
-  .required();
+    .required(),
+  serves: Joi.number().integer().positive().required(),
+}).required();
 
 const editShoppingListSchema = Joi.object({
   _id: Joi.string().pattern(objectIdPattern).required().messages({

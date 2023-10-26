@@ -10,7 +10,7 @@ const ItemSchema = mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'IngredientCategory',
+    ref: 'ItemCategory',
     required: true,
   },
 });
