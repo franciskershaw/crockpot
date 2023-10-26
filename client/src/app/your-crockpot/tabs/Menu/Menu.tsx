@@ -18,7 +18,7 @@ const Menu = () => {
       <div className={`tw hidden xl:block w-1/3`}>
         <ShoppingList />
       </div>
-      <div className="w-2/3">
+      <div>
         <RecipeCardList recipes={recipeMenuRecipes} />
       </div>
     </div>
