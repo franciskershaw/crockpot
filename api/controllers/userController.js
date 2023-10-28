@@ -16,8 +16,9 @@ const {
   generateRefreshToken,
   verifyToken,
   generateUserObject,
-  generateShoppingList,
+  // generateShoppingList,
   formatItemList,
+  validateRequest,
 } = require('../helper/helper');
 
 const {
@@ -157,20 +158,68 @@ const getUserRecipeMenu = async (req, res, next) => {
   }
 };
 
-const editUserRecipeMenu = async (req, res, next) => {
+const addToRecipeMenu = async (req, res, next) => {
   try {
-    const { value, error } = userRecipeMenuSchema.validate(req.body);
+    const value = validateRequest(req.body, userRecipeMenuSchema);
 
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
+    const { _id: recipeId, serves } = value;
 
     const user = await User.findById(req.user._id);
 
-    const newShoppingList = await generateShoppingList(value);
+    const existingRecipe = user.recipeMenu.find((recipe) =>
+      recipe._id.equals(recipeId)
+    );
 
-    user.recipeMenu = value;
-    user.shoppingList = newShoppingList;
+    if (existingRecipe) {
+      if (serves <= existingRecipe.serves) {
+        throw new BadRequestError(
+          'Quantity must be greater than the existing quantity'
+        );
+      }
+      existingRecipe.serves = serves;
+    } else {
+      user.recipeMenu.push({ _id: recipeId, serves });
+    }
+
+    // const newShoppingList = generateShoppingList(user.recipeMenu);
+    // user.shoppingList = newShoppingList;
+    await user.save();
+
+    res.status(200).json(user.recipeMenu);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const removeFromRecipeMenu = async (req, res, next) => {
+  try {
+    const value = validateRequest(req.body, userRecipeMenuSchema);
+
+    const { _id: recipeId, serves } = value;
+
+    const user = await User.findById(req.user._id);
+
+    const existingRecipe = user.recipeMenu.find((recipe) =>
+      recipe._id.equals(recipeId)
+    );
+
+    if (!existingRecipe) {
+      throw new BadRequestError('Recipe not in menu');
+    }
+
+    if (serves >= existingRecipe.serves) {
+      throw new BadRequestError(
+        'Quantity must be less than the existing quantity'
+      );
+    }
+
+    if (serves === 0) {
+      user.recipeMenu = user.recipeMenu.filter(
+        (recipe) => !recipe._id.equals(recipeId)
+      );
+    } else {
+      existingRecipe.serves = serves;
+    }
 
     await user.save();
 
@@ -183,7 +232,6 @@ const editUserRecipeMenu = async (req, res, next) => {
 const getUserShoppingList = async (req, res, next) => {
   try {
     const list = await formatItemList(req.user._id, 'shoppingList');
-
     res.status(200).json(list);
   } catch (err) {
     next(err);
@@ -286,7 +334,8 @@ module.exports = {
   logoutUser,
   getUserInfo,
   getUserRecipeMenu,
-  editUserRecipeMenu,
+  addToRecipeMenu,
+  removeFromRecipeMenu,
   getUserShoppingList,
   getUserExtraItems,
   toggleObtainedUserShoppingList,

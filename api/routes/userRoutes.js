@@ -10,7 +10,8 @@ const {
   checkRefreshToken,
   getUserInfo,
   getUserRecipeMenu,
-  editUserRecipeMenu,
+  addToRecipeMenu,
+  removeFromRecipeMenu,
   getUserShoppingList,
   getUserExtraItems,
   toggleObtainedUserShoppingList,
@@ -38,10 +39,11 @@ router
   .put(isLoggedIn, asyncHandler(editUserFavourites));
 
 // User recipe menu routes
+router.route('/recipeMenu').get(isLoggedIn, asyncHandler(getUserRecipeMenu));
+router.route('/recipeMenu/add').put(isLoggedIn, asyncHandler(addToRecipeMenu));
 router
-  .route('/recipeMenu')
-  .get(isLoggedIn, asyncHandler(getUserRecipeMenu))
-  .put(isLoggedIn, asyncHandler(editUserRecipeMenu));
+  .route('/recipeMenu/remove')
+  .put(isLoggedIn, asyncHandler(removeFromRecipeMenu));
 
 // User shopping list routes
 router
@@ -50,8 +52,6 @@ router
   .put(isLoggedIn, asyncHandler(toggleObtainedUserShoppingList));
 
 // Extra item routes
-// ALSO TODO - I don't think there's anything for adding items to the shoppingList in the first place
-// Note - extra items can be in the minus to account for editing the shoppingList down
 router
   .route('/extraItems')
   .get(isLoggedIn, asyncHandler(getUserExtraItems))

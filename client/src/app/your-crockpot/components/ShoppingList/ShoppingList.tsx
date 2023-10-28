@@ -1,13 +1,16 @@
-import SearchBar from "@/src/components/FormSearchBar/SearchBar";
-import { useState } from "react";
-import Accordion from "@/src/components/Accordion/Accordion";
+import SearchBar from '@/src/components/FormSearchBar/SearchBar';
+import { useState } from 'react';
+import Accordion from '@/src/components/Accordion/Accordion';
+import useShoppingList from '../../hooks/useShoppingList';
 
 const ShoppingList = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const { shoppingList } = useShoppingList();
+  console.log(shoppingList);
 
   const accordionItems = [
     {
-      heading: "Meat",
+      heading: 'Meat',
       children: (
         <div>
           <h1>test</h1>
@@ -16,7 +19,7 @@ const ShoppingList = () => {
       ),
     },
     {
-      heading: "Herbs & Spices",
+      heading: 'Herbs & Spices',
       children: (
         <div>
           <h1>test</h1>
@@ -25,7 +28,7 @@ const ShoppingList = () => {
       ),
     },
     {
-      heading: "Cupboard",
+      heading: 'Cupboard',
       children: (
         <div>
           <h1>test</h1>
