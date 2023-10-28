@@ -9,6 +9,7 @@ const {
   ConflictError,
   UnauthorizedError,
   InternalServerError,
+  NotFoundError,
 } = require('../errors/errors');
 
 const {
@@ -16,7 +17,7 @@ const {
   generateRefreshToken,
   verifyToken,
   generateUserObject,
-  // generateShoppingList,
+  generateShoppingList,
   formatItemList,
   validateRequest,
 } = require('../helper/helper');
@@ -178,11 +179,13 @@ const addToRecipeMenu = async (req, res, next) => {
       }
       existingRecipe.serves = serves;
     } else {
+      const recipeExists = await Recipe.findById(recipeId);
+      if (!recipeExists) throw new NotFoundError('Recipe not found');
       user.recipeMenu.push({ _id: recipeId, serves });
     }
 
-    // const newShoppingList = generateShoppingList(user.recipeMenu);
-    // user.shoppingList = newShoppingList;
+    const newShoppingList = await generateShoppingList(user.recipeMenu);
+    user.shoppingList = newShoppingList;
     await user.save();
 
     res.status(200).json(user.recipeMenu);
@@ -221,6 +224,8 @@ const removeFromRecipeMenu = async (req, res, next) => {
       existingRecipe.serves = serves;
     }
 
+    const newShoppingList = await generateShoppingList(user.recipeMenu);
+    user.shoppingList = newShoppingList;
     await user.save();
 
     res.status(200).json(user.recipeMenu);

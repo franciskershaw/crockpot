@@ -41,7 +41,7 @@ const userRecipeMenuSchema = Joi.object({
       'string.pattern.base': 'Must be a valid ObjectId',
     })
     .required(),
-  serves: Joi.number().integer().positive().required(),
+  serves: Joi.number().integer().min(0).required(),
 }).required();
 
 const editShoppingListSchema = Joi.object({
