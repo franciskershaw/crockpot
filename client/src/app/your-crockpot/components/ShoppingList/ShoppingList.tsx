@@ -5,8 +5,8 @@ import useShoppingList from '../../hooks/useShoppingList';
 
 const ShoppingList = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { shoppingList } = useShoppingList();
-  console.log(shoppingList);
+  const { groupedShoppingList } = useShoppingList();
+  console.log(groupedShoppingList);
 
   const accordionItems = [
     {
