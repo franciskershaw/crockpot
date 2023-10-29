@@ -2,7 +2,7 @@ import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import { useState } from 'react';
 import Accordion from '@/src/components/Accordion/Accordion';
 import useShoppingList from '../../hooks/useShoppingList';
-import { FaQuestion } from 'react-icons/fa';
+import { FaQuestion, FaTrash } from 'react-icons/fa';
 import Icon from '@/src/components/Icon/Icon';
 import iconMapping from '@/src/components/Icon/iconMapping';
 
@@ -19,12 +19,23 @@ const ShoppingList = () => {
             <IconComponent />
           </Icon>
           <h2>{category.categoryName}</h2>
+          <span>
+            ({category.items.filter((item) => item.obtained).length}/
+            {category.items.length})
+          </span>
         </div>
       ),
       children: (
         <div>
           {category.items.map((item) => (
-            <div key={item.item._id}>{item.item.name}</div>
+            <div className="flex gap-4" key={item.item._id}>
+              <input type="checkbox" name="" id="" />
+              <div>
+                <h3>
+                  {item.item.name} x {item.quantity} {item.unit}
+                </h3>
+              </div>
+            </div>
           ))}
         </div>
       ),
