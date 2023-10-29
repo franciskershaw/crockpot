@@ -2,15 +2,15 @@
 
 // TODO -
 
-import React from "react";
-import * as AccordionRadix from "@radix-ui/react-accordion";
-import Icon from "@/src/components/Icon/Icon";
-import { BsChevronDown } from "react-icons/bs";
-import { v4 as uuidv4 } from "uuid";
-import "./styles.scss";
+import React from 'react';
+import * as AccordionRadix from '@radix-ui/react-accordion';
+import Icon from '@/src/components/Icon/Icon';
+import { BsChevronDown } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
+import './styles.scss';
 
 type AccordionItemProps = {
-  heading: string;
+  heading: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -21,7 +21,7 @@ const AccordionItem = ({ heading, children }: AccordionItemProps) => {
     <AccordionRadix.Item value={value} className="border-t border-black py-3">
       <AccordionRadix.Header>
         <AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
-          <span>{heading}</span>
+          {heading}
           <div className="AccordionChevron">
             <Icon>
               <BsChevronDown />

@@ -6,7 +6,6 @@ import { createConfig } from '@/src/helper';
 import useItemCategories from '@/src/hooks/items/useItemCategories';
 import {
   ItemCategory,
-  ShoppingItem,
   ShoppingListItem,
   GroupedShoppingList,
 } from '@/src/types/types';

@@ -2,41 +2,34 @@ import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import { useState } from 'react';
 import Accordion from '@/src/components/Accordion/Accordion';
 import useShoppingList from '../../hooks/useShoppingList';
+import { FaQuestion } from 'react-icons/fa';
+import Icon from '@/src/components/Icon/Icon';
+import iconMapping from '@/src/components/Icon/iconMapping';
 
 const ShoppingList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { groupedShoppingList } = useShoppingList();
-  console.log(groupedShoppingList);
 
-  const accordionItems = [
-    {
-      heading: 'Meat',
-      children: (
-        <div>
-          <h1>test</h1>
-          <p>test</p>
+  const accordionItems = groupedShoppingList?.map((category) => {
+    const IconComponent = iconMapping[category.faIcon] || FaQuestion;
+    return {
+      heading: (
+        <div className="flex gap-4">
+          <Icon>
+            <IconComponent />
+          </Icon>
+          <h2>{category.categoryName}</h2>
         </div>
       ),
-    },
-    {
-      heading: 'Herbs & Spices',
       children: (
         <div>
-          <h1>test</h1>
-          <p>test</p>
+          {category.items.map((item) => (
+            <div key={item.item._id}>{item.item.name}</div>
+          ))}
         </div>
       ),
-    },
-    {
-      heading: 'Cupboard',
-      children: (
-        <div>
-          <h1>test</h1>
-          <p>test</p>
-        </div>
-      ),
-    },
-  ];
+    };
+  });
 
   return (
     <div className="flex flex-col">
