@@ -8,6 +8,7 @@ import Icon from '@/src/components/Icon/Icon';
 import { BsChevronDown } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
 import './styles.scss';
+import { useState } from 'react';
 
 type AccordionItemProps = {
   heading: React.ReactNode;
@@ -41,10 +42,14 @@ interface AccordionProps {
 }
 
 const Accordion = ({ items }: AccordionProps) => {
+  const [openItems, setOpenItems] = useState<string[]>([]);
   return (
-    <AccordionRadix.Root type="multiple">
-      {items.map((item) => (
-        <AccordionItem key={uuidv4()} heading={item.heading}>
+    <AccordionRadix.Root
+      type="multiple"
+      value={openItems}
+      onValueChange={setOpenItems}>
+      {items.map((item, index) => (
+        <AccordionItem key={index} heading={item.heading}>
           {item.children}
         </AccordionItem>
       ))}
