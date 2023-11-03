@@ -45,10 +45,6 @@ const userRecipeMenuSchema = Joi.object({
 }).required();
 
 const editShoppingListSchema = Joi.object({
-  _id: Joi.string().pattern(objectIdPattern).required().messages({
-    'string.pattern.base': 'Must be a valid ObjectId',
-    'any.required': 'This field is required',
-  }),
   obtained: Joi.boolean().required(),
 });
 

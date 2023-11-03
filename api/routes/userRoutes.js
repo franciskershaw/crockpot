@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const { isLoggedIn } = require('../middleware/authMiddleware');
+const { itemIdInShoppingList } = require('../middleware/badRequestMiddleware');
 
 const {
   registerUser,
@@ -48,8 +49,15 @@ router
 // User shopping list routes
 router
   .route('/shoppingList')
-  .get(isLoggedIn, asyncHandler(getUserShoppingList))
-  .put(isLoggedIn, asyncHandler(toggleObtainedUserShoppingList));
+  .get(isLoggedIn, asyncHandler(getUserShoppingList));
+
+router
+  .route('/shoppingList/:itemId')
+  .put(
+    isLoggedIn,
+    itemIdInShoppingList,
+    asyncHandler(toggleObtainedUserShoppingList)
+  );
 
 // Extra item routes
 router

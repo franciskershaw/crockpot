@@ -245,18 +245,17 @@ const getUserShoppingList = async (req, res, next) => {
 
 const toggleObtainedUserShoppingList = async (req, res, next) => {
   try {
-    const { value, error } = editShoppingListSchema.validate(req.body);
+    const value = validateRequest(req.body, editShoppingListSchema);
+    const { obtained } = value;
 
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
+    const { itemId } = req.params;
 
-    let update = {
-      'shoppingList.$[item].obtained': value.obtained,
+    const update = {
+      'shoppingList.$[item].obtained': obtained,
     };
 
-    let arrayFilters = {
-      arrayFilters: [{ 'item._id': value._id }],
+    const arrayFilters = {
+      arrayFilters: [{ 'item._id': itemId }],
     };
 
     await User.updateOne({ _id: req.user._id }, { $set: update }, arrayFilters);
