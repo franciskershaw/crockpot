@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxios from '@/src/hooks/axios/useAxios';
 import { queryKeys } from '@/src/providers/Providers';
 import useUser from '@/src/hooks/auth/useUser';
@@ -10,21 +10,57 @@ import {
   GroupedShoppingList,
 } from '@/src/types/types';
 
+type ToggleVariables = {
+  itemId: string;
+  obtained: boolean;
+};
+
 const useShoppingList = () => {
+  const queryClient = useQueryClient();
   const api = useAxios();
   const { user } = useUser();
 
   const { itemCategories } = useItemCategories();
 
-  const getShoppingList = async () => {
+  // Requests
+  const getShoppingListReq = async () => {
     const config = createConfig(user);
     const response = await api.get('/api/users/shoppingList', config);
     return response.data;
   };
 
+  const toggleItemObtainedReq = async (itemId: string, obtained: boolean) => {
+    const config = createConfig(user);
+    const response = await api.put(
+      `/api/users/shoppingList/${itemId}`,
+      {
+        obtained,
+      },
+      config
+    );
+
+    return response.data;
+  };
+
+  // useQuery hooks
   const { data: shoppingList = [] } = useQuery(
     [queryKeys.shoppingList],
-    getShoppingList
+    getShoppingListReq
+  );
+
+  // useMutation hook
+  const { mutate: toggleObtained } = useMutation(
+    (variables: ToggleVariables) =>
+      toggleItemObtainedReq(variables.itemId, variables.obtained),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([queryKeys.user]);
+        queryClient.invalidateQueries([queryKeys.shoppingList]);
+      },
+      onError: (error) => {
+        console.error('Error toggling item obtained status:', error);
+      },
+    }
   );
 
   const groupedShoppingList: GroupedShoppingList[] = itemCategories.reduce<
@@ -46,7 +82,7 @@ const useShoppingList = () => {
     return acc;
   }, []);
 
-  return { groupedShoppingList };
+  return { groupedShoppingList, toggleObtained };
 };
 
 export default useShoppingList;

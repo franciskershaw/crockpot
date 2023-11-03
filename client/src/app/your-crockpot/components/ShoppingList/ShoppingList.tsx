@@ -5,6 +5,7 @@ import useShoppingList from '../../hooks/useShoppingList';
 import { FaQuestion, FaTrash } from 'react-icons/fa';
 import Icon from '@/src/components/Icon/Icon';
 import iconMapping from '@/src/components/Icon/iconMapping';
+import ShoppingListItem from './ShoppingListItem';
 
 const ShoppingList = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,14 +29,7 @@ const ShoppingList = () => {
       children: (
         <div>
           {category.items.map((item) => (
-            <div className="flex gap-4" key={item.item._id}>
-              <input type="checkbox" name="" id="" />
-              <div>
-                <h3>
-                  {item.item.name} x {item.quantity} {item.unit}
-                </h3>
-              </div>
-            </div>
+            <ShoppingListItem key={item.item._id} item={item} />
           ))}
         </div>
       ),
