@@ -9,7 +9,6 @@ import ShoppingListItem from './ShoppingListItem';
 
 const ShoppingList = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [openItems, setOpenItems] = useState<string[]>([]);
   const { groupedShoppingList } = useShoppingList();
 
   const accordionItems = groupedShoppingList?.map((category) => {

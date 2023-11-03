@@ -15,11 +15,15 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
   const { toggleObtained } = useShoppingList();
 
   const handleClickCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    toggleObtained({
-      itemId: item.item._id,
-      obtained: e.target.checked,
-    });
-    setObtained(e.target.checked);
+    try {
+      toggleObtained({
+        itemId: item.item._id,
+        obtained: e.target.checked,
+      });
+      setObtained(e.target.checked);
+    } catch (err) {
+      setObtained(!e.target.checked);
+    }
   };
 
   return (
