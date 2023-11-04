@@ -36,12 +36,17 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	const setSelected =
 		listType === 'category' ? setSelectedCategories : setSelectedIngredients;
 
-	const handleCheckboxChange = (id: string, isChecked: boolean) => {
-		setSelected((prevSelected: string[]) => {
+	const handleCheckboxChange = (
+		checkboxData: CheckboxData,
+		isChecked: boolean,
+	) => {
+		setSelected((prevSelected) => {
 			if (isChecked) {
-				return [...prevSelected, id];
+				// Add the checkboxData object to the array
+				return [...prevSelected, checkboxData];
 			} else {
-				return prevSelected.filter((itemId: string) => itemId !== id);
+				// Remove the checkboxData object from the array based on _id
+				return prevSelected.filter((item) => item._id !== checkboxData._id);
 			}
 		});
 	};
@@ -89,9 +94,11 @@ const BrowsePageSearchableCheckboxList: React.FC<
 								key={checkbox._id}
 								label={checkbox.name}
 								onChange={(isChecked: boolean) =>
-									handleCheckboxChange(checkbox._id, isChecked)
+									handleCheckboxChange(checkbox, isChecked)
 								}
-								isChecked={selectedItems.includes(checkbox._id)} // <-- Change here
+								isChecked={selectedItems.some(
+									(item) => item._id === checkbox._id,
+								)}
 							/>
 						</div>
 					))

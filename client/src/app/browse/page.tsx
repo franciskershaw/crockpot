@@ -7,6 +7,7 @@ import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import { useBrowsePageContext } from './context/BrowsePageContext';
 import { useEffect } from 'react';
 import { Category, Ingredient, Recipe } from '@/src/types/types';
+import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters';
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
@@ -69,6 +70,7 @@ const BrowsePage = () => {
 					<div className="hidden md:flex space-x-2 mb-4">
 						<BrowsePageSearchBar />
 					</div>
+					<BrowsePageAppliedFilters />
 					<RecipeCardList recipes={filteredRecipes} />
 				</div>
 			</div>

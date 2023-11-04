@@ -8,7 +8,7 @@ import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
 import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 function BrowsePageSearchBar() {
-	const { recipeSearchQuery, setRecipeSearchQuery } = useBrowsePageContext();
+	const { setRecipeSearchQuery, resetFilters } = useBrowsePageContext();
 
 	return (
 		<>
@@ -28,16 +28,12 @@ function BrowsePageSearchBar() {
 				</Modal>
 			</div>
 			<div className="md:hidden">
-				<Button border onClick={() => console.log('Hello!')}>
+				<Button border onClick={resetFilters}>
 					<GrRefresh />
 				</Button>
 			</div>
 			<div className="hidden md:block">
-				<Button
-					border
-					onClick={() => console.log('Hello!')}
-					text={'Clear filters'}
-				/>
+				<Button border onClick={resetFilters} text={'Clear filters'} />
 			</div>
 		</>
 	);

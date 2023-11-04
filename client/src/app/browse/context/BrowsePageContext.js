@@ -1,6 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
 
 const BrowsePageContext = createContext();
 
@@ -13,15 +14,31 @@ export const useBrowsePageContext = () => {
 };
 
 export const BrowsePageProvider = ({ children }) => {
+	const { cookingTimeMinMax } = useRecipes();
 	const [recipeSearchQuery, setRecipeSearchQuery] = useState('');
 	const [cookingTimeMin, setCookingTimeMin] = useState(0);
 	const [cookingTimeMax, setCookingTimeMax] = useState(Infinity);
 	const [selectedCategories, setSelectedCategories] = useState([]);
 	const [selectedIngredients, setSelectedIngredients] = useState([]);
 
+	useEffect(() => {
+		if (cookingTimeMinMax) {
+			setCookingTimeMin(cookingTimeMinMax.min);
+			setCookingTimeMax(cookingTimeMinMax.max);
+		}
+	}, [cookingTimeMinMax]);
+
 	const setCookingTime = (min, max) => {
 		setCookingTimeMin(min);
 		setCookingTimeMax(max);
+	};
+
+	const resetFilters = () => {
+		setRecipeSearchQuery('');
+		setCookingTimeMin(cookingTimeMinMax.min);
+		setCookingTimeMax(cookingTimeMinMax.max);
+		setSelectedCategories([]);
+		setSelectedIngredients([]);
 	};
 
 	const value = {
@@ -34,6 +51,7 @@ export const BrowsePageProvider = ({ children }) => {
 		setCookingTime,
 		setSelectedCategories,
 		setSelectedIngredients,
+		resetFilters,
 	};
 
 	return (

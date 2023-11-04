@@ -15,8 +15,13 @@ interface Item {
 }
 
 function BrowsePageFiltersMenu() {
-	const { setCookingTime, setSelectedCategories, setSelectedIngredients } =
-		useBrowsePageContext();
+	const {
+		cookingTimeMin,
+		cookingTimeMax,
+		setCookingTime,
+		setSelectedCategories,
+		setSelectedIngredients,
+	} = useBrowsePageContext();
 	const { cookingTimeMinMax } = useRecipes();
 	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
@@ -65,9 +70,10 @@ function BrowsePageFiltersMenu() {
 				<Slider
 					min={cookingTimeMinMax.min}
 					max={cookingTimeMinMax.max}
+					value={[cookingTimeMin, cookingTimeMax]}
 					onChange={(values: number[]) => {
 						const [newMin, newMax] = values;
-						setCookingTime(newMin, newMax); // <-- Update the context state here
+						setCookingTime(newMin, newMax);
 					}}
 				/>
 			</div>
