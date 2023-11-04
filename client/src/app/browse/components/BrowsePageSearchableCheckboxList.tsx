@@ -40,13 +40,15 @@ const BrowsePageSearchableCheckboxList: React.FC<
 		checkboxData: CheckboxData,
 		isChecked: boolean,
 	) => {
-		setSelected((prevSelected) => {
+		setSelected((prevSelected: CheckboxData[]) => {
 			if (isChecked) {
 				// Add the checkboxData object to the array
 				return [...prevSelected, checkboxData];
 			} else {
 				// Remove the checkboxData object from the array based on _id
-				return prevSelected.filter((item) => item._id !== checkboxData._id);
+				return prevSelected.filter(
+					(item: CheckboxData) => item._id !== checkboxData._id,
+				);
 			}
 		});
 	};
@@ -97,7 +99,7 @@ const BrowsePageSearchableCheckboxList: React.FC<
 									handleCheckboxChange(checkbox, isChecked)
 								}
 								isChecked={selectedItems.some(
-									(item) => item._id === checkbox._id,
+									(item: CheckboxData) => item._id === checkbox._id,
 								)}
 							/>
 						</div>

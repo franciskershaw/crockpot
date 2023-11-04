@@ -9,10 +9,10 @@ import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import { useBrowsePageContext } from '../context/BrowsePageContext';
 
-interface Item {
+type CheckboxData = {
 	_id: string;
 	name: string;
-}
+};
 
 function BrowsePageFiltersMenu() {
 	const {
@@ -52,7 +52,9 @@ function BrowsePageFiltersMenu() {
 		});
 	};
 
-	const extractIdAndName = (items: Item[]): { _id: string; name: string }[] => {
+	const extractIdAndName = (
+		items: CheckboxData[],
+	): { _id: string; name: string }[] => {
 		return items.map(({ _id, name }) => ({ _id, name }));
 	};
 

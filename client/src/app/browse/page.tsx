@@ -7,7 +7,12 @@ import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import { useBrowsePageContext } from './context/BrowsePageContext';
 import { useEffect } from 'react';
 import { Category, Ingredient, Recipe } from '@/src/types/types';
-import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters';
+import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
+
+type CheckboxData = {
+	_id: string;
+	name: string;
+};
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
@@ -43,13 +48,15 @@ const BrowsePage = () => {
 			recipe.timeInMinutes >= cookingTimeMin &&
 			recipe.timeInMinutes <= cookingTimeMax &&
 			(selectedCategories.length === 0 ||
-				selectedCategories.every((selectedCatId: string) =>
-					recipe.categories.some((cat: Category) => cat._id === selectedCatId),
+				selectedCategories.every((selectedCategory: CheckboxData) =>
+					recipe.categories.some(
+						(cat: Category) => cat._id === selectedCategory._id,
+					),
 				)) &&
 			(selectedIngredients.length === 0 ||
-				selectedIngredients.every((selectedIngId: string) =>
+				selectedIngredients.every((selectedIngredient: CheckboxData) =>
 					recipe.ingredients.some(
-						(ing: Ingredient) => ing._id === selectedIngId,
+						(ing: Ingredient) => ing._id === selectedIngredient._id,
 					),
 				))
 		);

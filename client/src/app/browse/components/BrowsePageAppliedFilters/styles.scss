@@ -1,0 +1,8 @@
+.filter-tag {
+	@apply border-2 border-solid border-black bg-white rounded cursor-pointer p-1 flex justify-between mr-2 my-0.5;
+}
+
+.filter-tag::after {
+	@apply pl-1;
+	content: '\2715';
+}
