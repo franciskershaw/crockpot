@@ -1,8 +1,8 @@
 import { ShoppingListItem as ShoppingListItemType } from '@/src/types/types';
-import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
 import Button from '@/src/components/Button/Button';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useShoppingList from '../../hooks/useShoppingList';
+import { FaTrash } from 'react-icons/fa';
 
 interface ShoppingListItemProps {
   item: ShoppingListItemType;
@@ -10,6 +10,7 @@ interface ShoppingListItemProps {
 
 const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
   const [inputActive, setInputActive] = useState(false);
+  const [quantity, setQuantity] = useState(item.quantity);
   const [obtained, setObtained] = useState(item.obtained);
 
   const { toggleObtained } = useShoppingList();
@@ -26,31 +27,54 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
     }
   };
 
+  const handleChangeQuantity = () => {
+    try {
+      console.log('origianl quantity', item.quantity);
+      console.log('new total quantity', quantity);
+      console.log('extra quantity required:', quantity - item.quantity);
+    } catch (err) {
+      console.log(err);
+      setQuantity(item.quantity);
+    }
+    setInputActive(false);
+  };
+
   return (
     <div className="flex gap-4 items-center tw" key={item.item._id}>
-      <input
-        checked={obtained}
-        onChange={handleClickCheckbox}
-        type="checkbox"
-        name=""
-        id=""
-      />
-      <h3>{item.item.name}</h3>
-      <p>x</p>
-      {inputActive ? (
-        <div className="flex flex-col">
-          <QuantityInput initialValue={item.quantity} />
-          <button onClick={() => setInputActive(false)} className="text-xs">
-            Cancel
-          </button>
-        </div>
-      ) : (
-        <Button onClick={() => setInputActive(true)} type="primary">
-          {item.quantity}
-        </Button>
-      )}
-
-      {item.unit}
+      <div className="flex-grow flex items-center gap-4">
+        <input
+          checked={obtained}
+          onChange={handleClickCheckbox}
+          type="checkbox"
+          name=""
+          id=""
+        />
+        <h3>{item.item.name}</h3>
+        <p>x</p>
+        {inputActive ? (
+          <div className="flex flex-col">
+            <input
+              type="number"
+              name=""
+              id=""
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value))}
+            />
+            <button onClick={handleChangeQuantity} className="text-xs">
+              Confirm
+              {/* Can have this say 'cancel' if nothing has changed in the input */}
+            </button>
+          </div>
+        ) : (
+          <Button onClick={() => setInputActive(true)} type="primary">
+            {quantity}
+          </Button>
+        )}
+        <p>{item.unit}</p>
+      </div>
+      <Button>
+        <FaTrash />
+      </Button>
     </div>
   );
 };

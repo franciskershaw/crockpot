@@ -2,7 +2,7 @@ import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import { useState } from 'react';
 import Accordion from '@/src/components/Accordion/Accordion';
 import useShoppingList from '../../hooks/useShoppingList';
-import { FaQuestion, FaTrash } from 'react-icons/fa';
+import { FaQuestion } from 'react-icons/fa';
 import Icon from '@/src/components/Icon/Icon';
 import iconMapping from '@/src/components/Icon/iconMapping';
 import ShoppingListItem from './ShoppingListItem';
