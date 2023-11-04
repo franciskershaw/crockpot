@@ -1,7 +1,28 @@
-.quantity-input {
-   @apply flex border-2 border-black w-fit rounded-full;
+.quantity-input-container {
+	display: flex;
+	width: 0;
+	transition: width 0.3s ease;
+	overflow: hidden;
 
-//    .btn {
-//     outline: solid 1px white;
-//    }
+	&--expanded {
+		width: 90px;
+	}
+
+	input {
+		text-align: center;
+		width: 50px;
+		flex-shrink: 0;
+
+		&:focus-visible {
+			outline: 0;
+		}
+	}
+
+	> div {
+		flex-shrink: 0; /* Prevent divs from shrinking */
+	}
+}
+
+.fade {
+	transition: opacity 0.3s ease;
 }
