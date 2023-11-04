@@ -17,6 +17,8 @@ type CheckboxData = {
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
 
+	console.log(allRecipes[0]);
+
 	const {
 		recipeSearchQuery,
 		cookingTimeMin,
@@ -52,7 +54,7 @@ const BrowsePage = () => {
 				<BrowsePageSearchBar />
 			</div>
 			<div className="container !px-0 md:flex">
-				<div className="container pt-20 md:w-1/3 md:bg-slate-200 md:border-4 md:border-slate-200 md:pt-2 md:mx-4 md:my-0 md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
+				<div className="container pt-20 md:w-1/3 md:bg-slate-200 md:border-4 md:border-slate-200 md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
 					<div className="hidden md:block">
 						<BrowsePageFiltersMenu />
 					</div>

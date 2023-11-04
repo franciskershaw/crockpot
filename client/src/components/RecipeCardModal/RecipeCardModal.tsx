@@ -3,13 +3,26 @@ import ButtonFav from '../ButtonFav/ButtonFav';
 import ButtonCart from '../ButtonCart/ButtonCart';
 import TimingTag from '../TimingTag/TimingTag';
 import Tabs from '../Tabs/Tabs';
+import { Ingredient } from '@/src/types/types';
+import { v4 as uuidv4 } from 'uuid';
 
 type RecipeCardModalProps = {
 	imageUrl: any;
 	name: string;
+	ingredients: Ingredient[];
+	instructions: string[];
+	notes: string[];
 };
 
-const RecipeCardModal = ({ imageUrl, name }: RecipeCardModalProps) => {
+const RecipeCardModal = ({
+	imageUrl,
+	name,
+	ingredients,
+	instructions,
+	notes,
+}: RecipeCardModalProps) => {
+	console.log(notes);
+
 	return (
 		<div>
 			<div className="relative">
@@ -25,12 +38,41 @@ const RecipeCardModal = ({ imageUrl, name }: RecipeCardModalProps) => {
 					<div>Add to menu</div>
 				</div>
 			</div>
-			<div className="p-4">
+			<div className="p-4 pb-0">
 				<Tabs
 					tabTitleOne="Ingredients"
 					tabTitleTwo="Instructions"
-					tabContentOne={<div>Hello</div>}
-					tabContentTwo={<div>Hello 2</div>}
+					tabContentOne={
+						<ul className="flex flex-wrap">
+							{ingredients.map((ingredient, index) => (
+								<li key={index} className="w-full sm:w-1/2">
+									{ingredient._id} x {ingredient.quantity.toFixed(2)}{' '}
+									{ingredient.unit}
+								</li>
+							))}
+						</ul>
+					}
+					tabContentTwo={
+						<>
+							{instructions && (
+								<ol>
+									{instructions.map((instruction, index) => (
+										<li key={index}>{instruction}</li>
+									))}
+								</ol>
+							)}
+							{notes && notes[0] !== '' && (
+								<>
+									<hr className="my-2" />
+									<ul>
+										{notes.map((note, index) => (
+											<li key={index}>{note}</li>
+										))}
+									</ul>
+								</>
+							)}
+						</>
+					}
 				/>
 			</div>
 		</div>

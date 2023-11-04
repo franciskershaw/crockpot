@@ -21,26 +21,22 @@ const Tabs: React.FC<TabsProps> = ({
 	return (
 		<TabsRadix.Root defaultValue="tab1" orientation="vertical">
 			<TabsRadix.List
-				className="flex justify-around border-b border-gray-300"
+				className="flex justify-around border-b border-gray-300 pb-2 h3"
 				aria-label="tab"
 			>
-				<TabsRadix.Trigger className="h3" value="tab1">
-					{tabTitleOne}
-				</TabsRadix.Trigger>
-				<TabsRadix.Trigger className="h3" value="tab2">
-					{tabTitleTwo}
-				</TabsRadix.Trigger>
+				<TabsRadix.Trigger value="tab1">{tabTitleOne}</TabsRadix.Trigger>
+				<TabsRadix.Trigger value="tab2">{tabTitleTwo}</TabsRadix.Trigger>
 				{tabTitleThree && (
-					<TabsRadix.Trigger className="h3" value="tab3">
-						{tabTitleThree}
-					</TabsRadix.Trigger>
+					<TabsRadix.Trigger value="tab3">{tabTitleThree}</TabsRadix.Trigger>
 				)}
 			</TabsRadix.List>
-			<TabsRadix.Content value="tab1">{tabContentOne}</TabsRadix.Content>
-			<TabsRadix.Content value="tab2">{tabContentTwo}</TabsRadix.Content>
-			{tabContentThree && (
-				<TabsRadix.Content value="tab3">{tabContentThree}</TabsRadix.Content>
-			)}
+			<div className="p-4">
+				<TabsRadix.Content value="tab1">{tabContentOne}</TabsRadix.Content>
+				<TabsRadix.Content value="tab2">{tabContentTwo}</TabsRadix.Content>
+				{tabContentThree && (
+					<TabsRadix.Content value="tab3">{tabContentThree}</TabsRadix.Content>
+				)}
+			</div>
 		</TabsRadix.Root>
 	);
 };

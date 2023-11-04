@@ -22,7 +22,11 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 					title={
 						<div className="flex">
 							<div>{recipe.timeInMinutes} mins</div>
-							<div>{recipe.categories.map((category) => category.name)}</div>
+							{recipe.categories.map((category, index) => (
+								<div key={index} className="ml-2 pl-2 border-l border-black">
+									{category.name}
+								</div>
+							))}
 						</div>
 					}
 					isWide
@@ -38,7 +42,13 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 						</div>
 					}
 				>
-					<RecipeCardModal imageUrl={recipe.image?.url} name={recipe.name} />
+					<RecipeCardModal
+						imageUrl={recipe.image?.url}
+						name={recipe.name}
+						ingredients={recipe.ingredients}
+						instructions={recipe.instructions}
+						notes={recipe.notes}
+					/>
 				</Modal>
 			))}
 		</div>
