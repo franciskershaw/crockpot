@@ -48,21 +48,24 @@ const editShoppingListSchema = Joi.object({
   obtained: Joi.boolean().required(),
 });
 
-const editExtraItemsSchema = Joi.array()
-  .items(
-    Joi.object({
-      _id: Joi.string().pattern(objectIdPattern).required().messages({
-        'string.pattern.base': 'Must be a valid ObjectId',
-        'any.required': 'This field is required',
-      }),
-      obtained: Joi.boolean().required(),
-      quantity: Joi.number().required(),
-      unit: Joi.string().valid('', 'cans', 'g', 'ml', 'tbsp', 'tsp').required(),
-    })
-  )
+const editExtraItemSchema = Joi.object({
+  obtained: Joi.boolean().optional(),
+  quantity: Joi.number().when('obtained', {
+    is: Joi.exist(),
+    then: Joi.forbidden(),
+    otherwise: Joi.required(),
+  }),
+  unit: Joi.string()
+    .valid('', 'cans', 'g', 'ml', 'tbsp', 'tsp')
+    .when('obtained', {
+      is: Joi.exist(),
+      then: Joi.forbidden(),
+      otherwise: Joi.required(),
+    }),
+})
   .required()
   .messages({
-    'array.base': 'Input must be an array',
+    'object.base': 'Input must be an object',
   });
 
 const createRecipeSchema = Joi.object({
@@ -173,7 +176,7 @@ module.exports = {
   userFavouritesSchema,
   userRecipeMenuSchema,
   editShoppingListSchema,
-  editExtraItemsSchema,
+  editExtraItemSchema,
   createRecipeSchema,
   editRecipeSchema,
   recipeCategorySchema,

@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 const { isLoggedIn } = require('../middleware/authMiddleware');
-const { itemIdInShoppingList } = require('../middleware/badRequestMiddleware');
+const {
+  itemIdInShoppingList,
+  itemIdInExtraItems,
+} = require('../middleware/badRequestMiddleware');
 
 const {
   registerUser,
@@ -16,7 +19,7 @@ const {
   getUserShoppingList,
   getUserExtraItems,
   toggleObtainedUserShoppingList,
-  editUserExtraItems,
+  updateExtraItems,
   getUserFavourites,
   editUserFavourites,
 } = require('../controllers/userController');
@@ -60,9 +63,10 @@ router
   );
 
 // Extra item routes
+router.route('/extraItems').get(isLoggedIn, asyncHandler(getUserExtraItems));
+
 router
-  .route('/extraItems')
-  .get(isLoggedIn, asyncHandler(getUserExtraItems))
-  .put(isLoggedIn, asyncHandler(editUserExtraItems));
+  .route('/extraItems/:itemId')
+  .put(isLoggedIn, itemIdInExtraItems, asyncHandler(updateExtraItems));
 
 module.exports = router;

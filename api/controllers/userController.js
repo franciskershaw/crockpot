@@ -28,7 +28,7 @@ const {
   userFavouritesSchema,
   userRecipeMenuSchema,
   editShoppingListSchema,
-  editExtraItemsSchema,
+  editExtraItemSchema,
 } = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
@@ -277,21 +277,35 @@ const getUserExtraItems = async (req, res, next) => {
   }
 };
 
-const editUserExtraItems = async (req, res, next) => {
+const updateExtraItems = async (req, res, next) => {
   try {
-    const { value, error } = editExtraItemsSchema.validate(req.body);
+    const value = validateRequest(req.body, editExtraItemSchema);
+    const { itemId } = req.params;
+    const userId = req.user._id;
 
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
-
-    // Replace the existing extraItems array with the new one
-    await User.updateOne(
-      { _id: req.user._id },
-      { $set: { extraItems: value } }
+    const user = await User.findById(userId);
+    const itemIndex = user.extraItems.findIndex(
+      (item) => item._id.toString() === itemId
     );
 
-    const newExtraItems = await formatItemList(req.user._id, 'extraItems');
+    if ('obtained' in value) {
+      user.extraItems[itemIndex].obtained = value.obtained;
+    } else {
+      if (itemIndex !== -1 && user.extraItems[itemIndex].unit === value.unit) {
+        user.extraItems[itemIndex].quantity += value.quantity;
+      } else {
+        user.extraItems.push({
+          _id: itemId,
+          quantity: value.quantity,
+          obtained: false,
+          unit: value.unit,
+        });
+      }
+    }
+
+    await user.save();
+
+    const newExtraItems = await formatItemList(userId, 'extraItems');
     res.status(200).json(newExtraItems);
   } catch (err) {
     next(err);
@@ -343,7 +357,7 @@ module.exports = {
   getUserShoppingList,
   getUserExtraItems,
   toggleObtainedUserShoppingList,
-  editUserExtraItems,
+  updateExtraItems,
   getUserFavourites,
   editUserFavourites,
 };
