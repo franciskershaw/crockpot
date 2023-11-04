@@ -12,20 +12,17 @@ type RecipeCardListProps = {
 
 function RecipeCardList({ recipes }: RecipeCardListProps) {
 	return (
-		<div className="tw">
-			<h3 className="font-bold mb-2">{recipes.length} recipes:</h3>
-			<div className="recipe-card-list">
-				{recipes.map((recipe) => (
-					<div className="recipe-card" key={uuidv4()}>
-						<RecipeCard
-							imageUrl={recipe.image?.url}
-							timeInMinutes={recipe.timeInMinutes}
-							name={recipe.name}
-							categories={recipe.categories.map((category) => category.name)}
-						/>
-					</div>
-				))}
-			</div>
+		<div className="recipe-card-list">
+			{recipes.map((recipe) => (
+				<div className="recipe-card" key={uuidv4()}>
+					<RecipeCard
+						imageUrl={recipe.image?.url}
+						timeInMinutes={recipe.timeInMinutes}
+						name={recipe.name}
+						categories={recipe.categories.map((category) => category.name)}
+					/>
+				</div>
+			))}
 		</div>
 	);
 }

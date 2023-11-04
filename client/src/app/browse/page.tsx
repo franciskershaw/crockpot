@@ -25,22 +25,6 @@ const BrowsePage = () => {
 		selectedIngredients,
 	} = useBrowsePageContext();
 
-	useEffect(() => {
-		console.log(
-			recipeSearchQuery,
-			cookingTimeMin,
-			cookingTimeMax,
-			selectedCategories,
-			selectedIngredients,
-		);
-	}, [
-		recipeSearchQuery,
-		cookingTimeMin,
-		cookingTimeMax,
-		selectedCategories,
-		selectedIngredients,
-	]);
-
 	// Filter recipes based on search query, cooking time, categories and ingredients
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
 		return (
@@ -77,7 +61,7 @@ const BrowsePage = () => {
 					<div className="hidden md:flex space-x-2 mb-4">
 						<BrowsePageSearchBar />
 					</div>
-					<BrowsePageAppliedFilters />
+					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
 					<RecipeCardList recipes={filteredRecipes} />
 				</div>
 			</div>

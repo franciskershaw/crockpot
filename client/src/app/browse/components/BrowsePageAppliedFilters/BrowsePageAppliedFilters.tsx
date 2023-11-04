@@ -3,12 +3,16 @@ import { useBrowsePageContext } from '../../context/BrowsePageContext';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import './styles.scss';
 
+type AppliedFiltersProps = {
+	recipeNum: number;
+};
+
 type FilterItem = {
 	_id: string;
 	name: string;
 };
 
-const AppliedFilters = () => {
+const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 	const {
 		recipeSearchQuery,
 		cookingTimeMin,
@@ -63,45 +67,59 @@ const AppliedFilters = () => {
 		}
 	};
 
+	const isFilters =
+		recipeSearchQuery !== '' ||
+		cookingTimeMin !== cookingTimeMinMax.min ||
+		cookingTimeMax !== cookingTimeMinMax.max ||
+		selectedCategories.length > 0 ||
+		selectedIngredients.length > 0;
+
 	return (
-		<div className="flex flex-wrap">
-			{recipeSearchQuery && (
-				<div
-					className="filter-tag"
-					onClick={() => removeFilter('searchQuery', recipeSearchQuery)}
-				>
-					{filterLabel('searchQuery', recipeSearchQuery)}
+		<div>
+			<h3 className="font-bold">
+				{recipeNum} {recipeNum === 1 ? 'recipe' : 'recipes'} found:
+			</h3>
+			{isFilters && (
+				<div className="flex overflow-x-auto whitespace-nowrap bg-slate-200 py-1 pl-2 mb-2 rounded">
+					{recipeSearchQuery && (
+						<div
+							className="filter-tag"
+							onClick={() => removeFilter('searchQuery', recipeSearchQuery)}
+						>
+							{filterLabel('searchQuery', recipeSearchQuery)}
+						</div>
+					)}
+					{(cookingTimeMin !== cookingTimeMinMax.min ||
+						cookingTimeMax !== cookingTimeMinMax.max) && (
+						<div
+							className="filter-tag"
+							onClick={() =>
+								removeFilter('cookingTime', [cookingTimeMin, cookingTimeMax])
+							}
+						>
+							{filterLabel('cookingTime', [cookingTimeMin, cookingTimeMax])}
+						</div>
+					)}
+					{selectedCategories.map((category: FilterItem) => (
+						<div
+							key={category._id}
+							className="filter-tag"
+							onClick={() => removeFilter('selectedCategories', category)}
+						>
+							{filterLabel('selectedCategories', category)}
+						</div>
+					))}
+					{selectedIngredients.map((ingredient: FilterItem) => (
+						<div
+							key={ingredient._id}
+							className="filter-tag"
+							onClick={() => removeFilter('selectedIngredients', ingredient)}
+						>
+							{filterLabel('selectedIngredients', ingredient)}
+						</div>
+					))}
 				</div>
 			)}
-			{(cookingTimeMin !== cookingTimeMinMax.min ||
-				cookingTimeMax !== cookingTimeMinMax.max) && (
-				<div
-					className="filter-tag"
-					onClick={() =>
-						removeFilter('cookingTime', [cookingTimeMin, cookingTimeMax])
-					}
-				>
-					{filterLabel('cookingTime', [cookingTimeMin, cookingTimeMax])}
-				</div>
-			)}
-			{selectedCategories.map((category: FilterItem) => (
-				<div
-					key={category._id}
-					className="filter-tag"
-					onClick={() => removeFilter('selectedCategories', category)}
-				>
-					{filterLabel('selectedCategories', category)}
-				</div>
-			))}
-			{selectedIngredients.map((ingredient: FilterItem) => (
-				<div
-					key={ingredient._id}
-					className="filter-tag"
-					onClick={() => removeFilter('selectedIngredients', ingredient)}
-				>
-					{filterLabel('selectedIngredients', ingredient)}
-				</div>
-			))}
 		</div>
 	);
 };
