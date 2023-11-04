@@ -8,7 +8,6 @@ export const createConfig = (user: User) => {
   };
 };
 
-// utils/combineArrays.ts
 export function combineArrays(
   shoppingList: ShoppingListItem[],
   extraItems: ShoppingListItem[]
@@ -30,7 +29,9 @@ export function combineArrays(
   shoppingList.forEach((item) => processItem(item, false));
   extraItems.forEach((item) => processItem(item, true));
 
-  const combinedArray = Object.values(tempStorage);
+  const combinedArray = Object.values(tempStorage).filter(
+    (item) => item.quantity !== 0
+  );
 
   return combinedArray;
 }

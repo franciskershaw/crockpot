@@ -49,6 +49,20 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
     setInputActive(false);
   };
 
+  const handleDeleteItem = () => {
+    try {
+      updateExtraItems({
+        itemId: item.item._id,
+        body: {
+          quantity: -quantity,
+          unit: item.unit,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="flex gap-4 items-center tw" key={item.item._id}>
       <div className="flex-grow flex items-center gap-4">
@@ -82,7 +96,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
         )}
         <p>{item.unit}</p>
       </div>
-      <Button>
+      <Button onClick={handleDeleteItem}>
         <FaTrash />
       </Button>
     </div>
