@@ -7,7 +7,6 @@ import './styles.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { Recipe } from '@/src/types/types';
 import Modal from '../Modal/Modal';
-import BrowsePageFiltersMenu from '@/src/app/browse/components/BrowsePageFiltersMenu';
 
 type RecipeCardListProps = {
 	recipes: Recipe[];
@@ -43,6 +42,7 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 					}
 				>
 					<RecipeCardModal
+						id={recipe._id}
 						imageUrl={recipe.image?.url}
 						name={recipe.name}
 						ingredients={recipe.ingredients}

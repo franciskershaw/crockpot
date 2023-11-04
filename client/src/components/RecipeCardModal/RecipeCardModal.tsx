@@ -1,12 +1,10 @@
-import React from 'react';
-import ButtonFav from '../ButtonFav/ButtonFav';
+import React, { useState } from 'react';
 import ButtonCart from '../ButtonCart/ButtonCart';
-import TimingTag from '../TimingTag/TimingTag';
 import Tabs from '../Tabs/Tabs';
 import { Ingredient } from '@/src/types/types';
-import { v4 as uuidv4 } from 'uuid';
 
 type RecipeCardModalProps = {
+	id: string;
 	imageUrl: any;
 	name: string;
 	ingredients: Ingredient[];
@@ -15,14 +13,14 @@ type RecipeCardModalProps = {
 };
 
 const RecipeCardModal = ({
+	id,
 	imageUrl,
 	name,
 	ingredients,
 	instructions,
 	notes,
 }: RecipeCardModalProps) => {
-	console.log(notes);
-
+	const [quantity, setQuantity] = useState(4);
 	return (
 		<div>
 			<div className="relative">
@@ -35,7 +33,11 @@ const RecipeCardModal = ({
 						<h2>{name}</h2>
 						<h3>Created by TedBrisket</h3>
 					</div>
-					<div>Add to menu</div>
+					<ButtonCart
+						recipeId={id}
+						initialValue={quantity}
+						onChange={setQuantity}
+					/>
 				</div>
 			</div>
 			<div className="p-4 pb-0">
@@ -46,7 +48,10 @@ const RecipeCardModal = ({
 						<ul className="flex flex-wrap">
 							{ingredients.map((ingredient, index) => (
 								<li key={index} className="w-full sm:w-1/2">
-									{ingredient._id} x {ingredient.quantity.toFixed(2)}{' '}
+									{ingredient._id} x{' '}
+									{(ingredient.quantity * quantity)
+										.toFixed(2)
+										.replace(/\.00$|0$/, '')}{' '}
 									{ingredient.unit}
 								</li>
 							))}

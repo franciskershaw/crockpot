@@ -1,0 +1,28 @@
+.quantity-input-container {
+	display: flex;
+	width: 0;
+	transition: width 0.3s ease;
+	overflow: hidden;
+
+	&--expanded {
+		width: 90px;
+	}
+
+	input {
+		text-align: center;
+		width: 50px;
+		flex-shrink: 0;
+
+		&:focus-visible {
+			outline: 0;
+		}
+	}
+
+	> div {
+		flex-shrink: 0;
+	}
+}
+
+.fade {
+	transition: opacity 0.3s ease;
+}
