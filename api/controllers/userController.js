@@ -292,7 +292,7 @@ const updateExtraItems = async (req, res, next) => {
       user.extraItems[itemIndex].obtained = value.obtained;
     } else {
       if (itemIndex !== -1 && user.extraItems[itemIndex].unit === value.unit) {
-        user.extraItems[itemIndex].quantity += value.quantity;
+        user.extraItems[itemIndex].quantity = value.quantity;
       } else {
         user.extraItems.push({
           _id: itemId,

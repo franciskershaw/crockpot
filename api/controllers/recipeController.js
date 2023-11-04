@@ -49,6 +49,7 @@ const createNewRecipe = async (req, res, next) => {
 const getSingleRecipe = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.recipeId);
+    console.log(recipe)
     const categories = await RecipeCategory.find({ _id: recipe.categories });
     const createdBy = await User.findById(recipe.createdBy);
 

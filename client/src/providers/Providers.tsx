@@ -27,6 +27,7 @@ export const queryKeys = {
   recipeMenu: 'recipeMenu',
   user: 'user',
   shoppingList: 'shoppingList',
+  extraItems: 'extraItems',
 };
 
 const Providers: FC<LayoutProps> = ({ children }) => {

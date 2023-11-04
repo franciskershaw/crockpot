@@ -2,6 +2,7 @@ import { ShoppingListItem as ShoppingListItemType } from '@/src/types/types';
 import Button from '@/src/components/Button/Button';
 import { useState } from 'react';
 import useShoppingList from '../../hooks/useShoppingList';
+import useExtraItems from '../../hooks/useExtraItems';
 import { FaTrash } from 'react-icons/fa';
 
 interface ShoppingListItemProps {
@@ -13,6 +14,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const [obtained, setObtained] = useState(item.obtained);
 
+  const { updateExtraItems } = useExtraItems();
   const { toggleObtained } = useShoppingList();
 
   const handleClickCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,9 +31,18 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 
   const handleChangeQuantity = () => {
     try {
-      console.log('origianl quantity', item.quantity);
-      console.log('new total quantity', quantity);
       console.log('extra quantity required:', quantity - item.quantity);
+      const extraQuantity = quantity - item.quantity;
+
+      if (extraQuantity !== 0) {
+        updateExtraItems({
+          itemId: item.item._id,
+          body: {
+            quantity: extraQuantity,
+            unit: item.unit,
+          },
+        });
+      }
     } catch (err) {
       console.log(err);
       setQuantity(item.quantity);
