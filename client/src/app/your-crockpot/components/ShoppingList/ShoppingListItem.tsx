@@ -68,7 +68,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
               name=""
               id=""
               value={quantity}
-              onChange={(e) => setQuantity(parseInt(e.target.value))}
+              onChange={(e) => setQuantity(parseFloat(e.target.value))}
             />
             <button onClick={handleChangeQuantity} className="text-xs">
               Confirm
