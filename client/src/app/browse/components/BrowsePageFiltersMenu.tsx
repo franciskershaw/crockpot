@@ -1,32 +1,60 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Switch from '@/src/components/Switch/Switch';
 import Slider from '@/src/components/Slider/Slider';
-import recipesData from '@/src/data/recipes.json';
-import {
-	getCategories,
-	getMinMaxTimeInMinutes,
-} from '@/src/hooks/recipeFunctions';
-import { useState } from 'react';
-import { Recipe } from '@/src/types/types';
 import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
+import { useBrowsePageContext } from '../context/BrowsePageContext';
 
-interface Item {
+type CheckboxData = {
 	_id: string;
 	name: string;
-}
+};
 
 function BrowsePageFiltersMenu() {
-	const recipes: Recipe[] = recipesData;
+	const {
+		cookingTimeMin,
+		cookingTimeMax,
+		setCookingTime,
+		setSelectedCategories,
+		setSelectedIngredients,
+	} = useBrowsePageContext();
+	const { cookingTimeMinMax } = useRecipes();
 	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
-	const cookingTime = getMinMaxTimeInMinutes(recipes);
-	const [searchQuery, setSearchQuery] = useState('');
 
-	const extractIdAndName = (items: Item[]): { _id: string; name: string }[] => {
+	const handleCategoryCheckboxChange = (
+		categoryId: string,
+		isChecked: boolean,
+	) => {
+		setSelectedCategories((prevSelected: string[]) => {
+			if (isChecked) {
+				return [...prevSelected, categoryId];
+			} else {
+				return prevSelected.filter((id: string) => id !== categoryId);
+			}
+		});
+	};
+
+	const handleIngredientCheckboxChange = (
+		ingredientId: string,
+		isChecked: boolean,
+	) => {
+		setSelectedIngredients((prevSelected: string[]) => {
+			if (isChecked) {
+				return [...prevSelected, ingredientId];
+			} else {
+				return prevSelected.filter((id: string) => id !== ingredientId);
+			}
+		});
+	};
+
+	const extractIdAndName = (
+		items: CheckboxData[],
+	): { _id: string; name: string }[] => {
 		return items.map(({ _id, name }) => ({ _id, name }));
 	};
 
@@ -42,9 +70,13 @@ function BrowsePageFiltersMenu() {
 			<div>
 				<h3>Serving Time</h3>
 				<Slider
-					min={cookingTime.min}
-					max={cookingTime.max}
-					onChange={(values: number[]) => console.log(values)}
+					min={cookingTimeMinMax.min}
+					max={cookingTimeMinMax.max}
+					value={[cookingTimeMin, cookingTimeMax]}
+					onChange={(values: number[]) => {
+						const [newMin, newMax] = values;
+						setCookingTime(newMin, newMax);
+					}}
 				/>
 			</div>
 			<hr />
@@ -52,12 +84,16 @@ function BrowsePageFiltersMenu() {
 				title={'Categories'}
 				placeholderText={'Search for a category...'}
 				checkboxes={simplifiedCategories}
+				onCheckboxChange={handleCategoryCheckboxChange}
+				listType="category"
 			/>
 			<hr />
 			<BrowsePageSearchableCheckboxList
 				title={'Ingredients'}
 				placeholderText={'Search for a ingredient...'}
 				checkboxes={simplifiedIngredients}
+				onCheckboxChange={handleIngredientCheckboxChange}
+				listType="ingredient"
 			/>
 		</div>
 	);

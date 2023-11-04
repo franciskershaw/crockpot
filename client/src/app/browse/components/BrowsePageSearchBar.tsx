@@ -5,14 +5,15 @@ import React, { useState } from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
+import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 function BrowsePageSearchBar() {
-	const [searchQuery, setSearchQuery] = useState('');
+	const { setRecipeSearchQuery, resetFilters } = useBrowsePageContext();
 
 	return (
 		<>
 			<div className="w-full">
-				<SearchBar setSearchQuery={setSearchQuery} />
+				<SearchBar setSearchQuery={setRecipeSearchQuery} />
 			</div>
 			<div className="md:hidden">
 				<Modal
@@ -27,16 +28,12 @@ function BrowsePageSearchBar() {
 				</Modal>
 			</div>
 			<div className="md:hidden">
-				<Button border onClick={() => console.log('Hello!')}>
+				<Button border onClick={resetFilters}>
 					<GrRefresh />
 				</Button>
 			</div>
 			<div className="hidden md:block">
-				<Button
-					border
-					onClick={() => console.log('Hello!')}
-					text={'Clear filters'}
-				/>
+				<Button border onClick={resetFilters} text={'Clear filters'} />
 			</div>
 		</>
 	);

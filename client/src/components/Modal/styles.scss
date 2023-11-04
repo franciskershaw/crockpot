@@ -6,7 +6,7 @@
 }
 
 .DialogContent {
-	@apply bg-white z-40 overflow-scroll;
+	@apply bg-white z-40 overflow-y-scroll;
 
 	background-color: white;
 	border-radius: 6px;
@@ -19,6 +19,10 @@
 	width: 90vw;
 	max-width: 450px;
 	max-height: 85vh;
+
+	&--is-wide {
+		@apply max-w-5xl;
+	}
 }
 
 .DialogContent:focus {
