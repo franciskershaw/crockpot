@@ -21,7 +21,7 @@ const Tabs: React.FC<TabsProps> = ({
 	return (
 		<TabsRadix.Root defaultValue="tab1" orientation="vertical">
 			<TabsRadix.List
-				className="flex justify-around border-b border-gray-300 pb-2 h3"
+				className="flex justify-around border-b border-gray-300 pb-2 h3 cursor-pointer"
 				aria-label="tab"
 			>
 				<TabsRadix.Trigger value="tab1">{tabTitleOne}</TabsRadix.Trigger>

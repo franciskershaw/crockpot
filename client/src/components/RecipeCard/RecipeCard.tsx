@@ -20,7 +20,7 @@ const RecipeCard = ({
 	const remainingCategoriesCount = categories.length - 3;
 
 	return (
-		<div className="rounded-xl overflow-hidden">
+		<div className="rounded-xl overflow-hidden cursor-pointer">
 			<div className="relative">
 				{/* Background image */}
 				<div
@@ -40,7 +40,7 @@ const RecipeCard = ({
 				</div>
 			</div>
 
-			{/* name and categories */}
+			{/* Name and categories */}
 			<div className="px-2 py-3 bg-white rounded-b-xl border border-gray-300">
 				<h3 className="truncate">{name}</h3>
 				<p className="truncate">

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import Button from '../Button/Button';
-import './styles.scss';
 
 type QuantityInputProps = {
 	initialValue: number;

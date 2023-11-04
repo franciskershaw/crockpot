@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import Icon from '../Icon/Icon';
+import { useState, MouseEvent } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { RiShoppingBasketLine } from 'react-icons/ri';
+import Button from '../Button/Button';
+import './styles.scss';
 
 type ButtonCartProps = {
 	recipeId: string;
@@ -47,22 +48,35 @@ const ButtonCart = ({
 
 	return (
 		<div className="relative">
-			<div className="flex items-center border-2 border-blue-500 rounded-full overflow-hidden w-fit mb-5">
+			<div className="flex items-center border-2 border-blue-500 bg-white rounded-full overflow-hidden w-fit mb-5">
 				<div className="relative">
 					<div
-						onClick={() => setIsExpanded(true)}
 						className={`absolute opacity-100 cursor-pointer fade ${
 							isExpanded ? '!opacity-0 -z-10' : ''
 						}`}
 					>
-						<Icon size="lg" type="secondary">
+						<Button
+							type="secondary"
+							onClick={(e: MouseEvent<HTMLElement>) => {
+								e.stopPropagation();
+								setIsExpanded(true);
+							}}
+						>
 							<RiShoppingBasketLine />
-						</Icon>
+						</Button>
 					</div>
-					<div className="cursor-pointer" onClick={handleDecrease}>
-						<Icon size="lg" type="secondary" active>
+					<div>
+						<Button
+							type="secondary"
+							onClick={(e: MouseEvent<HTMLElement>) => {
+								e.stopPropagation();
+								handleDecrease();
+							}}
+							inverse
+							hoverOff
+						>
 							<AiOutlineMinus />
-						</Icon>
+						</Button>
 					</div>
 				</div>
 
@@ -78,17 +92,26 @@ const ButtonCart = ({
 						max={max}
 						onChange={handleChange}
 					/>
-					<div className="cursor-pointer" onClick={handleIncrease}>
-						<Icon size="lg" type="secondary" active>
-							<AiOutlinePlus />
-						</Icon>
-					</div>
+					<Button
+						type="secondary"
+						onClick={(e: MouseEvent<HTMLElement>) => {
+							e.stopPropagation();
+							handleIncrease();
+						}}
+						inverse
+						hoverOff
+					>
+						<AiOutlinePlus />
+					</Button>
 				</div>
 			</div>
 			{isExpanded && (
 				<h5
-					onClick={() => setIsExpanded(false)}
-					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer"
+					onClick={(e: MouseEvent<HTMLDivElement>) => {
+						e.stopPropagation();
+						setIsExpanded(false);
+					}}
+					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
 				>
 					Remove from basket
 				</h5>
