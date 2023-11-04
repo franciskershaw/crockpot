@@ -72,6 +72,7 @@ export interface ShoppingListItem {
   quantity: number;
   unit: string;
   obtained: boolean;
+  extra?: boolean;
 }
 
 export interface GroupedShoppingList {

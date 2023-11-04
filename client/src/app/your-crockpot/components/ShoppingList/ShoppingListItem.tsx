@@ -1,9 +1,9 @@
-import { ShoppingListItem as ShoppingListItemType } from '@/src/types/types';
-import Button from '@/src/components/Button/Button';
-import { useState } from 'react';
-import useShoppingList from '../../hooks/useShoppingList';
-import useExtraItems from '../../hooks/useExtraItems';
-import { FaTrash } from 'react-icons/fa';
+import { ShoppingListItem as ShoppingListItemType } from "@/src/types/types";
+import Button from "@/src/components/Button/Button";
+import { useState } from "react";
+import useShoppingList from "../../hooks/useShoppingList";
+import useExtraItems from "../../hooks/useExtraItems";
+import { FaTrash } from "react-icons/fa";
 
 interface ShoppingListItemProps {
   item: ShoppingListItemType;
@@ -31,7 +31,6 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 
   const handleChangeQuantity = () => {
     try {
-      console.log('extra quantity required:', quantity - item.quantity);
       const extraQuantity = quantity - item.quantity;
 
       if (extraQuantity !== 0) {
