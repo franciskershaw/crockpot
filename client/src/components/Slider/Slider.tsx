@@ -38,20 +38,19 @@ function SliderThumbWithValue() {
 type SliderProps = {
 	min: number;
 	max: number;
+	value: [number, number];
 	onChange: (values: number[]) => void;
 };
 
-export default function Slider({ min, max, onChange }: SliderProps) {
+export default function Slider({ min, max, value, onChange }: SliderProps) {
 	const handleValueChange = (values: number[]) => {
-		const [currentMin, currentMax] = values;
-		console.log('Cooking time', currentMin, currentMax);
 		onChange(values);
 	};
 
 	return (
 		<SliderRadix.Root
 			className="SliderRoot"
-			defaultValue={[min, max]}
+			value={value}
 			min={min - 10 > 5 ? min - 10 : 5}
 			max={max + 10}
 			step={5}
