@@ -15,7 +15,19 @@ const getAllRecipes = async (req, res, next) => {
       };
     }
 
-    const recipes = await Recipe.find(filter).populate("categories");
+    const recipes = await Recipe.find(filter)
+      .populate({
+        path: "ingredients._id",
+        model: "Item",
+        select: "name",
+      })
+      .populate({
+        path: "createdBy",
+        model: "User",
+        select: "username",
+      })
+      .populate("categories");
+
     res.status(200).json(recipes);
   } catch (err) {
     next(err);
@@ -49,7 +61,6 @@ const createNewRecipe = async (req, res, next) => {
 const getSingleRecipe = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.recipeId);
-    console.log(recipe)
     const categories = await RecipeCategory.find({ _id: recipe.categories });
     const createdBy = await User.findById(recipe.createdBy);
 
