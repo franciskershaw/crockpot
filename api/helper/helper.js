@@ -54,15 +54,20 @@ const generateShoppingList = async (menu) => {
 const formatItemList = async (userId, type) => {
   const user = await User.findById(userId);
   const itemsArray = user[type];
-  const itemsDetails = await Item.find({ _id: { $in: itemsArray } });
+  const itemsDetails = await Item.find({
+    _id: { $in: itemsArray.map((item) => item._id) },
+  });
 
   let list = [];
 
   for (const item of itemsDetails) {
-    const { quantity, unit, obtained } = itemsArray.find((extraItem) =>
+    const matches = itemsArray.filter((extraItem) =>
       item._id.equals(extraItem._id)
     );
-    list.push({ item, quantity, unit, obtained });
+    for (const match of matches) {
+      const { quantity, unit, obtained } = match;
+      list.push({ item, quantity, unit, obtained });
+    }
   }
 
   return list;
