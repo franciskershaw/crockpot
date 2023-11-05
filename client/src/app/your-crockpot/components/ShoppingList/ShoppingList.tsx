@@ -42,7 +42,10 @@ const ShoppingList = () => {
         children: (
           <div>
             {category.items.map((item) => (
-              <ShoppingListItem key={item.item._id} item={item} />
+              <ShoppingListItem
+                key={`${item.item._id}_${item.quantity}_${item.unit}`}
+                item={item}
+              />
             ))}
           </div>
         ),
@@ -86,7 +89,8 @@ const ShoppingList = () => {
                 <Modal
                   key={result._id}
                   title={`Add extra ${result.name} to shopping list`}
-                  trigger={<p>{result.name}</p>}>
+                  trigger={<p>{result.name}</p>}
+                >
                   <div className="flex flex-col items-center gap-4 p-8">
                     <div className="flex items-center justify-center gap-8 flex-grow mb-4">
                       <div className="flex flex-col gap-2">
@@ -103,7 +107,8 @@ const ShoppingList = () => {
                           name=""
                           id=""
                           onChange={(e) => setExtraUnit(e.target.value)}
-                          value={extraUnit}>
+                          value={extraUnit}
+                        >
                           <option value="">-</option>
                           <option value="cans">Cans</option>
                           <option value="g">g</option>
