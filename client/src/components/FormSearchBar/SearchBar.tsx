@@ -15,8 +15,6 @@ const SearchBar = ({
 	searchQuery,
 	setSearchQuery,
 }: SearchBarProps) => {
-	const [isSearching, setIsSearching] = useState('');
-
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(event.target.value);
 	};

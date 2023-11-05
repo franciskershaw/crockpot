@@ -32,24 +32,11 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 					paddingOff
 					trigger={
 						<div className="recipe-card">
-							<RecipeCard
-								id={recipe._id}
-								imageUrl={recipe.image?.url}
-								timeInMinutes={recipe.timeInMinutes}
-								name={recipe.name}
-								categories={recipe.categories.map((category) => category.name)}
-							/>
+							<RecipeCard recipe={recipe} />
 						</div>
 					}
 				>
-					<RecipeCardModal
-						id={recipe._id}
-						imageUrl={recipe.image?.url}
-						name={recipe.name}
-						ingredients={recipe.ingredients}
-						instructions={recipe.instructions}
-						notes={recipe.notes}
-					/>
+					<RecipeCardModal recipe={recipe} />
 				</Modal>
 			))}
 		</div>

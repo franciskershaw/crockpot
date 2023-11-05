@@ -1,26 +1,14 @@
 import React, { useState } from 'react';
 import ButtonCart from '../ButtonCart/ButtonCart';
 import Tabs from '../Tabs/Tabs';
-import { Ingredient } from '@/src/types/types';
+import { Recipe } from '@/src/types/types';
 import useUser from '@/src/hooks/auth/useUser';
 
 type RecipeCardModalProps = {
-	id: string;
-	imageUrl: any;
-	name: string;
-	ingredients: Ingredient[];
-	instructions: string[];
-	notes: string[];
+	recipe: Recipe;
 };
 
-const RecipeCardModal = ({
-	id,
-	imageUrl,
-	name,
-	ingredients,
-	instructions,
-	notes,
-}: RecipeCardModalProps) => {
+const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 	const [quantity, setQuantity] = useState(4);
 	const { user } = useUser();
 
@@ -29,16 +17,16 @@ const RecipeCardModal = ({
 			<div className="relative">
 				<div
 					className="bg-cover bg-center h-80"
-					style={{ backgroundImage: `url(${imageUrl})` }}
+					style={{ backgroundImage: `url(${recipe.image})` }}
 				/>
 				<div className="absolute bottom-0 left-0 right-0 m-4 p-4 md:right-auto md:w-2/3 bg-white border-2 border-green-500 flex flex-row items-center justify-between">
 					<div>
-						<h2>{name}</h2>
+						<h2>{recipe.name}</h2>
 						<h3>Created by TedBrisket</h3>
 					</div>
 					{user && (
 						<ButtonCart
-							recipeId={id}
+							recipeId={recipe._id}
 							initialValue={quantity}
 							onChange={setQuantity}
 						/>
@@ -51,7 +39,7 @@ const RecipeCardModal = ({
 					tabTitleTwo="Instructions"
 					tabContentOne={
 						<ul className="flex flex-wrap">
-							{ingredients.map((ingredient, index) => (
+							{recipe.ingredients.map((ingredient, index) => (
 								<li key={index} className="w-full sm:w-1/2">
 									{ingredient._id} x{' '}
 									{(ingredient.quantity * quantity)
@@ -64,18 +52,18 @@ const RecipeCardModal = ({
 					}
 					tabContentTwo={
 						<>
-							{instructions && (
+							{recipe.instructions && (
 								<ol>
-									{instructions.map((instruction, index) => (
+									{recipe.instructions.map((instruction, index) => (
 										<li key={index}>{instruction}</li>
 									))}
 								</ol>
 							)}
-							{notes && notes[0] !== '' && (
+							{recipe.notes && recipe.notes[0] !== '' && (
 								<>
 									<hr className="my-2" />
 									<ul>
-										{notes.map((note, index) => (
+										{recipe.notes.map((note, index) => (
 											<li key={index}>{note}</li>
 										))}
 									</ul>

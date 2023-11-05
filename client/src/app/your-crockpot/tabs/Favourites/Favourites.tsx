@@ -3,7 +3,6 @@ import useFavourites from '@/src/hooks/users/useFavourites';
 
 const Favourites = () => {
 	const { favouriteRecipes } = useFavourites();
-	console.log(favouriteRecipes);
 
 	return (
 		<div>
