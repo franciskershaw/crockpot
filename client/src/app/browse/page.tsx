@@ -5,10 +5,8 @@ import RecipeCardList from '../../components/RecipeCardList/RecipeCardList';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import { useBrowsePageContext } from './context/BrowsePageContext';
-import { useEffect } from 'react';
 import { Category, Ingredient, Recipe } from '@/src/types/types';
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
-import useFavourites from '@/src/hooks/users/useFavourites';
 import useUser from '@/src/hooks/auth/useUser';
 
 type CheckboxData = {
@@ -30,7 +28,7 @@ const BrowsePage = () => {
 		selectedIngredients,
 	} = useBrowsePageContext();
 
-	// Filter recipes based on search query, cooking time, categories and ingredients
+	// Filter recipes based on search query, favourites toggle, my recipe toggle, cooking time, categories and ingredients
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
 		const isInFavourites =
 			!showOnlyFavourites || favouriteRecipes.includes(recipe._id);

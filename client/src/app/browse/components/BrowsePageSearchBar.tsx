@@ -1,25 +1,29 @@
 import Button from '@/src/components/Button/Button';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Modal from '@/src/components/Modal/Modal';
-import React, { useState } from 'react';
+import React from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
 import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 function BrowsePageSearchBar() {
-	const { setRecipeSearchQuery, resetFilters } = useBrowsePageContext();
+	const { recipeSearchQuery, setRecipeSearchQuery, resetFilters } =
+		useBrowsePageContext();
 
 	return (
 		<>
 			<div className="w-full">
-				<SearchBar setSearchQuery={setRecipeSearchQuery} />
+				<SearchBar
+					searchQuery={recipeSearchQuery}
+					setSearchQuery={setRecipeSearchQuery}
+				/>
 			</div>
 			<div className="md:hidden">
 				<Modal
-					title="My Modal Title"
+					title="Recipe Filters"
 					trigger={
-						<Button border onClick={() => console.log('Hello!')}>
+						<Button border>
 							<AiFillFilter />
 						</Button>
 					}
