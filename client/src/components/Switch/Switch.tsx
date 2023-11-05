@@ -11,10 +11,6 @@ type SwitchProps = {
 export default function Switch({ label, checked, onChange }: SwitchProps) {
 	const switchId = uuidv4();
 
-	const handleCheckedChange = (isChecked: boolean) => {
-		console.log(label, isChecked);
-	};
-
 	return (
 		<div className="flex items-center">
 			<label className="pr-2" htmlFor={switchId}>

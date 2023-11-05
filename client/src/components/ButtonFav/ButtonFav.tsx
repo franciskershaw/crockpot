@@ -1,6 +1,7 @@
-import { useState, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 import Button from '../Button/Button';
 import { AiFillHeart } from 'react-icons/ai';
+import useFavourites from '@/src/hooks/users/useFavourites';
 
 type ButtonFavProps = {
 	id: string;
@@ -8,14 +9,19 @@ type ButtonFavProps = {
 };
 
 const ButtonFav = ({ id, isFav }: ButtonFavProps) => {
+	const { toggleFavourite } = useFavourites();
+
+	const handleToggleFavourite = (e: MouseEvent<HTMLElement>) => {
+		e.stopPropagation();
+		toggleFavourite({ _id: id });
+	};
+
 	return (
 		<Button
 			border
-			onClick={(e: MouseEvent<HTMLElement>) => {
-				e.stopPropagation();
-				console.log(id);
-			}}
+			onClick={handleToggleFavourite}
 			inverse={isFav ? true : false}
+			hoverOff
 		>
 			<AiFillHeart />
 		</Button>

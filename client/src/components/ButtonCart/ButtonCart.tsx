@@ -56,6 +56,7 @@ const ButtonCart = ({
 						}`}
 					>
 						<Button
+							hoverOff
 							onClick={(e: MouseEvent<HTMLElement>) => {
 								e.stopPropagation();
 								setIsExpanded(true);
