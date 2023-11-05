@@ -1,28 +1,23 @@
-import { AiFillHeart } from "react-icons/ai";
-import * as Toggle from "@radix-ui/react-toggle";
-import { useState } from "react";
-import Icon from "../Icon/Icon";
+import { useState, MouseEvent } from 'react';
+import Button from '../Button/Button';
+import { AiFillHeart } from 'react-icons/ai';
 
 type ButtonFavProps = {
-  recipeId: string;
+	recipeId: string;
 };
 
 const ButtonFav = ({ recipeId }: ButtonFavProps) => {
-  const [isPressed, setIsPressed] = useState(false);
-
-  const handleFavChange = (pressed: boolean) => {
-    setIsPressed(pressed);
-
-    console.log(pressed, recipeId);
-  };
-
-  return (
-    <Toggle.Root onPressedChange={handleFavChange} className="cursor-pointer">
-      <Icon border active={isPressed} size="lg">
-        <AiFillHeart />
-      </Icon>
-    </Toggle.Root>
-  );
+	return (
+		<Button
+			border
+			onClick={(e: MouseEvent<HTMLElement>) => {
+				e.stopPropagation();
+				console.log(recipeId);
+			}}
+		>
+			<AiFillHeart />
+		</Button>
+	);
 };
 
 export default ButtonFav;

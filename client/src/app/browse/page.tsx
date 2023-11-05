@@ -8,6 +8,7 @@ import { useBrowsePageContext } from './context/BrowsePageContext';
 import { useEffect } from 'react';
 import { Category, Ingredient, Recipe } from '@/src/types/types';
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
+import useFavourites from '@/src/hooks/users/useFavourites';
 
 type CheckboxData = {
 	_id: string;
@@ -17,7 +18,9 @@ type CheckboxData = {
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
 
-	console.log(allRecipes[0]);
+	const { favouriteRecipes } = useFavourites();
+
+	console.log(favouriteRecipes);
 
 	const {
 		recipeSearchQuery,
