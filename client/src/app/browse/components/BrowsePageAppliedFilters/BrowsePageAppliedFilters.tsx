@@ -22,6 +22,8 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 		setRecipeSearchQuery,
 		showOnlyFavourites,
 		setShowOnlyFavourites,
+		showOnlyMyRecipes,
+		setShowOnlyMyRecipes,
 		setCookingTime,
 		setSelectedCategories,
 		setSelectedIngredients,
@@ -37,6 +39,9 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 				break;
 			case 'favourites':
 				setShowOnlyFavourites(false);
+				break;
+			case 'myRecipes':
+				setShowOnlyMyRecipes(false);
 				break;
 			case 'cookingTime':
 				setCookingTime(cookingTimeMinMax.min, cookingTimeMinMax.max);
@@ -75,6 +80,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 	const isFilters =
 		recipeSearchQuery !== '' ||
 		showOnlyFavourites === true ||
+		showOnlyMyRecipes === true ||
 		cookingTimeMin !== cookingTimeMinMax.min ||
 		cookingTimeMax !== cookingTimeMinMax.max ||
 		selectedCategories.length > 0 ||
@@ -101,6 +107,14 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 							onClick={() => removeFilter('favourites')}
 						>
 							My Favourites
+						</div>
+					)}
+					{showOnlyMyRecipes && (
+						<div
+							className="filter-tag"
+							onClick={() => removeFilter('myRecipes')}
+						>
+							My Recipes
 						</div>
 					)}
 					{(cookingTimeMin !== cookingTimeMinMax.min ||

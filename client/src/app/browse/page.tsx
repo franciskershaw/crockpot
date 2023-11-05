@@ -22,6 +22,7 @@ const BrowsePage = () => {
 	const {
 		recipeSearchQuery,
 		showOnlyFavourites,
+		showOnlyMyRecipes,
 		cookingTimeMin,
 		cookingTimeMax,
 		selectedCategories,
@@ -32,9 +33,12 @@ const BrowsePage = () => {
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
 		const isInFavourites =
 			!showOnlyFavourites || favouriteRecipes.includes(recipe._id);
+		const isMyRecipe =
+			!showOnlyMyRecipes || (user && recipe.createdBy === user._id);
 
 		return (
 			isInFavourites &&
+			isMyRecipe &&
 			recipe.name.toLowerCase().includes(recipeSearchQuery.toLowerCase()) &&
 			recipe.timeInMinutes >= cookingTimeMin &&
 			recipe.timeInMinutes <= cookingTimeMax &&

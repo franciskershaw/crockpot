@@ -1,5 +1,24 @@
+import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
+import useUser from '@/src/hooks/auth/useUser';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
+
 const MyRecipes = () => {
-  return <div>My Recipes</div>;
+	const { allRecipes } = useRecipes();
+	const { user } = useUser();
+
+	const myRecipes = user
+		? allRecipes.filter((recipe) => recipe.createdBy === user._id)
+		: null;
+
+	return (
+		<div>
+			{myRecipes ? (
+				<RecipeCardList recipes={myRecipes} />
+			) : (
+				<h2>YOUVE GOT NAY RECIPES</h2>
+			)}
+		</div>
+	);
 };
 
 export default MyRecipes;

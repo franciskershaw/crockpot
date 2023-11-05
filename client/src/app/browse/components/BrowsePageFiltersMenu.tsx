@@ -19,16 +19,22 @@ function BrowsePageFiltersMenu() {
 	const {
 		showOnlyFavourites,
 		toggleShowOnlyFavourites,
+		showOnlyMyRecipes,
+		toggleShowOnlyMyRecipes,
 		cookingTimeMin,
 		cookingTimeMax,
 		setCookingTime,
 		setSelectedCategories,
 		setSelectedIngredients,
 	} = useBrowsePageContext();
-	const { cookingTimeMinMax } = useRecipes();
+	const { allRecipes, cookingTimeMinMax } = useRecipes();
 	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
 	const { user } = useUser();
+
+	const myRecipes = user
+		? allRecipes.filter((recipe) => recipe.createdBy === user._id)
+		: null;
 
 	const handleCategoryCheckboxChange = (
 		categoryId: string,
@@ -76,9 +82,9 @@ function BrowsePageFiltersMenu() {
 					/>
 					<hr />
 					<Switch
-						label="My Recipes (2)"
-						checked={true}
-						onChange={() => console.log('My recipes')}
+						label={`My Recipes (${myRecipes ? myRecipes.length : '0'})`}
+						checked={showOnlyMyRecipes}
+						onChange={toggleShowOnlyMyRecipes}
 					/>
 					<hr />
 				</>
