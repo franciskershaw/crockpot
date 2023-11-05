@@ -52,3 +52,32 @@ export interface MenuRecipe {
   recipe: Recipe;
   serves: number;
 }
+
+export interface ItemCategory {
+  _id: string;
+  name: string;
+  faIcon: string;
+  __v: number;
+}
+
+export interface ShoppingItem {
+  _id: string;
+  name: string;
+  category: string;
+  __v: number;
+}
+
+export interface ShoppingListItem {
+  item: ShoppingItem;
+  quantity: number;
+  unit: string;
+  obtained: boolean;
+  extra?: boolean;
+}
+
+export interface GroupedShoppingList {
+  categoryId: string;
+  categoryName: string;
+  faIcon: string;
+  items: ShoppingListItem[];
+}

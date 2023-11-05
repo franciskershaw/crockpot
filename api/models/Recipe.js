@@ -3,7 +3,10 @@ const User = require('./User');
 
 const ingredientSchema = mongoose.Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Item',
+    },
     quantity: Number,
     unit: String,
   },

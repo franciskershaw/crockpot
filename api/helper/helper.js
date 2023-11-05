@@ -4,6 +4,8 @@ const Item = require('../models/Item');
 
 const jwt = require('jsonwebtoken');
 
+const { BadRequestError } = require('../errors/errors');
+
 const generateShoppingList = async (menu) => {
   let shoppingList = [];
   const waterId = '6310ad7242687f4a1cf7f26a'; // The ID of the water ingredient.
@@ -96,6 +98,14 @@ const generateUserObject = (user) => {
   };
 };
 
+const validateRequest = (payload, schema) => {
+  const { value, error } = schema.validate(payload);
+  if (error) {
+    throw new BadRequestError(error.details[0].message);
+  }
+  return value;
+};
+
 module.exports = {
   generateShoppingList,
   formatItemList,
@@ -103,4 +113,5 @@ module.exports = {
   generateRefreshToken,
   verifyToken,
   generateUserObject,
+  validateRequest,
 };

@@ -9,6 +9,7 @@ const {
   ConflictError,
   UnauthorizedError,
   InternalServerError,
+  NotFoundError,
 } = require('../errors/errors');
 
 const {
@@ -18,6 +19,7 @@ const {
   generateUserObject,
   generateShoppingList,
   formatItemList,
+  validateRequest,
 } = require('../helper/helper');
 
 const {
@@ -26,7 +28,7 @@ const {
   userFavouritesSchema,
   userRecipeMenuSchema,
   editShoppingListSchema,
-  editExtraItemsSchema,
+  editExtraItemSchema,
 } = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
@@ -157,21 +159,73 @@ const getUserRecipeMenu = async (req, res, next) => {
   }
 };
 
-const editUserRecipeMenu = async (req, res, next) => {
+const addToRecipeMenu = async (req, res, next) => {
   try {
-    const { value, error } = userRecipeMenuSchema.validate(req.body);
+    const value = validateRequest(req.body, userRecipeMenuSchema);
 
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
+    const { _id: recipeId, serves } = value;
 
     const user = await User.findById(req.user._id);
 
-    const newShoppingList = await generateShoppingList(value);
+    const existingRecipe = user.recipeMenu.find((recipe) =>
+      recipe._id.equals(recipeId)
+    );
 
-    user.recipeMenu = value;
+    if (existingRecipe) {
+      if (serves <= existingRecipe.serves) {
+        throw new BadRequestError(
+          'Quantity must be greater than the existing quantity'
+        );
+      }
+      existingRecipe.serves = serves;
+    } else {
+      const recipeExists = await Recipe.findById(recipeId);
+      if (!recipeExists) throw new NotFoundError('Recipe not found');
+      user.recipeMenu.push({ _id: recipeId, serves });
+    }
+
+    const newShoppingList = await generateShoppingList(user.recipeMenu);
     user.shoppingList = newShoppingList;
+    await user.save();
 
+    res.status(200).json(user.recipeMenu);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const removeFromRecipeMenu = async (req, res, next) => {
+  try {
+    const value = validateRequest(req.body, userRecipeMenuSchema);
+
+    const { _id: recipeId, serves } = value;
+
+    const user = await User.findById(req.user._id);
+
+    const existingRecipe = user.recipeMenu.find((recipe) =>
+      recipe._id.equals(recipeId)
+    );
+
+    if (!existingRecipe) {
+      throw new BadRequestError('Recipe not in menu');
+    }
+
+    if (serves >= existingRecipe.serves) {
+      throw new BadRequestError(
+        'Quantity must be less than the existing quantity'
+      );
+    }
+
+    if (serves === 0) {
+      user.recipeMenu = user.recipeMenu.filter(
+        (recipe) => !recipe._id.equals(recipeId)
+      );
+    } else {
+      existingRecipe.serves = serves;
+    }
+
+    const newShoppingList = await generateShoppingList(user.recipeMenu);
+    user.shoppingList = newShoppingList;
     await user.save();
 
     res.status(200).json(user.recipeMenu);
@@ -183,7 +237,6 @@ const editUserRecipeMenu = async (req, res, next) => {
 const getUserShoppingList = async (req, res, next) => {
   try {
     const list = await formatItemList(req.user._id, 'shoppingList');
-
     res.status(200).json(list);
   } catch (err) {
     next(err);
@@ -192,18 +245,17 @@ const getUserShoppingList = async (req, res, next) => {
 
 const toggleObtainedUserShoppingList = async (req, res, next) => {
   try {
-    const { value, error } = editShoppingListSchema.validate(req.body);
+    const value = validateRequest(req.body, editShoppingListSchema);
+    const { obtained } = value;
 
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
+    const { itemId } = req.params;
 
-    let update = {
-      'shoppingList.$[item].obtained': value.obtained,
+    const update = {
+      'shoppingList.$[item].obtained': obtained,
     };
 
-    let arrayFilters = {
-      arrayFilters: [{ 'item._id': value._id }],
+    const arrayFilters = {
+      arrayFilters: [{ 'item._id': itemId }],
     };
 
     await User.updateOne({ _id: req.user._id }, { $set: update }, arrayFilters);
@@ -225,22 +277,53 @@ const getUserExtraItems = async (req, res, next) => {
   }
 };
 
-const editUserExtraItems = async (req, res, next) => {
+const updateExtraItems = async (req, res, next) => {
   try {
-    const { value, error } = editExtraItemsSchema.validate(req.body);
+    const value = validateRequest(req.body, editExtraItemSchema);
+    const { itemId } = req.params;
+    const userId = req.user._id;
 
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
-
-    // Replace the existing extraItems array with the new one
-    await User.updateOne(
-      { _id: req.user._id },
-      { $set: { extraItems: value } }
+    const user = await User.findById(userId);
+    const itemIndex = user.extraItems.findIndex(
+      (item) => item._id.toString() === itemId
     );
 
-    const newExtraItems = await formatItemList(req.user._id, 'extraItems');
+    if ('obtained' in value) {
+      user.extraItems[itemIndex].obtained = value.obtained;
+    } else {
+      if (itemIndex !== -1 && user.extraItems[itemIndex].unit === value.unit) {
+        user.extraItems[itemIndex].quantity = user.extraItems[
+          itemIndex
+        ].quantity += value.quantity;
+
+        if (user.extraItems[itemIndex].quantity === 0) {
+          user.extraItems.splice(itemIndex, 1);
+        }
+      } else {
+        user.extraItems.push({
+          _id: itemId,
+          quantity: value.quantity,
+          obtained: false,
+          unit: value.unit,
+        });
+      }
+    }
+
+    await user.save();
+
+    const newExtraItems = await formatItemList(userId, 'extraItems');
     res.status(200).json(newExtraItems);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const clearExtraItems = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    user.extraItems = [];
+    await user.save();
+    res.status(200).json(user.extraItems);
   } catch (err) {
     next(err);
   }
@@ -286,11 +369,13 @@ module.exports = {
   logoutUser,
   getUserInfo,
   getUserRecipeMenu,
-  editUserRecipeMenu,
+  addToRecipeMenu,
+  removeFromRecipeMenu,
   getUserShoppingList,
   getUserExtraItems,
   toggleObtainedUserShoppingList,
-  editUserExtraItems,
+  updateExtraItems,
+  clearExtraItems,
   getUserFavourites,
   editUserFavourites,
 };

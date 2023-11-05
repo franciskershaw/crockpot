@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { FC, ReactNode } from "react";
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { FC, ReactNode } from 'react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -20,12 +20,14 @@ const queryClient = new QueryClient({
 });
 
 export const queryKeys = {
-  items: "items",
-  recipes: "recipes",
-  recipeCategories: "recipeCategories",
-  recipeMenu: "recipeMenu",
-  user: "user",
-  shoppingList: "shoppingList",
+  items: 'items',
+  itemCategories: 'itemCategories',
+  recipes: 'recipes',
+  recipeCategories: 'recipeCategories',
+  recipeMenu: 'recipeMenu',
+  user: 'user',
+  shoppingList: 'shoppingList',
+  extraItems: 'extraItems',
 };
 
 const Providers: FC<LayoutProps> = ({ children }) => {
