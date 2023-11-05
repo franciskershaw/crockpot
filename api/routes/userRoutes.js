@@ -22,6 +22,7 @@ const {
   updateExtraItems,
   getUserFavourites,
   editUserFavourites,
+  clearExtraItems,
 } = require('../controllers/userController');
 
 // Create a user
@@ -68,5 +69,7 @@ router.route('/extraItems').get(isLoggedIn, asyncHandler(getUserExtraItems));
 router
   .route('/extraItems/:itemId')
   .put(isLoggedIn, itemIdInExtraItems, asyncHandler(updateExtraItems));
+
+router.route('/clearExtraItems').put(isLoggedIn, asyncHandler(clearExtraItems));
 
 module.exports = router;

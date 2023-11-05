@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
-const User = require("../models/User");
-const Recipe = require("../models/Recipe");
-const Item = require("../models/Item");
+const User = require('../models/User');
+const Recipe = require('../models/Recipe');
+const Item = require('../models/Item');
 
 const {
   BadRequestError,
@@ -10,7 +10,7 @@ const {
   UnauthorizedError,
   InternalServerError,
   NotFoundError,
-} = require("../errors/errors");
+} = require('../errors/errors');
 
 const {
   generateAccessToken,
@@ -20,7 +20,7 @@ const {
   generateShoppingList,
   formatItemList,
   validateRequest,
-} = require("../helper/helper");
+} = require('../helper/helper');
 
 const {
   createUserSchema,
@@ -29,7 +29,7 @@ const {
   userRecipeMenuSchema,
   editShoppingListSchema,
   editExtraItemSchema,
-} = require("../joiSchemas/schemas");
+} = require('../joiSchemas/schemas');
 
 const registerUser = async (req, res, next) => {
   try {
@@ -43,7 +43,7 @@ const registerUser = async (req, res, next) => {
 
     const userExists = await User.findOne({ username });
     if (userExists) {
-      throw new ConflictError("User already exists");
+      throw new ConflictError('User already exists');
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -54,14 +54,14 @@ const registerUser = async (req, res, next) => {
     if (user) {
       const refreshToken = generateRefreshToken(user._id);
 
-      res.cookie("refreshToken", refreshToken, {
+      res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
       res.status(201).json(generateUserObject(user));
     } else {
-      throw new InternalServerError("Error creating user");
+      throw new InternalServerError('Error creating user');
     }
   } catch (err) {
     next(err);
@@ -81,18 +81,18 @@ const loginUser = async (req, res, next) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      throw new BadRequestError("Username or password is incorrect");
+      throw new BadRequestError('Username or password is incorrect');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      throw new BadRequestError("Username or password is incorrect");
+      throw new BadRequestError('Username or password is incorrect');
     }
 
     const refreshToken = generateRefreshToken(user._id);
 
-    res.cookie("refreshToken", refreshToken, {
+    res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
@@ -104,15 +104,15 @@ const loginUser = async (req, res, next) => {
 };
 
 const logoutUser = (req, res) => {
-  res.clearCookie("refreshToken");
-  res.status(200).json({ message: "User logged out" });
+  res.clearCookie('refreshToken');
+  res.status(200).json({ message: 'User logged out' });
 };
 
 const checkRefreshToken = (req, res, next) => {
   const cookies = req.cookies;
 
   if (!cookies?.refreshToken)
-    throw new UnauthorizedError("No refresh token", "NO_TOKEN");
+    throw new UnauthorizedError('No refresh token', 'NO_TOKEN');
 
   const refreshToken = cookies.refreshToken;
 
@@ -123,9 +123,9 @@ const checkRefreshToken = (req, res, next) => {
 
     res.json({ accessToken, _id });
   } catch (error) {
-    res.clearCookie("refreshToken");
+    res.clearCookie('refreshToken');
 
-    throw new UnauthorizedError("Issues validating the token");
+    throw new UnauthorizedError('Issues validating the token');
   }
 };
 
@@ -142,8 +142,8 @@ const getUserRecipeMenu = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     const recipes = await Recipe.find({ _id: { $in: user.recipeMenu } })
-      .populate("createdBy", "username")
-      .populate("categories");
+      .populate('createdBy', 'username')
+      .populate('categories');
     const menu = [];
 
     for (const recipe of recipes) {
@@ -174,13 +174,13 @@ const addToRecipeMenu = async (req, res, next) => {
     if (existingRecipe) {
       if (serves <= existingRecipe.serves) {
         throw new BadRequestError(
-          "Quantity must be greater than the existing quantity"
+          'Quantity must be greater than the existing quantity'
         );
       }
       existingRecipe.serves = serves;
     } else {
       const recipeExists = await Recipe.findById(recipeId);
-      if (!recipeExists) throw new NotFoundError("Recipe not found");
+      if (!recipeExists) throw new NotFoundError('Recipe not found');
       user.recipeMenu.push({ _id: recipeId, serves });
     }
 
@@ -207,12 +207,12 @@ const removeFromRecipeMenu = async (req, res, next) => {
     );
 
     if (!existingRecipe) {
-      throw new BadRequestError("Recipe not in menu");
+      throw new BadRequestError('Recipe not in menu');
     }
 
     if (serves >= existingRecipe.serves) {
       throw new BadRequestError(
-        "Quantity must be less than the existing quantity"
+        'Quantity must be less than the existing quantity'
       );
     }
 
@@ -236,7 +236,7 @@ const removeFromRecipeMenu = async (req, res, next) => {
 
 const getUserShoppingList = async (req, res, next) => {
   try {
-    const list = await formatItemList(req.user._id, "shoppingList");
+    const list = await formatItemList(req.user._id, 'shoppingList');
     res.status(200).json(list);
   } catch (err) {
     next(err);
@@ -251,16 +251,16 @@ const toggleObtainedUserShoppingList = async (req, res, next) => {
     const { itemId } = req.params;
 
     const update = {
-      "shoppingList.$[item].obtained": obtained,
+      'shoppingList.$[item].obtained': obtained,
     };
 
     const arrayFilters = {
-      arrayFilters: [{ "item._id": itemId }],
+      arrayFilters: [{ 'item._id': itemId }],
     };
 
     await User.updateOne({ _id: req.user._id }, { $set: update }, arrayFilters);
 
-    const newShoppingList = await formatItemList(req.user._id, "shoppingList");
+    const newShoppingList = await formatItemList(req.user._id, 'shoppingList');
     res.status(200).json(newShoppingList);
   } catch (err) {
     next(err);
@@ -269,7 +269,7 @@ const toggleObtainedUserShoppingList = async (req, res, next) => {
 
 const getUserExtraItems = async (req, res, next) => {
   try {
-    const extraItems = await formatItemList(req.user._id, "extraItems");
+    const extraItems = await formatItemList(req.user._id, 'extraItems');
 
     res.status(200).json(extraItems);
   } catch (err) {
@@ -288,7 +288,7 @@ const updateExtraItems = async (req, res, next) => {
       (item) => item._id.toString() === itemId
     );
 
-    if ("obtained" in value) {
+    if ('obtained' in value) {
       user.extraItems[itemIndex].obtained = value.obtained;
     } else {
       if (itemIndex !== -1 && user.extraItems[itemIndex].unit === value.unit) {
@@ -311,8 +311,19 @@ const updateExtraItems = async (req, res, next) => {
 
     await user.save();
 
-    const newExtraItems = await formatItemList(userId, "extraItems");
+    const newExtraItems = await formatItemList(userId, 'extraItems');
     res.status(200).json(newExtraItems);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const clearExtraItems = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    user.extraItems = [];
+    await user.save();
+    res.status(200).json(user.extraItems);
   } catch (err) {
     next(err);
   }
@@ -322,8 +333,8 @@ const getUserFavourites = async (req, res, next) => {
   try {
     const { favouriteRecipes } = await User.findById(req.user._id);
     const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } })
-      .populate("createdBy", "username")
-      .populate("categories");
+      .populate('createdBy', 'username')
+      .populate('categories');
 
     res.status(200).json(favourites);
   } catch (err) {
@@ -364,6 +375,7 @@ module.exports = {
   getUserExtraItems,
   toggleObtainedUserShoppingList,
   updateExtraItems,
+  clearExtraItems,
   getUserFavourites,
   editUserFavourites,
 };
