@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { Category, Ingredient, Recipe } from '@/src/types/types';
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
 import useFavourites from '@/src/hooks/users/useFavourites';
+import useUser from '@/src/hooks/auth/useUser';
 
 type CheckboxData = {
 	_id: string;
@@ -17,9 +18,12 @@ type CheckboxData = {
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
+	const { user } = useUser();
+	const favouriteRecipes = user?.favouriteRecipes || [];
 
 	const {
 		recipeSearchQuery,
+		showOnlyFavourites,
 		cookingTimeMin,
 		cookingTimeMax,
 		selectedCategories,
@@ -28,7 +32,11 @@ const BrowsePage = () => {
 
 	// Filter recipes based on search query, cooking time, categories and ingredients
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
+		const isInFavourites =
+			!showOnlyFavourites || favouriteRecipes.includes(recipe._id);
+
 		return (
+			isInFavourites &&
 			recipe.name.toLowerCase().includes(recipeSearchQuery.toLowerCase()) &&
 			recipe.timeInMinutes >= cookingTimeMin &&
 			recipe.timeInMinutes <= cookingTimeMax &&

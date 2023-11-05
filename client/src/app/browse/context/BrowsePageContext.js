@@ -16,6 +16,7 @@ export const useBrowsePageContext = () => {
 export const BrowsePageProvider = ({ children }) => {
 	const { cookingTimeMinMax } = useRecipes();
 	const [recipeSearchQuery, setRecipeSearchQuery] = useState('');
+	const [showOnlyFavourites, setShowOnlyFavourites] = useState(false);
 	const [cookingTimeMin, setCookingTimeMin] = useState(0);
 	const [cookingTimeMax, setCookingTimeMax] = useState(Infinity);
 	const [selectedCategories, setSelectedCategories] = useState([]);
@@ -33,8 +34,11 @@ export const BrowsePageProvider = ({ children }) => {
 		setCookingTimeMax(max);
 	};
 
+	const toggleShowOnlyFavourites = () => setShowOnlyFavourites((prev) => !prev);
+
 	const resetFilters = () => {
 		setRecipeSearchQuery('');
+		setShowOnlyFavourites(false);
 		setCookingTimeMin(cookingTimeMinMax.min);
 		setCookingTimeMax(cookingTimeMinMax.max);
 		setSelectedCategories([]);
@@ -43,11 +47,14 @@ export const BrowsePageProvider = ({ children }) => {
 
 	const value = {
 		recipeSearchQuery,
+		showOnlyFavourites,
 		cookingTimeMin,
 		cookingTimeMax,
 		selectedCategories,
 		selectedIngredients,
 		setRecipeSearchQuery,
+		setShowOnlyFavourites,
+		toggleShowOnlyFavourites,
 		setCookingTime,
 		setSelectedCategories,
 		setSelectedIngredients,
