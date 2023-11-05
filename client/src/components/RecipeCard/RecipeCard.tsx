@@ -5,6 +5,7 @@ import TimingTag from '../TimingTag/TimingTag';
 import useUser from '@/src/hooks/auth/useUser';
 
 type RecipeCardProps = {
+	id: string;
 	imageUrl: any;
 	timeInMinutes: number;
 	name: string;
@@ -12,6 +13,7 @@ type RecipeCardProps = {
 };
 
 const RecipeCard = ({
+	id,
 	imageUrl,
 	timeInMinutes,
 	name,
@@ -21,6 +23,7 @@ const RecipeCard = ({
 	const remainingCategoriesCount = categories.length - 3;
 
 	const { user } = useUser();
+	const isFav = user?.favouriteRecipes.includes(id);
 
 	return (
 		<div className="rounded-xl overflow-hidden cursor-pointer">
@@ -35,7 +38,7 @@ const RecipeCard = ({
 				{user && (
 					<>
 						<div className="absolute top-1 left-1">
-							<ButtonFav recipeId={name} />
+							<ButtonFav id={id} isFav={isFav} />
 						</div>
 						<div className="absolute top-1 right-1">
 							<ButtonCart recipeId={name} />

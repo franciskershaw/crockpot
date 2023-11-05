@@ -14,6 +14,9 @@ const useFavourites = () => {
 
 	// Requests
 	const getFavouriteRecipesReq = async () => {
+		if (!user) {
+			throw new Error('User is not authenticated');
+		}
 		const config = createConfig(user);
 		const response = await api.get('/api/users/favourites', config);
 		return response.data;
@@ -22,6 +25,9 @@ const useFavourites = () => {
 	const { data: favouriteRecipes = [] } = useQuery(
 		[user.favouriteRecipes],
 		getFavouriteRecipesReq,
+		{
+			enabled: !!user,
+		},
 	);
 
 	return {

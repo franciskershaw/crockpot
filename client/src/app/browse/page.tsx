@@ -18,10 +18,6 @@ type CheckboxData = {
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
 
-	const { favouriteRecipes } = useFavourites();
-
-	console.log(favouriteRecipes);
-
 	const {
 		recipeSearchQuery,
 		cookingTimeMin,
