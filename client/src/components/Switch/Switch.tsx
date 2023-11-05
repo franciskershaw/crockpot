@@ -4,14 +4,12 @@ import './styles.scss';
 
 type SwitchProps = {
 	label: string;
+	checked: boolean;
+	onChange: (checked: boolean) => void;
 };
 
-export default function Switch({ label }: SwitchProps) {
+export default function Switch({ label, checked, onChange }: SwitchProps) {
 	const switchId = uuidv4();
-
-	const handleCheckedChange = (isChecked: boolean) => {
-		console.log(label, isChecked);
-	};
 
 	return (
 		<div className="flex items-center">
@@ -21,7 +19,8 @@ export default function Switch({ label }: SwitchProps) {
 			<SwitchRadix.Root
 				className="SwitchRoot"
 				id={switchId}
-				onCheckedChange={handleCheckedChange}
+				checked={checked}
+				onCheckedChange={onChange}
 			>
 				<SwitchRadix.Thumb className="SwitchThumb" />
 			</SwitchRadix.Root>

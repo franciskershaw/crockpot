@@ -15,7 +15,7 @@ type ButtonCartProps = {
 const ButtonCart = ({
 	recipeId,
 	initialValue = 4,
-	min = 0,
+	min = 1,
 	max = 50,
 	onChange,
 }: ButtonCartProps) => {
@@ -48,7 +48,7 @@ const ButtonCart = ({
 
 	return (
 		<div className="relative">
-			<div className="flex items-center border-2 border-blue-500 bg-white rounded-full overflow-hidden w-fit mb-5">
+			<div className="flex items-center border-2 border-black bg-white rounded-full overflow-hidden w-fit">
 				<div className="relative">
 					<div
 						className={`absolute opacity-100 cursor-pointer fade ${
@@ -56,7 +56,7 @@ const ButtonCart = ({
 						}`}
 					>
 						<Button
-							type="secondary"
+							hoverOff
 							onClick={(e: MouseEvent<HTMLElement>) => {
 								e.stopPropagation();
 								setIsExpanded(true);
@@ -67,7 +67,6 @@ const ButtonCart = ({
 					</div>
 					<div>
 						<Button
-							type="secondary"
 							onClick={(e: MouseEvent<HTMLElement>) => {
 								e.stopPropagation();
 								handleDecrease();
@@ -93,7 +92,6 @@ const ButtonCart = ({
 						onChange={handleChange}
 					/>
 					<Button
-						type="secondary"
 						onClick={(e: MouseEvent<HTMLElement>) => {
 							e.stopPropagation();
 							handleIncrease();
@@ -113,7 +111,7 @@ const ButtonCart = ({
 					}}
 					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
 				>
-					Remove from basket
+					Remove from list
 				</h5>
 			)}
 		</div>

@@ -33,6 +33,7 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 					trigger={
 						<div className="recipe-card">
 							<RecipeCard
+								id={recipe._id}
 								imageUrl={recipe.image?.url}
 								timeInMinutes={recipe.timeInMinutes}
 								name={recipe.name}
