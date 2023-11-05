@@ -1,5 +1,5 @@
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Accordion from '@/src/components/Accordion/Accordion';
 import useShoppingList from '../../hooks/useShoppingList';
 import useExtraItems from '../../hooks/useExtraItems';
@@ -63,6 +63,9 @@ const ShoppingList = () => {
           unit: extraUnit,
         },
       });
+      setSearchQuery('');
+      setExtraQuantity(0);
+      setExtraUnit('');
     }
   };
 
@@ -83,9 +86,7 @@ const ShoppingList = () => {
                 <Modal
                   key={result._id}
                   title={`Add extra ${result.name} to shopping list`}
-                  trigger={
-                    <p onClick={() => console.log('HI')}>{result.name}</p>
-                  }>
+                  trigger={<p>{result.name}</p>}>
                   <div className="flex flex-col items-center gap-4 p-8">
                     <div className="flex items-center justify-center gap-8 flex-grow mb-4">
                       <div className="flex flex-col gap-2">
