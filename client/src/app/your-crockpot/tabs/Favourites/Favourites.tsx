@@ -3,10 +3,15 @@ import useFavourites from '@/src/hooks/users/useFavourites';
 
 const Favourites = () => {
 	const { favouriteRecipes } = useFavourites();
+	console.log(favouriteRecipes);
 
 	return (
 		<div>
-			<RecipeCardList recipes={favouriteRecipes} />
+			{favouriteRecipes.length !== 0 ? (
+				<RecipeCardList recipes={favouriteRecipes} />
+			) : (
+				<h2>YOUVE GOT NAY RECIPES</h2>
+			)}
 		</div>
 	);
 };
