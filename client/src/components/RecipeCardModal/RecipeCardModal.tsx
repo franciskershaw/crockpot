@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ButtonCart from '../ButtonCart/ButtonCart';
 import Tabs from '../Tabs/Tabs';
 import { Ingredient } from '@/src/types/types';
+import useUser from '@/src/hooks/auth/useUser';
 
 type RecipeCardModalProps = {
 	id: string;
@@ -21,6 +22,8 @@ const RecipeCardModal = ({
 	notes,
 }: RecipeCardModalProps) => {
 	const [quantity, setQuantity] = useState(4);
+	const { user } = useUser();
+
 	return (
 		<div>
 			<div className="relative">
@@ -33,11 +36,13 @@ const RecipeCardModal = ({
 						<h2>{name}</h2>
 						<h3>Created by TedBrisket</h3>
 					</div>
-					<ButtonCart
-						recipeId={id}
-						initialValue={quantity}
-						onChange={setQuantity}
-					/>
+					{user && (
+						<ButtonCart
+							recipeId={id}
+							initialValue={quantity}
+							onChange={setQuantity}
+						/>
+					)}
 				</div>
 			</div>
 			<div className="p-4 pb-0">

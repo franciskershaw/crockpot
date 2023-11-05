@@ -8,6 +8,7 @@ import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import { useBrowsePageContext } from '../context/BrowsePageContext';
+import useUser from '@/src/hooks/auth/useUser';
 
 type CheckboxData = {
 	_id: string;
@@ -16,6 +17,8 @@ type CheckboxData = {
 
 function BrowsePageFiltersMenu() {
 	const {
+		showOnlyFavourites,
+		toggleShowOnlyFavourites,
 		cookingTimeMin,
 		cookingTimeMax,
 		setCookingTime,
@@ -25,6 +28,7 @@ function BrowsePageFiltersMenu() {
 	const { cookingTimeMinMax } = useRecipes();
 	const categories = useRecipeCategories();
 	const { ingredients } = useItems();
+	const { user } = useUser();
 
 	const handleCategoryCheckboxChange = (
 		categoryId: string,
@@ -63,10 +67,22 @@ function BrowsePageFiltersMenu() {
 
 	return (
 		<div className="space-y-3">
-			<Switch label="My Favourites (3)" />
-			<hr />
-			<Switch label="My Recipes (2)" />
-			<hr />
+			{user && (
+				<>
+					<Switch
+						label={`My Favourites (${user.favouriteRecipes.length})`}
+						checked={showOnlyFavourites}
+						onChange={toggleShowOnlyFavourites}
+					/>
+					<hr />
+					<Switch
+						label="My Recipes (2)"
+						checked={true}
+						onChange={() => console.log('My recipes')}
+					/>
+					<hr />
+				</>
+			)}
 			<div>
 				<h3>Serving Time</h3>
 				<Slider

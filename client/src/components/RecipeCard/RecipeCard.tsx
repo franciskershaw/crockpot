@@ -2,8 +2,10 @@ import React from 'react';
 import ButtonFav from '../ButtonFav/ButtonFav';
 import ButtonCart from '../ButtonCart/ButtonCart';
 import TimingTag from '../TimingTag/TimingTag';
+import useUser from '@/src/hooks/auth/useUser';
 
 type RecipeCardProps = {
+	id: string;
 	imageUrl: any;
 	timeInMinutes: number;
 	name: string;
@@ -11,6 +13,7 @@ type RecipeCardProps = {
 };
 
 const RecipeCard = ({
+	id,
 	imageUrl,
 	timeInMinutes,
 	name,
@@ -18,6 +21,9 @@ const RecipeCard = ({
 }: RecipeCardProps) => {
 	const firstThreeCategories = categories.slice(0, 3);
 	const remainingCategoriesCount = categories.length - 3;
+
+	const { user } = useUser();
+	const isFav = user?.favouriteRecipes.includes(id);
 
 	return (
 		<div className="rounded-xl overflow-hidden cursor-pointer">
@@ -29,12 +35,16 @@ const RecipeCard = ({
 				/>
 
 				{/* Absolute buttons */}
-				<div className="absolute top-1 left-1">
-					<ButtonFav recipeId={name} />
-				</div>
-				<div className="absolute top-1 right-1">
-					<ButtonCart recipeId={name} />
-				</div>
+				{user && (
+					<>
+						<div className="absolute top-1 left-1">
+							<ButtonFav id={id} isFav={isFav} />
+						</div>
+						<div className="absolute top-1 right-1">
+							<ButtonCart recipeId={name} />
+						</div>
+					</>
+				)}
 				<div className="absolute bottom-[-12px] right-2">
 					<TimingTag time={timeInMinutes} />
 				</div>
