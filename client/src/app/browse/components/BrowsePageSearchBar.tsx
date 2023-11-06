@@ -8,19 +8,20 @@ import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
 import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 function BrowsePageSearchBar() {
-	const { recipeSearchQuery, setRecipeSearchQuery, resetFilters } =
-		useBrowsePageContext();
+  const { recipeSearchQuery, setRecipeSearchQuery, resetFilters } =
+    useBrowsePageContext();
 
-	return (
-		<>
-			<div className="w-full">
-				<SearchBar
-					searchQuery={recipeSearchQuery}
-					setSearchQuery={setRecipeSearchQuery}
-				/>
-			</div>
-			<div className="md:hidden">
-				<Modal
+  return (
+    <>
+      <div className="w-full">
+        <SearchBar
+          searchQuery={recipeSearchQuery}
+          setSearchQuery={setRecipeSearchQuery}
+        />
+      </div>
+      <div className="md:hidden">
+        {/* HI ZOE, commenting out the Modal below removes that console error */}
+        {/* <Modal
 					title="Recipe Filters"
 					trigger={
 						<Button border>
@@ -29,18 +30,18 @@ function BrowsePageSearchBar() {
 					}
 				>
 					<BrowsePageFiltersMenu />
-				</Modal>
-			</div>
-			<div className="md:hidden">
-				<Button border onClick={resetFilters}>
-					<GrRefresh />
-				</Button>
-			</div>
-			<div className="hidden md:block">
-				<Button border onClick={resetFilters} text={'Clear filters'} />
-			</div>
-		</>
-	);
+				</Modal> */}
+      </div>
+      <div className="md:hidden">
+        <Button border onClick={resetFilters}>
+          <GrRefresh />
+        </Button>
+      </div>
+      <div className="hidden md:block">
+        <Button border onClick={resetFilters} text={'Clear filters'} />
+      </div>
+    </>
+  );
 }
 
 export default BrowsePageSearchBar;

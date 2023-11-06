@@ -23,7 +23,10 @@ export interface Image {
 }
 
 export interface Ingredient {
-  _id: string;
+  _id: {
+    name: string;
+    _id: string;
+  };
   quantity: number;
   unit: string;
 }
@@ -43,7 +46,10 @@ export interface Recipe {
   instructions: string[];
   notes: string[];
   categories: Category[];
-  createdBy: string;
+  createdBy: {
+    _id: string;
+    username: string;
+  };
   approved: boolean;
   __v: number;
 }
