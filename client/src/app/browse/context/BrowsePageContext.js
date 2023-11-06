@@ -30,10 +30,6 @@ export const BrowsePageProvider = ({ children }) => {
     }
   }, [cookingTimeMinMax]);
 
-  useEffect(() => {
-    console.log(selectedIngredients);
-  }, [selectedIngredients]);
-
   const setCookingTime = (min, max) => {
     setCookingTimeMin(min);
     setCookingTimeMax(max);
