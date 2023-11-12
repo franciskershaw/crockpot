@@ -77,7 +77,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
   };
 
   return (
-    <div className='flex gap-4 items-center tw' key={item.item._id}>
+    <div className='flex gap-4 items-center' key={item.item._id}>
       <div className='flex-grow flex items-center gap-4'>
         <input
           checked={obtained}
