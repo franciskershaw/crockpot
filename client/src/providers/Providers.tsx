@@ -28,6 +28,7 @@ export const queryKeys = {
   user: 'user',
   shoppingList: 'shoppingList',
   extraItems: 'extraItems',
+  favouriteRecipes: 'favouriteRecipes',
 };
 
 const Providers: FC<LayoutProps> = ({ children }) => {
