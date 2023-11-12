@@ -22,6 +22,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
       toggleObtained({
         itemId: item.item._id,
         obtained: e.target.checked,
+        isExtra: item.extra || false,
       });
       setObtained(e.target.checked);
     } catch (err) {

@@ -1,8 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import useAxios from '@/src/hooks/axios/useAxios';
-import { queryKeys } from '@/src/providers/Providers';
-import useUser from '@/src/hooks/auth/useUser';
-import { createConfig } from '@/src/helper';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxios from "@/src/hooks/axios/useAxios";
+import { queryKeys } from "@/src/providers/Providers";
+import useUser from "@/src/hooks/auth/useUser";
+import { createConfig } from "@/src/helper";
 
 type UpdateExtraItemsBody = {
   quantity?: number;
@@ -23,14 +23,14 @@ const useExtraItems = () => {
   // Requests
   const getExtraItemsReq = async () => {
     const config = createConfig(user);
-    const response = await api.get('/api/users/extraItems', config);
+    const response = await api.get("/api/users/extraItems", config);
     return response.data;
   };
 
-  const updateExtraItemsReq = async (
-    itemId: string,
-    body: UpdateExtraItemsBody
-  ) => {
+  const updateExtraItemsReq = async ({
+    itemId,
+    body,
+  }: UpdateExtraItemsVariables) => {
     const config = createConfig(user);
     const response = await api.put(
       `/api/users/extraItems/${itemId}`,
@@ -43,7 +43,7 @@ const useExtraItems = () => {
 
   const clearExtraItemsReq = async () => {
     const config = createConfig(user);
-    const response = await api.put('/api/users/clearExtraItems', {}, config);
+    const response = await api.put("/api/users/clearExtraItems", {}, config);
     return response.data;
   };
 
@@ -55,15 +55,14 @@ const useExtraItems = () => {
 
   // useMutation hooks
   const { mutate: updateExtraItems } = useMutation(
-    (variables: UpdateExtraItemsVariables) =>
-      updateExtraItemsReq(variables.itemId, variables.body),
+    (variables: UpdateExtraItemsVariables) => updateExtraItemsReq(variables),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([queryKeys.user]);
         queryClient.invalidateQueries([queryKeys.extraItems]);
       },
       onError: (error) => {
-        console.error('Error updating extra items:', error);
+        console.error("Error updating extra items:", error);
       },
     }
   );
@@ -74,7 +73,7 @@ const useExtraItems = () => {
       queryClient.invalidateQueries([queryKeys.extraItems]);
     },
     onError: (error) => {
-      console.error('Error updating extra items:', error);
+      console.error("Error updating extra items:", error);
     },
   });
 
