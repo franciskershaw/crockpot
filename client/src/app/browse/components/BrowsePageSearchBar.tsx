@@ -13,31 +13,30 @@ function BrowsePageSearchBar() {
 
   return (
     <>
-      <div className="w-full">
+      <div className='w-full'>
         <SearchBar
           searchQuery={recipeSearchQuery}
           setSearchQuery={setRecipeSearchQuery}
         />
       </div>
-      <div className="md:hidden">
-        {/* HI ZOE, commenting out the Modal below removes that console error */}
-        {/* <Modal
-					title="Recipe Filters"
-					trigger={
-						<Button border>
-							<AiFillFilter />
-						</Button>
-					}
-				>
-					<BrowsePageFiltersMenu />
-				</Modal> */}
+      <div className='md:hidden'>
+        <Modal
+          title='Recipe Filters'
+          trigger={
+            <Button border>
+              <AiFillFilter />
+            </Button>
+          }
+        >
+          <BrowsePageFiltersMenu />
+        </Modal>
       </div>
-      <div className="md:hidden">
+      <div className='md:hidden'>
         <Button border onClick={resetFilters}>
           <GrRefresh />
         </Button>
       </div>
-      <div className="hidden md:block">
+      <div className='hidden md:block'>
         <Button border onClick={resetFilters} text={'Clear filters'} />
       </div>
     </>
