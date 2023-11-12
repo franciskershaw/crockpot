@@ -8,7 +8,7 @@ const Menu = () => {
   const { recipeMenuRecipes } = useRecipeMenu();
 
   return (
-    <div className={`xl:flex xl:mt-8 gap-4 mx-8`}>
+    <div className={`xl:flex xl:mt-8 gap-4`}>
       <div className={`flex justify-center my-3 xl:hidden`}>
         {/* Error caused by the Modal component and button below */}
         <Modal
