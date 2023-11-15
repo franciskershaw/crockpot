@@ -4,20 +4,27 @@ import { RiShoppingBasketLine } from 'react-icons/ri';
 import Button from '../Button/Button';
 import './styles.scss';
 
+type IsMenu = {
+	_id: string;
+	serves: number;
+};
+
 type ButtonCartProps = {
 	recipeId: string;
 	initialValue?: number;
 	min?: number;
 	max?: number;
 	onChange?: (value: number) => void;
+	isMenu: IsMenu;
 };
 
 const ButtonCart = ({
 	recipeId,
 	initialValue = 4,
-	min = 1,
+	min = 0,
 	max = 50,
 	onChange,
+	isMenu,
 }: ButtonCartProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [quantity, setQuantity] = useState(initialValue);
@@ -48,22 +55,30 @@ const ButtonCart = ({
 
 	return (
 		<div className="relative">
-			<div className="flex items-center border-2 border-black bg-white rounded-full overflow-hidden w-fit">
+			<div className="flex items-center border-2 border-black bg-white rounded-full w-fit">
 				<div className="relative">
 					<div
 						className={`absolute opacity-100 cursor-pointer fade ${
 							isExpanded ? '!opacity-0 -z-10' : ''
 						}`}
 					>
-						<Button
-							hoverOff
-							onClick={(e: MouseEvent<HTMLElement>) => {
-								e.stopPropagation();
-								setIsExpanded(true);
-							}}
-						>
-							<RiShoppingBasketLine />
-						</Button>
+						<div className="relative">
+							{isMenu && (
+								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-white border-2 border-black flex items-center justify-center">
+									<span className="text-xs">{isMenu.serves}</span>
+								</div>
+							)}
+							<Button
+								hoverOff
+								onClick={(e: MouseEvent<HTMLElement>) => {
+									e.stopPropagation();
+									setIsExpanded(true);
+								}}
+								inverse={isMenu ? true : false}
+							>
+								<RiShoppingBasketLine />
+							</Button>
+						</div>
 					</div>
 					<div>
 						<Button
@@ -111,7 +126,7 @@ const ButtonCart = ({
 					}}
 					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
 				>
-					Remove from list
+					{quantity > 0 ? 'Update basket' : 'Remove from basket'}
 				</h5>
 			)}
 		</div>
