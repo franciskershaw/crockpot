@@ -7,7 +7,7 @@ const MyRecipes = () => {
 	const { user } = useUser();
 
 	const myRecipes = user
-		? allRecipes.filter((recipe) => recipe.createdBy === user._id)
+		? allRecipes.filter((recipe) => recipe.createdBy._id === user._id)
 		: null;
 
 	return (
