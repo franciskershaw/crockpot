@@ -124,7 +124,7 @@ const ButtonCart = ({
 						e.stopPropagation();
 						setIsExpanded(false);
 					}}
-					className="absolute bottom-[-20px] w-[134px] text-center cursor-pointer bg-black/40 text-white rounded-full"
+					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
 				>
 					{!isMenu
 						? quantity > 0
