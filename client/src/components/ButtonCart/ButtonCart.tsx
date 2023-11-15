@@ -124,9 +124,15 @@ const ButtonCart = ({
 						e.stopPropagation();
 						setIsExpanded(false);
 					}}
-					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
+					className="absolute bottom-[-20px] w-[134px] text-center cursor-pointer bg-black/40 text-white rounded-full"
 				>
-					{quantity > 0 ? 'Update basket' : 'Remove from basket'}
+					{!isMenu
+						? quantity > 0
+							? 'Add to cart'
+							: 'Cancel'
+						: quantity > 0
+						? 'Update menu'
+						: 'Remove from menu'}
 				</h5>
 			)}
 		</div>
