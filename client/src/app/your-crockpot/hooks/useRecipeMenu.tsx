@@ -50,10 +50,9 @@ const useRecipeMenu = () => {
     (variables: RecipeMenuVariables) => updateRecipeMenuReq(variables),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.recipeMenu]);
         queryClient.invalidateQueries([queryKeys.user]);
-        queryClient.invalidateQueries([queryKeys.shoppingList]);
-        queryClient.invalidateQueries([queryKeys.extraItems]);
+        queryClient.invalidateQueries([queryKeys.recipeMenu]);
+        queryClient.refetchQueries([queryKeys.shoppingList]);
       },
       onError: (error) => {
         console.error('Error toggling item obtained status:', error);
@@ -66,6 +65,8 @@ const useRecipeMenu = () => {
       setRecipeMenuRecipes(
         recipeMenu.map((recipe: MenuRecipe) => recipe.recipe)
       );
+    } else {
+      setRecipeMenuRecipes([]);
     }
   }, [recipeMenu]);
 

@@ -11,6 +11,7 @@ type RecipeCardModalProps = {
 const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
   const [quantity, setQuantity] = useState(4);
   const { user } = useUser();
+  const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
 
   return (
     <div>
@@ -26,9 +27,9 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
           </div>
           {user && (
             <ButtonCart
-              recipeId={recipe._id}
+              isMenu={isMenu}
+              recipe={recipe}
               initialValue={quantity}
-              onChange={setQuantity}
             />
           )}
         </div>
