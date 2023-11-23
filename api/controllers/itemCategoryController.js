@@ -24,7 +24,7 @@ const createNewItemCategory = async (req, res, next) => {
 		const itemCategory = new ItemCategory(value);
 		await itemCategory.save();
 
-		res.status(201).json(ItemCategory);
+		res.status(201).json(itemCategory);
 	} catch (err) {
 		next(err);
 	}
