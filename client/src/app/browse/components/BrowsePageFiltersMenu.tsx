@@ -72,7 +72,7 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className="space-y-3">
+		<div className='space-y-3'>
 			{user && (
 				<>
 					<Switch
@@ -107,7 +107,7 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a category...'}
 				checkboxes={simplifiedCategories}
 				onCheckboxChange={handleCategoryCheckboxChange}
-				listType="category"
+				listType='category'
 			/>
 			<hr />
 			<BrowsePageSearchableCheckboxList
@@ -115,7 +115,7 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a ingredient...'}
 				checkboxes={simplifiedIngredients}
 				onCheckboxChange={handleIngredientCheckboxChange}
-				listType="ingredient"
+				listType='ingredient'
 			/>
 		</div>
 	);

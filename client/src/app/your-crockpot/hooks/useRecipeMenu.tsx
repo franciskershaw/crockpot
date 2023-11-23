@@ -7,70 +7,70 @@ import { MenuRecipe } from '@/src/types/types';
 import { createConfig } from '@/src/helper';
 
 type RecipeMenuVariables = {
-  recipeId: string;
-  serves: number;
-  type: 'add' | 'remove';
+	recipeId: string;
+	serves: number;
+	type: 'add' | 'remove';
 };
 
 const useRecipeMenu = () => {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  const [recipeMenuRecipes, setRecipeMenuRecipes] = useState([]);
+	const [recipeMenuRecipes, setRecipeMenuRecipes] = useState([]);
 
-  const api = useAxios();
-  const { user } = useUser();
+	const api = useAxios();
+	const { user } = useUser();
 
-  // Queries
-  const getRecipeMenu = async () => {
-    const config = createConfig(user);
-    const response = await api.get('/api/users/recipeMenu', config);
-    return response.data;
-  };
+	// Queries
+	const getRecipeMenu = async () => {
+		const config = createConfig(user);
+		const response = await api.get('/api/users/recipeMenu', config);
+		return response.data;
+	};
 
-  const updateRecipeMenuReq = async ({
-    recipeId,
-    serves,
-    type,
-  }: RecipeMenuVariables) => {
-    const config = createConfig(user);
-    const body = {
-      _id: recipeId,
-      serves,
-    };
-    await api.put(`/api/users/recipeMenu/${type}`, body, config);
-  };
+	const updateRecipeMenuReq = async ({
+		recipeId,
+		serves,
+		type,
+	}: RecipeMenuVariables) => {
+		const config = createConfig(user);
+		const body = {
+			_id: recipeId,
+			serves,
+		};
+		await api.put(`/api/users/recipeMenu/${type}`, body, config);
+	};
 
-  const { data: recipeMenu = [] } = useQuery(
-    [queryKeys.recipeMenu],
-    getRecipeMenu
-  );
+	const { data: recipeMenu = [] } = useQuery(
+		[queryKeys.recipeMenu],
+		getRecipeMenu,
+	);
 
-  // useMutation hooks
-  const { mutate: updateRecipeMenu } = useMutation(
-    (variables: RecipeMenuVariables) => updateRecipeMenuReq(variables),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([queryKeys.user]);
-        queryClient.invalidateQueries([queryKeys.recipeMenu]);
-        queryClient.refetchQueries([queryKeys.shoppingList]);
-      },
-      onError: (error) => {
-        console.error('Error toggling item obtained status:', error);
-      },
-    }
-  );
+	// useMutation hooks
+	const { mutate: updateRecipeMenu } = useMutation(
+		(variables: RecipeMenuVariables) => updateRecipeMenuReq(variables),
+		{
+			onSuccess: () => {
+				queryClient.invalidateQueries([queryKeys.user]);
+				queryClient.invalidateQueries([queryKeys.recipeMenu]);
+				queryClient.refetchQueries([queryKeys.shoppingList]);
+			},
+			onError: (error) => {
+				console.error('Error toggling item obtained status:', error);
+			},
+		},
+	);
 
-  useEffect(() => {
-    if (recipeMenu.length) {
-      setRecipeMenuRecipes(
-        recipeMenu.map((recipe: MenuRecipe) => recipe.recipe)
-      );
-    } else {
-      setRecipeMenuRecipes([]);
-    }
-  }, [recipeMenu]);
+	useEffect(() => {
+		if (recipeMenu.length) {
+			setRecipeMenuRecipes(
+				recipeMenu.map((recipe: MenuRecipe) => recipe.recipe),
+			);
+		} else {
+			setRecipeMenuRecipes([]);
+		}
+	}, [recipeMenu]);
 
-  return { recipeMenu, recipeMenuRecipes, updateRecipeMenu };
+	return { recipeMenu, recipeMenuRecipes, updateRecipeMenu };
 };
 
 export default useRecipeMenu;

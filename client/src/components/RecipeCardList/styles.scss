@@ -1,85 +1,85 @@
 .recipe-card-list {
-  @apply grid gap-5;
+	@apply grid gap-5;
 
-  // XS screen, 1 column
-  grid-template-columns: repeat(2, 1fr);
+	// XS screen, 1 column
+	grid-template-columns: repeat(2, 1fr);
 
-  .recipe-card {
-    grid-column: span 2;
-  }
+	.recipe-card {
+		grid-column: span 2;
+	}
 
-  // Small/medium screen, 2 columns
-  @screen sm {
-    grid-template-columns: repeat(4, 1fr);
+	// Small/medium screen, 2 columns
+	@screen sm {
+		grid-template-columns: repeat(4, 1fr);
 
-    .recipe-card {
-      grid-column: span 2;
-    }
+		.recipe-card {
+			grid-column: span 2;
+		}
 
-    // Center final recipe card if 1 left over
-    .recipe-card:last-child:nth-child(2n - 1) {
-      grid-column-end: 4;
-    }
-  }
+		// Center final recipe card if 1 left over
+		.recipe-card:last-child:nth-child(2n - 1) {
+			grid-column-end: 4;
+		}
+	}
 
-  // Large screen, 3 columns
-  @screen lg {
-    grid-template-columns: repeat(6, 1fr);
+	// Large screen, 3 columns
+	@screen lg {
+		grid-template-columns: repeat(6, 1fr);
 
-    // Remove sm styling
-    .recipe-card:last-child:nth-child(2n - 1) {
-      grid-column-end: auto;
-    }
+		// Remove sm styling
+		.recipe-card:last-child:nth-child(2n - 1) {
+			grid-column-end: auto;
+		}
 
-    // Center final recipe cards if 2 left over
-    .recipe-card:last-child:nth-child(3n - 1) {
-      grid-column-end: -2;
-    }
+		// Center final recipe cards if 2 left over
+		.recipe-card:last-child:nth-child(3n - 1) {
+			grid-column-end: -2;
+		}
 
-    .recipe-card:nth-last-child(2):nth-child(3n + 1) {
-      grid-column-end: 4;
-    }
+		.recipe-card:nth-last-child(2):nth-child(3n + 1) {
+			grid-column-end: 4;
+		}
 
-    // Center final recipe card if 1 left over
-    .recipe-card:last-child:nth-child(3n - 2) {
-      grid-column-end: 5;
-    }
-  }
+		// Center final recipe card if 1 left over
+		.recipe-card:last-child:nth-child(3n - 2) {
+			grid-column-end: 5;
+		}
+	}
 
-  // XL screen, 4 columns
-  @screen xl {
-    grid-template-columns: repeat(8, 1fr);
+	// XL screen, 4 columns
+	@screen xl {
+		grid-template-columns: repeat(8, 1fr);
 
-    // Remove md styling
-    .recipe-card:last-child:nth-child(3n - 1) {
-      grid-column-end: auto;
-    }
+		// Remove md styling
+		.recipe-card:last-child:nth-child(3n - 1) {
+			grid-column-end: auto;
+		}
 
-    .recipe-card:nth-last-child(2):nth-child(3n + 1) {
-      grid-column-end: auto;
-    }
+		.recipe-card:nth-last-child(2):nth-child(3n + 1) {
+			grid-column-end: auto;
+		}
 
-    .recipe-card:last-child:nth-child(3n - 2) {
-      grid-column-end: auto;
-    }
+		.recipe-card:last-child:nth-child(3n - 2) {
+			grid-column-end: auto;
+		}
 
-    // Center final recipe cards if 3 left over
-    .recipe-card:nth-last-child(3):nth-child(4n + 1) {
-      grid-column-end: 4;
-    }
+		// Center final recipe cards if 3 left over
+		.recipe-card:nth-last-child(3):nth-child(4n + 1) {
+			grid-column-end: 4;
+		}
 
-    .recipe-card:last-child:nth-child(4n - 1) {
-      grid-column-end: 8;
-    }
+		.recipe-card:last-child:nth-child(4n - 1) {
+			grid-column-end: 8;
+		}
 
-    // Center final recipe cards if 2 left over
-    .recipe-card:nth-last-child(2):nth-child(4n + 1) {
-      grid-column-end: 5;
-    }
+		// Center final recipe cards if 2 left over
+		.recipe-card:nth-last-child(2):nth-child(4n + 1) {
+			grid-column-end: 5;
+		}
 
-    // Center final recipe card if 1 left over
-    .recipe-card:last-child:nth-child(4n - 3) {
-      grid-column-end: 6;
-    }
-  }
+		// Center final recipe card if 1 left over
+		.recipe-card:last-child:nth-child(4n - 3) {
+			grid-column-end: 6;
+		}
+	}
 }

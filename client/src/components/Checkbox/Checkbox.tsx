@@ -16,20 +16,20 @@ export default function Checkbox({
 	onChange,
 }: CheckboxProps) {
 	return (
-		<div className="flex items-center">
+		<div className='flex items-center'>
 			<CheckboxRadix.Root
-				className="CheckboxRoot"
+				className='CheckboxRoot'
 				id={uuidv4()}
 				onCheckedChange={onChange}
 				checked={isChecked}
 			>
-				<CheckboxRadix.Indicator className="CheckboxIndicator">
-					<Icon size="sm">
+				<CheckboxRadix.Indicator className='CheckboxIndicator'>
+					<Icon size='sm'>
 						<AiOutlineCheck />
 					</Icon>
 				</CheckboxRadix.Indicator>
 			</CheckboxRadix.Root>
-			<label className="pl-2 cursor-pointer" htmlFor={uuidv4()}>
+			<label className='pl-2 cursor-pointer' htmlFor={uuidv4()}>
 				{label}
 			</label>
 		</div>

@@ -88,14 +88,14 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 
 	return (
 		<div>
-			<h3 className="font-bold">
+			<h3 className='font-bold'>
 				{recipeNum} {recipeNum === 1 ? 'recipe' : 'recipes'} found:
 			</h3>
 			{isFilters && (
-				<div className="flex overflow-x-auto whitespace-nowrap bg-slate-200 py-1 pl-2 mb-2 rounded">
+				<div className='flex overflow-x-auto whitespace-nowrap bg-slate-200 py-1 pl-2 mb-2 rounded'>
 					{recipeSearchQuery && (
 						<div
-							className="filter-tag"
+							className='filter-tag'
 							onClick={() => removeFilter('searchQuery', recipeSearchQuery)}
 						>
 							{filterLabel('searchQuery', recipeSearchQuery)}
@@ -103,7 +103,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					)}
 					{showOnlyFavourites && (
 						<div
-							className="filter-tag"
+							className='filter-tag'
 							onClick={() => removeFilter('favourites')}
 						>
 							My Favourites
@@ -111,7 +111,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					)}
 					{showOnlyMyRecipes && (
 						<div
-							className="filter-tag"
+							className='filter-tag'
 							onClick={() => removeFilter('myRecipes')}
 						>
 							My Recipes
@@ -120,7 +120,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					{(cookingTimeMin !== cookingTimeMinMax.min ||
 						cookingTimeMax !== cookingTimeMinMax.max) && (
 						<div
-							className="filter-tag"
+							className='filter-tag'
 							onClick={() =>
 								removeFilter('cookingTime', [cookingTimeMin, cookingTimeMax])
 							}
@@ -131,7 +131,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					{selectedCategories.map((category: FilterItem) => (
 						<div
 							key={category._id}
-							className="filter-tag"
+							className='filter-tag'
 							onClick={() => removeFilter('selectedCategories', category)}
 						>
 							{filterLabel('selectedCategories', category)}
@@ -140,7 +140,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					{selectedIngredients.map((ingredient: FilterItem) => (
 						<div
 							key={ingredient._id}
-							className="filter-tag"
+							className='filter-tag'
 							onClick={() => removeFilter('selectedIngredients', ingredient)}
 						>
 							{filterLabel('selectedIngredients', ingredient)}

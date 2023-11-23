@@ -12,17 +12,17 @@ export default function Switch({ label, checked, onChange }: SwitchProps) {
 	const switchId = uuidv4();
 
 	return (
-		<div className="flex items-center">
-			<label className="pr-2" htmlFor={switchId}>
+		<div className='flex items-center'>
+			<label className='pr-2' htmlFor={switchId}>
 				{label}
 			</label>
 			<SwitchRadix.Root
-				className="SwitchRoot"
+				className='SwitchRoot'
 				id={switchId}
 				checked={checked}
 				onCheckedChange={onChange}
 			>
-				<SwitchRadix.Thumb className="SwitchThumb" />
+				<SwitchRadix.Thumb className='SwitchThumb' />
 			</SwitchRadix.Root>
 		</div>
 	);

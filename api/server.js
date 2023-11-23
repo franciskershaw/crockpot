@@ -16,10 +16,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  })
+	cors({
+		origin: 'http://localhost:3000',
+		credentials: true,
+	}),
 );
 
 app.use('/api/users', require('./routes/userRoutes'));
@@ -31,23 +31,23 @@ app.use('/api/recipes', require('./routes/recipeRoutes'));
 app.use(errorHandler);
 
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'Welcome to the crockpot API' });
+	res.status(200).json({ message: 'Welcome to the crockpot API' });
 });
 
 connectDB()
-  .then(() => {
-    app.listen(
-      PORT,
-      console.log(
-        `Server running in ${process.env.NODE_ENV} mode on port ${PORT}\n`
-          .yellow,
-        '-----------------------------------------------------------'.yellow
-      )
-    );
-  })
-  .catch((err) => {
-    console.error(
-      `Error connecting to MongoDB: ${err.message}`.red.underline.bold
-    );
-    process.exit(1);
-  });
+	.then(() => {
+		app.listen(
+			PORT,
+			console.log(
+				`Server running in ${process.env.NODE_ENV} mode on port ${PORT}\n`
+					.yellow,
+				'-----------------------------------------------------------'.yellow,
+			),
+		);
+	})
+	.catch((err) => {
+		console.error(
+			`Error connecting to MongoDB: ${err.message}`.red.underline.bold,
+		);
+		process.exit(1);
+	});

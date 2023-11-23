@@ -1,27 +1,27 @@
 .auth-form {
-  @apply border border-black rounded-sm px-6 py-8 max-w-2xl;
+	@apply border border-black rounded-sm px-6 py-8 max-w-2xl;
 
-  &__title {
-    @apply text-center mb-4;
-  }
+	&__title {
+		@apply text-center mb-4;
+	}
 
-  &__input-group {
-    @apply flex flex-col mb-4;
-  }
+	&__input-group {
+		@apply flex flex-col mb-4;
+	}
 
-  &__input-label {
-    @apply text-sm;
-  }
+	&__input-label {
+		@apply text-sm;
+	}
 
-  &__input-field {
-    @apply h-10 p-3;
-  }
+	&__input-field {
+		@apply h-10 p-3;
+	}
 
-  &__button {
-    @apply w-full border border-black h-10 rounded-sm mt-4;
-  }
+	&__button {
+		@apply w-full border border-black h-10 rounded-sm mt-4;
+	}
 
-  &__text {
-    @apply text-center w-full flex flex-col gap-4 justify-around items-center;
-  }
+	&__text {
+		@apply text-center w-full flex flex-col gap-4 justify-around items-center;
+	}
 }

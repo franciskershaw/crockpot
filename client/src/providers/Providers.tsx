@@ -5,39 +5,39 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { FC, ReactNode } from 'react';
 
 interface LayoutProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 300000,
-      cacheTime: 900000,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    },
-  },
+	defaultOptions: {
+		queries: {
+			staleTime: 300000,
+			cacheTime: 900000,
+			refetchOnMount: false,
+			refetchOnWindowFocus: false,
+		},
+	},
 });
 
 export const queryKeys = {
-  items: 'items',
-  itemCategories: 'itemCategories',
-  recipes: 'recipes',
-  recipeCategories: 'recipeCategories',
-  recipeMenu: 'recipeMenu',
-  user: 'user',
-  shoppingList: 'shoppingList',
-  extraItems: 'extraItems',
-  favouriteRecipes: 'favouriteRecipes',
+	items: 'items',
+	itemCategories: 'itemCategories',
+	recipes: 'recipes',
+	recipeCategories: 'recipeCategories',
+	recipeMenu: 'recipeMenu',
+	user: 'user',
+	shoppingList: 'shoppingList',
+	extraItems: 'extraItems',
+	favouriteRecipes: 'favouriteRecipes',
 };
 
 const Providers: FC<LayoutProps> = ({ children }) => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  );
+	return (
+		<QueryClientProvider client={queryClient}>
+			{children}
+			<ReactQueryDevtools initialIsOpen={false} />
+		</QueryClientProvider>
+	);
 };
 
 export default Providers;

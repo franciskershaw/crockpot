@@ -16,11 +16,11 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
+		<html lang='en'>
 			<body>
 				<Providers>
 					<NavbarTop />
-					<main className="mt-[77px] mb-24 md:mt-28 md:mb-8">{children}</main>
+					<main className='mt-[77px] mb-24 md:mt-28 md:mb-8'>{children}</main>
 					<ButtonAddRecipe />
 					<NavbarBottom />
 				</Providers>
