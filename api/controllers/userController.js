@@ -33,11 +33,7 @@ const {
 
 const registerUser = async (req, res, next) => {
 	try {
-		const { error, value } = createUserSchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, createUserSchema);
 
 		const { username, password } = value;
 
@@ -70,11 +66,7 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
 	try {
-		const { error, value } = loginUserSchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, loginUserSchema);
 
 		const { username, password } = value;
 

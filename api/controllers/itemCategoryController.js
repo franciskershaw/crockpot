@@ -32,11 +32,7 @@ const createNewItemCategory = async (req, res, next) => {
 
 const editItemCategory = async (req, res, next) => {
 	try {
-		const { error, value } = itemCategorySchemaPartial.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, editItemCategorySchema);
 
 		const itemCategory = await ItemCategory.findByIdAndUpdate(
 			req.params.itemCategoryId,

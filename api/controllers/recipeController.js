@@ -3,6 +3,10 @@ const User = require('../models/User');
 const RecipeCategory = require('../models/RecipeCategory');
 const { NotFoundError } = require('../errors/errors');
 const cloudinary = require('cloudinary').v2;
+const {
+	createRecipeSchema,
+	editRecipeSchema,
+} = require('../joiSchemas/schemas');
 
 // Needs to only return recipes that are approved and also created by the user
 const getAllRecipes = async (req, res, next) => {
@@ -36,11 +40,7 @@ const getAllRecipes = async (req, res, next) => {
 
 const createNewRecipe = async (req, res, next) => {
 	try {
-		const { error, value } = recipeSchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, createRecipeSchema);
 
 		const recipe = new Recipe(value);
 		recipe.image = {
@@ -101,11 +101,7 @@ const editRecipe = async (req, res, next) => {
 			);
 		}
 
-		const { error, value } = recipeSchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, editRecipeSchema);
 
 		const updatedRecipe = await Recipe.findByIdAndUpdate(
 			req.params.recipeId,

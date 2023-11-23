@@ -12,11 +12,7 @@ const getAllItems = async (req, res, next) => {
 
 const createNewItem = async (req, res, next) => {
 	try {
-		const { error, value } = itemSchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, itemSchema);
 
 		const item = new Item(value);
 		await item.save();
@@ -29,11 +25,7 @@ const createNewItem = async (req, res, next) => {
 
 const editItem = async (req, res, next) => {
 	try {
-		const { error, value } = editItemSchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, editItemSchema);
 
 		const item = await Item.findByIdAndUpdate(req.params.itemId, value, {
 			new: true,

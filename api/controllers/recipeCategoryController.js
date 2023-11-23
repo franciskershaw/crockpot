@@ -12,11 +12,7 @@ const getAllRecipeCategories = async (req, res, next) => {
 
 const createNewRecipeCategory = async (req, res, next) => {
 	try {
-		const { error, value } = recipeCategorySchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, recipeCategorySchema);
 
 		const recipeCategory = new RecipeCategory(value);
 		await recipeCategory.save();
@@ -29,11 +25,7 @@ const createNewRecipeCategory = async (req, res, next) => {
 
 const editRecipeCategory = async (req, res, next) => {
 	try {
-		const { error, value } = recipeCategorySchema.validate(req.body);
-
-		if (error) {
-			throw new BadRequestError(error.details[0].message);
-		}
+		const value = validateRequest(req.body, recipeCategorySchema);
 
 		const recipeCategory = await RecipeCategory.findByIdAndUpdate(
 			req.params.recipeCategoryId,
