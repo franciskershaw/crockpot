@@ -1,7 +1,7 @@
 const Recipe = require('../models/Recipe');
 const User = require('../models/User');
 const RecipeCategory = require('../models/RecipeCategory');
-const { NotFoundError } = require('../errors/errors');
+const { NotFoundError, UnauthorizedError } = require('../errors/errors');
 const cloudinary = require('cloudinary').v2;
 const {
 	createRecipeSchema,
