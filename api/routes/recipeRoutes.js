@@ -35,6 +35,6 @@ router
 
 router
 	.route('/:recipeId/toggle')
-	.post(isLoggedIn, isAdmin, asyncHandler(toggleApprovedStatus));
+	.put(isLoggedIn, isAdmin, asyncHandler(toggleApprovedStatus));
 
 module.exports = router;
