@@ -12,6 +12,8 @@
 
 // Add general styles here!
 body {
+	@apply bg-body;
+
 	// Hide number arrows
 	input[type='number']::-webkit-outer-spin-button,
 	input[type='number']::-webkit-inner-spin-button,
@@ -98,4 +100,29 @@ a,
 
 hr {
 	@apply border-black;
+}
+
+// Animation
+.animate {
+	@apply transition-all duration-300 ease-in-out;
+
+	// &--medium {
+	// 	@apply duration-600;
+	// }
+
+	// &--slow {
+	// 	@apply duration-1000;
+	// }
+
+	&--grow {
+		&:hover {
+			@apply transform scale-[1.025];
+		}
+	}
+
+	&--shadow {
+		&:hover {
+			@apply shadow-hover;
+		}
+	}
 }

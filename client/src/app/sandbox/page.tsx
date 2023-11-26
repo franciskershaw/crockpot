@@ -62,7 +62,7 @@ const SandBoxPage: FC = () => {
 			<div className="container flex">
 				<div className="h-10 w-10 rounded-full bg-primary"></div>
 				<div className="h-10 w-10 rounded-full bg-secondary"></div>
-				<div className="h-10 w-10 rounded-full bg-yellow"></div>
+				<div className="h-10 w-10 rounded-full bg-tertiary"></div>
 				<div className="h-10 w-10 rounded-full bg-white border border-black"></div>
 				<div className="h-10 w-10 rounded-full bg-blue-light"></div>
 				<div className="h-10 w-10 rounded-full bg-disabled"></div>
@@ -133,58 +133,20 @@ const SandBoxPage: FC = () => {
 				{/* <ButtonFav recipeId="halluomi-tacos" /> */}
 				{/* <ButtonCart recipeId="sheperds-pie" /> */}
 				<div className="flex space-x-2">
-					<Button border onClick={() => console.log('Hello!')}>
+					<Button text="Button" onClick={() => console.log('Hello!')}>
 						<AiOutlineSearch />
 					</Button>
 					<Button
-						border
 						text="Button"
-						onClick={() => console.log('Hello!')}
-					></Button>
-					<Button
-						border
-						text="Button"
-						inverse
+						borderWhite
 						onClick={() => console.log('Hello!')}
 					>
 						<AiOutlineSearch />
 					</Button>
-				</div>
-				<div className="flex space-x-2">
-					<Button type="secondary" border onClick={() => console.log('Hello!')}>
-						<AiOutlineSearch />
-					</Button>
 					<Button
-						border
 						text="Button"
-						onClick={() => console.log('Hello!')}
-						type="secondary"
-					></Button>
-					<Button
-						type="secondary"
-						border
 						inverse
-						text="Button"
-						onClick={() => console.log('Hello!')}
-					>
-						<AiOutlineSearch />
-					</Button>
-				</div>
-				<div className="flex space-x-2">
-					<Button type="tertiary" border onClick={() => console.log('Hello!')}>
-						<AiOutlineSearch />
-					</Button>
-					<Button
-						type="tertiary"
-						border
-						text="Button"
-						onClick={() => console.log('Hello!')}
-					></Button>
-					<Button
-						type="tertiary"
-						border
-						inverse
-						text="Button"
+						borderColour
 						onClick={() => console.log('Hello!')}
 					>
 						<AiOutlineSearch />
