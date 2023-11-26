@@ -88,9 +88,9 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 
 	return (
 		<div>
-			<h3 className="font-bold">
+			<h2 className="font-bold mb-2">
 				{recipeNum} {recipeNum === 1 ? 'recipe' : 'recipes'} found:
-			</h3>
+			</h2>
 			{isFilters && (
 				<div className="flex overflow-x-auto whitespace-nowrap bg-slate-200 py-1 pl-2 mb-2 rounded">
 					{recipeSearchQuery && (

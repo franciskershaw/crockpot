@@ -21,7 +21,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
 
 	return (
-		<div className="rounded-xl overflow-hidden cursor-pointer shadow animate animate--grow animate--shadow">
+		<div className="rounded-xl overflow-hidden cursor-pointer shadow animate animate--grow-sm animate--shadow border border-black-25">
 			<div className="relative">
 				{/* Background image */}
 				<div
@@ -40,13 +40,13 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 						</div>
 					</>
 				)}
-				<div className="absolute bottom-[-12px] right-2">
+				<div className="absolute bottom-[-13px] right-2">
 					<TimingTag time={recipe.timeInMinutes} />
 				</div>
 			</div>
 
 			{/* Name and categories */}
-			<div className="px-2 py-3 bg-white rounded-b-xl border border-gray-300">
+			<div className="px-2 py-3 bg-body-light rounded-b-xl border-t border-black-25">
 				<h3 className="truncate">{recipe.name}</h3>
 				<p className="truncate">
 					{firstThreeCategories.join(' | ')}

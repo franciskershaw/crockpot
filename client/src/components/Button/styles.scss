@@ -43,6 +43,34 @@
 		}
 	}
 
+	&--secondary {
+		@apply bg-body text-body-light;
+
+		.icon {
+			svg {
+				@apply text-body-light;
+			}
+		}
+
+		&.btn--border-colour {
+			@apply border-2 border-body border-solid;
+		}
+
+		&.btn--inverse {
+			@apply bg-body-light text-body;
+
+			.icon {
+				svg {
+					@apply text-body;
+				}
+			}
+
+			&.btn--border {
+				@apply border-body;
+			}
+		}
+	}
+
 	// &--secondary {
 	// 	@apply text-primary;
 

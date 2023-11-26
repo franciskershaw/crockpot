@@ -18,10 +18,11 @@ const ButtonFav = ({ id, isFav }: ButtonFavProps) => {
 
 	return (
 		<Button
-			border
+			type="secondary"
 			onClick={handleToggleFavourite}
-			inverse={isFav ? true : false}
+			inverse={isFav ? false : true}
 			hoverOff
+			borderColour
 		>
 			<AiFillHeart />
 		</Button>

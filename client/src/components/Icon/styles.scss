@@ -1,84 +1,106 @@
 .icon {
-  @apply h-8 w-8 border-none rounded-full p-1 bg-white;
+	@apply h-8 w-8 border-none rounded-full p-1;
 
-  transition: background-color 0.3s ease;
+	svg {
+		@apply w-full h-full;
+	}
 
-  svg {
-    @apply w-full h-full;
+	&.icon--bg-transparent {
+		@apply bg-transparent;
+	}
 
-    transition: color 0.3s ease;
-  }
+	// Border
+	&--border-white {
+		@apply border-2 border-body-light border-solid;
+	}
 
-  // Border
-  &--border {
-    @apply border-2 border-solid;
-  }
+	// Sizes
+	&--sm {
+		@apply h-6 w-6 border;
+	}
 
-  // Sizes
-  &--sm {
-    @apply h-6 w-6 border;
-  }
+	&--lg {
+		@apply h-10 w-10 p-1.5;
+	}
 
-  &--lg {
-    @apply h-10 w-10 p-1.5;
-  }
+	&--xl {
+		@apply h-14 w-14;
+	}
 
-  &--xl {
-    @apply h-14 w-14;
-  }
+	// Types
+	&--primary {
+		@apply bg-body-light;
 
-  // Types
-  &--primary {
-    svg {
-      @apply text-black;
-    }
+		svg {
+			@apply text-primary;
+		}
 
-    &.icon--border {
-      @apply border-black;
-    }
+		&.icon--border-colour {
+			@apply border-primary;
+		}
 
-    &.icon--active {
-      @apply bg-black;
+		&.icon--active {
+			@apply bg-primary;
 
-      svg {
-        @apply text-white;
-      }
-    }
-  }
+			svg {
+				@apply text-body-light;
+			}
+		}
+	}
 
-  &--secondary {
-    svg {
-      @apply text-primary;
-    }
+	&--secondary {
+		@apply bg-body-light;
 
-    &.icon--border {
-      @apply border-primary;
-    }
+		svg {
+			@apply text-body;
+		}
 
-    &.icon--active {
-      @apply bg-primary;
+		&.icon--border-colour {
+			@apply border-body;
+		}
 
-      svg {
-        @apply text-white;
-      }
-    }
-  }
+		&.icon--active {
+			@apply bg-body;
 
-  &--tertiary {
-    svg {
-      @apply text-secondary;
-    }
+			svg {
+				@apply text-body-light;
+			}
+		}
+	}
 
-    &.icon--border {
-      @apply border-secondary;
-    }
+	// &--secondary {
+	// 	svg {
+	// 		@apply text-primary;
+	// 	}
 
-    &.icon--active {
-      @apply bg-secondary;
+	// 	&.icon--border {
+	// 		@apply border-primary;
+	// 	}
 
-      svg {
-        @apply text-white;
-      }
-    }
-  }
+	// 	&.icon--active {
+	// 		@apply bg-primary;
+
+	// 		svg {
+	// 			@apply text-white;
+	// 		}
+	// 	}
+	// }
+
+	// &--tertiary {
+	// 	svg {
+	// 		@apply text-secondary;
+	// 	}
+
+	// 	&.icon--border {
+	// 		@apply border-secondary;
+	// 	}
+
+	// 	&.icon--active {
+	// 		@apply bg-secondary;
+
+	// 		svg {
+	// 			@apply text-white;
+	// 		}
+	// 	}
+	// }
 }
