@@ -1,5 +1,5 @@
 [data-state='active'][data-active-class] {
-	@apply text-blue-500 font-bold;
+	@apply text-black font-bold;
 }
 
 .underline-header-toggle {
@@ -10,7 +10,7 @@
 	width: 0;
 	height: 2px;
 	transition: width 0.3s ease;
-	@apply bg-blue-500;
+	@apply bg-black;
 }
 
 [data-state='active'] .underline-header-toggle {

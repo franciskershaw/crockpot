@@ -8,6 +8,7 @@ module.exports = {
 	theme: {
 		boxShadow: {
 			navTop: '0 5px 8px -2px rgba(0, 0, 0, 0.4)',
+			navBottom: '0 -5px 8px -2px rgba(0, 0, 0, 0.4)',
 			DEFAULT: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
 			hover: 'rgba(100, 100, 111, 0.4) 0px 7px 29px 0px',
 		},
@@ -45,7 +46,9 @@ module.exports = {
 			body: 'Lato',
 		},
 		zIndex: {
-			nav: 20,
+			navBottom: 20,
+			navTop: 25,
+			navHamburger: 30,
 		},
 	},
 	plugins: [require('tailwindcss'), require('autoprefixer')],

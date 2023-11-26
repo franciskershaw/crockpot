@@ -7,7 +7,7 @@
 
 	// Border
 	&--border-white {
-		@apply border-2 border-white border-solid;
+		@apply border-2 border-body-light border-solid;
 	}
 
 	&:hover {
@@ -16,11 +16,11 @@
 
 	// Types
 	&--primary {
-		@apply bg-primary text-white;
+		@apply bg-primary text-body-light;
 
 		.icon {
 			svg {
-				@apply text-white;
+				@apply text-body-light;
 			}
 		}
 
@@ -29,7 +29,7 @@
 		}
 
 		&.btn--inverse {
-			@apply bg-white text-primary;
+			@apply bg-body-light text-primary;
 
 			.icon {
 				svg {
@@ -55,25 +55,25 @@
 	// 	}
 
 	// 	&:not(.btn--no-hover):hover {
-	// 		@apply border-primary bg-primary text-white;
+	// 		@apply border-primary bg-primary text-body-light;
 
 	// 		.icon {
 	// 			@apply bg-primary;
 
 	// 			svg {
-	// 				@apply text-white;
+	// 				@apply text-body-light;
 	// 			}
 	// 		}
 	// 	}
 
 	// 	&.btn--inverse {
-	// 		@apply bg-primary text-white;
+	// 		@apply bg-primary text-body-light;
 
 	// 		.icon {
 	// 			@apply bg-primary;
 
 	// 			svg {
-	// 				@apply text-white;
+	// 				@apply text-body-light;
 	// 			}
 	// 		}
 
@@ -82,10 +82,10 @@
 	// 		}
 
 	// 		&:not(.btn--no-hover):hover {
-	// 			@apply border-primary bg-white text-primary;
+	// 			@apply border-primary bg-body-light text-primary;
 
 	// 			.icon {
-	// 				@apply bg-white;
+	// 				@apply bg-body-light;
 
 	// 				svg {
 	// 					@apply text-primary;
@@ -107,25 +107,25 @@
 	// 	}
 
 	// 	&:not(.btn--no-hover):hover {
-	// 		@apply border-secondary bg-secondary text-white;
+	// 		@apply border-secondary bg-secondary text-body-light;
 
 	// 		.icon {
 	// 			@apply bg-secondary;
 
 	// 			svg {
-	// 				@apply text-white;
+	// 				@apply text-body-light;
 	// 			}
 	// 		}
 	// 	}
 
 	// 	&.btn--inverse {
-	// 		@apply bg-secondary text-white;
+	// 		@apply bg-secondary text-body-light;
 
 	// 		.icon {
 	// 			@apply bg-secondary;
 
 	// 			svg {
-	// 				@apply text-white;
+	// 				@apply text-body-light;
 	// 			}
 	// 		}
 
@@ -134,10 +134,10 @@
 	// 		}
 
 	// 		&:not(.btn--no-hover):hover {
-	// 			@apply border-secondary bg-white text-secondary;
+	// 			@apply border-secondary bg-body-light text-secondary;
 
 	// 			.icon {
-	// 				@apply bg-white;
+	// 				@apply bg-body-light;
 
 	// 				svg {
 	// 					@apply text-secondary;

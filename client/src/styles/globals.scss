@@ -12,7 +12,7 @@
 
 // Add general styles here!
 body {
-	@apply bg-body;
+	@apply bg-blue-light;
 
 	// Hide number arrows
 	input[type='number']::-webkit-outer-spin-button,
@@ -106,13 +106,19 @@ hr {
 .animate {
 	@apply transition-all duration-300 ease-in-out;
 
-	// &--medium {
-	// 	@apply duration-600;
-	// }
+	&--md {
+		@apply duration-700;
+	}
 
-	// &--slow {
-	// 	@apply duration-1000;
-	// }
+	&--lg {
+		@apply duration-1000;
+	}
+
+	&--grow-sm {
+		&:hover {
+			@apply transform scale-[1.01];
+		}
+	}
 
 	&--grow {
 		&:hover {
