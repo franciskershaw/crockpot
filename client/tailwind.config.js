@@ -44,6 +44,7 @@ module.exports = {
 			body: 'Lato',
 		},
 		zIndex: {
+			back: -1,
 			modalHeader: 15,
 			searchBar: 15,
 			navBottom: 20,

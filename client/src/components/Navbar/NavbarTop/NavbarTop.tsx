@@ -42,7 +42,7 @@ const NavbarTop = () => {
 					</div>
 					<div className="hidden md:flex items-center space-x-2">
 						<Link href="/login">
-							<Button text="Login" onClick={toggleMenu} />
+							<Button text="Login" onClick={toggleMenu} type="primary" border />
 						</Link>
 					</div>
 				</div>

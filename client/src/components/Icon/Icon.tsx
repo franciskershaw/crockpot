@@ -5,7 +5,7 @@ type IconProps = {
 	size?: 'sm' | 'md' | 'lg' | 'xl';
 	active?: boolean;
 	bgTransparent?: boolean;
-	borderColour?: boolean;
+	border?: boolean;
 	borderWhite?: boolean;
 	children: React.ReactNode;
 };
@@ -15,16 +15,13 @@ const Icon = ({
 	size,
 	active,
 	bgTransparent,
-	borderColour,
+	border,
 	borderWhite,
 	children,
 }: IconProps) => {
 	const iconClasses = `icon icon--${type || 'primary'} icon--${size || 'md'} ${
-		bgTransparent ? 'icon--bg-transparent' : ''
-	}
-  ${borderWhite ? 'icon--border-white' : ''} ${
-		borderColour ? 'icon--border-colour' : ''
-	} ${active ? 'icon--active' : ''} animate`;
+		border ? 'icon--border' : ''
+	} animate`;
 
 	return <div className={iconClasses}>{children}</div>;
 };

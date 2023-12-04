@@ -83,28 +83,25 @@ const ButtonCart = ({
 				<div className="relative">
 					<div
 						className={`absolute opacity-100 cursor-pointer fade ${
-							isExpanded ? '!opacity-0 -z-10' : ''
+							isExpanded ? '!opacity-0 z-back' : ''
 						}`}
 					>
 						<div className="relative">
-							{isMenu && (
-								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-body border border-body-light flex items-center justify-center">
-									<span className="text-xs text-body-light">
-										{isMenu.serves}
-									</span>
-								</div>
-							)}
 							<Button
-								hoverOff
 								onClick={(e: MouseEvent<HTMLElement>) => {
 									e.stopPropagation();
 									setIsExpanded(true);
 								}}
-								type="secondary"
-								inverse={isMenu ? false : true}
+								type="primary"
+								inverse={isMenu ? true : false}
 							>
 								<RiShoppingBasketLine />
 							</Button>
+							{isMenu && (
+								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-black border border-body-light flex items-center justify-center">
+									<span className="text-xs text-white">{isMenu.serves}</span>
+								</div>
+							)}
 						</div>
 					</div>
 					<div>
@@ -114,7 +111,6 @@ const ButtonCart = ({
 								handleDecrease();
 							}}
 							inverse
-							hoverOff
 						>
 							<AiOutlineMinus />
 						</Button>
@@ -139,7 +135,6 @@ const ButtonCart = ({
 							handleIncrease();
 						}}
 						inverse
-						hoverOff
 					>
 						<AiOutlinePlus />
 					</Button>

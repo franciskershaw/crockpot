@@ -28,14 +28,14 @@ const SearchBar = ({
 				''
 			)}
 			<input
-				className="border-body border-2 bg-body-light p-2 rounded w-full"
+				className="border-black border-2 bg-white p-2 rounded w-full focus-visible:black"
 				type="text"
 				placeholder={placeholder || 'Search for...'}
 				value={searchQuery}
 				onChange={handleInputChange}
 			/>
 			<div className="absolute bottom-0 right-0 p-1.5 pl-10">
-				<Icon type="secondary">
+				<Icon type="primary">
 					<AiOutlineSearch />
 				</Icon>
 			</div>

@@ -12,7 +12,7 @@
 
 // Add general styles here!
 body {
-	@apply bg-blue-light;
+	@apply bg-white;
 
 	// Hide number arrows
 	input[type='number']::-webkit-outer-spin-button,
@@ -55,7 +55,7 @@ body {
 // Typography
 body,
 .body {
-	@apply text-body text-base font-body font-thin;
+	@apply text-black text-base font-body font-thin;
 }
 
 h1,
