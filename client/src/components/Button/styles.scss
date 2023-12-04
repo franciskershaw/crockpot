@@ -1,177 +1,35 @@
 .btn {
-	@apply border-none rounded-full text-center flex items-center p-1;
+	@apply border-none rounded-full text-center flex items-center p-1 cursor-pointer;
 
 	.icon {
 		@apply bg-transparent;
 	}
 
-	// Border
-	&--border-white {
-		@apply border-2 border-body-light border-solid;
-	}
-
-	&:hover {
-		@apply cursor-pointer;
-	}
-
-	// Types
 	&--primary {
-		@apply bg-primary text-body-light;
+		@apply bg-white text-black;
 
 		.icon {
 			svg {
-				@apply text-body-light;
+				@apply text-black;
 			}
 		}
 
-		&.btn--border-colour {
-			@apply border-2 border-primary border-solid;
+		&.btn--border {
+			@apply border-2 border-solid border-black;
 		}
 
 		&.btn--inverse {
-			@apply bg-body-light text-primary;
+			@apply bg-black text-white;
 
 			.icon {
 				svg {
-					@apply text-primary;
+					@apply text-white;
 				}
 			}
 
 			&.btn--border {
-				@apply border-primary;
+				@apply border-2 border-solid border-white;
 			}
 		}
 	}
-
-	&--secondary {
-		@apply bg-body text-body-light;
-
-		.icon {
-			svg {
-				@apply text-body-light;
-			}
-		}
-
-		&.btn--border-colour {
-			@apply border-2 border-body border-solid;
-		}
-
-		&.btn--inverse {
-			@apply bg-body-light text-body;
-
-			.icon {
-				svg {
-					@apply text-body;
-				}
-			}
-
-			&.btn--border {
-				@apply border-body;
-			}
-		}
-	}
-
-	// &--secondary {
-	// 	@apply text-primary;
-
-	// 	svg {
-	// 		@apply text-primary;
-	// 	}
-
-	// 	&.btn--border {
-	// 		@apply border-primary;
-	// 	}
-
-	// 	&:not(.btn--no-hover):hover {
-	// 		@apply border-primary bg-primary text-body-light;
-
-	// 		.icon {
-	// 			@apply bg-primary;
-
-	// 			svg {
-	// 				@apply text-body-light;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	&.btn--inverse {
-	// 		@apply bg-primary text-body-light;
-
-	// 		.icon {
-	// 			@apply bg-primary;
-
-	// 			svg {
-	// 				@apply text-body-light;
-	// 			}
-	// 		}
-
-	// 		&.btn--border {
-	// 			@apply border-primary;
-	// 		}
-
-	// 		&:not(.btn--no-hover):hover {
-	// 			@apply border-primary bg-body-light text-primary;
-
-	// 			.icon {
-	// 				@apply bg-body-light;
-
-	// 				svg {
-	// 					@apply text-primary;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// &--tertiary {
-	// 	@apply text-secondary;
-
-	// 	svg {
-	// 		@apply text-secondary;
-	// 	}
-
-	// 	&.btn--border {
-	// 		@apply border-secondary;
-	// 	}
-
-	// 	&:not(.btn--no-hover):hover {
-	// 		@apply border-secondary bg-secondary text-body-light;
-
-	// 		.icon {
-	// 			@apply bg-secondary;
-
-	// 			svg {
-	// 				@apply text-body-light;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	&.btn--inverse {
-	// 		@apply bg-secondary text-body-light;
-
-	// 		.icon {
-	// 			@apply bg-secondary;
-
-	// 			svg {
-	// 				@apply text-body-light;
-	// 			}
-	// 		}
-
-	// 		&.btn--border {
-	// 			@apply border-secondary;
-	// 		}
-
-	// 		&:not(.btn--no-hover):hover {
-	// 			@apply border-secondary bg-body-light text-secondary;
-
-	// 			.icon {
-	// 				@apply bg-body-light;
-
-	// 				svg {
-	// 					@apply text-secondary;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 }
