@@ -202,7 +202,6 @@ const removeFromRecipeMenu = async (req, res, next) => {
 		const { _id: recipeId, serves } = value;
 
 		const user = await User.findById(req.user._id);
-
 		const existingRecipe = user.recipeMenu.find((recipe) =>
 			recipe._id.equals(recipeId),
 		);
@@ -221,6 +220,27 @@ const removeFromRecipeMenu = async (req, res, next) => {
 			user.recipeMenu = user.recipeMenu.filter(
 				(recipe) => !recipe._id.equals(recipeId),
 			);
+
+			const fullRecipe = await Recipe.findById(recipeId);
+			fullRecipe.ingredients.forEach((recipeIngredient) => {
+				const extraItem = user.extraItems.find((extra) =>
+					extra._id.equals(recipeIngredient._id),
+				);
+
+				if (extraItem) {
+					const adjustedQuantity =
+						extraItem.quantity -
+						recipeIngredient.quantity * existingRecipe.serves;
+
+					if (adjustedQuantity <= 0) {
+						user.extraItems = user.extraItems.filter(
+							(extra) => !extra._id.equals(recipeIngredient._id),
+						);
+					} else {
+						extraItem.quantity = adjustedQuantity;
+					}
+				}
+			});
 		} else {
 			existingRecipe.serves = serves;
 		}

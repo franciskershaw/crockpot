@@ -53,6 +53,7 @@ const useRecipeMenu = () => {
 				queryClient.invalidateQueries([queryKeys.user]);
 				queryClient.invalidateQueries([queryKeys.recipeMenu]);
 				queryClient.refetchQueries([queryKeys.shoppingList]);
+				queryClient.refetchQueries([queryKeys.extraItems]);
 			},
 			onError: (error) => {
 				console.error('Error toggling item obtained status:', error);
