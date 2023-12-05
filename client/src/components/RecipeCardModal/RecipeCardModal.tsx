@@ -62,22 +62,24 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 					className="bg-cover bg-center h-80"
 					style={{ backgroundImage: `url(${recipe.image.url})` }}
 				/>
-				<div className="absolute bottom-0 left-0 right-0 m-4 p-4 md:right-auto md:w-2/3 bg-white border-2 border-green-500 flex flex-row items-center justify-between">
+				<div className="absolute bottom-0 left-0 right-0 m-4 p-4 md:right-auto md:w-2/3 bg-white border border-black-25 flex flex-row items-center justify-between rounded">
 					<div>
 						<h2>{recipe.name}</h2>
 						<h3>Created by {recipe.createdBy?.username}</h3>
 					</div>
-					{user && (
-						<ButtonCart
-							recipe={recipe}
-							initialValue={quantity}
-							onChange={setQuantity}
-							isMenu={isMenu}
-						/>
-					)}
+					<div>
+						{user && (
+							<ButtonCart
+								recipe={recipe}
+								initialValue={quantity}
+								onChange={setQuantity}
+								isMenu={isMenu}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
-			<div className="p-4 pb-0">
+			<div className="px-2 py-0">
 				<Tabs titles={tabTitles}>
 					<>{tabIngredients()}</>
 					<>{tabInstructions()}</>

@@ -17,7 +17,7 @@ export default function Switch({ label, checked, onChange }: SwitchProps) {
 				{label}
 			</label>
 			<SwitchRadix.Root
-				className="SwitchRoot"
+				className="SwitchRoot cursor-pointer"
 				id={switchId}
 				checked={checked}
 				onCheckedChange={onChange}

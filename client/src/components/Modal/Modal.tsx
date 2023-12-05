@@ -30,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({
 						isWide && 'DialogContent--is-wide'
 					}`}
 				>
-					<div className="flex justify-between items-center bg-tertiary p-2 sticky top-0 left-0 z-modalHeader">
+					<div className="flex justify-between items-center bg-white border border-black-25 px-3 py-2 sticky top-0 left-0 z-modalHeader">
 						<Dialog.Title className="DialogTitle">{title}</Dialog.Title>
 						<div>
 							<Dialog.Close asChild>
