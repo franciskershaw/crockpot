@@ -1,15 +1,9 @@
 .DialogOverlay {
-	background-color: rgb(0, 0, 0, 0.5);
-	position: fixed;
-	inset: 0;
-	z-index: 30;
+	@apply z-modalOverlay inset-0 bg-black-50 fixed;
 }
 
 .DialogContent {
-	@apply bg-white z-40 overflow-y-scroll;
-
-	background-color: white;
-	border-radius: 6px;
+	@apply bg-white overflow-y-scroll z-modal rounded-xl;
 	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
 		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
 	position: fixed;

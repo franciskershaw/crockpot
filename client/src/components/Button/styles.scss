@@ -1,165 +1,35 @@
 .btn {
-	@apply border-none rounded-full text-center text-black bg-white flex items-center p-1;
+	@apply border-none rounded-full text-center flex items-center p-1 cursor-pointer;
 
-	transition: background-color 0.3s ease;
-
-	&:hover {
-		@apply cursor-pointer;
+	.icon {
+		@apply bg-transparent;
 	}
 
-	// Border
-	&--border {
-		@apply border-2 border-solid;
-	}
-
-	// Types
 	&--primary {
-		&.btn--border {
-			@apply border-black;
+		@apply bg-white text-black;
+
+		.icon {
+			svg {
+				@apply text-black;
+			}
 		}
 
-		&:not(.btn--no-hover):hover {
-			@apply border-black bg-black text-white;
-
-			.icon {
-				@apply bg-black;
-
-				svg {
-					@apply text-white;
-				}
-			}
+		&.btn--border {
+			@apply border-2 border-solid border-black;
 		}
 
 		&.btn--inverse {
 			@apply bg-black text-white;
 
 			.icon {
-				@apply bg-black;
-
 				svg {
 					@apply text-white;
 				}
 			}
 
-			&.btn--border {
-				@apply border-black;
-			}
-
-			&:not(.btn--no-hover):hover {
-				@apply border-black bg-white text-black;
-
-				.icon {
-					@apply bg-white;
-
-					svg {
-						@apply text-black;
-					}
-				}
-			}
-		}
-	}
-
-	&--secondary {
-		@apply text-primary;
-
-		svg {
-			@apply text-primary;
-		}
-
-		&.btn--border {
-			@apply border-primary;
-		}
-
-		&:not(.btn--no-hover):hover {
-			@apply border-primary bg-primary text-white;
-
-			.icon {
-				@apply bg-primary;
-
-				svg {
-					@apply text-white;
-				}
-			}
-		}
-
-		&.btn--inverse {
-			@apply bg-primary text-white;
-
-			.icon {
-				@apply bg-primary;
-
-				svg {
-					@apply text-white;
-				}
-			}
-
-			&.btn--border {
-				@apply border-primary;
-			}
-
-			&:not(.btn--no-hover):hover {
-				@apply border-primary bg-white text-primary;
-
-				.icon {
-					@apply bg-white;
-
-					svg {
-						@apply text-primary;
-					}
-				}
-			}
-		}
-	}
-
-	&--tertiary {
-		@apply text-secondary;
-
-		svg {
-			@apply text-secondary;
-		}
-
-		&.btn--border {
-			@apply border-secondary;
-		}
-
-		&:not(.btn--no-hover):hover {
-			@apply border-secondary bg-secondary text-white;
-
-			.icon {
-				@apply bg-secondary;
-
-				svg {
-					@apply text-white;
-				}
-			}
-		}
-
-		&.btn--inverse {
-			@apply bg-secondary text-white;
-
-			.icon {
-				@apply bg-secondary;
-
-				svg {
-					@apply text-white;
-				}
-			}
-
-			&.btn--border {
-				@apply border-secondary;
-			}
-
-			&:not(.btn--no-hover):hover {
-				@apply border-secondary bg-white text-secondary;
-
-				.icon {
-					@apply bg-white;
-
-					svg {
-						@apply text-secondary;
-					}
-				}
-			}
+			// &.btn--border {
+			// 	@apply border-2 border-solid border-white;
+			// }
 		}
 	}
 }

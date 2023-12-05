@@ -8,11 +8,11 @@ type TimingTagProps = {
 
 const TimingTag = ({ time }: TimingTagProps) => {
 	return (
-		<div className='flex items-center bg-white rounded-full pr-2 border border-black'>
-			<Icon>
+		<div className="flex items-center bg-white rounded-full pr-2 border border-black-50">
+			<Icon type="secondary">
 				<AiOutlineClockCircle />
 			</Icon>
-			<span className='font-bold'>{time} mins</span>
+			<span className="font-bold">{time} mins</span>
 		</div>
 	);
 };

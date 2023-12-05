@@ -78,30 +78,30 @@ const ButtonCart = ({
 	};
 
 	return (
-		<div className='relative'>
-			<div className='flex items-center border-2 border-black bg-white rounded-full w-fit'>
-				<div className='relative'>
+		<div className="relative">
+			<div className="flex items-center border-2 border-black bg-white rounded-full w-fit">
+				<div className="relative">
 					<div
 						className={`absolute opacity-100 cursor-pointer fade ${
-							isExpanded ? '!opacity-0 -z-10' : ''
+							isExpanded ? '!opacity-0 z-back' : ''
 						}`}
 					>
-						<div className='relative'>
-							{isMenu && (
-								<div className='absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-white border-2 border-black flex items-center justify-center'>
-									<span className='text-xs'>{isMenu.serves}</span>
-								</div>
-							)}
+						<div className="relative">
 							<Button
-								hoverOff
 								onClick={(e: MouseEvent<HTMLElement>) => {
 									e.stopPropagation();
 									setIsExpanded(true);
 								}}
+								type="primary"
 								inverse={isMenu ? true : false}
 							>
 								<RiShoppingBasketLine />
 							</Button>
+							{isMenu && (
+								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-black border border-body-light flex items-center justify-center">
+									<span className="text-xs text-white">{isMenu.serves}</span>
+								</div>
+							)}
 						</div>
 					</div>
 					<div>
@@ -111,7 +111,6 @@ const ButtonCart = ({
 								handleDecrease();
 							}}
 							inverse
-							hoverOff
 						>
 							<AiOutlineMinus />
 						</Button>
@@ -124,7 +123,7 @@ const ButtonCart = ({
 					}`}
 				>
 					<input
-						type='number'
+						type="number"
 						value={quantity}
 						min={min}
 						max={max}
@@ -136,7 +135,6 @@ const ButtonCart = ({
 							handleIncrease();
 						}}
 						inverse
-						hoverOff
 					>
 						<AiOutlinePlus />
 					</Button>
@@ -145,7 +143,7 @@ const ButtonCart = ({
 			{isExpanded && (
 				<h5
 					onClick={handleUpdateRecipeMenu}
-					className='absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full'
+					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
 				>
 					{!isMenu
 						? quantity > 0

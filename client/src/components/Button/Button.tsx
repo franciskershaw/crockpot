@@ -6,8 +6,8 @@ import Icon from '../Icon/Icon';
 
 interface ButtonProps {
 	type?: 'primary' | 'secondary' | 'tertiary';
-	inverse?: boolean;
 	border?: boolean;
+	inverse?: boolean;
 	hoverOff?: boolean;
 	onClick?: (e: React.MouseEvent<HTMLElement>) => void;
 	text?: string;
@@ -24,7 +24,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			border ? 'btn--border' : ''
 		} ${hoverOff ? 'btn--no-hover' : ''} ${inverse ? 'btn--inverse ' : ''} ${
 			text ? 'min-w-[125px]' : ''
-		}`;
+		} animate animate--grow`;
 
 		return (
 			<button
@@ -33,7 +33,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				onClick={onClick}
 				aria-label={ariaLabel ?? text}
 			>
-				{text && <span className='w-full p-1'>{text}</span>}
+				{text && <span className="w-full p-1">{text}</span>}
 				{children && <Icon>{children}</Icon>}
 			</button>
 		);

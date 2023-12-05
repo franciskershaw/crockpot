@@ -27,42 +27,33 @@ const NavbarTop = () => {
 	};
 
 	return (
-		<nav className='nav py-5 bg-white border-2 border-black fixed top-0 left-0 w-full flex justify-evenly z-20'>
-			<div className='container flex justify-between items-center w-full'>
-				<div className='flex items-center justify-between w-full'>
-					<div className='flex items-center space-x-2'>
-						<h1>Crockpot</h1>
-						<div className='hidden md:flex items-center space-x-2'>
+		<nav className="nav py-5 bg-white border-b border-black fixed top-0 left-0 w-full flex justify-evenly z-navTop shadow-navTop">
+			<div className="container flex justify-between items-center w-full">
+				<div className="flex items-center justify-between w-full">
+					<div className="flex items-center space-x-4">
+						<div>
+							<span className="h1 bg-white text-black border-4 border-black rounded-full px-3 py-2">
+								Crockpot
+							</span>
+						</div>
+						<div className="hidden md:flex items-center space-x-4">
 							<NavbarSharedLinks />
 						</div>
 					</div>
-					<div className='hidden md:flex items-center space-x-2'>
-						<Link href='/sandbox'>
-							<Button
-								border
-								inverse={pathname.startsWith('/sandbox')}
-								text='Sandbox'
-								onClick={toggleMenu}
-							/>
-						</Link>
-						<Link href='/login'>
-							<Button
-								border
-								inverse={pathname.startsWith('/login')}
-								text='Login'
-								onClick={toggleMenu}
-							/>
+					<div className="hidden md:flex items-center space-x-2">
+						<Link href="/login">
+							<Button text="Login" onClick={toggleMenu} type="primary" border />
 						</Link>
 					</div>
 				</div>
 				{/* On mobile devices, display hamburger menu */}
-				<div className='md:hidden'>
+				<div className="md:hidden">
 					<button
-						className={`nav__hamburger z-10 ${
+						className={`nav__hamburger z-navHamburger ${
 							isOpen ? 'nav__hamburger--open' : ''
 						}`}
 						onClick={toggleMenu}
-						aria-label='Menu'
+						aria-label="Menu"
 					>
 						<span></span>
 						<span></span>
@@ -73,42 +64,22 @@ const NavbarTop = () => {
 			</div>
 			{/* Mobile menu items */}
 			<div
-				className={`border-2 border-black bg-white flex flex-col items-center justify-center space-y-4 nav__menu ${
+				className={`bg-white flex flex-col items-center justify-center space-y-4 nav__menu animate z-navMenu ${
 					isOpen ? 'nav__menu--open' : ''
 				} `}
 			>
-				<Link href='/sandbox'>
-					<Button
-						border
-						inverse={pathname.startsWith('/sandbox')}
-						text='Sandbox'
-						onClick={toggleMenu}
-					/>
+				<Link href="/sandbox">
+					<Button text="Sandbox" border onClick={toggleMenu} />
 				</Link>
 				{user ? (
-					<Button
-						border
-						inverse={pathname.startsWith('/logout')}
-						text='Logout'
-						onClick={handleLogout}
-					/>
+					<Button text="Logout" border onClick={handleLogout} />
 				) : (
 					<>
-						<Link href='/login'>
-							<Button
-								border
-								inverse={pathname.startsWith('/login')}
-								text='Login'
-								onClick={toggleMenu}
-							/>
+						<Link href="/login">
+							<Button text="Login" border onClick={toggleMenu} />
 						</Link>
-						<Link href='/register'>
-							<Button
-								border
-								inverse={pathname.startsWith('/register')}
-								text='Register'
-								onClick={toggleMenu}
-							/>
+						<Link href="/register">
+							<Button text="Register" border onClick={toggleMenu} />
 						</Link>
 					</>
 				)}

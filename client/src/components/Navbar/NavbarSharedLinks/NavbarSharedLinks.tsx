@@ -2,30 +2,20 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import useUser from '@/src/hooks/auth/useUser';
 
 import Button from '../../Button/Button';
 
 const NavbarSharedLinks = () => {
-	const pathname = usePathname();
 	const { user } = useUser();
 	return (
 		<>
-			<Link href='/browse'>
-				<Button
-					border
-					inverse={pathname.startsWith('/browse')}
-					text='Browse Recipes'
-				/>
+			<Link href="/browse">
+				<Button text="Browse Recipes" type="primary" border />
 			</Link>
 			{user && (
-				<Link href='/your-crockpot'>
-					<Button
-						border
-						inverse={pathname.startsWith('/your-crockpot')}
-						text='Your Crockpot'
-					/>
+				<Link href="/your-crockpot">
+					<Button text="Your Crockpot" type="primary" border />
 				</Link>
 			)}
 		</>

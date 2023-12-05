@@ -19,18 +19,18 @@ const AccordionItem = ({ heading, children }: AccordionItemProps) => {
 	const value = React.useMemo(() => uuidv4(), []);
 
 	return (
-		<AccordionRadix.Item value={value} className='border-t border-black py-3'>
+		<AccordionRadix.Item value={value} className="border-t border-black py-3">
 			<AccordionRadix.Header>
-				<AccordionRadix.Trigger className='AccordionTrigger flex justify-between items-center w-full'>
+				<AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
 					{heading}
-					<div className='AccordionChevron'>
+					<div className="AccordionChevron">
 						<Icon>
 							<BsChevronDown />
 						</Icon>
 					</div>
 				</AccordionRadix.Trigger>
 			</AccordionRadix.Header>
-			<AccordionRadix.Content className='AccordionContent pt-2'>
+			<AccordionRadix.Content className="AccordionContent pt-2">
 				{children}
 			</AccordionRadix.Content>
 		</AccordionRadix.Item>
@@ -45,7 +45,7 @@ const Accordion = ({ items }: AccordionProps) => {
 	const [openItems, setOpenItems] = useState<string[]>([]);
 	return (
 		<AccordionRadix.Root
-			type='multiple'
+			type="multiple"
 			value={openItems}
 			onValueChange={setOpenItems}
 		>

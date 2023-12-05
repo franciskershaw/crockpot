@@ -26,15 +26,6 @@ const SandBoxPage: FC = () => {
 			heading: 'Heading 2',
 			children: <p>Paragraph paragraph!</p>,
 		},
-		{
-			heading: 'Heading 3',
-			children: (
-				<Switch
-					label={'Switch'}
-					onChange={(values: boolean) => console.log(values)}
-				/>
-			),
-		},
 	];
 
 	const handleQuantityChange = (value: number) => {
@@ -42,23 +33,23 @@ const SandBoxPage: FC = () => {
 	};
 
 	return (
-		<div className='space-y-2'>
-			<div className='container border-2 border-black'>
+		<div className="space-y-2">
+			<div className="container border-2 border-black">
 				<h2>Container</h2>
 			</div>
-			<div className='container container--sm border-2 border-black'>
+			<div className="container container--sm border-2 border-black">
 				<h2>Container sm</h2>
 			</div>
-			<div className='container container--md border-2 border-black'>
+			<div className="container container--md border-2 border-black">
 				<h2>Container md</h2>
 			</div>
-			<div className='container container--lg border-2 border-black'>
+			<div className="container container--lg border-2 border-black">
 				<h2>Container lg</h2>
 			</div>
-			<div className='container container--full border-2 border-black'>
+			<div className="container container--full border-2 border-black">
 				<h2>Container full</h2>
 			</div>
-			<div className='container'>
+			<div className="container">
 				<h1>Crockpot</h1>
 				<h2>Sandbox Page!</h2>
 				<h3>Sandbox Page!</h3>
@@ -66,176 +57,139 @@ const SandBoxPage: FC = () => {
 				<h5>Sandbox Page!</h5>
 				<h6>Sandbox Page!</h6>
 				<p>Sandbox Page! Sandbox Page! Sandbox Page!</p>
-				<a href=''>Sandbox Page!</a>
+				<a href="">Sandbox Page!</a>
 			</div>
-			<div className='container flex'>
-				<div className='h-10 w-10 rounded-full bg-primary-light'></div>
-				<div className='h-10 w-10 rounded-full bg-primary'></div>
-				<div className='h-10 w-10 rounded-full bg-primary-dark'></div>
-				<div className='h-10 w-10 rounded-full bg-secondary-light'></div>
-				<div className='h-10 w-10 rounded-full bg-secondary'></div>
-				<div className='h-10 w-10 rounded-full bg-secondary-dark'></div>
-				<div className='h-10 w-10 rounded-full bg-black'></div>
-				<div className='h-10 w-10 rounded-full bg-white border-black border-2'></div>
+			<div className="container flex">
+				<div className="h-10 w-10 rounded-full bg-primary"></div>
+				<div className="h-10 w-10 rounded-full bg-secondary"></div>
+				<div className="h-10 w-10 rounded-full bg-tertiary"></div>
+				<div className="h-10 w-10 rounded-full bg-white border border-black"></div>
+				<div className="h-10 w-10 rounded-full bg-blue-light"></div>
+				<div className="h-10 w-10 rounded-full bg-disabled"></div>
+				<div className="h-10 w-10 rounded-full bg-body-light border border-black"></div>
+				<div className="h-10 w-10 rounded-full bg-body"></div>
+				<div className="h-10 w-10 rounded-full bg-black"></div>
 			</div>
-			<div className='container pt-8'>
-				<Slider
-					min={25}
-					max={75}
-					onChange={(values: number[]) => console.log(values)}
-				/>
-			</div>
-			<div className='container pt-8'>
-				<Switch
-					label={'Switch'}
-					onChange={(values: boolean) => console.log(values)}
-				/>
-			</div>
-			<div className='container pt-8 space-y-2'>
-				<Checkbox
-					label={'Checkbox'}
-					onChange={(values: boolean) => console.log(values)}
-				/>
-				<Checkbox
-					label={'Checkbox'}
-					onChange={(values: boolean) => console.log(values)}
-				/>
-				<Checkbox
-					label={'Checkbox'}
-					onChange={(values: boolean) => console.log(values)}
-				/>
-			</div>
-			<div className='container pt-8 space-y-2'>
+			{/* <div className="container pt-8">
+        <Slider
+          min={25}
+          max={75}
+          onChange={(values: number[]) => console.log(values)}
+        />
+      </div> */}
+			{/* <div className="container pt-8">
+        <Switch
+          label={"Switch"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+      </div>
+      <div className="container pt-8 space-y-2">
+        <Checkbox
+          label={"Checkbox"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+        <Checkbox
+          label={"Checkbox"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+        <Checkbox
+          label={"Checkbox"}
+          onChange={(values: boolean) => console.log(values)}
+        />
+      </div> */}
+			<div className="container pt-8 space-y-2">
 				<Accordion items={accordionItems} />
 			</div>
-			<div className='container pt-8 flex space-x-2'>
-				<Icon border size='sm'>
+			<div className="container pt-8 flex space-x-2">
+				<Icon border size="sm">
 					<AiOutlineSearch />
 				</Icon>
 				<Icon border>
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border active size='lg'>
+				<Icon border active size="lg">
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border type='secondary' size='sm'>
+				<Icon border type="secondary" size="sm">
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border type='secondary'>
+				<Icon border type="secondary">
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border active type='secondary' size='lg'>
+				<Icon border active type="secondary" size="lg">
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border type='tertiary' size='sm'>
+				<Icon border type="tertiary" size="sm">
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border type='tertiary'>
+				<Icon border type="tertiary">
 					<AiOutlineSearch />
 				</Icon>
-				<Icon border active type='tertiary' size='lg'>
+				<Icon border active type="tertiary" size="lg">
 					<AiOutlineSearch />
 				</Icon>
 			</div>
-			<div className='container pt-8 space-x-2'>
-				<ButtonFav recipeId='halluomi-tacos' />
-				<ButtonCart recipeId='sheperds-pie' />
-				<div className='flex space-x-2'>
-					<Button border onClick={() => console.log('Hello!')}>
+			<div className="container pt-8 space-x-2">
+				{/* <ButtonFav recipeId="halluomi-tacos" /> */}
+				{/* <ButtonCart recipeId="sheperds-pie" /> */}
+				<div className="flex space-x-2">
+					<Button text="Button" onClick={() => console.log('Hello!')}>
 						<AiOutlineSearch />
 					</Button>
 					<Button
-						border
-						text='Button'
+						text="Button"
+						borderWhite
 						onClick={() => console.log('Hello!')}
-					></Button>
+					>
+						<AiOutlineSearch />
+					</Button>
 					<Button
-						border
-						text='Button'
+						text="Button"
 						inverse
+						borderColour
 						onClick={() => console.log('Hello!')}
 					>
 						<AiOutlineSearch />
 					</Button>
 				</div>
-				<div className='flex space-x-2'>
-					<Button type='secondary' border onClick={() => console.log('Hello!')}>
-						<AiOutlineSearch />
-					</Button>
-					<Button
-						border
-						text='Button'
-						onClick={() => console.log('Hello!')}
-						type='secondary'
-					></Button>
-					<Button
-						type='secondary'
-						border
-						inverse
-						text='Button'
-						onClick={() => console.log('Hello!')}
-					>
-						<AiOutlineSearch />
-					</Button>
-				</div>
-				<div className='flex space-x-2'>
-					<Button type='tertiary' border onClick={() => console.log('Hello!')}>
-						<AiOutlineSearch />
-					</Button>
-					<Button
-						type='tertiary'
-						border
-						text='Button'
-						onClick={() => console.log('Hello!')}
-					></Button>
-					<Button
-						type='tertiary'
-						border
-						inverse
-						text='Button'
-						onClick={() => console.log('Hello!')}
-					>
-						<AiOutlineSearch />
-					</Button>
-				</div>
-				<QuantityInput initialValue={10} onChange={handleQuantityChange} />
+				{/* <QuantityInput initialValue={10} onChange={handleQuantityChange} /> */}
 			</div>
-			<div className='container'>
-				<div className='grid grid-cols-2 gap-5'>
-					<RecipeCard
-						imageUrl='https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/553654b06ced6ebf798b4567.jpg'
-						cookingTime={20}
-						recipeName='Ginger Beef Stir Fry'
-						categories={['Delicious', 'Steamy']}
-					/>
-					<RecipeCard
-						imageUrl='https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/5508664c6ced6efa2e8b457e.jpg'
-						cookingTime={30}
-						recipeName='Spring Time Crispy Chicken Parmigiana Salad'
-						categories={['Delicious', 'Healthy', 'Steamy', 'Saucy']}
-					/>
-					<RecipeCard
-						imageUrl='https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/54f744b26ced6e83388b4567.jpg'
-						cookingTime={40}
-						recipeName='Strolling Rigatoni with Cherry Tomatoes and Mozzarella'
-						categories={['Delicious', 'Healthy', 'Steamy']}
-					/>
-				</div>
+			<div className="container">
+				{/* <div className="grid grid-cols-2 gap-5">
+          <RecipeCard
+            imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/553654b06ced6ebf798b4567.jpg"
+            cookingTime={20}
+            recipeName="Ginger Beef Stir Fry"
+            categories={["Delicious", "Steamy"]}
+          />
+          <RecipeCard
+            imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/5508664c6ced6efa2e8b457e.jpg"
+            cookingTime={30}
+            recipeName="Spring Time Crispy Chicken Parmigiana Salad"
+            categories={["Delicious", "Healthy", "Steamy", "Saucy"]}
+          />
+          <RecipeCard
+            imageUrl="https://img.hellofresh.com/c_fit,f_auto,fl_lossy,h_1100,q_30,w_2600/hellofresh_s3/image/54f744b26ced6e83388b4567.jpg"
+            cookingTime={40}
+            recipeName="Strolling Rigatoni with Cherry Tomatoes and Mozzarella"
+            categories={["Delicious", "Healthy", "Steamy"]}
+          />
+        </div> */}
 				{/* <div>
           <SearchBar label="Label!" placeholder="Hello!" />
         </div> */}
 			</div>
-			<div className='container'>
-				<Modal
-					title='My Modal Title'
-					trigger={
-						<Button border onClick={() => console.log('Hello!')}>
-							<AiFillFilter />
-						</Button>
-					}
-					children={<div>This is my modal content.</div>}
-				/>
-			</div>
+			{/* <div className="container">
+      <Modal 
+        title="My Modal Title" 
+        trigger={
+          <Button border onClick={() => console.log("Hello!")}>
+            <AiFillFilter />
+          </Button>
+          }
+        children={<div>This is my modal content.</div>}
+      />
+      </div> */}
 		</div>
 	);
 };

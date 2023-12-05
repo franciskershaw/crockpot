@@ -13,17 +13,17 @@ function BrowsePageSearchBar() {
 
 	return (
 		<>
-			<div className='w-full'>
+			<div className="w-full">
 				<SearchBar
 					searchQuery={recipeSearchQuery}
 					setSearchQuery={setRecipeSearchQuery}
 				/>
 			</div>
-			<div className='md:hidden'>
+			<div className="md:hidden">
 				<Modal
-					title='Recipe Filters'
+					title="Recipe Filters"
 					trigger={
-						<Button border>
+						<Button type="primary" border>
 							<AiFillFilter />
 						</Button>
 					}
@@ -31,13 +31,18 @@ function BrowsePageSearchBar() {
 					<BrowsePageFiltersMenu />
 				</Modal>
 			</div>
-			<div className='md:hidden'>
-				<Button border onClick={resetFilters}>
+			<div className="md:hidden">
+				<Button type="primary" border onClick={resetFilters}>
 					<GrRefresh />
 				</Button>
 			</div>
-			<div className='hidden md:block'>
-				<Button border onClick={resetFilters} text={'Clear filters'} />
+			<div className="hidden md:block">
+				<Button
+					onClick={resetFilters}
+					text={'Clear filters'}
+					type="primary"
+					border
+				/>
 			</div>
 		</>
 	);

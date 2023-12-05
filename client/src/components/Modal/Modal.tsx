@@ -24,17 +24,17 @@ const Modal: React.FC<ModalProps> = ({
 		<Dialog.Root>
 			<Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 			<Dialog.Portal>
-				<Dialog.Overlay className='DialogOverlay' />
+				<Dialog.Overlay className="DialogOverlay" />
 				<Dialog.Content
 					className={`DialogContent relative ${
 						isWide && 'DialogContent--is-wide'
 					}`}
 				>
-					<div className='flex justify-between items-center bg-green-400 p-2 sticky top-0 left-0 z-10'>
-						<Dialog.Title className='DialogTitle'>{title}</Dialog.Title>
+					<div className="flex justify-between items-center bg-white border border-black-25 px-3 py-2 sticky top-0 left-0 z-modalHeader">
+						<Dialog.Title className="DialogTitle">{title}</Dialog.Title>
 						<div>
 							<Dialog.Close asChild>
-								<Button border ariaLabel='Close'>
+								<Button ariaLabel="Close">
 									<GrClose />
 								</Button>
 							</Dialog.Close>
