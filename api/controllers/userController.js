@@ -222,24 +222,11 @@ const removeFromRecipeMenu = async (req, res, next) => {
 			);
 
 			const fullRecipe = await Recipe.findById(recipeId);
-			fullRecipe.ingredients.forEach((recipeIngredient) => {
-				const extraItem = user.extraItems.find((extra) =>
-					extra._id.equals(recipeIngredient._id),
+
+			fullRecipe.ingredients.forEach((ingredient) => {
+				user.extraItems = user.extraItems.filter(
+					(item) => !item._id.equals(ingredient._id),
 				);
-
-				if (extraItem) {
-					const adjustedQuantity =
-						extraItem.quantity -
-						recipeIngredient.quantity * existingRecipe.serves;
-
-					if (adjustedQuantity <= 0) {
-						user.extraItems = user.extraItems.filter(
-							(extra) => !extra._id.equals(recipeIngredient._id),
-						);
-					} else {
-						extraItem.quantity = adjustedQuantity;
-					}
-				}
 			});
 		} else {
 			existingRecipe.serves = serves;
