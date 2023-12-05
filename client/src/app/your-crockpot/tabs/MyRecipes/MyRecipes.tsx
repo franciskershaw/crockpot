@@ -11,7 +11,7 @@ const MyRecipes = () => {
 		: null;
 
 	return (
-		<div>
+		<div className="pt-4">
 			{myRecipes ? (
 				<RecipeCardList recipes={myRecipes} fullWidth />
 			) : (

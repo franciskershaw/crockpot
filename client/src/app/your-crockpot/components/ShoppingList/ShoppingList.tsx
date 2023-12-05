@@ -84,7 +84,7 @@ const ShoppingList = () => {
 						label="Search Extra Items"
 					/>
 					{searchResults.length ? (
-						<div className="absolute top-full left-0 z-10 w-full bg-white border border-gray-300 shadow-lg">
+						<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
 							{searchResults.map((result) => (
 								<Modal
 									key={result._id}
@@ -129,8 +129,14 @@ const ShoppingList = () => {
 						</div>
 					) : null}
 				</div>
-
-				<Button onClick={() => clearExtraItems()} border text="Reset to menu" />
+				<div className="ml-2">
+					<Button
+						onClick={() => clearExtraItems()}
+						type="primary"
+						border
+						text="Reset to menu"
+					/>
+				</div>
 			</div>
 			{/* Shopping list */}
 			<Accordion items={accordionItems} />

@@ -18,8 +18,8 @@ const Menu = () => {
 				</Modal>
 				<Button type="primary" border text="Clear Menu" />
 			</div>
-			<div className="container !px-0 md:flex">
-				<div className="container md:w-1/3 md:border-2 md:border-black md:rounded md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
+			<div className="container !px-0 md:flex md:pt-4">
+				<div className="container md:w-1/3 md:border-2 md:border-black md:rounded md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:h-fit md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
 					<div className="hidden md:block">
 						<ShoppingList />
 					</div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import useShoppingList from '../../hooks/useShoppingList';
 import useExtraItems from '../../hooks/useExtraItems';
 import { FaTrash } from 'react-icons/fa';
+import Checkbox from '@/src/components/Checkbox/Checkbox';
 
 interface ShoppingListItemProps {
 	item: ShoppingListItemType;
@@ -77,39 +78,37 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 	};
 
 	return (
-		<div className='flex gap-4 items-center' key={item.item._id}>
-			<div className='flex-grow flex items-center gap-4'>
-				<input
-					checked={obtained}
+		<div className="flex gap-4 items-center" key={item.item._id}>
+			<div className="flex-grow flex items-center gap-4">
+				{/* TODO: Rework checkbox logic */}
+				<Checkbox
+					label={item.item.name}
 					onChange={handleClickCheckbox}
-					type='checkbox'
-					name=''
-					id=''
+					isChecked={obtained}
 				/>
-				<h3>{item.item.name}</h3>
 				<p>x</p>
 				{inputActive ? (
-					<div className='flex flex-col'>
+					<div className="flex flex-col">
 						<input
-							type='number'
-							name=''
-							id=''
+							type="number"
+							name=""
+							id=""
 							value={quantity}
 							onChange={handleChange}
 						/>
-						<button onClick={handleUpdateQuantity} className='text-xs'>
+						<button onClick={handleUpdateQuantity} className="text-xs">
 							Confirm
 							{/* Can have this say 'cancel' if nothing has changed in the input */}
 						</button>
 					</div>
 				) : (
-					<Button onClick={() => setInputActive(true)} type='primary'>
+					<Button onClick={() => setInputActive(true)} type="primary">
 						{quantity}
 					</Button>
 				)}
 				<p>{item.unit}</p>
 			</div>
-			<Button onClick={handleDeleteItem}>
+			<Button onClick={handleDeleteItem} type="primary" border iconSmall>
 				<FaTrash />
 			</Button>
 		</div>
