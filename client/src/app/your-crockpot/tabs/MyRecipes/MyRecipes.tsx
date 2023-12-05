@@ -13,7 +13,7 @@ const MyRecipes = () => {
 	return (
 		<div>
 			{myRecipes ? (
-				<RecipeCardList recipes={myRecipes} />
+				<RecipeCardList recipes={myRecipes} fullWidth />
 			) : (
 				<h2>YOUVE GOT NAY RECIPES</h2>
 			)}

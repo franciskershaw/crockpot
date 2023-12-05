@@ -8,23 +8,27 @@ const Menu = () => {
 	const { recipeMenuRecipes } = useRecipeMenu();
 
 	return (
-		<div className={`xl:flex xl:mt-8 gap-4 mx-8`}>
-			<div className={`flex justify-center my-3 xl:hidden`}>
-				{/* Error caused by the Modal component and button below */}
+		<>
+			<div className="container flex justify-center space-x-4 py-4 bg-white/90 sticky top-[74px] z-searchBar md:hidden">
 				<Modal
 					title={`Shopping List`}
-					trigger={<Button border text='Shopping List' />}
+					trigger={<Button type="primary" border text="Shopping List" />}
 				>
 					<ShoppingList />
 				</Modal>
+				<Button type="primary" border text="Clear Menu" />
 			</div>
-			<div className={`hidden xl:block w-1/3`}>
-				<ShoppingList />
+			<div className="container !px-0 md:flex">
+				<div className="container md:w-1/3 md:border-2 md:border-black md:rounded md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
+					<div className="hidden md:block">
+						<ShoppingList />
+					</div>
+				</div>
+				<div className="container md:w-2/3 md:pl-4">
+					<RecipeCardList recipes={recipeMenuRecipes} />
+				</div>
 			</div>
-			<div className='w-2/3'>
-				<RecipeCardList recipes={recipeMenuRecipes} />
-			</div>
-		</div>
+		</>
 	);
 };
 

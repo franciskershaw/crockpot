@@ -7,7 +7,7 @@ const Favourites = () => {
 	return (
 		<div>
 			{favouriteRecipes.length !== 0 ? (
-				<RecipeCardList recipes={favouriteRecipes} />
+				<RecipeCardList recipes={favouriteRecipes} fullWidth />
 			) : (
 				<h2>YOUVE GOT NAY RECIPES</h2>
 			)}

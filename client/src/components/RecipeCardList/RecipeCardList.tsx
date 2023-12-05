@@ -10,19 +10,24 @@ import Modal from '../Modal/Modal';
 
 type RecipeCardListProps = {
 	recipes: Recipe[];
+	fullWidth?: boolean;
 };
 
-function RecipeCardList({ recipes }: RecipeCardListProps) {
+function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 	return (
-		<div className='recipe-card-list'>
+		<div
+			className={
+				fullWidth ? 'recipe-card-list--full-width' : 'recipe-card-list'
+			}
+		>
 			{recipes.map((recipe) => (
 				<Modal
 					key={uuidv4()}
 					title={
-						<div className='flex'>
+						<div className="flex">
 							<div>{recipe.timeInMinutes} mins</div>
 							{recipe.categories.map((category, index) => (
-								<div key={index} className='ml-2 pl-2 border-l border-black'>
+								<div key={index} className="ml-2 pl-2 border-l border-black">
 									{category.name}
 								</div>
 							))}
@@ -31,7 +36,7 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 					isWide
 					paddingOff
 					trigger={
-						<div className='recipe-card'>
+						<div className="recipe-card">
 							<RecipeCard recipe={recipe} />
 						</div>
 					}

@@ -28,11 +28,11 @@ const ShoppingList = () => {
 			const IconComponent = iconMapping[category.faIcon] || FaQuestion;
 			return {
 				heading: (
-					<div className='flex gap-4'>
-						<Icon>
+					<div className="flex gap-4">
+						<Icon type="primary">
 							<IconComponent />
 						</Icon>
-						<h2>{category.categoryName}</h2>
+						<h3 className="truncate max-w-[115px]">{category.categoryName}</h3>
 						<span>
 							({category.items.filter((item) => item.obtained).length}/
 							{category.items.length})
@@ -73,55 +73,55 @@ const ShoppingList = () => {
 	};
 
 	return (
-		<div className='flex flex-col'>
-			<h2 className='hidden xl:block w-3/4 font-bold pt-3'>Shopping List</h2>
-			<div className='flex items-end justify-between'>
+		<div className="flex flex-col">
+			<h2 className="hidden xl:block w-3/4 font-bold pt-3">Shopping List</h2>
+			<div className="flex items-end justify-between pb-3">
 				{/* header and search */}
-				<div className='relative'>
+				<div className="relative">
 					<SearchBar
 						searchQuery={searchQuery}
 						setSearchQuery={setSearchQuery}
-						label='Search Extra Items'
+						label="Search Extra Items"
 					/>
 					{searchResults.length ? (
-						<div className='absolute top-full left-0 z-10 w-full bg-white border border-gray-300 shadow-lg'>
+						<div className="absolute top-full left-0 z-10 w-full bg-white border border-gray-300 shadow-lg">
 							{searchResults.map((result) => (
 								<Modal
 									key={result._id}
 									title={`Add extra ${result.name} to shopping list`}
 									trigger={<p>{result.name}</p>}
 								>
-									<div className='flex flex-col items-center gap-4 p-8'>
-										<div className='flex items-center justify-center gap-8 flex-grow mb-4'>
-											<div className='flex flex-col gap-2'>
-												<label htmlFor=''>Amount</label>
+									<div className="flex flex-col items-center gap-4 p-8">
+										<div className="flex items-center justify-center gap-8 flex-grow mb-4">
+											<div className="flex flex-col gap-2">
+												<label htmlFor="">Amount</label>
 												<QuantityInput
 													value={extraQuantity}
 													setValue={setExtraQuantity}
 												/>
 											</div>
-											<div className='flex flex-col gap-2'>
-												<label htmlFor=''>Unit (if applicable)</label>
+											<div className="flex flex-col gap-2">
+												<label htmlFor="">Unit (if applicable)</label>
 												<select
-													className='border text-xl w-full py-1'
-													name=''
-													id=''
+													className="border text-xl w-full py-1"
+													name=""
+													id=""
 													onChange={(e) => setExtraUnit(e.target.value)}
 													value={extraUnit}
 												>
-													<option value=''>-</option>
-													<option value='cans'>Cans</option>
-													<option value='g'>g</option>
-													<option value='ml'>ml</option>
-													<option value='tbsp'>Tablespoons</option>
-													<option value='tsp'>Teaspoons</option>
+													<option value="">-</option>
+													<option value="cans">Cans</option>
+													<option value="g">g</option>
+													<option value="ml">ml</option>
+													<option value="tbsp">Tablespoons</option>
+													<option value="tsp">Teaspoons</option>
 												</select>
 											</div>
 										</div>
 										<Button
 											onClick={() => handleAddExtraItem(result)}
 											inverse
-											text='Add to Shopping List'
+											text="Add to Shopping List"
 										/>
 									</div>
 								</Modal>
@@ -130,7 +130,7 @@ const ShoppingList = () => {
 					) : null}
 				</div>
 
-				<Button onClick={() => clearExtraItems()} border text='Reset to menu' />
+				<Button onClick={() => clearExtraItems()} border text="Reset to menu" />
 			</div>
 			{/* Shopping list */}
 			<Accordion items={accordionItems} />
