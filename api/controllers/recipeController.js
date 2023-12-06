@@ -72,32 +72,6 @@ const createNewRecipe = async (req, res, next) => {
 	}
 };
 
-const getSingleRecipe = async (req, res, next) => {
-	try {
-		const recipe = await Recipe.findById(req.params.recipeId);
-		const categories = await RecipeCategory.find({ _id: recipe.categories });
-		const createdBy = await User.findById(recipe.createdBy);
-
-		res.status(200).json({
-			_id: recipe._id,
-			name: recipe.name,
-			image: recipe.image,
-			timeInMinutes: recipe.timeInMinutes,
-			ingredients: recipe.ingredients,
-			instructions: recipe.instructions,
-			notes: recipe.notes,
-			categories,
-			createdBy: {
-				_id: createdBy._id,
-				name: createdBy.username,
-			},
-			approved: recipe.approved,
-		});
-	} catch (err) {
-		next(err);
-	}
-};
-
 const editRecipe = async (req, res, next) => {
 	try {
 		const recipe = await Recipe.findById(req.params.recipeId);
@@ -149,8 +123,18 @@ const deleteRecipe = async (req, res, next) => {
 		const { recipeId } = req.params;
 
 		const recipe = await Recipe.findById(recipeId).session(session);
+
 		if (!recipe) {
 			throw new NotFoundError('Recipe not found');
+		}
+
+		if (
+			recipe.createdBy.toString() !== req.user._id.toString() &&
+			!req.user.isAdmin
+		) {
+			throw new UnauthorizedError(
+				'You do not have permission to edit this recipe',
+			);
 		}
 
 		await recipe.remove();
