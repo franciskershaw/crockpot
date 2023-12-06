@@ -3,13 +3,13 @@ const Joi = require('joi');
 const objectIdPattern = /^[0-9a-fA-F]{24}$/;
 
 const createUserSchema = Joi.object({
-	username: Joi.string().alphanum().min(3).required().messages({
+	username: Joi.string().alphanum().min(3).max(30).required().messages({
 		'string.empty': 'Username cannot be empty',
 		'string.alphanum':
 			'Username must only contain alpha-numeric characters and no spaces',
 		'string.min': 'Username must be at least 3 characters long',
 	}),
-	password: Joi.string().min(6).required().messages({
+	password: Joi.string().min(6).max(30).required().messages({
 		'string.empty': 'Password cannot be empty',
 		'string.min': 'Password must be at least 6 characters long',
 	}),
@@ -67,8 +67,11 @@ const editExtraItemSchema = Joi.object({
 const createRecipeSchema = Joi.object({
 	name: Joi.string()
 		.required()
+		.max(100)
 		.messages({ 'string.empty': 'Recipe name is required' }),
 	timeInMinutes: Joi.number()
+		.integer()
+		.min(1)
 		.required()
 		.messages({ 'number.base': 'Time in minutes must be a number' }),
 	ingredients: Joi.array()
@@ -78,7 +81,7 @@ const createRecipeSchema = Joi.object({
 					'string.pattern.base': 'Must be a valid ObjectId',
 					'any.required': 'This field is required',
 				}),
-				quantity: Joi.number().required(),
+				quantity: Joi.number().min(1).required(),
 				unit: Joi.string().required(),
 			}),
 		)
@@ -105,14 +108,14 @@ const createRecipeSchema = Joi.object({
 });
 
 const editRecipeSchema = Joi.object({
-	name: Joi.string().empty(''),
-	timeInMinutes: Joi.number(),
+	name: Joi.string().empty('').max(100),
+	timeInMinutes: Joi.number().integer().min(1),
 	ingredients: Joi.array().items(
 		Joi.object({
 			_id: Joi.string().pattern(objectIdPattern).messages({
 				'string.pattern.base': 'Must be a valid ObjectId',
 			}),
-			quantity: Joi.number(),
+			quantity: Joi.number().min(1),
 			unit: Joi.string(),
 		}),
 	),
