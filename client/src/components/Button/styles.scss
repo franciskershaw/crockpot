@@ -1,5 +1,5 @@
 .btn {
-	@apply border-none rounded-full text-center flex items-center p-1 cursor-pointer;
+	@apply border-none rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0;
 
 	.icon {
 		@apply bg-transparent;
