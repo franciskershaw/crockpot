@@ -3,6 +3,7 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import { v4 as uuidv4 } from 'uuid';
 import Icon from '../Icon/Icon';
 import './styles.scss';
+import { useMemo } from 'react';
 
 type CheckboxProps = {
 	label: string;
@@ -15,21 +16,23 @@ export default function Checkbox({
 	isChecked,
 	onChange,
 }: CheckboxProps) {
+	const checkboxId = useMemo(() => uuidv4(), []);
+
 	return (
-		<div className='flex items-center'>
+		<div className="flex items-center">
 			<CheckboxRadix.Root
-				className='CheckboxRoot'
-				id={uuidv4()}
+				className="CheckboxRoot"
+				id={checkboxId}
 				onCheckedChange={onChange}
 				checked={isChecked}
 			>
-				<CheckboxRadix.Indicator className='CheckboxIndicator'>
-					<Icon size='sm'>
+				<CheckboxRadix.Indicator className="CheckboxIndicator">
+					<Icon size="sm">
 						<AiOutlineCheck />
 					</Icon>
 				</CheckboxRadix.Indicator>
 			</CheckboxRadix.Root>
-			<label className='pl-2 cursor-pointer' htmlFor={uuidv4()}>
+			<label className="pl-2 cursor-pointer" htmlFor={checkboxId}>
 				{label}
 			</label>
 		</div>

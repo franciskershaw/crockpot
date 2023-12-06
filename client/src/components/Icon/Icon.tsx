@@ -9,7 +9,7 @@ type IconProps = {
 };
 
 const Icon = ({ type, size, active, border, children }: IconProps) => {
-	const iconClasses = `icon icon--${type || 'primary'} icon--${size || 'md'}
+	const iconClasses = `icon ${type ? `icon--${type}` : ''} icon--${size || 'md'}
   ${border ? 'icon--border' : ''} ${active ? 'icon--active' : ''}`;
 
 	return <div className={iconClasses}>{children}</div>;
