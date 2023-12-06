@@ -15,9 +15,14 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+const corsOrigin =
+	process.env.NODE_ENV === 'production'
+		? process.env.CORS_ORIGIN_PROD
+		: process.env.CORS_ORIGIN_DEV;
+
 app.use(
 	cors({
-		origin: 'http://localhost:3000',
+		origin: corsOrigin,
 		credentials: true,
 	}),
 );
