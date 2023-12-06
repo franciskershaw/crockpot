@@ -18,16 +18,16 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 	const { updateExtraItems } = useExtraItems();
 	const { toggleObtained } = useShoppingList();
 
-	const handleClickCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleClickCheckbox = (checked: boolean) => {
 		try {
 			toggleObtained({
 				itemId: item.item._id,
-				obtained: e.target.checked,
+				obtained: checked,
 				isExtra: item.extra || false,
 			});
-			setObtained(e.target.checked);
+			setObtained(checked);
 		} catch (err) {
-			setObtained(!e.target.checked);
+			setObtained(!checked);
 		}
 	};
 
@@ -80,7 +80,6 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 	return (
 		<div className="flex gap-4 items-center" key={item.item._id}>
 			<div className="flex-grow flex items-center gap-4">
-				{/* TODO: Rework checkbox logic */}
 				<Checkbox
 					label={item.item.name}
 					onChange={handleClickCheckbox}

@@ -74,10 +74,10 @@ const ShoppingList = () => {
 
 	return (
 		<div className="flex flex-col">
-			<h2 className="hidden xl:block w-3/4 font-bold pt-3">Shopping List</h2>
-			<div className="flex items-end justify-between pb-3">
-				{/* header and search */}
-				<div className="relative">
+			<h2 className="hidden md:block font-bold">Shopping List</h2>
+			<div className="flex space-x-2 md:space-x-0 md:flex-wrap items-end justify-between pb-3">
+				{/* Header and search */}
+				<div className="relative w-full md:mb-2">
 					<SearchBar
 						searchQuery={searchQuery}
 						setSearchQuery={setSearchQuery}
@@ -129,13 +129,22 @@ const ShoppingList = () => {
 						</div>
 					) : null}
 				</div>
-				<div className="ml-2">
+				<div className="md:hidden">
 					<Button
 						onClick={() => clearExtraItems()}
 						type="primary"
 						border
-						text="Reset to menu"
+						text="Clear Extra Items"
 					/>
+				</div>
+				<div className="hidden md:flex justify-center md:space-y-2 lg:space-y-0 lg:space-x-2 w-full md:flex-col lg:flex-row">
+					<Button
+						onClick={() => clearExtraItems()}
+						type="primary"
+						border
+						text="Clear Extra Items"
+					/>
+					<Button type="primary" border text="Clear Menu" />
 				</div>
 			</div>
 			{/* Shopping list */}
