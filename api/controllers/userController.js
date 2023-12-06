@@ -123,8 +123,7 @@ const checkRefreshToken = (req, res, next) => {
 
 const getUserInfo = async (req, res, next) => {
 	try {
-		const user = await User.findById(req.user._id);
-		res.status(200).json(generateUserObject(user));
+		res.status(200).json(generateUserObject(req.user));
 	} catch (err) {
 		next(err);
 	}
@@ -132,7 +131,7 @@ const getUserInfo = async (req, res, next) => {
 
 const getUserRecipeMenu = async (req, res, next) => {
 	try {
-		const user = await User.findById(req.user._id);
+		const user = req.user;
 		const recipes = await Recipe.find({ _id: { $in: user.recipeMenu } })
 			.populate({
 				path: 'ingredients._id',
@@ -166,7 +165,7 @@ const addToRecipeMenu = async (req, res, next) => {
 
 		const { _id: recipeId, serves } = value;
 
-		const user = await User.findById(req.user._id);
+		const user = req.user;
 
 		const existingRecipe = user.recipeMenu.find((recipe) =>
 			recipe._id.equals(recipeId),
@@ -201,7 +200,7 @@ const removeFromRecipeMenu = async (req, res, next) => {
 
 		const { _id: recipeId, serves } = value;
 
-		const user = await User.findById(req.user._id);
+		const user = req.user;
 		const existingRecipe = user.recipeMenu.find((recipe) =>
 			recipe._id.equals(recipeId),
 		);
@@ -291,7 +290,7 @@ const updateExtraItems = async (req, res, next) => {
 		const { itemId } = req.params;
 		const userId = req.user._id;
 
-		const user = await User.findById(userId);
+		const user = req.user;
 		const itemIndex = user.extraItems.findIndex(
 			(item) => item._id.toString() === itemId,
 		);
@@ -328,7 +327,7 @@ const updateExtraItems = async (req, res, next) => {
 
 const clearExtraItems = async (req, res, next) => {
 	try {
-		const user = await User.findById(req.user._id);
+		const user = req.user;
 		user.extraItems = [];
 		await user.save();
 		res.status(200).json(user.extraItems);
@@ -339,7 +338,7 @@ const clearExtraItems = async (req, res, next) => {
 
 const getUserFavourites = async (req, res, next) => {
 	try {
-		const { favouriteRecipes } = await User.findById(req.user._id);
+		const { favouriteRecipes } = req.user;
 		const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } })
 			.populate('createdBy', 'username')
 			.populate('categories');
@@ -354,7 +353,7 @@ const editUserFavourites = async (req, res, next) => {
 	try {
 		const value = validateRequest(req.body, userFavouritesSchema);
 
-		const user = await User.findById(req.user._id);
+		const user = req.user;
 		const index = user.favouriteRecipes.indexOf(value._id);
 
 		if (index > -1) {

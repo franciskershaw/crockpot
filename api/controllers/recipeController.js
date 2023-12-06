@@ -7,6 +7,8 @@ const {
 	createRecipeSchema,
 	editRecipeSchema,
 } = require('../joiSchemas/schemas');
+const mongoose = require('mongoose');
+const { validateRequest } = require('../helper/helper');
 
 // Needs to only return recipes that are approved and also created by the user
 const getAllRecipes = async (req, res, next) => {
@@ -38,15 +40,24 @@ const getAllRecipes = async (req, res, next) => {
 	}
 };
 
+// Helper for creating, editing, or deleting recipes
+const deleteImageFromCloudinary = async (filename) => {
+	if (filename) {
+		await cloudinary.uploader.destroy(filename);
+	}
+};
+
 const createNewRecipe = async (req, res, next) => {
 	try {
 		const value = validateRequest(req.body, createRecipeSchema);
 
 		const recipe = new Recipe(value);
-		recipe.image = {
-			url: req.file.path,
-			filename: req.file.filename,
-		};
+		if (req.file) {
+			recipe.image = {
+				url: req.file.path,
+				filename: req.file.filename,
+			};
+		}
 		recipe.createdBy = req.user._id;
 		if (req.user.isAdmin) {
 			recipe.approved = true;
@@ -54,32 +65,9 @@ const createNewRecipe = async (req, res, next) => {
 		await recipe.save();
 		res.status(201).json(recipe);
 	} catch (err) {
-		next(err);
-	}
-};
-
-const getSingleRecipe = async (req, res, next) => {
-	try {
-		const recipe = await Recipe.findById(req.params.recipeId);
-		const categories = await RecipeCategory.find({ _id: recipe.categories });
-		const createdBy = await User.findById(recipe.createdBy);
-
-		res.status(200).json({
-			_id: recipe._id,
-			name: recipe.name,
-			image: recipe.image,
-			timeInMinutes: recipe.timeInMinutes,
-			ingredients: recipe.ingredients,
-			instructions: recipe.instructions,
-			notes: recipe.notes,
-			categories,
-			createdBy: {
-				_id: createdBy._id,
-				name: createdBy.username,
-			},
-			approved: recipe.approved,
-		});
-	} catch (err) {
+		if (req.file) {
+			await deleteImageFromCloudinary(req.file.filename);
+		}
 		next(err);
 	}
 };
@@ -102,42 +90,63 @@ const editRecipe = async (req, res, next) => {
 		}
 
 		const value = validateRequest(req.body, editRecipeSchema);
+		const oldFilename = recipe.image && recipe.image.filename;
 
-		const updatedRecipe = await Recipe.findByIdAndUpdate(
-			req.params.recipeId,
-			value,
-			{ new: true },
-		);
+		recipe.set(value);
 		if (req.file) {
-			if (recipe.image && recipe.image.filename) {
-				await cloudinary.uploader.destroy(recipe.image.filename);
-			}
-
-			updatedRecipe.image = {
+			recipe.image = {
 				url: req.file.path,
 				filename: req.file.filename,
 			};
+		}
+		await recipe.save();
 
-			await updatedRecipe.save();
+		// If a new image was uploaded, delete the old one
+		if (oldFilename && req.file) {
+			await deleteImageFromCloudinary(oldFilename);
 		}
 
-		res.status(200).json(updatedRecipe);
+		res.status(200).json(recipe);
 	} catch (err) {
+		if (req.file) {
+			await deleteImageFromCloudinary(req.file.filename);
+		}
 		next(err);
 	}
 };
 
 const deleteRecipe = async (req, res, next) => {
-	const { recipeId } = req.params;
+	const session = await mongoose.startSession();
+	session.startTransaction();
+
 	try {
-		const recipe = await Recipe.findById(recipeId);
-		await recipe.remove();
-		if (recipe.image && recipe.image.filename) {
-			await cloudinary.uploader.destroy(recipe.image.filename);
+		const { recipeId } = req.params;
+
+		const recipe = await Recipe.findById(recipeId).session(session);
+
+		if (!recipe) {
+			throw new NotFoundError('Recipe not found');
 		}
-		res.status(200).json({ msg: 'Recipe deleted' });
+
+		if (
+			recipe.createdBy.toString() !== req.user._id.toString() &&
+			!req.user.isAdmin
+		) {
+			throw new UnauthorizedError(
+				'You do not have permission to edit this recipe',
+			);
+		}
+
+		await recipe.remove();
+		await deleteImageFromCloudinary(recipe.image?.filename);
+
+		await session.commitTransaction();
+		res.status(200).json({ message: 'Recipe deleted' });
 	} catch (err) {
+		await session.abortTransaction();
 		next(err);
+	} finally {
+		session.endSession();
 	}
 };
 
@@ -171,7 +180,6 @@ const toggleApprovedStatus = async (req, res, next) => {
 module.exports = {
 	getAllRecipes,
 	createNewRecipe,
-	getSingleRecipe,
 	editRecipe,
 	deleteRecipe,
 	getUnapprovedRecipes,
