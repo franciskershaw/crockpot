@@ -154,9 +154,7 @@ const deleteRecipe = async (req, res, next) => {
 		}
 
 		await recipe.remove();
-		if (recipe.image && recipe.image.filename) {
-			await cloudinary.uploader.destroy(recipe.image.filename);
-		}
+		await deleteImageFromCloudinary(recipe.image?.filename);
 
 		await session.commitTransaction();
 		res.status(200).json({ message: 'Recipe deleted' });
