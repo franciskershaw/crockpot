@@ -3,6 +3,7 @@ const {
 	editItemCategorySchema,
 } = require('../joiSchemas/schemas');
 const ItemCategory = require('../models/ItemCategory');
+const { NotFoundError } = require('../errors/errors');
 
 const getAllItemCategories = async (req, res, next) => {
 	try {
@@ -41,6 +42,10 @@ const editItemCategory = async (req, res, next) => {
 				new: true,
 			},
 		);
+
+		if (!itemCategory) {
+			throw new NotFoundError('Item Category not found');
+		}
 
 		res.status(200).json(itemCategory);
 	} catch (err) {
