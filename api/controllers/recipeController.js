@@ -180,7 +180,6 @@ const toggleApprovedStatus = async (req, res, next) => {
 module.exports = {
 	getAllRecipes,
 	createNewRecipe,
-	getSingleRecipe,
 	editRecipe,
 	deleteRecipe,
 	getUnapprovedRecipes,
