@@ -129,15 +129,7 @@ const editRecipeSchema = Joi.object({
 		}),
 	),
 	approved: Joi.boolean(),
-}).or(
-	'name',
-	'timeInMinutes',
-	'ingredients',
-	'instructions',
-	'notes',
-	'categories',
-	'approved',
-);
+});
 
 const recipeCategorySchema = Joi.object({
 	name: Joi.string().required().min(1).max(100),

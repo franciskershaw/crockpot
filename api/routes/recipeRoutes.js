@@ -30,7 +30,7 @@ router
 router
 	.route('/:recipeId')
 	.get(asyncHandler(getSingleRecipe))
-	.put(isLoggedIn, isAdmin, upload.single('image'), asyncHandler(editRecipe))
+	.put(isLoggedIn, upload.single('image'), asyncHandler(editRecipe))
 	.delete(isLoggedIn, isAdmin, asyncHandler(deleteRecipe));
 
 router
