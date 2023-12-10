@@ -13,7 +13,7 @@ interface ButtonProps {
 	text?: string;
 	ariaLabel?: string;
 	children?: React.ReactNode;
-	iconSmall?: boolean;
+	iconXs?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -27,7 +27,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			text,
 			ariaLabel,
 			children,
-			iconSmall,
+			iconXs,
 		},
 		ref,
 	) => {
@@ -45,7 +45,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				aria-label={ariaLabel ?? text}
 			>
 				{text && <span className="w-full p-1">{text}</span>}
-				{children && <Icon size={iconSmall ? 'sm' : 'md'}>{children}</Icon>}
+				{children && <Icon size={iconXs ? 'xs' : 'md'}>{children}</Icon>}
 			</button>
 		);
 	},

@@ -19,7 +19,7 @@ export default function Checkbox({
 	const checkboxId = useMemo(() => uuidv4(), []);
 
 	return (
-		<div className="flex items-center">
+		<div className="flex items-center overflow-hidden">
 			<CheckboxRadix.Root
 				className="CheckboxRoot"
 				id={checkboxId}
@@ -32,7 +32,7 @@ export default function Checkbox({
 					</Icon>
 				</CheckboxRadix.Indicator>
 			</CheckboxRadix.Root>
-			<label className="pl-2 cursor-pointer" htmlFor={checkboxId}>
+			<label className="pl-2 cursor-pointer truncate" htmlFor={checkboxId}>
 				{label}
 			</label>
 		</div>
