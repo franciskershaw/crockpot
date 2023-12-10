@@ -6,7 +6,6 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 
 const PORT = process.env.PORT || 5000;
 
@@ -18,13 +17,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(helmet());
-
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	max: 100,
-});
-
-app.use(limiter);
 
 const corsOrigin =
 	process.env.NODE_ENV === 'production'
