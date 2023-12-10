@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 interface ImageInputProps {
-	setImage: (image: File | null) => void;
+	setImage: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 const ImageInput: FC<ImageInputProps> = ({ setImage }) => {
