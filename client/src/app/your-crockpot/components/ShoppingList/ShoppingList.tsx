@@ -42,7 +42,7 @@ const ShoppingList = () => {
 					</div>
 				),
 				children: (
-					<div>
+					<div className="space-y-0.5">
 						{category.items.map((item) => (
 							<ShoppingListItem
 								key={`${item.item._id}_${item.quantity}_${item.unit}`}

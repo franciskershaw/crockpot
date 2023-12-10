@@ -6,8 +6,12 @@
 	}
 
 	// Sizes
+	&--xs {
+		@apply h-5 w-5;
+	}
+
 	&--sm {
-		@apply h-6 w-6 border;
+		@apply h-6 w-6;
 	}
 
 	&--lg {

@@ -77,6 +77,8 @@ const ButtonCart = ({
 		setIsExpanded(false);
 	};
 
+	// TODO: Make global number component with confirm dropdown
+
 	return (
 		<div className="relative">
 			<div className="flex items-center border-2 border-black bg-white rounded-full w-fit">
@@ -141,7 +143,7 @@ const ButtonCart = ({
 				</div>
 			</div>
 			{isExpanded && (
-				<h5 onClick={handleUpdateRecipeMenu} className="quantity-input-confirm">
+				<h6 onClick={handleUpdateRecipeMenu} className="quantity-input-confirm">
 					{!isMenu
 						? quantity > 0
 							? 'Add to cart'
@@ -149,7 +151,7 @@ const ButtonCart = ({
 						: quantity > 0
 						? 'Update quantity'
 						: 'Remove quantity'}
-				</h5>
+				</h6>
 			)}
 		</div>
 	);
