@@ -16,25 +16,30 @@ const AddRecipe: FC<{}> = () => {
 
 	return (
 		<form onSubmit={(e) => e.preventDefault()}>
-			<InputGroup label='Recipe Name' htmlFor='recipeName'>
-				<TextInput
-					id='recipeName'
-					value={recipeName}
-					onChange={handleRecipeNameChange}
-				/>
-			</InputGroup>
-
-			<InputGroup label='Upload Image' htmlFor='recipeImage'>
-				<ImageInput setImage={setSelectedImage} />
-			</InputGroup>
-
+			<TextInput
+				id='recipeName'
+				value={recipeName}
+				onChange={handleRecipeNameChange}
+				label='Recipe Name'
+			/>
+			<ImageInput
+				setImage={setSelectedImage}
+				label='Upload Image'
+				id='recipeImage'
+			/>
 			<div className='flex justify-between'>
-				<InputGroup label='Prep Time' htmlFor='prepTime'>
-					<QuantityInput value={prepTime} setValue={setPrepTime} />
-				</InputGroup>
-				<InputGroup label='Serves' htmlFor='serves'>
-					<QuantityInput value={serves} setValue={setServes} />
-				</InputGroup>
+				<QuantityInput
+					value={prepTime}
+					setValue={setPrepTime}
+					id='prepTime'
+					label='Prep Time'
+				/>
+				<QuantityInput
+					label='Serves'
+					id='serves'
+					value={serves}
+					setValue={setServes}
+				/>
 			</div>
 		</form>
 	);
