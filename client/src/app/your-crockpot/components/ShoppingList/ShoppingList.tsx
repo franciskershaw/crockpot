@@ -90,7 +90,7 @@ const ShoppingList = () => {
 							{searchResults.map((result) => (
 								<Modal
 									key={result._id}
-									title={`Add extra ${result.name} to shopping list`}
+									title={`Add extra ${result.name} to Shopping List`}
 									trigger={<p>{result.name}</p>}
 								>
 									<div className="flex flex-col items-center gap-4 p-8">
@@ -105,7 +105,7 @@ const ShoppingList = () => {
 											<div className="flex flex-col gap-2">
 												<label htmlFor="">Unit (if applicable)</label>
 												<select
-													className="border text-xl w-full py-1"
+													className="border-2 rounded h-[44px] text-xl w-full py-1"
 													name=""
 													id=""
 													onChange={(e) => setExtraUnit(e.target.value)}
