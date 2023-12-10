@@ -5,13 +5,13 @@ import useShoppingList from '../../hooks/useShoppingList';
 import useExtraItems from '../../hooks/useExtraItems';
 import { FaTrash } from 'react-icons/fa';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
+import './styles.scss';
 
 interface ShoppingListItemProps {
 	item: ShoppingListItemType;
 }
 
 const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
-	const [inputActive, setInputActive] = useState(false);
 	const [quantity, setQuantity] = useState(item.quantity);
 	const [obtained, setObtained] = useState(item.obtained);
 
@@ -60,7 +60,6 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 			console.log(err);
 			setQuantity(item.quantity);
 		}
-		setInputActive(false);
 	};
 
 	const handleDeleteItem = () => {
@@ -78,36 +77,26 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 	};
 
 	return (
-		<div className="flex gap-4 items-center" key={item.item._id}>
-			<div className="flex-grow flex items-center gap-4">
+		<div className="flex justify-between" key={item.item._id}>
+			<div className="flex items-center overflow-hidden pr-2 space-x-1.5">
 				<Checkbox
 					label={item.item.name}
 					onChange={handleClickCheckbox}
 					isChecked={obtained}
 				/>
-				<p>x</p>
-				{inputActive ? (
-					<div className="flex flex-col">
-						<input
-							type="number"
-							name=""
-							id=""
-							value={quantity}
-							onChange={handleChange}
-						/>
-						<button onClick={handleUpdateQuantity} className="text-xs">
-							Confirm
-							{/* Can have this say 'cancel' if nothing has changed in the input */}
-						</button>
-					</div>
-				) : (
-					<Button onClick={() => setInputActive(true)} type="primary">
-						{quantity}
-					</Button>
-				)}
-				<p>{item.unit}</p>
+				<span>x</span>
+				<input
+					type="number"
+					name=""
+					id=""
+					value={quantity}
+					onChange={handleChange}
+					onBlur={handleUpdateQuantity}
+					className="w-[50px] border border-black rounded text-center p-0.5"
+				/>
+				<span>{item.unit}</span>
 			</div>
-			<Button onClick={handleDeleteItem} type="primary" border iconSmall>
+			<Button onClick={handleDeleteItem} type="primary" border iconXs>
 				<FaTrash />
 			</Button>
 		</div>

@@ -1,13 +1,17 @@
 .icon {
-	@apply h-8 w-8 bg-none border-none rounded-full p-1;
+	@apply h-8 w-8 bg-none border-none rounded-full p-1 flex-shrink-0;
 
 	svg {
 		@apply w-full h-full;
 	}
 
 	// Sizes
+	&--xs {
+		@apply h-5 w-5;
+	}
+
 	&--sm {
-		@apply h-6 w-6 border;
+		@apply h-6 w-6;
 	}
 
 	&--lg {
