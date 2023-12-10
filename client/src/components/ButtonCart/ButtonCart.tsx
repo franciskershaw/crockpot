@@ -141,17 +141,14 @@ const ButtonCart = ({
 				</div>
 			</div>
 			{isExpanded && (
-				<h5
-					onClick={handleUpdateRecipeMenu}
-					className="absolute bottom-[-20px] w-[134px] text-center underline cursor-pointer bg-black/40 text-white rounded-full"
-				>
+				<h5 onClick={handleUpdateRecipeMenu} className="quantity-input-confirm">
 					{!isMenu
 						? quantity > 0
 							? 'Add to cart'
 							: 'Cancel'
 						: quantity > 0
-						? 'Update menu'
-						: 'Remove from menu'}
+						? 'Update quantity'
+						: 'Remove quantity'}
 				</h5>
 			)}
 		</div>

@@ -5,12 +5,12 @@
 	overflow: hidden;
 
 	&--expanded {
-		width: 90px;
+		width: 100px;
 	}
 
 	input {
 		text-align: center;
-		width: 50px;
+		width: 60px;
 		flex-shrink: 0;
 
 		&:focus-visible {
@@ -21,6 +21,18 @@
 	> div {
 		flex-shrink: 0;
 	}
+}
+
+.quantity-input-confirm {
+	@apply absolute bottom-[-23px] w-fit text-center underline cursor-pointer bg-white text-black border-2 border-black border-t pb-0.5 px-1;
+
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	left: 50%;
+	transform: translateX(-50%);
+	white-space: nowrap;
 }
 
 .fade {

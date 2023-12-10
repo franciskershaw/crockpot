@@ -28,11 +28,13 @@ const ShoppingList = () => {
 			const IconComponent = iconMapping[category.faIcon] || FaQuestion;
 			return {
 				heading: (
-					<div className="flex gap-4">
+					<div className="flex overflow-hidden">
 						<Icon type="primary">
 							<IconComponent />
 						</Icon>
-						<h3 className="truncate max-w-[115px]">{category.categoryName}</h3>
+						<span className="h3 text-left pl-2 pr-1 truncate">
+							{category.categoryName}
+						</span>
 						<span>
 							({category.items.filter((item) => item.obtained).length}/
 							{category.items.length})
