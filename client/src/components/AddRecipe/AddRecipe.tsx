@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
-import InputGroup from '../FormComponents/InputGroup/InputGroup';
+import SelectInput from '../FormComponents/SelectInput/SelectInput';
 import QuantityInput from '../QuantityInput/QuantityInput';
 
 const AddRecipe: FC<{}> = () => {
@@ -9,9 +9,21 @@ const AddRecipe: FC<{}> = () => {
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
 	const [prepTime, setPrepTime] = useState<number>(30);
 	const [serves, setServes] = useState<number>(4);
+	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+	// Dummy categories data
+	const fakeCategories = [
+		{ value: 'dessert', label: 'Dessert' },
+		{ value: 'main-course', label: 'Main Course' },
+		{ value: 'appetizer', label: 'Appetizer' },
+	];
 
 	const handleRecipeNameChange = (name: string) => {
 		setRecipeName(name);
+	};
+
+	const handleCategoryChange = (newCategories: string[]) => {
+		setSelectedCategories(newCategories);
 	};
 
 	return (
@@ -20,7 +32,7 @@ const AddRecipe: FC<{}> = () => {
 				id='recipeName'
 				value={recipeName}
 				onChange={handleRecipeNameChange}
-				label='Recipe Name'
+				label='Recipe Name*'
 			/>
 			<ImageInput
 				setImage={setSelectedImage}
@@ -32,15 +44,24 @@ const AddRecipe: FC<{}> = () => {
 					value={prepTime}
 					setValue={setPrepTime}
 					id='prepTime'
-					label='Prep Time'
+					label='Prep Time*'
 				/>
 				<QuantityInput
-					label='Serves'
+					label='Serves*'
 					id='serves'
 					value={serves}
 					setValue={setServes}
 				/>
 			</div>
+			<SelectInput
+				id='selectCategory'
+				options={fakeCategories}
+				value={selectedCategories}
+				onChange={handleCategoryChange}
+				label='Select Categories*'
+				isMulti
+				placeholder='Please select categories'
+			/>
 		</form>
 	);
 };

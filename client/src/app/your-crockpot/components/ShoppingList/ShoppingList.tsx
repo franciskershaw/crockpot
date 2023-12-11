@@ -28,11 +28,11 @@ const ShoppingList = () => {
 			const IconComponent = iconMapping[category.faIcon] || FaQuestion;
 			return {
 				heading: (
-					<div className="flex overflow-hidden">
-						<Icon type="primary">
+					<div className='flex overflow-hidden'>
+						<Icon type='primary'>
 							<IconComponent />
 						</Icon>
-						<span className="h3 text-left pl-2 pr-1 truncate">
+						<span className='h3 text-left pl-2 pr-1 truncate'>
 							{category.categoryName}
 						</span>
 						<span>
@@ -42,7 +42,7 @@ const ShoppingList = () => {
 					</div>
 				),
 				children: (
-					<div className="space-y-0.5">
+					<div className='space-y-0.5'>
 						{category.items.map((item) => (
 							<ShoppingListItem
 								key={`${item.item._id}_${item.quantity}_${item.unit}`}
@@ -75,55 +75,55 @@ const ShoppingList = () => {
 	};
 
 	return (
-		<div className="flex flex-col">
-			<h2 className="hidden md:block font-bold">Shopping List</h2>
-			<div className="flex space-x-2 md:space-x-0 md:flex-wrap items-end justify-between pb-3">
+		<div className='flex flex-col'>
+			<h2 className='hidden md:block font-bold'>Shopping List</h2>
+			<div className='flex space-x-2 md:space-x-0 md:flex-wrap items-end justify-between pb-3'>
 				{/* Header and search */}
-				<div className="relative w-full md:mb-2">
+				<div className='relative w-full md:mb-2'>
 					<SearchBar
 						searchQuery={searchQuery}
 						setSearchQuery={setSearchQuery}
-						label="Search Extra Items"
+						label='Search Extra Items'
 					/>
 					{searchResults.length ? (
-						<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
+						<div className='absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow'>
 							{searchResults.map((result) => (
 								<Modal
 									key={result._id}
 									title={`Add extra ${result.name} to shopping list`}
 									trigger={<p>{result.name}</p>}
 								>
-									<div className="flex flex-col items-center gap-4 p-8">
-										<div className="flex items-center justify-center gap-8 flex-grow mb-4">
-											<div className="flex flex-col gap-2">
-												<label htmlFor="">Amount</label>
+									<div className='flex flex-col items-center gap-4 p-8'>
+										<div className='flex items-center justify-center gap-8 flex-grow mb-4'>
+											<div className='flex flex-col gap-2'>
+												<label htmlFor=''>Amount</label>
 												<QuantityInput
 													value={extraQuantity}
 													setValue={setExtraQuantity}
 												/>
 											</div>
-											<div className="flex flex-col gap-2">
-												<label htmlFor="">Unit (if applicable)</label>
+											<div className='flex flex-col gap-2'>
+												<label htmlFor=''>Unit (if applicable)</label>
 												<select
-													className="border text-xl w-full py-1"
-													name=""
-													id=""
+													className='border text-xl w-full py-1'
+													name=''
+													id=''
 													onChange={(e) => setExtraUnit(e.target.value)}
 													value={extraUnit}
 												>
-													<option value="">-</option>
-													<option value="cans">Cans</option>
-													<option value="g">g</option>
-													<option value="ml">ml</option>
-													<option value="tbsp">Tablespoons</option>
-													<option value="tsp">Teaspoons</option>
+													<option value=''>-</option>
+													<option value='cans'>Cans</option>
+													<option value='g'>g</option>
+													<option value='ml'>ml</option>
+													<option value='tbsp'>Tablespoons</option>
+													<option value='tsp'>Teaspoons</option>
 												</select>
 											</div>
 										</div>
 										<Button
 											onClick={() => handleAddExtraItem(result)}
 											inverse
-											text="Add to Shopping List"
+											text='Add to Shopping List'
 										/>
 									</div>
 								</Modal>
@@ -131,22 +131,22 @@ const ShoppingList = () => {
 						</div>
 					) : null}
 				</div>
-				<div className="md:hidden">
+				<div className='md:hidden'>
 					<Button
 						onClick={() => clearExtraItems()}
-						type="primary"
+						type='primary'
 						border
-						text="Clear Extra Items"
+						text='Clear Extra Items'
 					/>
 				</div>
-				<div className="hidden md:flex justify-center md:space-y-2 lg:space-y-0 lg:space-x-2 w-full md:flex-col lg:flex-row">
+				<div className='hidden md:flex justify-center md:space-y-2 lg:space-y-0 lg:space-x-2 w-full md:flex-col lg:flex-row'>
 					<Button
 						onClick={() => clearExtraItems()}
-						type="primary"
+						type='primary'
 						border
-						text="Clear Extra Items"
+						text='Clear Extra Items'
 					/>
-					<Button type="primary" border text="Clear Menu" />
+					<Button type='primary' border text='Clear Menu' />
 				</div>
 			</div>
 			{/* Shopping list */}
