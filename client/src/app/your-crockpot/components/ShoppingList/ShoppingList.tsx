@@ -10,9 +10,8 @@ import ShoppingListItem from './ShoppingListItem';
 import Button from '@/src/components/Button/Button';
 import useItems from '@/src/hooks/items/useItems';
 import Modal from '@/src/components/Modal/Modal';
+import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
 import { Item } from '@/src/types/types';
-import SearchResultsContainer from '@/src/components/SearchResults/SearchResultsContainer';
-import ExtraItemModal from './ExtraItemModal';
 
 const ShoppingList = () => {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -87,23 +86,49 @@ const ShoppingList = () => {
 						label='Search Extra Items'
 					/>
 					{searchResults.length ? (
-						<SearchResultsContainer>
+						<div className='absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow'>
 							{searchResults.map((result) => (
 								<Modal
 									key={result._id}
 									title={`Add extra ${result.name} to shopping list`}
 									trigger={<p>{result.name}</p>}
 								>
-									<ExtraItemModal
-										amountValue={extraQuantity}
-										setAmountValue={setExtraQuantity}
-										extraUnit={extraUnit}
-										setExtraUnit={setExtraUnit}
-										onSubmit={() => handleAddExtraItem(result)}
-									/>
+									<div className='flex flex-col items-center gap-4 p-8'>
+										<div className='flex items-center justify-center gap-8 flex-grow mb-4'>
+											<div className='flex flex-col gap-2'>
+												<label htmlFor=''>Amount</label>
+												<QuantityInput
+													value={extraQuantity}
+													setValue={setExtraQuantity}
+												/>
+											</div>
+											<div className='flex flex-col gap-2'>
+												<label htmlFor=''>Unit (if applicable)</label>
+												<select
+													className='border text-xl w-full py-1'
+													name=''
+													id=''
+													onChange={(e) => setExtraUnit(e.target.value)}
+													value={extraUnit}
+												>
+													<option value=''>-</option>
+													<option value='cans'>Cans</option>
+													<option value='g'>g</option>
+													<option value='ml'>ml</option>
+													<option value='tbsp'>Tablespoons</option>
+													<option value='tsp'>Teaspoons</option>
+												</select>
+											</div>
+										</div>
+										<Button
+											onClick={() => handleAddExtraItem(result)}
+											inverse
+											text='Add to Shopping List'
+										/>
+									</div>
 								</Modal>
 							))}
-						</SearchResultsContainer>
+						</div>
 					) : null}
 				</div>
 				<div className='md:hidden'>
