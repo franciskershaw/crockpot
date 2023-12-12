@@ -10,9 +10,8 @@ import ShoppingListItem from './ShoppingListItem';
 import Button from '@/src/components/Button/Button';
 import useItems from '@/src/hooks/items/useItems';
 import Modal from '@/src/components/Modal/Modal';
-import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
 import { Item } from '@/src/types/types';
-import SearchResults from '@/src/components/SearchResults/SearchResults';
+import SearchResultsContainer from '@/src/components/SearchResults/SearchResultsContainer';
 import ExtraItemModal from './ExtraItemModal';
 
 const ShoppingList = () => {
@@ -87,23 +86,25 @@ const ShoppingList = () => {
 						setSearchQuery={setSearchQuery}
 						label='Search Extra Items'
 					/>
-					<SearchResults results={searchResults}>
-						{(result) => (
-							<Modal
-								key={result._id}
-								title={`Add extra ${result.name} to shopping list`}
-								trigger={<p>{result.name}</p>}
-							>
-								<ExtraItemModal
-									amountValue={extraQuantity}
-									setAmountValue={setExtraQuantity}
-									extraUnit={extraUnit}
-									setExtraUnit={setExtraUnit}
-									onSubmit={() => handleAddExtraItem(result)}
-								/>
-							</Modal>
-						)}
-					</SearchResults>
+					{searchResults.length ? (
+						<SearchResultsContainer>
+							{searchResults.map((result) => (
+								<Modal
+									key={result._id}
+									title={`Add extra ${result.name} to shopping list`}
+									trigger={<p>{result.name}</p>}
+								>
+									<ExtraItemModal
+										amountValue={extraQuantity}
+										setAmountValue={setExtraQuantity}
+										extraUnit={extraUnit}
+										setExtraUnit={setExtraUnit}
+										onSubmit={() => handleAddExtraItem(result)}
+									/>
+								</Modal>
+							))}
+						</SearchResultsContainer>
+					) : null}
 				</div>
 				<div className='md:hidden'>
 					<Button
