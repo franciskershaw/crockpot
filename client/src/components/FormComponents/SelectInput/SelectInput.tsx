@@ -33,16 +33,13 @@ const SelectInput: FC<SelectInputProps> = ({
 	const handleMultiSelectChange = (
 		selectedOptions: MultiValue<Option> | SingleValue<Option>,
 	) => {
-		let newValues: string[] = [];
-
-		if (Array.isArray(selectedOptions)) {
-			newValues = selectedOptions.map((option) => option.value);
-		} else if (selectedOptions && !Array.isArray(selectedOptions)) {
-			newValues = [(selectedOptions as Option).value];
-		}
-
+		const newValues = Array.isArray(selectedOptions)
+			? selectedOptions.map((option) => option.value)
+			: [(selectedOptions as Option).value];
 		onChange(newValues);
 	};
+
+	const isOptionDisabled = () => value.length >= 3;
 
 	return (
 		<InputGroup label={label} htmlFor={id}>
@@ -52,6 +49,7 @@ const SelectInput: FC<SelectInputProps> = ({
 				onChange={handleMultiSelectChange}
 				value={selectedOptions}
 				placeholder={placeholder}
+				isOptionDisabled={isOptionDisabled}
 			/>
 		</InputGroup>
 	);

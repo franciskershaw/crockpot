@@ -1,8 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
 import QuantityInput from '../QuantityInput/QuantityInput';
+import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 
 const AddRecipe: FC<{}> = () => {
 	const [recipeName, setRecipeName] = useState<string>('');
@@ -11,12 +12,7 @@ const AddRecipe: FC<{}> = () => {
 	const [serves, setServes] = useState<number>(4);
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-	// Dummy categories data
-	const fakeCategories = [
-		{ value: 'dessert', label: 'Dessert' },
-		{ value: 'main-course', label: 'Main Course' },
-		{ value: 'appetizer', label: 'Appetizer' },
-	];
+	const { recipeCategories } = useRecipeCategories();
 
 	const handleRecipeNameChange = (name: string) => {
 		setRecipeName(name);
@@ -55,10 +51,13 @@ const AddRecipe: FC<{}> = () => {
 			</div>
 			<SelectInput
 				id='selectCategory'
-				options={fakeCategories}
+				options={recipeCategories.map((category) => ({
+					value: category._id,
+					label: category.name,
+				}))}
 				value={selectedCategories}
 				onChange={handleCategoryChange}
-				label='Select Categories*'
+				label='Select Categories (max 3)*'
 				isMulti
 				placeholder='Please select categories'
 			/>
