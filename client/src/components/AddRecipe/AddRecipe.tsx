@@ -1,9 +1,11 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
 import QuantityInput from '../QuantityInput/QuantityInput';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
+import useItems from '@/src/hooks/items/useItems';
+import SearchBar from '../FormSearchBar/SearchBar';
 
 const AddRecipe: FC<{}> = () => {
 	const [recipeName, setRecipeName] = useState<string>('');
@@ -11,8 +13,15 @@ const AddRecipe: FC<{}> = () => {
 	const [prepTime, setPrepTime] = useState<number>(30);
 	const [serves, setServes] = useState<number>(4);
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+	const [ingredientSearch, setIngredientSearch] = useState<string>('');
 
 	const { recipeCategories } = useRecipeCategories();
+
+	const { filterItems, allItems } = useItems();
+
+	const searchResults = useMemo(() => {
+		return filterItems(allItems, ingredientSearch);
+	}, [allItems, ingredientSearch, filterItems]);
 
 	const handleRecipeNameChange = (name: string) => {
 		setRecipeName(name);
@@ -21,6 +30,10 @@ const AddRecipe: FC<{}> = () => {
 	const handleCategoryChange = (newCategories: string[]) => {
 		setSelectedCategories(newCategories);
 	};
+
+	useEffect(() => {
+		console.log(searchResults);
+	}, [searchResults]);
 
 	return (
 		<form onSubmit={(e) => e.preventDefault()}>
@@ -61,6 +74,12 @@ const AddRecipe: FC<{}> = () => {
 				isMulti
 				placeholder='Please select categories'
 			/>
+			<SearchBar
+				searchQuery={ingredientSearch}
+				setSearchQuery={setIngredientSearch}
+				label='Search ingredients'
+			/>
+			{searchResults.length ? <p>{searchResults.length}</p> : null}
 		</form>
 	);
 };
