@@ -8,21 +8,23 @@ import React, {
 } from 'react';
 import * as RadixTabs from '@radix-ui/react-tabs';
 import './styles.scss';
+import AnimateHeight, { Height } from 'react-animate-height';
 
 interface Tabs {
 	children: ReactNode[];
 	titles: string[];
+	isModal?: boolean;
 }
 
-const Tabs: FC<Tabs> = ({ children, titles }) => {
+const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const sliderRef = useRef<HTMLDivElement>(null);
 
+	// Update slider position
+	const sliderRef = useRef<HTMLDivElement>(null);
 	const updateSliderPosition = () => {
 		const slider = sliderRef.current;
 		if (slider) {
-			// Assuming each tab has equal width
-			const tabWidth = 100 / titles.length; // as a percentage
+			const tabWidth = 100 / titles.length;
 			const leftOffset = tabWidth * activeIndex;
 
 			slider.style.left = `${leftOffset}%`;
@@ -31,6 +33,24 @@ const Tabs: FC<Tabs> = ({ children, titles }) => {
 	};
 
 	useEffect(updateSliderPosition, [activeIndex]);
+
+	// Update height of content
+	const [height, setHeight] = useState<Height>('auto');
+	const contentDiv = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		if (!isModal) return;
+
+		const element = contentDiv.current as HTMLDivElement;
+
+		const resizeObserver = new ResizeObserver(() => {
+			setHeight(element.clientHeight);
+		});
+
+		resizeObserver.observe(element);
+
+		return () => resizeObserver.disconnect();
+	}, [activeIndex]);
 
 	return (
 		<RadixTabs.Root
@@ -58,11 +78,23 @@ const Tabs: FC<Tabs> = ({ children, titles }) => {
 				</RadixTabs.List>
 			</div>
 
-			{Children.map(children, (child, index) => (
-				<RadixTabs.Content className="px-4" value={titles[index]}>
-					{child}
-				</RadixTabs.Content>
-			))}
+			{isModal ? (
+				<AnimateHeight height={height} contentRef={contentDiv}>
+					{Children.map(children, (child, index) => (
+						<RadixTabs.Content className="px-4" value={titles[index]}>
+							{child}
+						</RadixTabs.Content>
+					))}
+				</AnimateHeight>
+			) : (
+				<div>
+					{Children.map(children, (child, index) => (
+						<RadixTabs.Content className="px-4" value={titles[index]}>
+							{child}
+						</RadixTabs.Content>
+					))}
+				</div>
+			)}
 		</RadixTabs.Root>
 	);
 };

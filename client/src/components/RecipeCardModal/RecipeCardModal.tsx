@@ -80,7 +80,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 				</div>
 			</div>
 			<div className="px-2 pt-4">
-				<Tabs titles={tabTitles}>
+				<Tabs titles={tabTitles} isModal>
 					<>{tabIngredients()}</>
 					<>{tabInstructions()}</>
 				</Tabs>
