@@ -73,7 +73,12 @@ const BrowsePage = () => {
 						<BrowsePageSearchBar />
 					</div>
 					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
-					<RecipeCardList recipes={filteredRecipes} />
+					<div className="md:hidden">
+						<RecipeCardList recipes={filteredRecipes} fullWidth />
+					</div>
+					<div className="hidden md:block">
+						<RecipeCardList recipes={filteredRecipes} />
+					</div>
 				</div>
 			</div>
 		</>

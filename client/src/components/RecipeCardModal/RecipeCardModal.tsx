@@ -79,7 +79,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 					</div>
 				</div>
 			</div>
-			<div className="px-2 py-0">
+			<div className="px-2 pt-4">
 				<Tabs titles={tabTitles}>
 					<>{tabIngredients()}</>
 					<>{tabInstructions()}</>

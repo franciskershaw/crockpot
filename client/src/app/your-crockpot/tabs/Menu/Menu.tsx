@@ -19,7 +19,7 @@ const Menu = () => {
 				<Button type="primary" border text="Clear Menu" />
 			</div>
 			<div className="container !px-0 lg:flex lg:pt-4">
-				<div className="container lg:w-1/3 lg:border-2 lg:border-black lg:rounded lg:pt-2 lg:mx-4 xl:ml-0 lg:my-0 lg:h-fit lg:max-h-[85vh] lg:overflow-scroll lg:sticky lg:top-[110px]">
+				<div className="container lg:w-1/3 lg:border-2 lg:border-black lg:rounded lg:pt-2 lg:mx-4 xl:ml-0 lg:my-0 lg:h-fit lg:max-h-[85vh] lg:overflow-scroll lg:sticky lg:top-[110px] xl:px-4">
 					<div className="hidden lg:block">
 						<ShoppingList />
 					</div>
