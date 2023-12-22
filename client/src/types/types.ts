@@ -22,13 +22,22 @@ export interface Image {
 	filename: string;
 }
 
+export type Unit = '' | 'cans' | 'g' | 'tbsp' | 'tsp' | 'ml';
+
+export interface AddRecipeIngredient {
+	_id: string;
+	name: string;
+	quantity: number | null;
+	unit: Unit;
+}
+
 export interface Ingredient {
 	_id: {
 		name: string;
 		_id: string;
 	};
 	quantity: number;
-	unit: string;
+	unit: Unit;
 }
 
 export interface Category {
@@ -76,7 +85,7 @@ export interface ShoppingItem {
 export interface ShoppingListItem {
 	item: ShoppingItem;
 	quantity: number;
-	unit: string;
+	unit: Unit;
 	obtained: boolean;
 	extra?: boolean;
 }
