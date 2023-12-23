@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, useEffect, ChangeEvent, Fragment } from 'react';
+import { FC, useState, useMemo, Fragment } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
@@ -67,7 +67,7 @@ const AddRecipe: FC<{}> = () => {
 		index: number,
 	) => {
 		const { value } = e.target;
-		let newQuantity: number | null = null; // Allow for a null state
+		let newQuantity: number | null = null;
 
 		if (value !== '' && !isNaN(value as any)) {
 			newQuantity = value.includes('.') ? parseFloat(value) : parseInt(value);
