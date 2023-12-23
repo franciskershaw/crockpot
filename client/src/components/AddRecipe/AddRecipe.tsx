@@ -10,6 +10,7 @@ import { AddRecipeIngredient, Item, Unit } from '@/src/types/types';
 import InputGroup from '../FormComponents/InputGroup/InputGroup';
 import Button from '../Button/Button';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+import { useAddRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 
 const AddRecipe: FC<{}> = () => {
 	const [name, setName] = useState<string>('');
@@ -28,17 +29,47 @@ const AddRecipe: FC<{}> = () => {
 
 	const { filterItems, ingredients } = useItems();
 
+	const addRecipe = useAddRecipe();
+
 	const searchResults = useMemo(() => {
 		return filterItems(ingredients, ingredientSearch);
 	}, [ingredients, ingredientSearch, filterItems]);
 
 	const handleSubmit = () => {
-		console.log('name', name);
-		console.log('selectedImage', selectedImage);
-		console.log('timeInMinutes', timeInMinutes);
-		console.log('serves', serves);
-		console.log('selectedCategories', selectedCategories);
-		console.log('instructions', instructions);
+		const formData = new FormData();
+		formData.append('name', name);
+		formData.append('timeInMinutes', timeInMinutes.toString());
+
+		selectedIngredients.forEach((ingredient, index) => {
+			formData.append(`ingredients[${index}][_id]`, ingredient._id);
+			formData.append(
+				`ingredients[${index}][quantity]`,
+				ingredient.quantity !== null ? ingredient.quantity.toString() : '',
+			);
+			formData.append(`ingredients[${index}][unit]`, ingredient.unit);
+		});
+
+		instructions.forEach((instruction, index) => {
+			formData.append(`instructions[${index}]`, instruction);
+		});
+
+		notes.forEach((note, index) => {
+			formData.append(`notes[${index}]`, note);
+		});
+
+		selectedCategories.forEach((category, index) => {
+			formData.append(`categories[${index}]`, category);
+		});
+
+		if (selectedImage) {
+			formData.append('image', selectedImage);
+		}
+
+		try {
+			addRecipe(formData);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const handleNameChange = (name: string) => {
