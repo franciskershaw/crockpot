@@ -14,6 +14,7 @@ interface ButtonProps {
 	ariaLabel?: string;
 	children?: React.ReactNode;
 	iconXs?: boolean;
+	disabled?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -28,6 +29,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			ariaLabel,
 			children,
 			iconXs,
+			disabled,
 		},
 		ref,
 	) => {
@@ -43,8 +45,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				className={buttonClasses}
 				onClick={onClick}
 				aria-label={ariaLabel ?? text}
+				disabled={disabled}
 			>
-				{text && <span className="w-full p-1">{text}</span>}
+				{text && <span className='w-full p-1'>{text}</span>}
 				{children && <Icon size={iconXs ? 'xs' : 'md'}>{children}</Icon>}
 			</button>
 		);

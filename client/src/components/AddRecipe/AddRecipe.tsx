@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, useEffect, ChangeEvent } from 'react';
+import { FC, useState, useMemo, useEffect, ChangeEvent, Fragment } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
@@ -9,18 +9,20 @@ import SearchBar from '../FormSearchBar/SearchBar';
 import { AddRecipeIngredient, Item, Unit } from '@/src/types/types';
 import InputGroup from '../FormComponents/InputGroup/InputGroup';
 import Button from '../Button/Button';
-import { FaTrash } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
 const AddRecipe: FC<{}> = () => {
-	const [recipeName, setRecipeName] = useState<string>('');
+	const [name, setName] = useState<string>('');
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
-	const [prepTime, setPrepTime] = useState<number>(30);
+	const [timeInMinutes, setTimeInMinutes] = useState<number>(30);
 	const [serves, setServes] = useState<number>(4);
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 	const [ingredientSearch, setIngredientSearch] = useState<string>('');
 	const [selectedIngredients, setSelectedIngredients] = useState<
 		AddRecipeIngredient[]
 	>([]);
+	const [instructions, setInstructions] = useState<string[]>(['']);
+	const [notes, setNotes] = useState<string[]>(['']);
 
 	const { recipeCategories } = useRecipeCategories();
 
@@ -30,8 +32,17 @@ const AddRecipe: FC<{}> = () => {
 		return filterItems(ingredients, ingredientSearch);
 	}, [ingredients, ingredientSearch, filterItems]);
 
-	const handleRecipeNameChange = (name: string) => {
-		setRecipeName(name);
+	const handleSubmit = () => {
+		console.log('name', name);
+		console.log('selectedImage', selectedImage);
+		console.log('timeInMinutes', timeInMinutes);
+		console.log('serves', serves);
+		console.log('selectedCategories', selectedCategories);
+		console.log('instructions', instructions);
+	};
+
+	const handleNameChange = (name: string) => {
+		setName(name);
 	};
 
 	const handleCategoryChange = (newCategories: string[]) => {
@@ -86,12 +97,52 @@ const AddRecipe: FC<{}> = () => {
 		setSelectedIngredients((prev) => prev.filter((_, idx) => idx !== index));
 	};
 
+	const handleAddInstruction = (index: number) => {
+		setInstructions((prev) => [
+			...prev.slice(0, index + 1),
+			'',
+			...prev.slice(index + 1),
+		]);
+	};
+
+	const handleRemoveInstruction = (index: number) => {
+		if (instructions.length > 1) {
+			setInstructions((prev) => prev.filter((_, idx) => idx !== index));
+		}
+	};
+
+	const handleInstructionChange = (index: number, newValue: string) => {
+		setInstructions((prev) =>
+			prev.map((instruction, idx) => (idx === index ? newValue : instruction)),
+		);
+	};
+
+	const handleAddNote = (index: number) => {
+		setNotes((prev) => [
+			...prev.slice(0, index + 1),
+			'',
+			...prev.slice(index + 1),
+		]);
+	};
+
+	const handleRemoveNote = (index: number) => {
+		if (instructions.length > 1) {
+			setNotes((prev) => prev.filter((_, idx) => idx !== index));
+		}
+	};
+
+	const handleNoteChange = (index: number, newValue: string) => {
+		setNotes((prev) =>
+			prev.map((note, idx) => (idx === index ? newValue : note)),
+		);
+	};
+
 	return (
-		<form onSubmit={(e) => e.preventDefault()}>
+		<form onSubmit={(e) => e.preventDefault()} className='mb-2'>
 			<TextInput
-				id='recipeName'
-				value={recipeName}
-				onChange={handleRecipeNameChange}
+				id='name'
+				value={name}
+				onChange={handleNameChange}
 				label='Recipe Name*'
 			/>
 			<ImageInput
@@ -101,8 +152,8 @@ const AddRecipe: FC<{}> = () => {
 			/>
 			<div className='flex justify-between'>
 				<QuantityInput
-					value={prepTime}
-					setValue={setPrepTime}
+					value={timeInMinutes}
+					setValue={setTimeInMinutes}
 					id='prepTime'
 					label='Prep Time*'
 				/>
@@ -182,6 +233,75 @@ const AddRecipe: FC<{}> = () => {
 					</div>
 				))}
 			</InputGroup>
+			<InputGroup label='Instructions'>
+				{instructions.map((instruction, index) => (
+					<Fragment key={`instruction_${index}`}>
+						<TextInput
+							label={`Instruction ${index + 1}`}
+							id={`instruction_${index}`}
+							value={instruction}
+							onChange={(newValue) => handleInstructionChange(index, newValue)}
+						/>
+						<div className='flex justify-center gap-4'>
+							{instructions.length > 1 && (
+								<Button
+									onClick={() => handleRemoveInstruction(index)}
+									type='primary'
+									border
+									iconXs
+								>
+									<FaTrash />
+								</Button>
+							)}
+
+							<Button
+								onClick={() => handleAddInstruction(index)}
+								type='primary'
+								border
+								iconXs
+							>
+								<FaPlus />
+							</Button>
+						</div>
+					</Fragment>
+				))}
+			</InputGroup>
+			<InputGroup label='Extra Notes'>
+				{notes.map((note, index) => (
+					<Fragment key={`note${index}`}>
+						<TextInput
+							id={`note_${index}`}
+							value={note}
+							onChange={(newValue) => handleNoteChange(index, newValue)}
+						/>
+						<div className='flex justify-center gap-4 mb-4'>
+							{notes.length > 1 && (
+								<Button
+									onClick={() => handleRemoveNote(index)}
+									type='primary'
+									border
+									iconXs
+								>
+									<FaTrash />
+								</Button>
+							)}
+
+							<Button
+								onClick={() => handleAddNote(index)}
+								type='primary'
+								border
+								iconXs
+							>
+								<FaPlus />
+							</Button>
+						</div>
+					</Fragment>
+				))}
+			</InputGroup>
+
+			<div className='flex justify-center'>
+				<Button onClick={handleSubmit} border text='Add Recipe' />
+			</div>
 		</form>
 	);
 };

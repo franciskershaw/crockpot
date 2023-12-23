@@ -6,7 +6,7 @@ interface TextInputProps {
 	placeholder?: string;
 	value: string;
 	onChange: (value: string) => void;
-	label: string;
+	label?: string;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
