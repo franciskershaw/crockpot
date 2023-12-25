@@ -23,7 +23,6 @@ const useAddRecipe = () => {
 
 	const { mutate } = useMutation((formData: FormData) => addRecipe(formData), {
 		onSuccess: async (data) => {
-			console.log(data);
 			await queryClient.invalidateQueries([queryKeys.recipes], {});
 		},
 		onError: (data) => {

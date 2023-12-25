@@ -12,7 +12,11 @@ import Button from '../Button/Button';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAddRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 
-const AddRecipe: FC<{}> = () => {
+interface AddRecipeProps {
+	setModal?: (open: boolean) => void;
+}
+
+const AddRecipe: FC<AddRecipeProps> = ({ setModal }) => {
 	const [name, setName] = useState<string>('');
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
 	const [timeInMinutes, setTimeInMinutes] = useState<number>(30);
@@ -69,6 +73,8 @@ const AddRecipe: FC<{}> = () => {
 			addRecipe(formData);
 		} catch (err) {
 			console.log(err);
+		} finally {
+			if (setModal) setModal(false);
 		}
 	};
 

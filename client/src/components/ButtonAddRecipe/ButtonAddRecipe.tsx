@@ -4,8 +4,10 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import Icon from '../Icon/Icon';
 import Modal from '../Modal/Modal';
 import AddRecipe from '../AddRecipe/AddRecipe';
+import { useState } from 'react';
 
 function ButtonAddRecipe() {
+	const [modalOpen, setModalOpen] = useState(false);
 	return (
 		<Modal
 			trigger={
@@ -19,8 +21,10 @@ function ButtonAddRecipe() {
 				</button>
 			}
 			title='Add new recipe'
+			open={modalOpen}
+			setOpen={setModalOpen}
 		>
-			<AddRecipe />
+			<AddRecipe setModal={setModalOpen} />
 		</Modal>
 	);
 }
