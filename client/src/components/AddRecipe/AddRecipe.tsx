@@ -207,62 +207,65 @@ const AddRecipe: FC<{}> = () => {
 				isMulti
 				placeholder='Please select categories'
 			/>
-			{searchResults.length > 0 && (
-				<div className='absolute bottom-16 w-1/2 z-modal mt-1 bg-white border border-black-25 shadow'>
-					{searchResults.map((result) => (
-						<p onClick={() => addIngredient(result)} key={result._id}>
-							{result.name}
-						</p>
-					))}
-				</div>
-			)}
-			<InputGroup label='Ingredients*'>
-				<SearchBar
-					searchQuery={ingredientSearch}
-					setSearchQuery={setIngredientSearch}
-					placeholder='Search for ingredients'
-				/>
-				{selectedIngredients.map((ingredient, index) => (
-					<div
-						className='flex justify-between mt-4 items-center'
-						key={`${ingredient._id}_${index}`}
-					>
-						<p className='text-sm'>{ingredient.name}</p>
-						<input
-							type='number'
-							name=''
-							id=''
-							value={ingredient.quantity !== null ? ingredient.quantity : ''}
-							onChange={(e) => handleQuantityChange(e, index)}
-							className='w-[50px] border border-black rounded text-center p-0.5 text-sm'
-						/>
 
-						<div className='flex flex-col gap-2'>
-							<select
-								className='border w-24 py-1 text-sm'
+			<InputGroup label='Ingredients*'>
+				<div className='relative w-full md:mb-2'>
+					<SearchBar
+						searchQuery={ingredientSearch}
+						setSearchQuery={setIngredientSearch}
+						placeholder='Search for ingredients'
+					/>
+					{searchResults.length > 0 && (
+						<div className='absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow'>
+							{searchResults.map((result) => (
+								<p onClick={() => addIngredient(result)} key={result._id}>
+									{result.name}
+								</p>
+							))}
+						</div>
+					)}
+					{selectedIngredients.map((ingredient, index) => (
+						<div
+							className='flex justify-between mt-4 items-center'
+							key={`${ingredient._id}_${index}`}
+						>
+							<p className='text-sm'>{ingredient.name}</p>
+							<input
+								type='number'
 								name=''
 								id=''
-								onChange={(e) => handleUnitChange(e, index)}
-								value={ingredient.unit}
+								value={ingredient.quantity !== null ? ingredient.quantity : ''}
+								onChange={(e) => handleQuantityChange(e, index)}
+								className='w-[50px] border border-black rounded text-center p-0.5 text-sm'
+							/>
+
+							<div className='flex flex-col gap-2'>
+								<select
+									className='border w-24 py-1 text-sm'
+									name=''
+									id=''
+									onChange={(e) => handleUnitChange(e, index)}
+									value={ingredient.unit}
+								>
+									<option value=''>-</option>
+									<option value='cans'>Cans</option>
+									<option value='g'>g</option>
+									<option value='ml'>ml</option>
+									<option value='tbsp'>Tablespoons</option>
+									<option value='tsp'>Teaspoons</option>
+								</select>
+							</div>
+							<Button
+								onClick={() => handleRemoveIngredient(index)}
+								type='primary'
+								border
+								iconXs
 							>
-								<option value=''>-</option>
-								<option value='cans'>Cans</option>
-								<option value='g'>g</option>
-								<option value='ml'>ml</option>
-								<option value='tbsp'>Tablespoons</option>
-								<option value='tsp'>Teaspoons</option>
-							</select>
+								<FaTrash />
+							</Button>
 						</div>
-						<Button
-							onClick={() => handleRemoveIngredient(index)}
-							type='primary'
-							border
-							iconXs
-						>
-							<FaTrash />
-						</Button>
-					</div>
-				))}
+					))}
+				</div>
 			</InputGroup>
 			<InputGroup label='Instructions'>
 				{instructions.map((instruction, index) => (
