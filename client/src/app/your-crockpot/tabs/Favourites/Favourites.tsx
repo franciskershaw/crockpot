@@ -15,10 +15,10 @@ const Favourites = () => {
 			) : (
 				<>
 					<div className="text-center mb-4">
-						<h2 className="mb-2">No favourites?</h2>
+						<h2 className="mb-2">No favourites yet?</h2>
 						<p className="h3 !leading-5">
 							How about some of these? Click the heart button to add them to
-							your list.
+							Your Crockpot.
 						</p>
 					</div>
 					<RecipeCardList recipes={suggestedRecipes} fullWidth />
