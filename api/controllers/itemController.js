@@ -1,5 +1,6 @@
 const { itemSchema, editItemSchema } = require('../joiSchemas/schemas');
 const Item = require('../models/Item');
+const { NotFoundError } = require('../errors/errors');
 
 const getAllItems = async (req, res, next) => {
 	try {
@@ -31,6 +32,10 @@ const editItem = async (req, res, next) => {
 			new: true,
 		});
 
+		if (!item) {
+			throw new NotFoundError('Item not found');
+		}
+
 		res.status(200).json(item);
 	} catch (err) {
 		next(err);
@@ -40,6 +45,11 @@ const editItem = async (req, res, next) => {
 const deleteItem = async (req, res, next) => {
 	try {
 		const item = await Item.findById(req.params.itemId);
+
+		if (!item) {
+			throw new NotFoundError('Item not found');
+		}
+
 		await item.remove();
 		res.status(200).json({ msg: 'Item deleted' });
 	} catch (err) {

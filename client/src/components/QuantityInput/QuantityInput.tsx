@@ -1,8 +1,10 @@
 // TODO - Decide on styling, add disabled prop to - button on 0
 
-import React, { useState } from 'react';
+import React from 'react';
+
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import Button from '../Button/Button';
+import InputGroup from '../FormComponents/InputGroup/InputGroup';
 
 interface QuantityInputProps {
 	value: number;
@@ -10,6 +12,8 @@ interface QuantityInputProps {
 	min?: number;
 	max?: number;
 	onChange?: (value: number) => void;
+	id?: string;
+	label?: string;
 }
 
 const QuantityInput = ({
@@ -18,6 +22,8 @@ const QuantityInput = ({
 	min = 0,
 	max = 100,
 	onChange,
+	id,
+	label,
 }: QuantityInputProps) => {
 	const handleDecrease = () => {
 		const newValue = Math.max(min, value - 1);
@@ -39,20 +45,23 @@ const QuantityInput = ({
 	};
 
 	return (
-		<div className="flex border-2 border-black w-fit rounded-full bg-white">
-			<Button inverse type="primary" onClick={handleDecrease}>
-				<AiOutlineMinus />
-			</Button>
-			<input
-				className="text-center w-[50px] bg-transparent focus-visible:outline-none"
-				type="number"
-				value={value}
-				onChange={handleChange}
-			/>
-			<Button inverse type="primary" onClick={handleIncrease}>
-				<AiOutlinePlus />
-			</Button>
-		</div>
+		<InputGroup label={label}>
+			<div className="flex border-2 border-black w-fit rounded-full bg-white">
+				<Button inverse type="secondary" onClick={handleDecrease}>
+					<AiOutlineMinus />
+				</Button>
+				<input
+					className="text-center w-[50px] bg-transparent"
+					type="number"
+					value={value}
+					onChange={handleChange}
+					id={id}
+				/>
+				<Button inverse type="secondary" onClick={handleIncrease}>
+					<AiOutlinePlus />
+				</Button>
+			</div>
+		</InputGroup>
 	);
 };
 

@@ -5,6 +5,7 @@ require('colors');
 const { errorHandler } = require('./middleware/errorMiddleware');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const PORT = process.env.PORT || 5000;
 
@@ -15,9 +16,16 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+app.use(helmet());
+
+const corsOrigin =
+	process.env.NODE_ENV === 'production'
+		? process.env.CORS_ORIGIN_PROD
+		: process.env.CORS_ORIGIN_DEV;
+
 app.use(
 	cors({
-		origin: 'http://localhost:3000',
+		origin: corsOrigin,
 		credentials: true,
 	}),
 );
