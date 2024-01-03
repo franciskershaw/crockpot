@@ -7,6 +7,7 @@ import useUser from '@/src/hooks/auth/useUser';
 import { useRouter } from 'next/navigation';
 
 import './_authform.scss';
+import Button from '@/src/components/Button/Button';
 
 interface Props {
 	type: 'register' | 'login';
@@ -51,66 +52,72 @@ const AuthForm = (props: Props) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className='auth-form'>
-			<h2 className='auth-form__title'>
-				{props.type === 'login' ? 'Login' : 'Sign up for an account'}
+		<form onSubmit={handleSubmit} className="auth-form">
+			<h2 className="auth-form__title">
+				{props.type === 'login' ? 'Login' : 'Register'}
 			</h2>
-			<div className='auth-form__input-group'>
-				<label htmlFor='username' className='auth-form__input-label'>
+			<div className="auth-form__input-group">
+				<label htmlFor="username" className="auth-form__input-label">
 					Username
 				</label>
 				<input
-					name='username'
+					name="username"
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
-					className='auth-form__input-field'
-					type='text'
-					id='username'
-					autoComplete='off'
+					className="auth-form__input-field"
+					type="text"
+					id="username"
+					autoComplete="off"
 				/>
 			</div>
 
-			<div className='auth-form__input-group'>
-				<label className='auth-form__input-label'>Password</label>
+			<div className="auth-form__input-group">
+				<label className="auth-form__input-label">Password</label>
 				<input
-					name='password'
+					name="password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
-					className='auth-form__input-field'
-					type='password'
-					id='password'
-					autoComplete='off'
+					className="auth-form__input-field"
+					type="password"
+					id="password"
+					autoComplete="off"
 					required
 				/>
 			</div>
 			{props.type === 'register' && (
-				<div className='auth-form__input-group'>
-					<label className='auth-form__input-label'>Confirm password</label>
+				<div className="auth-form__input-group">
+					<label className="auth-form__input-label">Confirm password</label>
 					<input
-						name='confirmPassword'
+						name="confirmPassword"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
-						className='auth-form__input-field'
-						type='password'
-						id='confirmPassword'
-						autoComplete='off'
+						className="auth-form__input-field"
+						type="password"
+						id="confirmPassword"
+						autoComplete="off"
 						required
 					/>
 				</div>
 			)}
-			<div className='auth-form__text'>
-				<button className='auth-form__button'>
-					{props.type === 'login' ? 'Login' : 'Sign Up'}
-				</button>
+			<div className="auth-form__text">
+				<Button
+					text={props.type === 'login' ? 'Login' : 'Register'}
+					type="primary"
+					border
+				/>
 				{props.type === 'login' ? (
 					<div>
 						<p>Don&apos;t have an account?</p>
-						<Link href={'/register'}>Register</Link>
+						<Link href={'/register'}>
+							<span className="underline">Register</span>
+						</Link>
 					</div>
 				) : (
 					<div>
 						<p>Already have an account?</p>
-						<Link href='/login'>Log In</Link>
+						<Link href="/login">
+							<span className="underline">Log In</span>
+						</Link>
 					</div>
 				)}
 			</div>

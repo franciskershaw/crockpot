@@ -1,5 +1,13 @@
 .auth-form {
-	@apply border border-black rounded-sm px-6 py-8 max-w-2xl;
+	@apply border border-black-25 p-4 rounded-xl;
+
+	width: 90vw;
+	max-width: 450px;
+	max-height: 85vh;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 
 	&__title {
 		@apply text-center mb-4;
@@ -14,7 +22,7 @@
 	}
 
 	&__input-field {
-		@apply h-10 p-3;
+		@apply border-black border-2 bg-white p-2 rounded w-full;
 	}
 
 	&__button {

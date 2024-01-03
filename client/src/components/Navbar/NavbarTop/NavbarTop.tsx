@@ -23,7 +23,6 @@ const NavbarTop = () => {
 
 	const handleLogout = () => {
 		logout();
-		toggleMenu();
 	};
 
 	return (
@@ -44,9 +43,13 @@ const NavbarTop = () => {
 						{user ? (
 							<Button text="Logout" border onClick={handleLogout} />
 						) : (
-							<Link href="/login">
-								<Button text="Login" border onClick={toggleMenu} />
-							</Link>
+							<>
+								{pathname !== '/login' && pathname !== '/register' && (
+									<Link href="/login">
+										<Button text="Login" border />
+									</Link>
+								)}
+							</>
 						)}
 					</div>
 				</div>
@@ -73,13 +76,13 @@ const NavbarTop = () => {
 				} `}
 			>
 				<Link href="/sandbox">
-					<Button text="Sandbox" border onClick={toggleMenu} />
+					<Button text="Sandbox" border />
 				</Link>
 				{user ? (
 					<Button text="Logout" border onClick={handleLogout} />
 				) : (
 					<Link href="/login">
-						<Button text="Login" border onClick={toggleMenu} />
+						<Button text="Login" border />
 					</Link>
 				)}
 			</div>
