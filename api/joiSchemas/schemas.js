@@ -82,7 +82,9 @@ const createRecipeSchema = Joi.object({
 					'any.required': 'This field is required',
 				}),
 				quantity: Joi.number().min(1).required(),
-				unit: Joi.string().required(),
+				unit: Joi.string()
+					.required()
+					.valid('', 'cans', 'g', 'ml', 'tbsp', 'tsp'),
 			}),
 		)
 		.min(1)
