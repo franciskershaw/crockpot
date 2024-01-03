@@ -24,7 +24,7 @@ const Menu = () => {
 						<ShoppingList />
 					</div>
 				</div>
-				<div className="container lg:hidden">
+				<div className="lg:hidden">
 					<RecipeCardList recipes={recipeMenuRecipes} fullWidth />
 				</div>
 				<div className="hidden container lg:block lg:w-2/3 lg:pl-4">

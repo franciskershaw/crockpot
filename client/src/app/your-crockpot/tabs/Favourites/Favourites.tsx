@@ -5,7 +5,7 @@ const Favourites = () => {
 	const { favouriteRecipes } = useFavourites();
 
 	return (
-		<div className="pt-4">
+		<div className="pt-4 px-4">
 			{favouriteRecipes.length !== 0 ? (
 				<RecipeCardList recipes={favouriteRecipes} fullWidth />
 			) : (

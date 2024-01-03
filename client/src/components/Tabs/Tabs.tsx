@@ -60,7 +60,7 @@ const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 				setActiveIndex(index);
 			}}
 		>
-			<div className="max-w-screen-md mx-2 md:mx-auto">
+			<div className="max-w-screen-md md:mx-auto">
 				<RadixTabs.List className="tabs">
 					<div className="tabs-toggle" ref={sliderRef}>
 						<div className="bg-black/25 w-full h-full rounded-full" />
@@ -89,9 +89,7 @@ const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 			) : (
 				<div>
 					{Children.map(children, (child, index) => (
-						<RadixTabs.Content className="px-4" value={titles[index]}>
-							{child}
-						</RadixTabs.Content>
+						<RadixTabs.Content value={titles[index]}>{child}</RadixTabs.Content>
 					))}
 				</div>
 			)}
