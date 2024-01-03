@@ -3,6 +3,8 @@ import ButtonCart from '../ButtonCart/ButtonCart';
 import Tabs from '../Tabs/Tabs';
 import { Recipe } from '@/src/types/types';
 import useUser from '@/src/hooks/auth/useUser';
+import Button from '../Button/Button';
+import { RiEdit2Line, RiDeleteBinLine } from 'react-icons/ri';
 
 type RecipeCardModalProps = {
 	recipe: Recipe;
@@ -59,24 +61,38 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 		<div>
 			<div className="relative">
 				<div
-					className="bg-cover bg-center h-80"
-					style={{ backgroundImage: `url(${recipe.image.url})` }}
-				/>
+					className="bg-cover bg-center h-80 relative"
+					style={{ backgroundImage: `url(${recipe.image.url})` }}>
+					{(recipe.createdBy._id === user?._id || user?.isAdmin) && (
+						<div className="absolute right-5 top-2">
+							<div className="flex gap-2">
+								<div className="border-2 border-black bg-white rounded-full w-fit">
+									<Button type="primary">
+										<RiEdit2Line />
+									</Button>
+								</div>
+								<div className="border-2 border-black bg-white rounded-full w-fit">
+									<Button type="primary">
+										<RiDeleteBinLine />
+									</Button>
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
 				<div className="absolute bottom-0 left-0 right-0 m-4 p-4 md:right-auto md:w-2/3 bg-white border border-black-25 flex flex-row items-center justify-between rounded">
 					<div>
 						<h2>{recipe.name}</h2>
 						<h3>Created by {recipe.createdBy?.username}</h3>
 					</div>
-					<div>
-						{user && (
-							<ButtonCart
-								recipe={recipe}
-								initialValue={quantity}
-								onChange={setQuantity}
-								isMenu={isMenu}
-							/>
-						)}
-					</div>
+					{user && (
+						<ButtonCart
+							recipe={recipe}
+							initialValue={quantity}
+							onChange={setQuantity}
+							isMenu={isMenu}
+						/>
+					)}
 				</div>
 			</div>
 			<div className="px-2 py-0">
