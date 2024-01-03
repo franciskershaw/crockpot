@@ -9,12 +9,12 @@ import useUser from '@/src/hooks/auth/useUser';
 
 function ButtonAddRecipe() {
 	const { user } = useUser();
+	const [modalOpen, setModalOpen] = useState(false);
 
 	if (!user) {
 		return null;
 	}
 
-	const [modalOpen, setModalOpen] = useState(false);
 	return (
 		<Modal
 			trigger={
