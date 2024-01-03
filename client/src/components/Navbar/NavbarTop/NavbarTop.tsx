@@ -41,9 +41,13 @@ const NavbarTop = () => {
 						</div>
 					</div>
 					<div className="hidden md:flex items-center space-x-2">
-						<Link href="/login">
-							<Button text="Login" onClick={toggleMenu} type="primary" border />
-						</Link>
+						{user ? (
+							<Button text="Logout" border onClick={handleLogout} />
+						) : (
+							<Link href="/login">
+								<Button text="Login" border onClick={toggleMenu} />
+							</Link>
+						)}
 					</div>
 				</div>
 				{/* On mobile devices, display hamburger menu */}
@@ -74,14 +78,9 @@ const NavbarTop = () => {
 				{user ? (
 					<Button text="Logout" border onClick={handleLogout} />
 				) : (
-					<>
-						<Link href="/login">
-							<Button text="Login" border onClick={toggleMenu} />
-						</Link>
-						<Link href="/register">
-							<Button text="Register" border onClick={toggleMenu} />
-						</Link>
-					</>
+					<Link href="/login">
+						<Button text="Login" border onClick={toggleMenu} />
+					</Link>
 				)}
 			</div>
 		</nav>
