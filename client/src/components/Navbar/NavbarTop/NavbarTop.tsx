@@ -23,7 +23,6 @@ const NavbarTop = () => {
 
 	const handleLogout = () => {
 		logout();
-		toggleMenu();
 	};
 
 	return (
@@ -41,9 +40,17 @@ const NavbarTop = () => {
 						</div>
 					</div>
 					<div className="hidden md:flex items-center space-x-2">
-						<Link href="/login">
-							<Button text="Login" onClick={toggleMenu} type="primary" border />
-						</Link>
+						{user ? (
+							<Button text="Logout" border onClick={handleLogout} />
+						) : (
+							<>
+								{pathname !== '/login' && pathname !== '/register' && (
+									<Link href="/login">
+										<Button text="Login" border />
+									</Link>
+								)}
+							</>
+						)}
 					</div>
 				</div>
 				{/* On mobile devices, display hamburger menu */}
@@ -69,19 +76,14 @@ const NavbarTop = () => {
 				} `}
 			>
 				<Link href="/sandbox">
-					<Button text="Sandbox" border onClick={toggleMenu} />
+					<Button text="Sandbox" border />
 				</Link>
 				{user ? (
 					<Button text="Logout" border onClick={handleLogout} />
 				) : (
-					<>
-						<Link href="/login">
-							<Button text="Login" border onClick={toggleMenu} />
-						</Link>
-						<Link href="/register">
-							<Button text="Register" border onClick={toggleMenu} />
-						</Link>
-					</>
+					<Link href="/login">
+						<Button text="Login" border />
+					</Link>
 				)}
 			</div>
 		</nav>

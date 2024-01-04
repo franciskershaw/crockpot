@@ -73,7 +73,36 @@ const BrowsePage = () => {
 						<BrowsePageSearchBar />
 					</div>
 					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
-					<RecipeCardList recipes={filteredRecipes} />
+					<div className="md:hidden">
+						{filteredRecipes.length !== 0 ? (
+							<RecipeCardList recipes={filteredRecipes} fullWidth />
+						) : (
+							<>
+								<div className="text-center mb-4">
+									<h2 className="mb-2">No results?</h2>
+									<p className="h3 !leading-5">
+										Try removing some of your filters or searching for something
+										else.
+									</p>
+								</div>
+							</>
+						)}
+					</div>
+					<div className="hidden md:block">
+						{filteredRecipes.length !== 0 ? (
+							<RecipeCardList recipes={filteredRecipes} />
+						) : (
+							<>
+								<div className="text-center mb-4">
+									<h2 className="mb-2">No results?</h2>
+									<p className="h3 !leading-5">
+										Try removing some of your filters or searching for something
+										else.
+									</p>
+								</div>
+							</>
+						)}
+					</div>
 				</div>
 			</div>
 		</>

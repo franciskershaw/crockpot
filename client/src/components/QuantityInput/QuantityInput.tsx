@@ -46,18 +46,18 @@ const QuantityInput = ({
 
 	return (
 		<InputGroup label={label}>
-			<div className='flex border-2 border-black w-fit rounded-full bg-white'>
-				<Button inverse type='secondary' onClick={handleDecrease}>
+			<div className="flex border-2 border-black w-fit rounded-full bg-white">
+				<Button inverse type="secondary" onClick={handleDecrease}>
 					<AiOutlineMinus />
 				</Button>
 				<input
-					className='text-center w-[50px] bg-transparent'
-					type='number'
+					className="text-center w-[50px] bg-transparent"
+					type="number"
 					value={value}
 					onChange={handleChange}
 					id={id}
 				/>
-				<Button inverse type='secondary' onClick={handleIncrease}>
+				<Button inverse type="secondary" onClick={handleIncrease}>
 					<AiOutlinePlus />
 				</Button>
 			</div>

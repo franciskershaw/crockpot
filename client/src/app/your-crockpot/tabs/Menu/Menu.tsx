@@ -3,9 +3,13 @@ import useRecipeMenu from '../../hooks/useRecipeMenu';
 import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Modal from '@/src/components/Modal/Modal';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
 
 const Menu = () => {
+	const { allRecipes } = useRecipes();
 	const { recipeMenuRecipes } = useRecipeMenu();
+
+	const suggestedRecipes = allRecipes.slice(0, 4);
 
 	return (
 		<>
@@ -19,16 +23,42 @@ const Menu = () => {
 				<Button type="primary" border text="Clear Menu" />
 			</div>
 			<div className="container !px-0 lg:flex lg:pt-4">
-				<div className="container lg:w-1/3 lg:border-2 lg:border-black lg:rounded lg:pt-2 lg:mx-4 xl:ml-0 lg:my-0 lg:h-fit lg:max-h-[85vh] lg:overflow-scroll lg:sticky lg:top-[110px]">
+				<div className="container lg:w-1/3 lg:border-2 lg:border-black lg:rounded lg:pt-2 lg:mx-4 xl:ml-0 lg:my-0 lg:h-fit lg:max-h-[85vh] lg:overflow-scroll lg:sticky lg:top-[110px] xl:px-4">
 					<div className="hidden lg:block">
 						<ShoppingList />
 					</div>
 				</div>
-				<div className="container lg:hidden">
-					<RecipeCardList recipes={recipeMenuRecipes} fullWidth />
+				<div className="lg:hidden">
+					{recipeMenuRecipes.length !== 0 ? (
+						<RecipeCardList recipes={recipeMenuRecipes} fullWidth />
+					) : (
+						<>
+							<div className="text-center mb-4">
+								<h2 className="mb-2">Nothing on the menu yet?</h2>
+								<p className="h3 !leading-5">
+									How about some of these? Click the shopping cart button to add
+									them to Your Crockpot.
+								</p>
+							</div>
+							<RecipeCardList recipes={suggestedRecipes} fullWidth />
+						</>
+					)}
 				</div>
 				<div className="hidden container lg:block lg:w-2/3 lg:pl-4">
-					<RecipeCardList recipes={recipeMenuRecipes} />
+					{recipeMenuRecipes.length !== 0 ? (
+						<RecipeCardList recipes={recipeMenuRecipes} />
+					) : (
+						<>
+							<div className="text-center mb-4">
+								<h2 className="mb-2">Nothing on the menu yet?</h2>
+								<p className="h3 !leading-5">
+									How about some of these? Click the shopping cart button to add
+									them to Your Crockpot.
+								</p>
+							</div>
+							<RecipeCardList recipes={suggestedRecipes} />
+						</>
+					)}
 				</div>
 			</div>
 		</>

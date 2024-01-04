@@ -7,8 +7,8 @@ module.exports = {
 	],
 	theme: {
 		boxShadow: {
-			navTop: '0 5px 8px -2px rgba(0, 0, 0, 0.4)',
-			navBottom: '0 -5px 8px -2px rgba(0, 0, 0, 0.4)',
+			navTop: '3px 2px 6px 0px rgba(0, 0, 0, 0.2)',
+			navBottom: '3px -2px 6px 0px rgba(0, 0, 0, 0.2)',
 			DEFAULT: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
 			hover: 'rgba(100, 100, 111, 0.4) 0px 7px 29px 0px',
 		},

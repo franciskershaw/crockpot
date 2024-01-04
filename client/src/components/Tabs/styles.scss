@@ -1,18 +1,17 @@
-.underline-header-toggle {
-	content: '';
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 0;
-	height: 2px;
-	transition: width 0.3s ease;
-	@apply bg-black;
+.tabs {
+	@apply flex justify-between rounded-full relative bg-blue-light;
 }
 
-[data-state='active'] .underline-header-toggle {
-	width: 100%;
+.tabs-toggle {
+	transition: left 0.3s ease;
+
+	@apply absolute h-full p-1;
+}
+
+.tab {
+	@apply flex-1 text-center py-2 transition duration-300 ease-in-out relative;
 }
 
 [data-state='active'][data-active-class] {
-	@apply text-black font-semibold;
+	@apply font-semibold;
 }

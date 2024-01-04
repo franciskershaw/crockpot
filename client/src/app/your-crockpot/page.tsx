@@ -16,11 +16,13 @@ const YourCrockpotPage = () => {
 	const tabTitles = ['Menu', 'Favourites', 'My Recipes'];
 
 	return (
-		<Tabs titles={tabTitles}>
-			<Menu />
-			<Favourites />
-			<MyRecipes />
-		</Tabs>
+		<div className="container pt-4 md:pt-0">
+			<Tabs titles={tabTitles}>
+				<Menu />
+				<Favourites />
+				<MyRecipes />
+			</Tabs>
+		</div>
 	);
 };
 
