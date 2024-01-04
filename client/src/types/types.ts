@@ -60,6 +60,7 @@ export interface Recipe {
 		username: string;
 	};
 	approved: boolean;
+	serves: number;
 	__v: number;
 }
 

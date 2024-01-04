@@ -53,6 +53,10 @@ const RecipeSchema = new mongoose.Schema({
 		required: true,
 		default: false,
 	},
+	serves: {
+		type: Number,
+		required: true,
+	},
 });
 
 RecipeSchema.pre('remove', async function (next) {
