@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, Fragment } from 'react';
+import { FC, useState, useMemo, Fragment, useEffect } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
@@ -6,7 +6,7 @@ import QuantityInput from '../QuantityInput/QuantityInput';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useItems from '@/src/hooks/items/useItems';
 import SearchBar from '../FormSearchBar/SearchBar';
-import { AddRecipeIngredient, Item, Unit } from '@/src/types/types';
+import { AddRecipeIngredient, Item, Recipe, Unit } from '@/src/types/types';
 import InputGroup from '../FormComponents/InputGroup/InputGroup';
 import Button from '../Button/Button';
 import { FaPlus, FaTrash } from 'react-icons/fa';
@@ -14,12 +14,15 @@ import { useAddRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;
+	recipe?: Recipe;
 }
 
-const AddRecipe: FC<AddRecipeProps> = ({ setModal }) => {
-	const [name, setName] = useState<string>('');
+const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
+	const [name, setName] = useState<string>(recipe?.name || '');
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
-	const [timeInMinutes, setTimeInMinutes] = useState<number>(30);
+	const [timeInMinutes, setTimeInMinutes] = useState<number>(
+		recipe?.timeInMinutes || 30,
+	);
 	const [serves, setServes] = useState<number>(4);
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 	const [ingredientSearch, setIngredientSearch] = useState<string>('');
@@ -64,6 +67,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal }) => {
 		selectedCategories.forEach((category, index) => {
 			formData.append(`categories[${index}]`, category);
 		});
+
+		formData.append('serves', serves.toString());
 
 		if (selectedImage) {
 			formData.append('image', selectedImage);
