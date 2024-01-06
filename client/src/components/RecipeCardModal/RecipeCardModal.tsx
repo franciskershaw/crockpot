@@ -16,9 +16,6 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 	const [quantity, setQuantity] = useState(4);
 	const [modalOpen, setModalOpen] = useState(false);
 	const { user } = useUser();
-	useEffect(() => {
-		console.log(recipe);
-	}, [recipe]);
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
 	const tabTitles = ['Ingredients', 'Instructions'];
 	const tabIngredients = () => {

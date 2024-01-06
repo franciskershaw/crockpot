@@ -53,10 +53,6 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 		return filterItems(ingredients, ingredientSearch);
 	}, [ingredients, ingredientSearch, filterItems]);
 
-	useEffect(() => {
-		console.log(selectedCategories);
-	}, [selectedCategories]);
-
 	const handleSubmit = () => {
 		const formData = new FormData();
 		formData.append('name', name);
@@ -236,27 +232,32 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			/>
 
 			<InputGroup label='Ingredients*'>
-				<div className='relative w-full md:mb-2'>
-					<SearchBar
-						searchQuery={ingredientSearch}
-						setSearchQuery={setIngredientSearch}
-						placeholder='Search for ingredients'
-					/>
-					{searchResults.length > 0 && (
-						<div className='absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow'>
-							{searchResults.map((result) => (
-								<p onClick={() => addIngredient(result)} key={result._id}>
-									{result.name}
-								</p>
-							))}
-						</div>
-					)}
+				<div className='w-full md:mb-2'>
+					<div className='relative'>
+						<SearchBar
+							searchQuery={ingredientSearch}
+							setSearchQuery={setIngredientSearch}
+							placeholder='Search for ingredients'
+						/>
+						{searchResults.length > 0 && (
+							<div className='absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow'>
+								{searchResults.map((result) => (
+									<p onClick={() => addIngredient(result)} key={result._id}>
+										{result.name}
+									</p>
+								))}
+							</div>
+						)}
+					</div>
 					{selectedIngredients.map((ingredient, index) => (
 						<div
 							className='flex justify-between mt-4 items-center'
 							key={`${ingredient._id}_${index}`}
 						>
-							<p className='text-sm'>{ingredient.name}</p>
+							<div className=' w-1/4'>
+								<p className='text-sm'>{ingredient.name}</p>
+							</div>
+
 							<input
 								type='number'
 								name=''
