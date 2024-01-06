@@ -23,14 +23,25 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	const [timeInMinutes, setTimeInMinutes] = useState<number>(
 		recipe?.timeInMinutes || 30,
 	);
-	const [serves, setServes] = useState<number>(4);
-	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+	const [serves, setServes] = useState<number>(recipe?.serves || 4);
+	const [selectedCategories, setSelectedCategories] = useState<string[]>(
+		recipe?.categories.map((category) => category._id) || [],
+	);
 	const [ingredientSearch, setIngredientSearch] = useState<string>('');
 	const [selectedIngredients, setSelectedIngredients] = useState<
 		AddRecipeIngredient[]
-	>([]);
-	const [instructions, setInstructions] = useState<string[]>(['']);
-	const [notes, setNotes] = useState<string[]>(['']);
+	>(
+		recipe?.ingredients.map((ingredient) => ({
+			_id: ingredient._id._id,
+			name: ingredient._id.name,
+			quantity: ingredient.quantity,
+			unit: ingredient.unit,
+		})) || [],
+	);
+	const [instructions, setInstructions] = useState<string[]>(
+		recipe?.instructions || [''],
+	);
+	const [notes, setNotes] = useState<string[]>(recipe?.notes || ['']);
 
 	const { recipeCategories } = useRecipeCategories();
 
@@ -41,6 +52,10 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	const searchResults = useMemo(() => {
 		return filterItems(ingredients, ingredientSearch);
 	}, [ingredients, ingredientSearch, filterItems]);
+
+	useEffect(() => {
+		console.log(selectedCategories);
+	}, [selectedCategories]);
 
 	const handleSubmit = () => {
 		const formData = new FormData();
@@ -191,6 +206,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				setImage={setSelectedImage}
 				label='Upload Image'
 				id='recipeImage'
+				existingImageUrl={recipe?.image.url}
 			/>
 			<div className='flex justify-between'>
 				<QuantityInput
@@ -345,7 +361,11 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			</InputGroup>
 
 			<div className='flex justify-center'>
-				<Button onClick={handleSubmit} border text='Add Recipe' />
+				<Button
+					onClick={handleSubmit}
+					border
+					text={`${recipe ? 'Amend' : 'Add'} Recipe`}
+				/>
 			</div>
 		</form>
 	);
