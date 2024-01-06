@@ -33,4 +33,40 @@ const useAddRecipe = () => {
 	return mutate;
 };
 
-export { useAddRecipe };
+const useEditRecipe = () => {
+	const { user } = useUser();
+	const queryClient = useQueryClient();
+	const api = useAxios();
+
+	const editRecipe = async ({
+		formData,
+		_id,
+	}: {
+		formData: FormData;
+		_id: string;
+	}) => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${user.accessToken}`,
+				'Content-Type': 'multipart/form-data',
+			},
+		};
+
+		const response = await api.put(`/api/recipes/${_id}`, formData, config);
+
+		return response.data;
+	};
+
+	const { mutate } = useMutation(editRecipe, {
+		onSuccess: async (data) => {
+			await queryClient.invalidateQueries([queryKeys.recipes]);
+		},
+		onError: (error) => {
+			console.log(error);
+		},
+	});
+
+	return mutate;
+};
+
+export { useAddRecipe, useEditRecipe };

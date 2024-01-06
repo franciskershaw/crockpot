@@ -132,7 +132,7 @@ const editRecipeSchema = Joi.object({
 		}),
 	),
 	approved: Joi.boolean(),
-	serves: Joi.number().required().min(1).max(100),
+	serves: Joi.number().min(1).max(100),
 });
 
 const recipeCategorySchema = Joi.object({

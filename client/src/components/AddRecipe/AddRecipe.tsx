@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, Fragment, useEffect } from 'react';
+import { FC, useState, useMemo, Fragment, useRef } from 'react';
 import ImageInput from '../FormComponents/ImageInput/ImageInput';
 import TextInput from '../FormComponents/TextInput/TextInput';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
@@ -10,7 +10,10 @@ import { AddRecipeIngredient, Item, Recipe, Unit } from '@/src/types/types';
 import InputGroup from '../FormComponents/InputGroup/InputGroup';
 import Button from '../Button/Button';
 import { FaPlus, FaTrash } from 'react-icons/fa';
-import { useAddRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
+import {
+	useAddRecipe,
+	useEditRecipe,
+} from '@/src/hooks/recipes/useAddEditRecipe';
 
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;
@@ -43,11 +46,28 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	);
 	const [notes, setNotes] = useState<string[]>(recipe?.notes || ['']);
 
+	const initialState = useRef({
+		name: recipe?.name || '',
+		timeInMinutes: recipe?.timeInMinutes || 30,
+		serves: recipe?.serves || 4,
+		selectedCategories:
+			recipe?.categories.map((category) => category._id) || [],
+		selectedIngredients:
+			recipe?.ingredients.map((ingredient) => ({
+				_id: ingredient._id._id,
+				name: ingredient._id.name,
+				quantity: ingredient.quantity,
+				unit: ingredient.unit,
+			})) || [],
+		instructions: recipe?.instructions || [''],
+		notes: recipe?.notes || [''],
+		selectedImage: null,
+	});
+
 	const { recipeCategories } = useRecipeCategories();
-
 	const { filterItems, ingredients } = useItems();
-
 	const addRecipe = useAddRecipe();
+	const editRecipe = useEditRecipe();
 
 	const searchResults = useMemo(() => {
 		return filterItems(ingredients, ingredientSearch);
@@ -55,38 +75,105 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 
 	const handleSubmit = () => {
 		const formData = new FormData();
-		formData.append('name', name);
-		formData.append('timeInMinutes', timeInMinutes.toString());
+		const isEditing = !!recipe;
 
-		selectedIngredients.forEach((ingredient, index) => {
-			formData.append(`ingredients[${index}][_id]`, ingredient._id);
-			formData.append(
-				`ingredients[${index}][quantity]`,
-				ingredient.quantity !== null ? ingredient.quantity.toString() : '',
-			);
-			formData.append(`ingredients[${index}][unit]`, ingredient.unit);
-		});
+		if (isEditing) {
+			const appendIfChanged = <
+				T extends string | number | string[] | AddRecipeIngredient[],
+			>(
+				key: keyof typeof initialState.current,
+				currentValue: T,
+				appendValue: FormDataEntryValue,
+			) => {
+				if (
+					JSON.stringify(initialState.current[key]) !==
+					JSON.stringify(currentValue)
+				) {
+					formData.append(key, appendValue);
+				}
+			};
+			appendIfChanged('name', name, name);
+			appendIfChanged('timeInMinutes', timeInMinutes, timeInMinutes.toString());
+			appendIfChanged('serves', serves, serves.toString());
 
-		instructions.forEach((instruction, index) => {
-			formData.append(`instructions[${index}]`, instruction);
-		});
+			if (
+				JSON.stringify(initialState.current.selectedCategories) !==
+				JSON.stringify(selectedCategories)
+			) {
+				selectedCategories.forEach((category, index) => {
+					formData.append(`categories[${index}]`, category);
+				});
+			}
 
-		notes.forEach((note, index) => {
-			formData.append(`notes[${index}]`, note);
-		});
+			if (
+				JSON.stringify(initialState.current.selectedIngredients) !==
+				JSON.stringify(selectedIngredients)
+			) {
+				selectedIngredients.forEach((ingredient, index) => {
+					formData.append(`ingredients[${index}][_id]`, ingredient._id);
+					formData.append(
+						`ingredients[${index}][quantity]`,
+						ingredient.quantity !== null ? ingredient.quantity.toString() : '',
+					);
+					formData.append(`ingredients[${index}][unit]`, ingredient.unit);
+				});
+			}
 
-		selectedCategories.forEach((category, index) => {
-			formData.append(`categories[${index}]`, category);
-		});
+			if (
+				JSON.stringify(initialState.current.instructions) !==
+				JSON.stringify(instructions)
+			) {
+				instructions.forEach((instruction, index) => {
+					formData.append(`instructions[${index}]`, instruction);
+				});
+			}
 
-		formData.append('serves', serves.toString());
+			if (
+				JSON.stringify(initialState.current.notes) !== JSON.stringify(notes)
+			) {
+				notes.forEach((note, index) => {
+					formData.append(`notes[${index}]`, note);
+				});
+			}
 
-		if (selectedImage) {
-			formData.append('image', selectedImage);
+			if (
+				selectedImage &&
+				initialState.current.selectedImage !== selectedImage
+			) {
+				formData.append('image', selectedImage);
+			}
+		} else {
+			formData.append('name', name);
+			formData.append('timeInMinutes', timeInMinutes.toString());
+			selectedIngredients.forEach((ingredient, index) => {
+				formData.append(`ingredients[${index}][_id]`, ingredient._id);
+				formData.append(
+					`ingredients[${index}][quantity]`,
+					ingredient.quantity !== null ? ingredient.quantity.toString() : '',
+				);
+				formData.append(`ingredients[${index}][unit]`, ingredient.unit);
+			});
+			instructions.forEach((instruction, index) => {
+				formData.append(`instructions[${index}]`, instruction);
+			});
+			notes.forEach((note, index) => {
+				formData.append(`notes[${index}]`, note);
+			});
+			selectedCategories.forEach((category, index) => {
+				formData.append(`categories[${index}]`, category);
+			});
+			formData.append('serves', serves.toString());
+			if (selectedImage) {
+				formData.append('image', selectedImage);
+			}
 		}
 
 		try {
-			addRecipe(formData);
+			if (isEditing) {
+				editRecipe({ formData, _id: recipe._id });
+			} else {
+				addRecipe(formData);
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
