@@ -17,10 +17,14 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 	const [quantity, setQuantity] = useState(4);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [deleteRecipeConf, setDeleteRecipeConf] = useState(false);
+
 	const { user } = useUser();
 	const deleteRecipe = useDeleteRecipe();
+
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
+
 	const tabTitles = ['Ingredients', 'Instructions'];
+
 	const tabIngredients = () => {
 		return (
 			<div className='p-4'>
@@ -63,6 +67,10 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 		);
 	};
 
+	const openDeleteConfirmation = () => {
+		setDeleteRecipeConf(true);
+	};
+
 	const handleDelete = () => {
 		deleteRecipe(recipe._id);
 		setDeleteRecipeConf(false);
@@ -93,14 +101,14 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									<AddRecipe recipe={recipe} />
 								</Modal>
 								<Modal
-									title="Are you sure you'd like to delete this recipe?"
 									trigger={
 										<div className='border-2 border-black bg-white rounded-full w-fit'>
-											<Button onClick={handleDelete} type='primary'>
+											<Button onClick={openDeleteConfirmation} type='primary'>
 												<RiDeleteBinLine />
 											</Button>
 										</div>
 									}
+									title="Are you sure you'd like to delete this recipe?"
 									open={deleteRecipeConf}
 									setOpen={setDeleteRecipeConf}
 								>
