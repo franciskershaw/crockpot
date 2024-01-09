@@ -26,27 +26,32 @@ const NavbarTop = () => {
 	};
 
 	return (
-		<nav className="nav py-5 bg-white border-b border-black fixed top-0 left-0 w-full flex justify-evenly z-navTop shadow-navTop">
-			<div className="container flex justify-between items-center w-full">
-				<div className="flex items-center justify-between w-full">
-					<div className="flex items-center space-x-4">
+		<nav className='nav py-5 bg-white border-b border-black fixed top-0 left-0 w-full flex justify-evenly z-navTop shadow-navTop'>
+			<div className='container flex justify-between items-center w-full'>
+				<div className='flex items-center justify-between w-full'>
+					<div className='flex items-center space-x-4'>
 						<div>
-							<span className="h1 bg-white text-black border-4 border-black rounded-full px-3 py-2">
+							<span className='h1 bg-white text-black border-4 border-black rounded-full px-3 py-2'>
 								Crockpot
 							</span>
 						</div>
-						<div className="hidden md:flex items-center space-x-4">
+						<div className='hidden md:flex items-center space-x-4'>
 							<NavbarSharedLinks />
 						</div>
 					</div>
-					<div className="hidden md:flex items-center space-x-2">
+					<div className='hidden md:flex items-center space-x-2'>
+						{user?.isAdmin && (
+							<Link href='/admin'>
+								<Button text='Admin' border />
+							</Link>
+						)}
 						{user ? (
-							<Button text="Logout" border onClick={handleLogout} />
+							<Button text='Logout' border onClick={handleLogout} />
 						) : (
 							<>
 								{pathname !== '/login' && pathname !== '/register' && (
-									<Link href="/login">
-										<Button text="Login" border />
+									<Link href='/login'>
+										<Button text='Login' border />
 									</Link>
 								)}
 							</>
@@ -54,13 +59,13 @@ const NavbarTop = () => {
 					</div>
 				</div>
 				{/* On mobile devices, display hamburger menu */}
-				<div className="md:hidden">
+				<div className='md:hidden'>
 					<button
 						className={`nav__hamburger z-navHamburger ${
 							isOpen ? 'nav__hamburger--open' : ''
 						}`}
 						onClick={toggleMenu}
-						aria-label="Menu"
+						aria-label='Menu'
 					>
 						<span></span>
 						<span></span>
@@ -75,14 +80,16 @@ const NavbarTop = () => {
 					isOpen ? 'nav__menu--open' : ''
 				} `}
 			>
-				<Link href="/sandbox">
-					<Button text="Sandbox" border />
-				</Link>
+				{user?.isAdmin && (
+					<Link href='/admin'>
+						<Button text='Admin' border />
+					</Link>
+				)}
 				{user ? (
-					<Button text="Logout" border onClick={handleLogout} />
+					<Button text='Logout' border onClick={handleLogout} />
 				) : (
-					<Link href="/login">
-						<Button text="Login" border />
+					<Link href='/login'>
+						<Button text='Login' border />
 					</Link>
 				)}
 			</div>
