@@ -156,9 +156,11 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			instructions.forEach((instruction, index) => {
 				formData.append(`instructions[${index}]`, instruction);
 			});
-			notes.forEach((note, index) => {
-				formData.append(`notes[${index}]`, note);
-			});
+			if (notes[0].trim()) {
+				notes.forEach((note, index) => {
+					formData.append(`notes[${index}]`, note);
+				});
+			}
 			selectedCategories.forEach((category, index) => {
 				formData.append(`categories[${index}]`, category);
 			});
@@ -266,7 +268,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	};
 
 	const handleRemoveNote = (index: number) => {
-		if (instructions.length > 1) {
+		if (notes.length > 1) {
 			setNotes((prev) => prev.filter((_, idx) => idx !== index));
 		}
 	};
@@ -402,15 +404,16 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									<FaTrash />
 								</Button>
 							)}
-
-							<Button
-								onClick={() => handleAddInstruction(index)}
-								type='primary'
-								border
-								iconXs
-							>
-								<FaPlus />
-							</Button>
+							{instruction.trim() && !(index < instructions.length - 1) && (
+								<Button
+									onClick={() => handleAddInstruction(index)}
+									type='primary'
+									border
+									iconXs
+								>
+									<FaPlus />
+								</Button>
+							)}
 						</div>
 					</Fragment>
 				))}
@@ -434,15 +437,16 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									<FaTrash />
 								</Button>
 							)}
-
-							<Button
-								onClick={() => handleAddNote(index)}
-								type='primary'
-								border
-								iconXs
-							>
-								<FaPlus />
-							</Button>
+							{note.trim() && !(index < notes.length - 1) && (
+								<Button
+									onClick={() => handleAddNote(index)}
+									type='primary'
+									border
+									iconXs
+								>
+									<FaPlus />
+								</Button>
+							)}
 						</div>
 					</Fragment>
 				))}
