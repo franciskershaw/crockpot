@@ -6,6 +6,7 @@ import React, {
 	useState,
 	useEffect,
 	ReactNode,
+	useMemo,
 } from 'react';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 
@@ -32,9 +33,26 @@ interface BrowsePageProviderProps {
 	children: ReactNode;
 }
 
-const BrowsePageContext = createContext<BrowsePageContextValue | undefined>(
-	undefined,
-);
+const defaultContext: BrowsePageContextValue = {
+	recipeSearchQuery: '',
+	showOnlyFavourites: false,
+	showOnlyMyRecipes: false,
+	cookingTimeMin: 0,
+	cookingTimeMax: Infinity,
+	selectedCategories: [],
+	selectedIngredients: [],
+	setRecipeSearchQuery: () => {},
+	setShowOnlyFavourites: () => {},
+	toggleShowOnlyFavourites: () => {},
+	setShowOnlyMyRecipes: () => {},
+	toggleShowOnlyMyRecipes: () => {},
+	setCookingTime: () => {},
+	setSelectedCategories: () => {},
+	setSelectedIngredients: () => {},
+	resetFilters: () => {},
+};
+
+const BrowsePageContext = createContext<BrowsePageContextValue>(defaultContext);
 
 export const useBrowsePageContext = (): BrowsePageContextValue => {
 	const context = useContext(BrowsePageContext);
@@ -81,24 +99,35 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 		setSelectedIngredients([]);
 	};
 
-	const value: BrowsePageContextValue = {
-		recipeSearchQuery,
-		showOnlyFavourites,
-		showOnlyMyRecipes,
-		cookingTimeMin,
-		cookingTimeMax,
-		selectedCategories,
-		selectedIngredients,
-		setRecipeSearchQuery,
-		setShowOnlyFavourites,
-		toggleShowOnlyFavourites,
-		setShowOnlyMyRecipes,
-		toggleShowOnlyMyRecipes,
-		setCookingTime,
-		setSelectedCategories,
-		setSelectedIngredients,
-		resetFilters,
-	};
+	const value: BrowsePageContextValue = useMemo(
+		() => ({
+			recipeSearchQuery,
+			showOnlyFavourites,
+			showOnlyMyRecipes,
+			cookingTimeMin,
+			cookingTimeMax,
+			selectedCategories,
+			selectedIngredients,
+			setRecipeSearchQuery,
+			setShowOnlyFavourites,
+			toggleShowOnlyFavourites,
+			setShowOnlyMyRecipes,
+			toggleShowOnlyMyRecipes,
+			setCookingTime,
+			setSelectedCategories,
+			setSelectedIngredients,
+			resetFilters,
+		}),
+		[
+			recipeSearchQuery,
+			showOnlyFavourites,
+			showOnlyMyRecipes,
+			cookingTimeMin,
+			cookingTimeMax,
+			selectedCategories,
+			selectedIngredients,
+		],
+	);
 
 	return (
 		<BrowsePageContext.Provider value={value}>
