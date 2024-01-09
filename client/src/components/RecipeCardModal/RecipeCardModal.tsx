@@ -7,6 +7,7 @@ import Button from '../Button/Button';
 import { RiEdit2Line, RiDeleteBinLine } from 'react-icons/ri';
 import Modal from '../Modal/Modal';
 import AddRecipe from '../AddRecipe/AddRecipe';
+import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 
 type RecipeCardModalProps = {
 	recipe: Recipe;
@@ -15,7 +16,9 @@ type RecipeCardModalProps = {
 const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 	const [quantity, setQuantity] = useState(4);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [deleteRecipeConf, setDeleteRecipeConf] = useState(false);
 	const { user } = useUser();
+	const deleteRecipe = useDeleteRecipe();
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
 	const tabTitles = ['Ingredients', 'Instructions'];
 	const tabIngredients = () => {
@@ -60,6 +63,11 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 		);
 	};
 
+	const handleDelete = () => {
+		deleteRecipe(recipe._id);
+		setDeleteRecipeConf(false);
+	};
+
 	return (
 		<div>
 			<div className='relative'>
@@ -84,11 +92,27 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 								>
 									<AddRecipe recipe={recipe} />
 								</Modal>
-								<div className='border-2 border-black bg-white rounded-full w-fit'>
-									<Button type='primary'>
-										<RiDeleteBinLine />
-									</Button>
-								</div>
+								<Modal
+									title="Are you sure you'd like to delete this recipe?"
+									trigger={
+										<div className='border-2 border-black bg-white rounded-full w-fit'>
+											<Button onClick={handleDelete} type='primary'>
+												<RiDeleteBinLine />
+											</Button>
+										</div>
+									}
+									open={deleteRecipeConf}
+									setOpen={setDeleteRecipeConf}
+								>
+									<div className='flex flex-col items-center justify-center gap-3'>
+										<p className='text-xl'>Warning - cannot be undone</p>
+										<Button
+											onClick={handleDelete}
+											text='Delete Recipe'
+											border
+										/>
+									</div>
+								</Modal>
 							</div>
 						</div>
 					)}

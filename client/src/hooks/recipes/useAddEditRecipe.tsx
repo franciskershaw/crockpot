@@ -69,4 +69,34 @@ const useEditRecipe = () => {
 	return mutate;
 };
 
-export { useAddRecipe, useEditRecipe };
+const useDeleteRecipe = () => {
+	const { user } = useUser();
+	const queryClient = useQueryClient();
+	const api = useAxios();
+
+	const deleteRecipe = async (_id: string) => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${user.accessToken}`,
+				'Content-Type': 'multipart/form-data',
+			},
+		};
+
+		const response = await api.delete(`/api/recipes/${_id}`, config);
+
+		return response.data;
+	};
+
+	const { mutate } = useMutation(deleteRecipe, {
+		onSuccess: async (data) => {
+			await queryClient.invalidateQueries([queryKeys.recipes]);
+		},
+		onError: (error) => {
+			console.log(error);
+		},
+	});
+
+	return mutate;
+};
+
+export { useAddRecipe, useEditRecipe, useDeleteRecipe };
