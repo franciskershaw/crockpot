@@ -15,7 +15,7 @@ type CheckboxData = {
 };
 
 const BrowsePage = () => {
-	const { allRecipes } = useRecipes();
+	const { shuffledRecipes } = useRecipes();
 	const { user } = useUser();
 	const favouriteRecipes = user?.favouriteRecipes || [];
 
@@ -30,7 +30,7 @@ const BrowsePage = () => {
 	} = useBrowsePageContext();
 
 	// Filter recipes based on search query, favourites toggle, my recipe toggle, cooking time, categories and ingredients
-	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
+	const filteredRecipes = shuffledRecipes.filter((recipe: Recipe) => {
 		const isInFavourites =
 			!showOnlyFavourites || favouriteRecipes.includes(recipe._id);
 		const isMyRecipe =
@@ -59,28 +59,28 @@ const BrowsePage = () => {
 
 	return (
 		<>
-			<div className="container flex py-4 space-x-2 bg-white/90 fixed z-searchBar md:hidden">
+			<div className='container flex py-4 space-x-2 bg-white/90 fixed z-searchBar md:hidden'>
 				<BrowsePageSearchBar />
 			</div>
-			<div className="container !px-0 md:flex">
-				<div className="container pt-20 md:w-1/3 md:border-2 md:border-black md:rounded md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:h-fit md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
-					<div className="hidden md:block">
+			<div className='container !px-0 md:flex'>
+				<div className='container pt-20 md:w-1/3 md:border-2 md:border-black md:rounded md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:h-fit md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]'>
+					<div className='hidden md:block'>
 						<BrowsePageFiltersMenu />
 					</div>
 				</div>
-				<div className="container md:w-2/3 md:pl-4">
-					<div className="hidden md:flex space-x-2 mb-4">
+				<div className='container md:w-2/3 md:pl-4'>
+					<div className='hidden md:flex space-x-2 mb-4'>
 						<BrowsePageSearchBar />
 					</div>
 					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
-					<div className="md:hidden">
+					<div className='md:hidden'>
 						{filteredRecipes.length !== 0 ? (
 							<RecipeCardList recipes={filteredRecipes} fullWidth />
 						) : (
 							<>
-								<div className="text-center mb-4">
-									<h2 className="mb-2">No results?</h2>
-									<p className="h3 !leading-5">
+								<div className='text-center mb-4'>
+									<h2 className='mb-2'>No results?</h2>
+									<p className='h3 !leading-5'>
 										Try removing some of your filters or searching for something
 										else.
 									</p>
@@ -88,14 +88,14 @@ const BrowsePage = () => {
 							</>
 						)}
 					</div>
-					<div className="hidden md:block">
+					<div className='hidden md:block'>
 						{filteredRecipes.length !== 0 ? (
 							<RecipeCardList recipes={filteredRecipes} />
 						) : (
 							<>
-								<div className="text-center mb-4">
-									<h2 className="mb-2">No results?</h2>
-									<p className="h3 !leading-5">
+								<div className='text-center mb-4'>
+									<h2 className='mb-2'>No results?</h2>
+									<p className='h3 !leading-5'>
 										Try removing some of your filters or searching for something
 										else.
 									</p>
