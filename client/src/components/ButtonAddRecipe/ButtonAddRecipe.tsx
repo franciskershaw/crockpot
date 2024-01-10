@@ -6,12 +6,15 @@ import Modal from '../Modal/Modal';
 import AddRecipe from '../AddRecipe/AddRecipe';
 import { useState } from 'react';
 import useUser from '@/src/hooks/auth/useUser';
+import { usePathname } from 'next/navigation';
 
 function ButtonAddRecipe() {
 	const { user } = useUser();
 	const [modalOpen, setModalOpen] = useState(false);
 
-	if (!user) {
+	const pathname = usePathname();
+
+	if (!user || pathname === '/admin') {
 		return null;
 	}
 
@@ -19,15 +22,15 @@ function ButtonAddRecipe() {
 		<Modal
 			trigger={
 				<button
-					className="btn btn--primary btn--border fixed bottom-20 md:bottom-0 right-0 z-10 m-4"
-					aria-label="Add Recipe"
+					className='btn btn--primary btn--border fixed bottom-20 md:bottom-0 right-0 z-10 m-4'
+					aria-label='Add Recipe'
 				>
-					<Icon size="xl">
+					<Icon size='xl'>
 						<AiOutlinePlus />
 					</Icon>
 				</button>
 			}
-			title="Add new recipe"
+			title='Add new recipe'
 			open={modalOpen}
 			setOpen={setModalOpen}
 		>
