@@ -7,13 +7,11 @@ import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList
 import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
-import { useBrowsePageContext } from '../context/BrowsePageContext';
+import {
+	CheckboxData,
+	useBrowsePageContext,
+} from '../context/BrowsePageContext';
 import useUser from '@/src/hooks/auth/useUser';
-
-type CheckboxData = {
-	_id: string;
-	name: string;
-};
 
 function BrowsePageFiltersMenu() {
 	const {
@@ -37,27 +35,31 @@ function BrowsePageFiltersMenu() {
 		: null;
 
 	const handleCategoryCheckboxChange = (
-		categoryId: string,
+		category: CheckboxData,
 		isChecked: boolean,
 	) => {
-		setSelectedCategories((prevSelected: string[]) => {
+		setSelectedCategories((prevSelected: CheckboxData[]) => {
 			if (isChecked) {
-				return [...prevSelected, categoryId];
+				return [...prevSelected, category];
 			} else {
-				return prevSelected.filter((id: string) => id !== categoryId);
+				return prevSelected.filter(
+					(item: CheckboxData) => item._id !== category._id,
+				);
 			}
 		});
 	};
 
 	const handleIngredientCheckboxChange = (
-		ingredientId: string,
+		ingredient: CheckboxData,
 		isChecked: boolean,
 	) => {
-		setSelectedIngredients((prevSelected: string[]) => {
+		setSelectedIngredients((prevSelected: CheckboxData[]) => {
 			if (isChecked) {
-				return [...prevSelected, ingredientId];
+				return [...prevSelected, ingredient];
 			} else {
-				return prevSelected.filter((id: string) => id !== ingredientId);
+				return prevSelected.filter(
+					(item: CheckboxData) => item._id !== ingredient._id,
+				);
 			}
 		});
 	};
@@ -72,7 +74,7 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className='space-y-3'>
+		<div className="space-y-3">
 			{user && (
 				<>
 					<Switch
@@ -107,7 +109,7 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a category...'}
 				checkboxes={simplifiedCategories}
 				onCheckboxChange={handleCategoryCheckboxChange}
-				listType='category'
+				listType="category"
 			/>
 			<hr />
 			<BrowsePageSearchableCheckboxList
@@ -115,7 +117,7 @@ function BrowsePageFiltersMenu() {
 				placeholderText={'Search for a ingredient...'}
 				checkboxes={simplifiedIngredients}
 				onCheckboxChange={handleIngredientCheckboxChange}
-				listType='ingredient'
+				listType="ingredient"
 			/>
 		</div>
 	);
