@@ -15,7 +15,7 @@ type CheckboxData = {
 };
 
 const BrowsePage = () => {
-	const { shuffledRecipes } = useRecipes();
+	const { shuffledRecipes: allRecipes } = useRecipes();
 	const { user } = useUser();
 	const favouriteRecipes = user?.favouriteRecipes || [];
 
@@ -30,7 +30,7 @@ const BrowsePage = () => {
 	} = useBrowsePageContext();
 
 	// Filter recipes based on search query, favourites toggle, my recipe toggle, cooking time, categories and ingredients
-	const filteredRecipes = shuffledRecipes.filter((recipe: Recipe) => {
+	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
 		const isInFavourites =
 			!showOnlyFavourites || favouriteRecipes.includes(recipe._id);
 		const isMyRecipe =

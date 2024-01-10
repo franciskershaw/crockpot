@@ -21,12 +21,11 @@ const useRecipes = () => {
 	const { data: allRecipes = [] } = useQuery([queryKeys.recipes], getRecipes);
 
 	useEffect(() => {
-		const newshuffledRecipes: Recipe[] = [...allRecipes].sort(
-			() => Math.random() - 0.5,
-		);
-		setShuffledRecipes(newshuffledRecipes);
-
-		if (allRecipes.length > 0) {
+		if (allRecipes.length) {
+			const newshuffledRecipes: Recipe[] = [...allRecipes].sort(
+				() => Math.random() - 0.5,
+			);
+			setShuffledRecipes(newshuffledRecipes);
 			let minTime = allRecipes[0].timeInMinutes;
 			let maxTime = allRecipes[0].timeInMinutes;
 
@@ -40,7 +39,7 @@ const useRecipes = () => {
 			}
 			setCookingTimeMinMax({ min: minTime, max: maxTime });
 		}
-	}, [allRecipes, setCookingTimeMinMax]);
+	}, [allRecipes]);
 
 	const filterRecipes = (array: Recipe[], searchQuery: string) => {
 		if (searchQuery === '') {
