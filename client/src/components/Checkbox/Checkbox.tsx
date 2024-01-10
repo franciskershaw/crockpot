@@ -6,35 +6,42 @@ import './styles.scss';
 import { useMemo } from 'react';
 
 type CheckboxProps = {
-	label: string;
+	label?: string;
+	id?: string;
 	isChecked: boolean;
 	onChange: (values: boolean) => void;
 };
 
 export default function Checkbox({
 	label,
+	id,
 	isChecked,
 	onChange,
 }: CheckboxProps) {
 	const checkboxId = useMemo(() => uuidv4(), []);
 
 	return (
-		<div className="flex items-center overflow-hidden">
+		<div className='flex items-center overflow-hidden'>
 			<CheckboxRadix.Root
-				className="CheckboxRoot"
-				id={checkboxId}
+				className='CheckboxRoot'
+				id={id ? id : checkboxId}
 				onCheckedChange={onChange}
 				checked={isChecked}
 			>
-				<CheckboxRadix.Indicator className="CheckboxIndicator">
-					<Icon size="sm">
+				<CheckboxRadix.Indicator className='CheckboxIndicator'>
+					<Icon size='sm'>
 						<AiOutlineCheck />
 					</Icon>
 				</CheckboxRadix.Indicator>
 			</CheckboxRadix.Root>
-			<label className="pl-2 cursor-pointer truncate" htmlFor={checkboxId}>
-				{label}
-			</label>
+			{label && (
+				<label
+					className='pl-2 cursor-pointer truncate'
+					htmlFor={id ? id : checkboxId}
+				>
+					{label}
+				</label>
+			)}
 		</div>
 	);
 }
