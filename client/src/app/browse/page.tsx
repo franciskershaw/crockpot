@@ -1,18 +1,18 @@
 'use client';
 
 import useRecipes from '@/src/hooks/recipes/useRecipes';
+import useUser from '@/src/hooks/auth/useUser';
+import {
+	CheckboxData,
+	useBrowsePageContext,
+} from './context/BrowsePageContext';
+
 import RecipeCardList from '../../components/RecipeCardList/RecipeCardList';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
-import { useBrowsePageContext } from './context/BrowsePageContext';
-import { Category, Ingredient, Recipe } from '@/src/types/types';
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
-import useUser from '@/src/hooks/auth/useUser';
 
-type CheckboxData = {
-	_id: string;
-	name: string;
-};
+import { Category, Ingredient, Recipe } from '@/src/types/types';
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
@@ -58,54 +58,32 @@ const BrowsePage = () => {
 	});
 
 	return (
-		<>
-			<div className="container flex py-4 space-x-2 bg-white/90 fixed z-searchBar md:hidden">
-				<BrowsePageSearchBar />
-			</div>
-			<div className="container !px-0 md:flex">
-				<div className="container pt-20 md:w-1/3 md:border-2 md:border-black md:rounded md:pt-2 md:mx-4 xl:ml-0 md:my-0 md:h-fit md:max-h-[85vh] md:overflow-scroll md:sticky md:top-[110px]">
-					<div className="hidden md:block">
-						<BrowsePageFiltersMenu />
-					</div>
+		<div className="container container--1-2">
+			<div className="hidden md:block relative p-2 ">
+				<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar border border-black">
+					<BrowsePageFiltersMenu />
 				</div>
-				<div className="container md:w-2/3 md:pl-4">
-					<div className="hidden md:flex space-x-2 mb-4">
-						<BrowsePageSearchBar />
-					</div>
+			</div>
+			<div className="relative p-2">
+				<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar">
+					<BrowsePageSearchBar />
 					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
-					<div className="md:hidden">
-						{filteredRecipes.length !== 0 ? (
-							<RecipeCardList recipes={filteredRecipes} fullWidth />
-						) : (
-							<>
-								<div className="text-center mb-4">
-									<h2 className="mb-2">No results?</h2>
-									<p className="h3 !leading-5">
-										Try removing some of your filters or searching for something
-										else.
-									</p>
-								</div>
-							</>
-						)}
-					</div>
-					<div className="hidden md:block">
-						{filteredRecipes.length !== 0 ? (
-							<RecipeCardList recipes={filteredRecipes} />
-						) : (
-							<>
-								<div className="text-center mb-4">
-									<h2 className="mb-2">No results?</h2>
-									<p className="h3 !leading-5">
-										Try removing some of your filters or searching for something
-										else.
-									</p>
-								</div>
-							</>
-						)}
-					</div>
 				</div>
+				{filteredRecipes.length !== 0 ? (
+					<RecipeCardList recipes={filteredRecipes} fullWidth />
+				) : (
+					<>
+						<div className="text-center mb-4">
+							<h2 className="mb-2">No results?</h2>
+							<p className="h3 !leading-5">
+								Try removing some of your filters or searching for something
+								else.
+							</p>
+						</div>
+					</>
+				)}
 			</div>
-		</>
+		</div>
 	);
 };
 

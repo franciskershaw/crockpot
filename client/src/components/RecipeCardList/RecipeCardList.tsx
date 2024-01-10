@@ -1,12 +1,15 @@
 'use client';
 
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import RecipeCard from '../RecipeCard/RecipeCard';
 import RecipeCardModal from '../RecipeCardModal/RecipeCardModal';
-import './styles.scss';
-import { v4 as uuidv4 } from 'uuid';
-import { Recipe } from '@/src/types/types';
 import Modal from '../Modal/Modal';
+
+import { Recipe } from '@/src/types/types';
+
+import './styles.scss';
 
 type RecipeCardListProps = {
 	recipes: Recipe[];
@@ -16,9 +19,9 @@ type RecipeCardListProps = {
 function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 	return (
 		<div
-			className={
-				fullWidth ? 'recipe-card-list--full-width' : 'recipe-card-list'
-			}
+			className={`recipe-card-list ${
+				fullWidth ? 'recipe-card-list--full-width' : ''
+			}`}
 		>
 			{recipes.map((recipe) => (
 				<Modal

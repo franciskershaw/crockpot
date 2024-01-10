@@ -30,10 +30,10 @@ export default function RootLayout({
 		<html lang="en">
 			<body>
 				<Providers>
-					<NavbarTop />
-					{/* <main className="mt-[73px] mb-24 md:mt-28 md:mb-8">{children}</main>
-					<ButtonAddRecipe /> */}
-					<NavbarBottom />
+					{/* <NavbarTop /> */}
+					<main className="">{children}</main>
+					{/* <ButtonAddRecipe /> */}
+					{/* <NavbarBottom /> */}
 				</Providers>
 			</body>
 		</html>
