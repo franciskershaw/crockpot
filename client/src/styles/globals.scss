@@ -28,9 +28,9 @@ body {
 	display: none;
 }
 
-// Containers
+// Layout
 .container {
-	@apply mx-auto px-4 max-w-7xl xl:px-0;
+	@apply mx-auto px-4 max-w-7xl bg-blue-light;
 
 	&--sm {
 		@apply max-w-2xl;
