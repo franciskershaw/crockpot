@@ -10,22 +10,27 @@ import React, {
 } from 'react';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 
+export interface CheckboxData {
+	_id: string;
+	name: string;
+}
+
 interface BrowsePageContextValue {
 	recipeSearchQuery: string;
 	showOnlyFavourites: boolean;
 	showOnlyMyRecipes: boolean;
 	cookingTimeMin: number;
 	cookingTimeMax: number;
-	selectedCategories: string[];
-	selectedIngredients: string[];
-	setRecipeSearchQuery: (query: string) => void;
+	selectedCategories: CheckboxData[];
+	selectedIngredients: CheckboxData[];
+	setRecipeSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 	setShowOnlyFavourites: (show: boolean) => void;
 	toggleShowOnlyFavourites: () => void;
 	setShowOnlyMyRecipes: (show: boolean) => void;
 	toggleShowOnlyMyRecipes: () => void;
 	setCookingTime: (min: number, max: number) => void;
-	setSelectedCategories: (categories: string[]) => void;
-	setSelectedIngredients: (ingredients: string[]) => void;
+	setSelectedCategories: React.Dispatch<React.SetStateAction<CheckboxData[]>>;
+	setSelectedIngredients: React.Dispatch<React.SetStateAction<CheckboxData[]>>;
 	resetFilters: () => void;
 }
 
@@ -33,26 +38,9 @@ interface BrowsePageProviderProps {
 	children: ReactNode;
 }
 
-const defaultContext: BrowsePageContextValue = {
-	recipeSearchQuery: '',
-	showOnlyFavourites: false,
-	showOnlyMyRecipes: false,
-	cookingTimeMin: 0,
-	cookingTimeMax: Infinity,
-	selectedCategories: [],
-	selectedIngredients: [],
-	setRecipeSearchQuery: () => {},
-	setShowOnlyFavourites: () => {},
-	toggleShowOnlyFavourites: () => {},
-	setShowOnlyMyRecipes: () => {},
-	toggleShowOnlyMyRecipes: () => {},
-	setCookingTime: () => {},
-	setSelectedCategories: () => {},
-	setSelectedIngredients: () => {},
-	resetFilters: () => {},
-};
-
-const BrowsePageContext = createContext<BrowsePageContextValue>(defaultContext);
+const BrowsePageContext = createContext<BrowsePageContextValue | undefined>(
+	undefined,
+);
 
 export const useBrowsePageContext = (): BrowsePageContextValue => {
 	const context = useContext(BrowsePageContext);
@@ -71,8 +59,12 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 	const [showOnlyMyRecipes, setShowOnlyMyRecipes] = useState<boolean>(false);
 	const [cookingTimeMin, setCookingTimeMin] = useState<number>(0);
 	const [cookingTimeMax, setCookingTimeMax] = useState<number>(Infinity);
-	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-	const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+	const [selectedCategories, setSelectedCategories] = useState<CheckboxData[]>(
+		[],
+	);
+	const [selectedIngredients, setSelectedIngredients] = useState<
+		CheckboxData[]
+	>([]);
 
 	useEffect(() => {
 		if (cookingTimeMinMax) {

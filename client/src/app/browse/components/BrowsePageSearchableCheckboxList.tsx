@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
-import { useBrowsePageContext } from '../context/BrowsePageContext';
-
-type CheckboxData = {
-	_id: string;
-	name: string;
-};
+import {
+	CheckboxData,
+	useBrowsePageContext,
+} from '../context/BrowsePageContext';
 
 type BrowsePageSearchableCheckboxListProps = {
 	title: string;
 	placeholderText: string;
 	checkboxes: CheckboxData[];
-	onCheckboxChange?: (id: string, isChecked: boolean) => void;
+	onCheckboxChange?: (item: CheckboxData, isChecked: boolean) => void;
 	listType: 'category' | 'ingredient';
 };
 
@@ -61,13 +59,13 @@ const BrowsePageSearchableCheckboxList: React.FC<
 
 	return (
 		<div>
-			<div className='flex justify-between mb-2'>
+			<div className="flex justify-between mb-2">
 				<h3>
 					{title} ({checkboxes.length})
 				</h3>
 				{checkboxes.length > initialVisibleCheckboxes ? (
 					<h4
-						className='cursor-pointer underline my-auto'
+						className="cursor-pointer underline my-auto"
 						onClick={() => setShowAllCheckboxes(!showAllCheckboxes)}
 					>
 						{showAllCheckboxes ? 'Hide' : 'Show'}
@@ -79,9 +77,9 @@ const BrowsePageSearchableCheckboxList: React.FC<
 				searchQuery={searchQuery}
 				setSearchQuery={setSearchQuery}
 			/>
-			<div className='mt-2 space-y-1 overflow-y-scroll max-h-[250px] bg-white p-2'>
+			<div className="mt-2 space-y-1 overflow-y-scroll max-h-[250px] bg-white p-2">
 				{filteredCheckboxes.length === 0 ? (
-					<h4 className='text-center'>0 results</h4>
+					<h4 className="text-center">0 results</h4>
 				) : (
 					filteredCheckboxes.map((checkbox, index) => (
 						<div

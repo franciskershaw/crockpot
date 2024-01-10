@@ -14,7 +14,6 @@ type RecipeCardModalProps = {
 };
 
 const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
-	const [quantity, setQuantity] = useState(4);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [deleteRecipeConf, setDeleteRecipeConf] = useState(false);
 
@@ -22,15 +21,16 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 	const deleteRecipe = useDeleteRecipe();
 
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
+	const [quantity, setQuantity] = useState(isMenu ? isMenu.serves : 4);
 
 	const tabTitles = ['Ingredients', 'Instructions'];
 
 	const tabIngredients = () => {
 		return (
-			<div className='p-4'>
-				<ul className='flex flex-wrap'>
+			<div className="p-4">
+				<ul className="flex flex-wrap">
 					{recipe.ingredients.map((ingredient, index) => (
-						<li key={index} className='w-full sm:w-1/2'>
+						<li key={index} className="w-full sm:w-1/2">
 							{ingredient._id.name} x{' '}
 							{((ingredient.quantity / recipe.serves) * quantity)
 								.toFixed(2)
@@ -45,7 +45,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 
 	const tabInstructions = () => {
 		return (
-			<div className='p-4'>
+			<div className="p-4">
 				{recipe.instructions && (
 					<ol>
 						{recipe.instructions.map((instruction, index) => (
@@ -55,7 +55,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 				)}
 				{recipe.notes && recipe.notes[0] !== '' && (
 					<>
-						<hr className='my-2' />
+						<hr className="my-2" />
 						<ul>
 							{recipe.notes.map((note, index) => (
 								<li key={index}>{note}</li>
@@ -78,18 +78,18 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 
 	return (
 		<div>
-			<div className='relative'>
+			<div className="relative">
 				<div
-					className='bg-cover bg-center h-80 relative'
+					className="bg-cover bg-center h-80 relative"
 					style={{ backgroundImage: `url(${recipe.image.url})` }}
 				>
 					{(recipe.createdBy._id === user?._id || user?.isAdmin) && (
-						<div className='absolute right-5 top-2'>
-							<div className='flex gap-2'>
+						<div className="absolute right-5 top-2">
+							<div className="flex gap-2">
 								<Modal
 									trigger={
-										<div className='border-2 border-black bg-white rounded-full w-fit'>
-											<Button type='primary'>
+										<div className="border-2 border-black bg-white rounded-full w-fit">
+											<Button type="primary">
 												<RiEdit2Line />
 											</Button>
 										</div>
@@ -102,8 +102,8 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 								</Modal>
 								<Modal
 									trigger={
-										<div className='border-2 border-black bg-white rounded-full w-fit'>
-											<Button onClick={openDeleteConfirmation} type='primary'>
+										<div className="border-2 border-black bg-white rounded-full w-fit">
+											<Button onClick={openDeleteConfirmation} type="primary">
 												<RiDeleteBinLine />
 											</Button>
 										</div>
@@ -112,11 +112,11 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									open={deleteRecipeConf}
 									setOpen={setDeleteRecipeConf}
 								>
-									<div className='flex flex-col items-center justify-center gap-3'>
-										<p className='text-xl'>Warning - cannot be undone</p>
+									<div className="flex flex-col items-center justify-center gap-3">
+										<p className="text-xl">Warning - cannot be undone</p>
 										<Button
 											onClick={handleDelete}
-											text='Delete Recipe'
+											text="Delete Recipe"
 											border
 										/>
 									</div>
@@ -125,7 +125,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 						</div>
 					)}
 				</div>
-				<div className='absolute bottom-0 left-0 right-0 m-4 p-4 md:right-auto md:w-2/3 bg-white border border-black-25 flex flex-row items-center justify-between rounded'>
+				<div className="absolute bottom-0 left-0 right-0 m-4 p-4 md:right-auto md:w-2/3 bg-white border border-black-25 flex flex-row items-center justify-between rounded">
 					<div>
 						<h2>{recipe.name}</h2>
 						<h3>Created by {recipe.createdBy?.username}</h3>
@@ -140,7 +140,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 					)}
 				</div>
 			</div>
-			<div className='px-2 pt-4'>
+			<div className="px-2 pt-4">
 				<Tabs titles={tabTitles} isModal>
 					<>{tabIngredients()}</>
 					<>{tabInstructions()}</>

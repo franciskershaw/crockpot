@@ -1,15 +1,13 @@
 import React from 'react';
-import { useBrowsePageContext } from '../../context/BrowsePageContext';
+import {
+	CheckboxData,
+	useBrowsePageContext,
+} from '../../context/BrowsePageContext';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import './styles.scss';
 
 type AppliedFiltersProps = {
 	recipeNum: number;
-};
-
-type FilterItem = {
-	_id: string;
-	name: string;
 };
 
 const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
@@ -47,13 +45,15 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 				setCookingTime(cookingTimeMinMax.min, cookingTimeMinMax.max);
 				break;
 			case 'selectedCategories':
-				setSelectedCategories((prev: FilterItem[]) =>
-					prev.filter((category: FilterItem) => category._id !== value._id),
+				setSelectedCategories((prev: CheckboxData[]) =>
+					prev.filter((category: CheckboxData) => category._id !== value._id),
 				);
 				break;
 			case 'selectedIngredients':
-				setSelectedIngredients((prev: FilterItem[]) =>
-					prev.filter((ingredient: FilterItem) => ingredient._id !== value._id),
+				setSelectedIngredients((prev: CheckboxData[]) =>
+					prev.filter(
+						(ingredient: CheckboxData) => ingredient._id !== value._id,
+					),
 				);
 				break;
 			default:
@@ -128,7 +128,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 							{filterLabel('cookingTime', [cookingTimeMin, cookingTimeMax])}
 						</div>
 					)}
-					{selectedCategories.map((category: FilterItem) => (
+					{selectedCategories.map((category: CheckboxData) => (
 						<div
 							key={category._id}
 							className="filter-tag"
@@ -137,7 +137,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 							{filterLabel('selectedCategories', category)}
 						</div>
 					))}
-					{selectedIngredients.map((ingredient: FilterItem) => (
+					{selectedIngredients.map((ingredient: CheckboxData) => (
 						<div
 							key={ingredient._id}
 							className="filter-tag"
