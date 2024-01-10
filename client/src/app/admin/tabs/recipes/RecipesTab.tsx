@@ -12,8 +12,7 @@ import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 const RecipesTab = () => {
 	const [query, setQuery] = useState('');
 	const [addRecipeModalOpen, setAddRecipeModalOpen] = useState(false);
-	const [editRecipeModalOpen, setEditRecipeModalOpen] = useState(false);
-	const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = useState(false);
+
 	const [showPending, setShowPending] = useState(false);
 
 	const { allRecipes, filterRecipes } = useRecipes();
@@ -23,11 +22,6 @@ const RecipesTab = () => {
 	const searchResults = useMemo(() => {
 		return filterRecipes(allRecipes, query);
 	}, [allRecipes, query, filterRecipes]);
-
-	const handleDelete = (id: string) => {
-		deleteRecipe(id);
-		setConfirmDeleteModalOpen(false);
-	};
 
 	return (
 		<div className='flex flex-col justify-center items-center'>
@@ -82,30 +76,23 @@ const RecipesTab = () => {
 										</div>
 									}
 									title={`Edit ${result.name}`}
-									open={editRecipeModalOpen}
-									setOpen={setEditRecipeModalOpen}
 								>
 									<AddRecipe recipe={result} />
 								</Modal>
 								<Modal
 									trigger={
 										<div className='border-2 border-black bg-white rounded-full w-fit'>
-											<Button
-												onClick={() => setConfirmDeleteModalOpen(true)}
-												type='primary'
-											>
+											<Button type='primary'>
 												<RiDeleteBinLine />
 											</Button>
 										</div>
 									}
-									title="Are you sure you'd like to delete this recipe?"
-									open={confirmDeleteModalOpen}
-									setOpen={setConfirmDeleteModalOpen}
+									title={`Are you sure you'd like to delete ${result.name}?`}
 								>
 									<div className='flex flex-col items-center justify-center gap-3'>
 										<p className='text-xl'>Warning - cannot be undone</p>
 										<Button
-											onClick={() => handleDelete(result._id)}
+											onClick={() => deleteRecipe(result._id)}
 											text='Delete Recipe'
 											border
 										/>
