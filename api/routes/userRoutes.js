@@ -16,6 +16,7 @@ const {
 	getUserRecipeMenu,
 	addToRecipeMenu,
 	removeFromRecipeMenu,
+	clearFromRecipeMenu,
 	getUserShoppingList,
 	getUserExtraItems,
 	toggleObtainedUserShoppingList,
@@ -49,6 +50,9 @@ router.route('/recipeMenu/add').put(isLoggedIn, asyncHandler(addToRecipeMenu));
 router
 	.route('/recipeMenu/remove')
 	.put(isLoggedIn, asyncHandler(removeFromRecipeMenu));
+router
+	.route('/recipeMenu/clear')
+	.put(isLoggedIn, asyncHandler(clearFromRecipeMenu));
 
 // User shopping list routes
 router

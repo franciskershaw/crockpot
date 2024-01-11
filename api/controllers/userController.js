@@ -241,6 +241,13 @@ const removeFromRecipeMenu = async (req, res, next) => {
 	}
 };
 
+const clearFromRecipeMenu = async (req, res, next) => {
+	const user = req.user;
+	user.recipeMenu = [];
+	await user.save();
+	res.status(200).json(user.recipeMenu);
+};
+
 const getUserShoppingList = async (req, res, next) => {
 	try {
 		const list = await formatItemList(req.user._id, 'shoppingList');
@@ -379,6 +386,7 @@ module.exports = {
 	getUserRecipeMenu,
 	addToRecipeMenu,
 	removeFromRecipeMenu,
+	clearFromRecipeMenu,
 	getUserShoppingList,
 	getUserExtraItems,
 	toggleObtainedUserShoppingList,
