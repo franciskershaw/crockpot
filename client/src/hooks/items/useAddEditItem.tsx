@@ -72,4 +72,33 @@ const useEditItem = () => {
 	return mutate;
 };
 
-export { useAddItem, useEditItem };
+const useDeleteItem = () => {
+	const { user } = useUser();
+	const queryClient = useQueryClient();
+	const api = useAxios();
+
+	const deleteItem = async (_id: string) => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${user.accessToken}`,
+			},
+		};
+
+		const response = await api.delete(`/api/items/${_id}`, config);
+
+		return response.data;
+	};
+
+	const { mutate } = useMutation(deleteItem, {
+		onSuccess: async (data) => {
+			await queryClient.invalidateQueries([queryKeys.items]);
+		},
+		onError: (error) => {
+			console.log(error);
+		},
+	});
+
+	return mutate;
+};
+
+export { useAddItem, useEditItem, useDeleteItem };

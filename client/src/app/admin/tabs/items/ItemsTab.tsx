@@ -6,7 +6,7 @@ import AddItem from '@/src/components/AddItem/AddItem';
 import { AiOutlinePlus } from 'react-icons/ai';
 import useItems from '@/src/hooks/items/useItems';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
-// import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
+import { useDeleteItem } from '@/src/hooks/items/useAddEditItem';
 
 const ItemsTab = () => {
 	const [query, setQuery] = useState('');
@@ -14,7 +14,7 @@ const ItemsTab = () => {
 
 	const { allItems, filterItems } = useItems();
 
-	// const deleteRecipe = useDeleteRecipe();
+	const deleteItem = useDeleteItem();
 
 	const searchResults = useMemo(() => {
 		return filterItems(allItems, query);
@@ -35,7 +35,6 @@ const ItemsTab = () => {
 					open={addItemModalOpen}
 					setOpen={setAddItemModalOpen}
 				>
-					{/* <AddRecipe setModal={setAddRecipeModalOpen} /> */}
 					<AddItem setModal={setAddItemModalOpen} />
 				</Modal>
 
@@ -83,8 +82,8 @@ const ItemsTab = () => {
 										<div className='flex flex-col items-center justify-center gap-3'>
 											<p className='text-xl'>Warning - cannot be undone</p>
 											<Button
-												// onClick={() => deleteRecipe(result._id)}
-												text='Delete Recipe'
+												onClick={() => deleteItem(result._id)}
+												text='Delete Item'
 												border
 											/>
 										</div>
