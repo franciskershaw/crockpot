@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import NavbarSharedLinks from '../NavbarSharedLinks/NavbarSharedLinks';
 import Button from '../../Button/Button';
@@ -13,6 +13,10 @@ const NavbarTop = () => {
 	const pathname = usePathname();
 
 	const [isOpen, setIsOpen] = useState(false);
+
+	useEffect(() => {
+		console.log(setIsOpen(false));
+	}, [pathname]);
 
 	const { user } = useUser();
 	const { logout } = useAuth();
