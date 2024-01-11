@@ -1,6 +1,7 @@
 const { itemSchema, editItemSchema } = require('../joiSchemas/schemas');
 const Item = require('../models/Item');
 const { NotFoundError } = require('../errors/errors');
+const { validateRequest } = require('../helper/helper');
 
 const getAllItems = async (req, res, next) => {
 	try {
