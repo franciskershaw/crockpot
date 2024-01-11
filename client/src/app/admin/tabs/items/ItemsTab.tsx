@@ -2,11 +2,11 @@ import { useState, useMemo } from 'react';
 import Button from '@/src/components/Button/Button';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Modal from '@/src/components/Modal/Modal';
-import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
+import AddItem from '@/src/components/AddItem/AddItem';
 import { AiOutlinePlus } from 'react-icons/ai';
 import useItems from '@/src/hooks/items/useItems';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
-import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
+// import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 
 const ItemsTab = () => {
 	const [query, setQuery] = useState('');
@@ -36,7 +36,7 @@ const ItemsTab = () => {
 					setOpen={setAddItemModalOpen}
 				>
 					{/* <AddRecipe setModal={setAddRecipeModalOpen} /> */}
-					<div>Add item</div>
+					<AddItem />
 				</Modal>
 
 				<p className='text-lg'>Add new Item</p>

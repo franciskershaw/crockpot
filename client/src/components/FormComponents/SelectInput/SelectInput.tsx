@@ -10,11 +10,11 @@ interface Option {
 interface SelectInputProps {
 	id: string;
 	options: Option[];
-	value: string[];
+	value: string | string[];
 	onChange: (value: string[]) => void;
 	label: string;
 	isMulti?: boolean;
-	placeholder: string;
+	placeholder?: string;
 }
 
 const SelectInput: FC<SelectInputProps> = ({
@@ -26,27 +26,35 @@ const SelectInput: FC<SelectInputProps> = ({
 	isMulti = false,
 	placeholder = 'Please select',
 }) => {
-	const selectedOptions = options.filter((option) =>
-		value.includes(option.value),
-	);
+	const selectedOptions = isMulti
+		? options.filter(
+				(option) => Array.isArray(value) && value.includes(option.value),
+		  )
+		: options.find((option) => option.value === value);
 
-	const handleMultiSelectChange = (
+	const handleChange = (
 		selectedOptions: MultiValue<Option> | SingleValue<Option>,
 	) => {
-		const newValues = Array.isArray(selectedOptions)
-			? selectedOptions.map((option) => option.value)
-			: [(selectedOptions as Option).value];
-		onChange(newValues);
+		if (isMulti) {
+			const newValues = (selectedOptions as MultiValue<Option>).map(
+				(option) => option.value,
+			);
+			onChange(newValues);
+		} else {
+			const newValue = (selectedOptions as Option).value;
+			onChange([newValue]);
+		}
 	};
 
-	const isOptionDisabled = () => value.length >= 3;
+	const isOptionDisabled = () =>
+		isMulti && Array.isArray(value) && value.length >= 3;
 
 	return (
 		<InputGroup label={label} htmlFor={id}>
 			<Select
 				options={options}
 				isMulti={isMulti}
-				onChange={handleMultiSelectChange}
+				onChange={handleChange}
 				value={selectedOptions}
 				placeholder={placeholder}
 				isOptionDisabled={isOptionDisabled}
