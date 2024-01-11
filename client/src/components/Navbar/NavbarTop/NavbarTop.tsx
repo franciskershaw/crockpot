@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import NavbarSharedLinks from '../NavbarSharedLinks/NavbarSharedLinks';
 import Button from '../../Button/Button';
@@ -14,10 +14,6 @@ const NavbarTop = () => {
 
 	const [isOpen, setIsOpen] = useState(false);
 
-	useEffect(() => {
-		console.log(setIsOpen(false));
-	}, [pathname]);
-
 	const { user } = useUser();
 	const { logout } = useAuth();
 
@@ -26,6 +22,7 @@ const NavbarTop = () => {
 	};
 
 	const handleLogout = () => {
+		setIsOpen(false);
 		logout();
 	};
 
@@ -85,14 +82,14 @@ const NavbarTop = () => {
 				} `}
 			>
 				{user?.isAdmin && (
-					<Link href='/admin'>
+					<Link onClick={() => setIsOpen(false)} href='/admin'>
 						<Button text='Admin' border />
 					</Link>
 				)}
 				{user ? (
 					<Button text='Logout' border onClick={handleLogout} />
 				) : (
-					<Link href='/login'>
+					<Link onClick={() => setIsOpen(false)} href='/login'>
 						<Button text='Login' border />
 					</Link>
 				)}
