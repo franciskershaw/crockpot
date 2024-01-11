@@ -4,7 +4,7 @@ import TextInput from '../FormComponents/TextInput/TextInput';
 import useItemCategories from '@/src/hooks/items/useItemCategories';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
 import Button from '../Button/Button';
-import useAddItem from '@/src/hooks/items/useAddEditItem';
+import { useAddItem, useEditItem } from '@/src/hooks/items/useAddEditItem';
 
 interface AddItemProps {
 	setModal?: (open: boolean) => void;
@@ -18,6 +18,7 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 	const { itemCategories } = useItemCategories();
 
 	const addItem = useAddItem();
+	const editItem = useEditItem();
 
 	const handleCategoryChange = (newCategories: string[]) => {
 		const newCategory = newCategories[0];
@@ -25,7 +26,12 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 	};
 
 	const handleSubmit = () => {
-		addItem({ name, category });
+		if (item) {
+			editItem({ itemData: { name, category }, _id: item._id });
+		} else {
+			addItem({ name, category });
+		}
+
 		if (setModal) setModal(false);
 	};
 

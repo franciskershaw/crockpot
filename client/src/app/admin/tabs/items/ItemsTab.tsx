@@ -20,10 +20,6 @@ const ItemsTab = () => {
 		return filterItems(allItems, query);
 	}, [allItems, query, filterItems]);
 
-	useEffect(() => {
-		console.log(addItemModalOpen);
-	}, [addItemModalOpen]);
-
 	return (
 		<div className='flex flex-col justify-center items-center'>
 			<div className='flex items-center gap-2 my-4'>
@@ -72,8 +68,7 @@ const ItemsTab = () => {
 										}
 										title={`Edit ${result.name}`}
 									>
-										{/* <AddRecipe recipe={result} /> */}
-										<div>Edit item</div>
+										<AddItem item={result} />
 									</Modal>
 									<Modal
 										trigger={
