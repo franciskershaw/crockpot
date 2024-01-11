@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Button from '@/src/components/Button/Button';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Modal from '@/src/components/Modal/Modal';
@@ -20,6 +20,10 @@ const ItemsTab = () => {
 		return filterItems(allItems, query);
 	}, [allItems, query, filterItems]);
 
+	useEffect(() => {
+		console.log(addItemModalOpen);
+	}, [addItemModalOpen]);
+
 	return (
 		<div className='flex flex-col justify-center items-center'>
 			<div className='flex items-center gap-2 my-4'>
@@ -36,7 +40,7 @@ const ItemsTab = () => {
 					setOpen={setAddItemModalOpen}
 				>
 					{/* <AddRecipe setModal={setAddRecipeModalOpen} /> */}
-					<AddItem />
+					<AddItem setModal={setAddItemModalOpen} />
 				</Modal>
 
 				<p className='text-lg'>Add new Item</p>

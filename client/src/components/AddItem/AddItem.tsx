@@ -4,6 +4,7 @@ import TextInput from '../FormComponents/TextInput/TextInput';
 import useItemCategories from '@/src/hooks/items/useItemCategories';
 import SelectInput from '../FormComponents/SelectInput/SelectInput';
 import Button from '../Button/Button';
+import useAddItem from '@/src/hooks/items/useAddEditItem';
 
 interface AddItemProps {
 	setModal?: (open: boolean) => void;
@@ -16,35 +17,39 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 
 	const { itemCategories } = useItemCategories();
 
+	const addItem = useAddItem();
+
 	const handleCategoryChange = (newCategories: string[]) => {
 		const newCategory = newCategories[0];
 		setCategory(newCategory);
 	};
 
+	const handleSubmit = () => {
+		addItem({ name, category });
+		if (setModal) setModal(false);
+	};
+
 	return (
 		<form onSubmit={(e) => e.preventDefault()} className=' h-56'>
-			<div className='w-full'>
-				<SelectInput
-					id='category'
-					options={itemCategories.map((category) => ({
-						value: category._id,
-						label: category.name,
-					}))}
-					value={category}
-					label='Select relevant category'
-					onChange={handleCategoryChange}
-				/>
-			</div>
-			<div className='w-full'>
-				<TextInput
-					label='Item name'
-					id='name'
-					value={name}
-					onChange={(name) => setName(name)}
-				/>
-			</div>
+			<TextInput
+				label='Item name'
+				id='name'
+				value={name}
+				onChange={(name) => setName(name)}
+			/>
+			<SelectInput
+				id='category'
+				options={itemCategories.map((category) => ({
+					value: category._id,
+					label: category.name,
+				}))}
+				value={category}
+				label='Select relevant category'
+				onChange={handleCategoryChange}
+			/>
+
 			<div className='flex justify-center items-center'>
-				<Button text='Submit' type='primary' border />
+				<Button text='Submit' type='primary' border onClick={handleSubmit} />
 			</div>
 		</form>
 	);
