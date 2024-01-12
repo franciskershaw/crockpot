@@ -7,9 +7,9 @@ import { MenuRecipe } from '@/src/types/types';
 import { createConfig } from '@/src/helper';
 
 type RecipeMenuVariables = {
-	recipeId: string;
-	serves: number;
-	type: 'add' | 'remove';
+	recipeId?: string;
+	serves?: number;
+	type: 'add' | 'remove' | 'clear';
 };
 
 const useRecipeMenu = () => {
@@ -33,10 +33,7 @@ const useRecipeMenu = () => {
 		type,
 	}: RecipeMenuVariables) => {
 		const config = createConfig(user);
-		const body = {
-			_id: recipeId,
-			serves,
-		};
+		const body = type !== 'clear' ? { _id: recipeId, serves } : undefined;
 		await api.put(`/api/users/recipeMenu/${type}`, body, config);
 	};
 

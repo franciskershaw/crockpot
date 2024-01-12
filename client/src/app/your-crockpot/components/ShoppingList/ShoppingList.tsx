@@ -24,7 +24,7 @@ const ShoppingList = () => {
 
 	const { filterItems, allItems } = useItems();
 
-	const { recipeMenu } = useRecipeMenu();
+	const { recipeMenu, updateRecipeMenu } = useRecipeMenu();
 
 	const accordionItems = useMemo(() => {
 		return groupedShoppingList?.map((category) => {
@@ -151,7 +151,12 @@ const ShoppingList = () => {
 							border
 							text='Clear Extra Items'
 						/>
-						<Button type='primary' border text='Clear Menu' />
+						<Button
+							onClick={() => updateRecipeMenu({ type: 'clear' })}
+							type='primary'
+							border
+							text='Clear Menu'
+						/>
 					</div>
 				) : null}
 			</div>

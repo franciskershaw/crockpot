@@ -7,7 +7,7 @@ import useRecipes from '@/src/hooks/recipes/useRecipes';
 
 const Menu = () => {
 	const { allRecipes } = useRecipes();
-	const { recipeMenuRecipes, recipeMenu } = useRecipeMenu();
+	const { recipeMenuRecipes, recipeMenu, updateRecipeMenu } = useRecipeMenu();
 
 	const suggestedRecipes = allRecipes.slice(0, 4);
 
@@ -21,7 +21,12 @@ const Menu = () => {
 					<ShoppingList />
 				</Modal>
 				{recipeMenu.length ? (
-					<Button type='primary' border text='Clear Menu' />
+					<Button
+						onClick={() => updateRecipeMenu({ type: 'clear' })}
+						type='primary'
+						border
+						text='Clear Menu'
+					/>
 				) : null}
 			</div>
 			<div className='container !px-0 lg:flex lg:pt-4'>
