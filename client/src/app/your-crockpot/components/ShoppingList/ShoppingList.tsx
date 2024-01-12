@@ -20,7 +20,7 @@ const ShoppingList = () => {
 	const [extraUnit, setExtraUnit] = useState('');
 
 	const { groupedShoppingList } = useShoppingList();
-	const { clearExtraItems, updateExtraItems } = useExtraItems();
+	const { clearExtraItems, updateExtraItems, extraItems } = useExtraItems();
 
 	const { filterItems, allItems } = useItems();
 
@@ -143,22 +143,26 @@ const ShoppingList = () => {
 					/>
 				</div>
 
-				{recipeMenu.length ? (
+				{(recipeMenu.length || extraItems.length) && (
 					<div className='hidden md:flex justify-center md:space-y-2 lg:space-y-0 lg:space-x-2 w-full md:flex-col lg:flex-row'>
-						<Button
-							onClick={() => clearExtraItems()}
-							type='primary'
-							border
-							text='Clear Extra Items'
-						/>
-						<Button
-							onClick={() => updateRecipeMenu({ type: 'clear' })}
-							type='primary'
-							border
-							text='Clear Menu'
-						/>
+						{extraItems.length ? (
+							<Button
+								onClick={() => clearExtraItems()}
+								type='primary'
+								border
+								text='Clear Extra Items'
+							/>
+						) : null}
+						{recipeMenu.length ? (
+							<Button
+								onClick={() => updateRecipeMenu({ type: 'clear' })}
+								type='primary'
+								border
+								text='Clear Menu'
+							/>
+						) : null}
 					</div>
-				) : null}
+				)}
 			</div>
 			{/* Shopping list */}
 			<Accordion items={accordionItems} />
