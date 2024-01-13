@@ -4,6 +4,7 @@ import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Modal from '@/src/components/Modal/Modal';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
+import EmptyState from '@/src/components/EmptyState/EmptyState';
 
 const Menu = () => {
 	const { allRecipes } = useRecipes();
@@ -33,13 +34,10 @@ const Menu = () => {
 						<RecipeCardList recipes={recipeMenuRecipes} fullWidth />
 					) : (
 						<>
-							<div className="text-center mb-4">
-								<h2 className="mb-2">Nothing on the menu yet?</h2>
-								<p className="h3 !leading-5">
-									How about some of these? Click the shopping cart button to add
-									them to Your Crockpot.
-								</p>
-							</div>
+							<EmptyState
+								title="Nothing on the menu yet?"
+								description="How about some of these? Click the shopping cart button to add them to Your Crockpot."
+							/>
 							<RecipeCardList recipes={suggestedRecipes} fullWidth />
 						</>
 					)}
@@ -49,13 +47,10 @@ const Menu = () => {
 						<RecipeCardList recipes={recipeMenuRecipes} />
 					) : (
 						<>
-							<div className="text-center mb-4">
-								<h2 className="mb-2">Nothing on the menu yet?</h2>
-								<p className="h3 !leading-5">
-									How about some of these? Click the shopping cart button to add
-									them to Your Crockpot.
-								</p>
-							</div>
+							<EmptyState
+								title="Nothing on the menu yet?"
+								description="How about some of these? Click the shopping cart button to add them to Your Crockpot."
+							/>
 							<RecipeCardList recipes={suggestedRecipes} />
 						</>
 					)}

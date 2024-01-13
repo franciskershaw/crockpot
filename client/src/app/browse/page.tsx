@@ -1,18 +1,21 @@
 'use client';
 
+import { Category, Ingredient, Recipe } from '@/src/types/types';
+
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import useUser from '@/src/hooks/auth/useUser';
+
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from './context/BrowsePageContext';
 
-import RecipeCardList from '../../components/RecipeCardList/RecipeCardList';
+import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
+import EmptyState from '@/src/components/EmptyState/EmptyState';
+
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
-
-import { Category, Ingredient, Recipe } from '@/src/types/types';
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
@@ -72,15 +75,10 @@ const BrowsePage = () => {
 				{filteredRecipes.length !== 0 ? (
 					<RecipeCardList recipes={filteredRecipes} fullWidth />
 				) : (
-					<>
-						<div className="text-center mb-4">
-							<h2 className="mb-2">No results?</h2>
-							<p className="h3 !leading-5">
-								Try removing some of your filters or searching for something
-								else.
-							</p>
-						</div>
-					</>
+					<EmptyState
+						title="No results?"
+						description="Try removing some of your filters or searching for something else."
+					/>
 				)}
 			</div>
 		</div>
