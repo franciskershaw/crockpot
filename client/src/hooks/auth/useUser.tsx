@@ -9,7 +9,7 @@ const useUser = () => {
 
 	const getUser = async () => {
 		const response = await api.get('/api/users/refreshToken');
-		if (response.status === 200) {
+		if (response && response.status === 200) {
 			const user = await api.get('/api/users', {
 				headers: {
 					Authorization: `Bearer ${response.data.accessToken}`,
@@ -17,7 +17,7 @@ const useUser = () => {
 				},
 			});
 			return user.data;
-		}
+		} else return null;
 	};
 
 	const { data: user, isFetching: fetchingUser } = useQuery(
