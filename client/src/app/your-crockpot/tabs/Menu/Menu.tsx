@@ -31,14 +31,14 @@ const Menu = () => {
 				</div>
 				<div className="lg:hidden">
 					{recipeMenuRecipes.length !== 0 ? (
-						<RecipeCardList recipes={recipeMenuRecipes} fullWidth />
+						<RecipeCardList recipes={recipeMenuRecipes} />
 					) : (
 						<>
 							<EmptyState
 								title="Nothing on the menu yet?"
 								description="How about some of these? Click the shopping cart button to add them to Your Crockpot."
 							/>
-							<RecipeCardList recipes={suggestedRecipes} fullWidth />
+							<RecipeCardList recipes={suggestedRecipes} />
 						</>
 					)}
 				</div>

@@ -1,20 +1,12 @@
-// React Component, React-related libraries, Context Imports
-// Next.js modules
-// Hooks
-// Shared Components
-// Type Imports
-// Styles
-
 import React from 'react';
-
-import NavbarTop from '../components/Navbar/NavbarTop/NavbarTop';
-import NavbarBottom from '../components/Navbar/NavbarBottom/NavbarBottom';
-import ButtonAddRecipe from '../components/ButtonAddRecipe/ButtonAddRecipe';
-import Providers from '../providers/Providers';
 
 import type { Metadata } from 'next';
 
-import '../styles/globals.scss';
+import ButtonAddRecipe from '@/src/components/ButtonAddRecipe/ButtonAddRecipe';
+import NavbarBottom from '@/src/components/Navbar/NavbarBottom/NavbarBottom';
+import NavbarTop from '@/src/components/Navbar/NavbarTop/NavbarTop';
+import Providers from '@/src/providers/Providers';
+import '@/src/styles/globals.scss';
 
 export const metadata: Metadata = {
 	title: 'Crockpot',

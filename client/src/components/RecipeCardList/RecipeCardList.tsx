@@ -13,16 +13,11 @@ import './styles.scss';
 
 type RecipeCardListProps = {
 	recipes: Recipe[];
-	fullWidth?: boolean;
 };
 
-function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
+function RecipeCardList({ recipes }: RecipeCardListProps) {
 	return (
-		<div
-			className={`recipe-card-list ${
-				fullWidth ? 'recipe-card-list--full-width' : ''
-			}`}
-		>
+		<div className="recipe-card-list">
 			{recipes.map((recipe) => (
 				<Modal
 					key={uuidv4()}

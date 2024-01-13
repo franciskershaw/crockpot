@@ -14,7 +14,7 @@ const MyRecipes = () => {
 	return (
 		<div className="pt-4 px-4">
 			{myRecipes ? (
-				<RecipeCardList recipes={myRecipes} fullWidth />
+				<RecipeCardList recipes={myRecipes} />
 			) : (
 				<EmptyState
 					title="No recipes yet?"

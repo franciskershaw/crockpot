@@ -1,21 +1,19 @@
 'use client';
 
-import { Category, Ingredient, Recipe } from '@/src/types/types';
-
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import EmptyState from '@/src/components/EmptyState/EmptyState';
+import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 import useUser from '@/src/hooks/auth/useUser';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
+import { Category, Ingredient, Recipe } from '@/src/types/types';
 
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from './context/BrowsePageContext';
 
-import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
-import EmptyState from '@/src/components/EmptyState/EmptyState';
-
+import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
-import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
 
 const BrowsePage = () => {
 	const { allRecipes } = useRecipes();
@@ -73,7 +71,7 @@ const BrowsePage = () => {
 					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
 				</div>
 				{filteredRecipes.length !== 0 ? (
-					<RecipeCardList recipes={filteredRecipes} fullWidth />
+					<RecipeCardList recipes={filteredRecipes} />
 				) : (
 					<EmptyState
 						title="No results?"

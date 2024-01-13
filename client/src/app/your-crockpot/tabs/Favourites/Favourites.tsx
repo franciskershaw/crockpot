@@ -12,14 +12,14 @@ const Favourites = () => {
 	return (
 		<div className="pt-4 px-4">
 			{favouriteRecipes.length !== 0 ? (
-				<RecipeCardList recipes={favouriteRecipes} fullWidth />
+				<RecipeCardList recipes={favouriteRecipes} />
 			) : (
 				<>
 					<EmptyState
 						title="No favourites yet?"
 						description="How about some of these? Click the heart button to add them to Your Crockpot."
 					/>
-					<RecipeCardList recipes={suggestedRecipes} fullWidth />
+					<RecipeCardList recipes={suggestedRecipes} />
 				</>
 			)}
 		</div>
