@@ -3,6 +3,7 @@ import useAxios from '../axios/useAxios';
 import useUser from '../auth/useUser';
 import { createConfig } from '@/src/helper';
 import { queryKeys } from '@/src/providers/Providers';
+import { User, Recipe } from '@/src/types/types';
 
 type FavouriteVariables = {
 	_id: string;
@@ -33,25 +34,42 @@ const useFavourites = () => {
 
 	// useMutation hook
 	const toggleFavouriteReq = async ({ _id }: FavouriteVariables) => {
-		if (!user) {
-			throw new Error('User is not authenticated');
+		if (user) {
+			const config = createConfig(user);
+			const response = await api.put(
+				`/api/users/favourites`,
+				{
+					_id,
+				},
+				config,
+			);
+			if (response) return response?.data;
 		}
-		const config = createConfig(user);
-		await api.put(
-			`/api/users/favourites`,
-			{
-				_id,
-			},
-			config,
-		);
+		return null;
 	};
 
 	const { mutate: toggleFavourite } = useMutation(
 		(variables: FavouriteVariables) => toggleFavouriteReq(variables),
 		{
-			onSuccess: () => {
-				queryClient.invalidateQueries([queryKeys.user]);
-				queryClient.invalidateQueries([queryKeys.favouriteRecipes]);
+			onSuccess: async (data, changed) => {
+				queryClient.setQueryData(
+					[queryKeys.user],
+					(oldUserData: User | undefined) => {
+						if (!oldUserData) {
+							return undefined;
+						}
+						const newUserData = { ...oldUserData };
+						newUserData.favouriteRecipes = data;
+						return newUserData;
+					},
+				);
+				queryClient.setQueryData(
+					[queryKeys.favouriteRecipes],
+					(oldFavourites: Recipe[] | undefined) => {
+						if (!oldFavourites) return undefined;
+						return data;
+					},
+				);
 			},
 			onError: (error) => {
 				console.error('Error toggling recipe favourite status:', error);

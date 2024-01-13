@@ -33,6 +33,10 @@ const useUser = () => {
 		try {
 			const response = await api.post('/api/users/logout');
 			queryClient.setQueryData([queryKeys.user], null);
+			queryClient.removeQueries([queryKeys.recipeMenu]);
+			queryClient.removeQueries([queryKeys.shoppingList]);
+			queryClient.removeQueries([queryKeys.extraItems]);
+			queryClient.removeQueries([queryKeys.favouriteRecipes]);
 			return response.data;
 		} catch (error) {
 			console.log(error);

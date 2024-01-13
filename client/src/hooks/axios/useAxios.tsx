@@ -37,6 +37,10 @@ const useAxios = () => {
 					return api(originalRequest);
 				} catch (error) {
 					queryClient.setQueryData([queryKeys.user], null);
+					queryClient.removeQueries([queryKeys.favouriteRecipes]);
+					queryClient.removeQueries([queryKeys.shoppingList]);
+					queryClient.removeQueries([queryKeys.extraItems]);
+					queryClient.removeQueries([queryKeys.recipeMenu]);
 					router.push('/login');
 				}
 			}

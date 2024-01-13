@@ -3,7 +3,8 @@ import { User, ShoppingListItem } from '@/src/types/types';
 export const createConfig = (user: User) => {
 	return {
 		headers: {
-			Authorization: `Bearer ${user?.accessToken}`,
+			Authorization: `Bearer ${user.accessToken}`,
+			'Content-Type': 'application/json',
 		},
 	};
 };
