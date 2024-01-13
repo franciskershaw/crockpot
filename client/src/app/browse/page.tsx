@@ -1,19 +1,20 @@
 'use client';
 
-import EmptyState from '@/src/components/EmptyState/EmptyState';
-import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
-import useUser from '@/src/hooks/auth/useUser';
-import useRecipes from '@/src/hooks/recipes/useRecipes';
-import { Category, Ingredient, Recipe } from '@/src/types/types';
-
+import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
+import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
+import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from './context/BrowsePageContext';
 
-import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
-import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
-import BrowsePageSearchBar from './components/BrowsePageSearchBar';
+import { Category, Ingredient, Recipe } from '@/src/types/types';
+
+import useUser from '@/src/hooks/auth/useUser';
+import useRecipes from '@/src/hooks/recipes/useRecipes';
+
+import EmptyState from '@/src/components/EmptyState/EmptyState';
+import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 
 const BrowsePage = () => {
 	const { shuffledRecipes: allRecipes } = useRecipes();

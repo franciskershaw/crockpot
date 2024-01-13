@@ -2,19 +2,22 @@
 
 import React from 'react';
 
-import Slider from '@/src/components/Slider/Slider';
-import Switch from '@/src/components/Switch/Switch';
+import { Recipe } from '@/src/types/types';
+
 import useUser from '@/src/hooks/auth/useUser';
 import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 
-import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
-
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
+
+import Slider from '@/src/components/Slider/Slider';
+import Switch from '@/src/components/Switch/Switch';
+
+import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 
 function BrowsePageFiltersMenu() {
 	const {
@@ -34,7 +37,7 @@ function BrowsePageFiltersMenu() {
 	const { user } = useUser();
 
 	const myRecipes = user
-		? allRecipes.filter((recipe) => recipe.createdBy === user._id)
+		? allRecipes.filter((recipe: Recipe) => recipe.createdBy === user._id)
 		: null;
 
 	const handleCategoryCheckboxChange = (
