@@ -1,5 +1,5 @@
 .recipe-card-list {
-	@apply grid gap-4;
+	@apply grid gap-5;
 
 	// XS screen, 1 column
 	grid-template-columns: repeat(2, 1fr);
@@ -85,6 +85,8 @@
 }
 
 .recipe-card-list--full-width {
+	@apply grid gap-5 max-w-7xl mx-auto;
+
 	// XS screen, 2 columns
 	grid-template-columns: repeat(4, 1fr);
 

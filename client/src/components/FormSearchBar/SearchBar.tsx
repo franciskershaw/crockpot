@@ -19,7 +19,7 @@ const SearchBar = ({
 	};
 
 	return (
-		<div className="relative w-full">
+		<div className="relative">
 			{label ? (
 				<label className="mr-2 text-xs" htmlFor="">
 					{label}

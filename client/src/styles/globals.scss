@@ -28,9 +28,9 @@ body {
 	display: none;
 }
 
-// Layout
+// Containers
 .container {
-	@apply mx-auto px-4 max-w-7xl bg-blue-light;
+	@apply mx-auto px-4 max-w-7xl xl:px-0;
 
 	&--sm {
 		@apply max-w-2xl;
@@ -46,18 +46,6 @@ body {
 
 	&--full {
 		@apply w-full max-w-full;
-	}
-
-	&--1-2 {
-		@apply flex flex-col md:flex-row;
-
-		> :nth-child(1) {
-			flex: 1; /* First child takes 1/3 of the space */
-		}
-
-		> :nth-child(2) {
-			flex: 2; /* Second child takes 2/3 of the space */
-		}
 	}
 }
 

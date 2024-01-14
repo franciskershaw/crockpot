@@ -1,4 +1,3 @@
-import EmptyState from '@/src/components/EmptyState/EmptyState';
 import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import useFavourites from '@/src/hooks/users/useFavourites';
@@ -12,14 +11,17 @@ const Favourites = () => {
 	return (
 		<div className="pt-4 px-4">
 			{favouriteRecipes.length !== 0 ? (
-				<RecipeCardList recipes={favouriteRecipes} />
+				<RecipeCardList recipes={favouriteRecipes} fullWidth />
 			) : (
 				<>
-					<EmptyState
-						title="No favourites yet?"
-						description="How about some of these? Click the heart button to add them to Your Crockpot."
-					/>
-					<RecipeCardList recipes={suggestedRecipes} />
+					<div className="text-center mb-4">
+						<h2 className="mb-2">No favourites yet?</h2>
+						<p className="h3 !leading-5">
+							How about some of these? Click the heart button to add them to
+							Your Crockpot.
+						</p>
+					</div>
+					<RecipeCardList recipes={suggestedRecipes} fullWidth />
 				</>
 			)}
 		</div>

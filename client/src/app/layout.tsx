@@ -1,12 +1,9 @@
-import React from 'react';
-
+import '../styles/globals.scss';
 import type { Metadata } from 'next';
-
-import ButtonAddRecipe from '@/src/components/ButtonAddRecipe/ButtonAddRecipe';
-import NavbarBottom from '@/src/components/Navbar/NavbarBottom/NavbarBottom';
-import NavbarTop from '@/src/components/Navbar/NavbarTop/NavbarTop';
-import Providers from '@/src/providers/Providers';
-import '@/src/styles/globals.scss';
+import NavbarTop from '../components/Navbar/NavbarTop/NavbarTop';
+import NavbarBottom from '../components/Navbar/NavbarBottom/NavbarBottom';
+import ButtonAddRecipe from '../components/ButtonAddRecipe/ButtonAddRecipe';
+import Providers from '../providers/Providers';
 
 export const metadata: Metadata = {
 	title: 'Crockpot',
@@ -19,13 +16,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
+		<html lang='en'>
 			<body>
 				<Providers>
-					{/* <NavbarTop /> */}
-					<main className="">{children}</main>
-					{/* <ButtonAddRecipe /> */}
-					{/* <NavbarBottom /> */}
+					<NavbarTop />
+					<main className='mt-[73px] mb-24 md:mt-28 md:mb-8'>{children}</main>
+					<ButtonAddRecipe />
+					<NavbarBottom />
 				</Providers>
 			</body>
 		</html>
