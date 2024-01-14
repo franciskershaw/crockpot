@@ -26,7 +26,7 @@ const useAddItem = () => {
 	};
 
 	const { mutate } = useMutation((itemData: itemData) => addItem(itemData), {
-		onSuccess: async (data) => {
+		onSuccess: async () => {
 			await queryClient.invalidateQueries([queryKeys.items], {});
 		},
 		onError: (data) => {
@@ -61,7 +61,7 @@ const useEditItem = () => {
 	};
 
 	const { mutate } = useMutation(editItem, {
-		onSuccess: async (data) => {
+		onSuccess: async () => {
 			await queryClient.invalidateQueries([queryKeys.items]);
 		},
 		onError: (error) => {
@@ -90,7 +90,7 @@ const useDeleteItem = () => {
 	};
 
 	const { mutate } = useMutation(deleteItem, {
-		onSuccess: async (data) => {
+		onSuccess: async () => {
 			await queryClient.invalidateQueries([queryKeys.items]);
 		},
 		onError: (error) => {

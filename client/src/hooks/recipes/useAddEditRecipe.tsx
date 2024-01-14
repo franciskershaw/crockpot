@@ -22,7 +22,7 @@ const useAddRecipe = () => {
 	};
 
 	const { mutate } = useMutation((formData: FormData) => addRecipe(formData), {
-		onSuccess: async (data) => {
+		onSuccess: async () => {
 			await queryClient.invalidateQueries([queryKeys.recipes], {});
 		},
 		onError: (data) => {
@@ -58,7 +58,7 @@ const useEditRecipe = () => {
 	};
 
 	const { mutate } = useMutation(editRecipe, {
-		onSuccess: async (data) => {
+		onSuccess: async () => {
 			await queryClient.invalidateQueries([queryKeys.recipes]);
 		},
 		onError: (error) => {
@@ -88,7 +88,7 @@ const useDeleteRecipe = () => {
 	};
 
 	const { mutate } = useMutation(deleteRecipe, {
-		onSuccess: async (data) => {
+		onSuccess: async () => {
 			await queryClient.invalidateQueries([queryKeys.recipes]);
 		},
 		onError: (error) => {

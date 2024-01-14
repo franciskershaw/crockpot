@@ -51,7 +51,7 @@ const useFavourites = () => {
 	const { mutate: toggleFavourite } = useMutation(
 		(variables: FavouriteVariables) => toggleFavouriteReq(variables),
 		{
-			onSuccess: async (data) => {
+			onSuccess: (data) => {
 				queryClient.setQueryData(
 					[queryKeys.user],
 					(oldUserData: User | undefined) => {
