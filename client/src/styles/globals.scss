@@ -30,7 +30,7 @@ body {
 
 // Layout
 .container {
-	@apply mx-auto px-4 max-w-7xl bg-blue-light;
+	@apply mx-auto px-4 max-w-7xl;
 
 	&--sm {
 		@apply max-w-2xl;
