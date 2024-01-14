@@ -4,6 +4,7 @@ import { queryKeys } from '@/src/providers/Providers';
 import useUser from '@/src/hooks/auth/useUser';
 import { useState } from 'react';
 import { createConfig } from '@/src/helper';
+import { MenuRecipe, RecipeMenuData, User } from '@/src/types/types';
 
 type RecipeMenuVariables = {
 	recipeId?: string;
@@ -48,11 +49,27 @@ const useRecipeMenu = () => {
 	const { mutate: updateRecipeMenu } = useMutation(
 		(variables: RecipeMenuVariables) => updateRecipeMenuReq(variables),
 		{
-			onSuccess: (data, changed) => {
-				// manually update user to have new recipeMenu as array
-				queryClient.invalidateQueries([queryKeys.user]);
-				queryClient.invalidateQueries([queryKeys.recipeMenu]);
-				// keep these two last ones as is I think?
+			onSuccess: (data) => {
+				queryClient.setQueryData(
+					[queryKeys.user],
+					(oldUserData: User | undefined) => {
+						if (!oldUserData) return undefined;
+						const newUserData = { ...oldUserData };
+						newUserData.recipeMenu = data.map((recipe: MenuRecipe) => ({
+							_id: recipe.recipe._id,
+							serves: recipe.serves,
+						}));
+						return newUserData;
+					},
+				);
+
+				queryClient.setQueryData(
+					[queryKeys.recipeMenu],
+					(prevRecipeMenu: RecipeMenuData[] | undefined) => {
+						if (!prevRecipeMenu) return [];
+						return data;
+					},
+				);
 				queryClient.refetchQueries([queryKeys.shoppingList]);
 				queryClient.refetchQueries([queryKeys.extraItems]);
 			},

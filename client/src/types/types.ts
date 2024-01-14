@@ -6,9 +6,15 @@ export interface User {
 	isAdmin: false;
 	favouriteRecipes: [];
 	shoppingList: ShoppingItem[];
+	recipeMenu: RecipeMenuData[];
 	regularItems: [];
 	extraItems: ShoppingListItem[];
 	accessToken: string;
+}
+
+export interface RecipeMenuData {
+	_id: string;
+	serves: number;
 }
 
 export interface Item {

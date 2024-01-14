@@ -83,9 +83,7 @@ const useShoppingList = () => {
 	const { mutate: toggleObtained } = useMutation(
 		(variables: ToggleVariables) => toggleItemObtainedReq(variables),
 		{
-			onSuccess: (data, changed) => {
-				console.log(data);
-				console.log(changed);
+			onSuccess: (data) => {
 				queryClient.setQueryData(
 					[queryKeys.user],
 					(oldUserData: User | undefined) => {

@@ -76,7 +76,7 @@ const formatItemList = async (userId, type) => {
 
 const generateAccessToken = (id) => {
 	return jwt.sign({ _id: id }, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: '15m',
+		expiresIn: '45m',
 	});
 };
 
