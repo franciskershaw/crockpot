@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import ButtonCart from '../ButtonCart/ButtonCart';
-import Tabs from '../Tabs/Tabs';
-import { Recipe } from '@/src/types/types';
-import useUser from '@/src/hooks/auth/useUser';
-import Button from '../Button/Button';
-import { RiEdit2Line, RiDeleteBinLine } from 'react-icons/ri';
-import Modal from '../Modal/Modal';
+import React, { useEffect, useState } from 'react';
+import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
+
 import AddRecipe from '../AddRecipe/AddRecipe';
+import Button from '../Button/Button';
+import ButtonCart from '../ButtonCart/ButtonCart';
+import Modal from '../Modal/Modal';
+import QuantityInput from '../QuantityInput/QuantityInput';
+import Tabs from '../Tabs/Tabs';
+
+import { Recipe } from '@/src/types/types';
+
+import useUser from '@/src/hooks/auth/useUser';
 import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
 
 type RecipeCardModalProps = {
@@ -130,12 +134,19 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 						<h2>{recipe.name}</h2>
 						<h3>Created by {recipe.createdBy?.username}</h3>
 					</div>
-					{user && (
+					{user ? (
 						<ButtonCart
 							recipe={recipe}
 							initialValue={quantity}
 							onChange={setQuantity}
 							isMenu={isMenu}
+						/>
+					) : (
+						<QuantityInput
+							min={1}
+							max={16}
+							value={quantity}
+							setValue={setQuantity}
 						/>
 					)}
 				</div>
