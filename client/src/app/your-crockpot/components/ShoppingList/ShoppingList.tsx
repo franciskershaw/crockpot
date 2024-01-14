@@ -143,7 +143,7 @@ const ShoppingList = () => {
 					/>
 				</div>
 
-				{(recipeMenu.length || extraItems.length) && (
+				{recipeMenu.length || extraItems.length ? (
 					<div className='hidden md:flex justify-center md:space-y-2 lg:space-y-0 lg:space-x-2 w-full md:flex-col lg:flex-row'>
 						{extraItems.length ? (
 							<Button
@@ -162,7 +162,7 @@ const ShoppingList = () => {
 							/>
 						) : null}
 					</div>
-				)}
+				) : null}
 			</div>
 			{/* Shopping list */}
 			<Accordion items={accordionItems} />
