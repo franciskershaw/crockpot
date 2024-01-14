@@ -1,9 +1,11 @@
 import React from 'react';
+
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../../context/BrowsePageContext';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
+
 import './styles.scss';
 
 type AppliedFiltersProps = {
@@ -87,12 +89,12 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 		selectedIngredients.length > 0;
 
 	return (
-		<div>
-			<h2 className="font-bold mb-2">
+		<div className="px-2 pb-2">
+			<h3 className="font-bold">
 				{recipeNum} {recipeNum === 1 ? 'recipe' : 'recipes'} found:
-			</h2>
+			</h3>
 			{isFilters && (
-				<div className="flex overflow-x-auto whitespace-nowrap bg-black/10 py-1 pl-2 mb-2 rounded">
+				<div className="flex overflow-x-auto whitespace-nowrap bg-black/10 mt-1 py-1 pl-2 rounded">
 					{recipeSearchQuery && (
 						<div
 							className="filter-tag"

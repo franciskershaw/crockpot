@@ -1,9 +1,10 @@
-import Button from '@/src/components/Button/Button';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Modal from '@/src/components/Modal/Modal';
 import React from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
+
+import Button from '@/src/components/Button/Button';
+import SearchBar from '@/src/components/FormSearchBar/SearchBar';
+import Modal from '@/src/components/Modal/Modal';
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
 import { useBrowsePageContext } from '../context/BrowsePageContext';
 
@@ -12,13 +13,11 @@ function BrowsePageSearchBar() {
 		useBrowsePageContext();
 
 	return (
-		<>
-			<div className="w-full">
-				<SearchBar
-					searchQuery={recipeSearchQuery}
-					setSearchQuery={setRecipeSearchQuery}
-				/>
-			</div>
+		<div className="flex space-x-2 p-2">
+			<SearchBar
+				searchQuery={recipeSearchQuery}
+				setSearchQuery={setRecipeSearchQuery}
+			/>
 			<div className="md:hidden">
 				<Modal
 					title="Recipe Filters"
@@ -44,7 +43,7 @@ function BrowsePageSearchBar() {
 					border
 				/>
 			</div>
-		</>
+		</div>
 	);
 }
 
