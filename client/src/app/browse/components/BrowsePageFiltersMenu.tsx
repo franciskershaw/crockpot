@@ -1,17 +1,20 @@
 'use client';
 
 import React from 'react';
-import Switch from '@/src/components/Switch/Switch';
+
 import Slider from '@/src/components/Slider/Slider';
-import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
+import Switch from '@/src/components/Switch/Switch';
+import useUser from '@/src/hooks/auth/useUser';
 import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
+
+import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
+
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
-import useUser from '@/src/hooks/auth/useUser';
 
 function BrowsePageFiltersMenu() {
 	const {
@@ -74,7 +77,7 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className="space-y-3">
+		<div className="space-y-3 px-2 py-3">
 			{user && (
 				<>
 					<Switch
