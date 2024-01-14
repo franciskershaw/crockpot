@@ -8,6 +8,8 @@ import {
 	ItemCategory,
 	ShoppingListItem,
 	GroupedShoppingList,
+	User,
+	ShoppingItem,
 } from '@/src/types/types';
 import useExtraItems from './useExtraItems';
 import { useMemo } from 'react';
@@ -40,21 +42,35 @@ const useShoppingList = () => {
 	}: ToggleVariables) => {
 		const config = createConfig(user);
 		if (isExtra) {
-			await api.put(`/api/users/extraitems/${itemId}`, { obtained }, config);
+			let extra;
+			let shopping;
+			extra = await api.put(
+				`/api/users/extraitems/${itemId}`,
+				{ obtained },
+				config,
+			);
 
 			const alsoInShoppingList = shoppingList?.find(
 				(item: ShoppingListItem) => item.item._id === itemId,
 			);
 			if (alsoInShoppingList) {
-				await api.put(
+				shopping = await api.put(
 					`/api/users/shoppingList/${itemId}`,
 					{ obtained },
 					config,
 				);
+				return { extra: extra.data, shopping: shopping.data };
 			}
+			if (extra) return { extra: extra.data };
 		} else {
-			await api.put(`/api/users/shoppingList/${itemId}`, { obtained }, config);
+			const response = await api.put(
+				`/api/users/shoppingList/${itemId}`,
+				{ obtained },
+				config,
+			);
+			return { shopping: response.data };
 		}
+		return null;
 	};
 
 	// useQuery hooks
@@ -67,10 +83,55 @@ const useShoppingList = () => {
 	const { mutate: toggleObtained } = useMutation(
 		(variables: ToggleVariables) => toggleItemObtainedReq(variables),
 		{
-			onSuccess: () => {
-				queryClient.invalidateQueries([queryKeys.user]);
-				queryClient.invalidateQueries([queryKeys.shoppingList]);
-				queryClient.invalidateQueries([queryKeys.extraItems]);
+			onSuccess: (data, changed) => {
+				console.log(data);
+				console.log(changed);
+				queryClient.setQueryData(
+					[queryKeys.user],
+					(oldUserData: User | undefined) => {
+						if (!oldUserData) return undefined;
+						const newUserData = { ...oldUserData };
+						if (data?.extra) {
+							newUserData.extraItems = data.extra.map(
+								(item: ShoppingListItem) => ({
+									_id: item.item._id,
+									quantity: item.quantity,
+									unit: item.unit,
+									obtained: item.obtained,
+								}),
+							);
+						}
+						if (data?.shopping) {
+							newUserData.shoppingList = data.shopping.map(
+								(item: ShoppingListItem) => ({
+									_id: item.item._id,
+									quantity: item.quantity,
+									unit: item.unit,
+									obtained: item.obtained,
+								}),
+							);
+						}
+						return newUserData;
+					},
+				);
+				if (data?.extra) {
+					queryClient.setQueryData(
+						[queryKeys.extraItems],
+						(oldExtraItems: ShoppingListItem[] | undefined) => {
+							if (!oldExtraItems) return [];
+							return data.extra;
+						},
+					);
+				}
+				if (data?.shopping) {
+					queryClient.setQueryData(
+						[queryKeys.shoppingList],
+						(oldShoppingItems: ShoppingListItem[] | undefined) => {
+							if (!oldShoppingItems) return [];
+							return data.shopping;
+						},
+					);
+				}
 			},
 			onError: (error) => {
 				console.error('Error toggling item obtained status:', error);

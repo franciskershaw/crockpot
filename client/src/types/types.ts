@@ -5,9 +5,9 @@ export interface User {
 	username: string;
 	isAdmin: false;
 	favouriteRecipes: [];
-	shoppingList: [];
+	shoppingList: ShoppingItem[];
 	regularItems: [];
-	extraItems: [];
+	extraItems: ShoppingListItem[];
 	accessToken: string;
 }
 
