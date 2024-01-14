@@ -1,7 +1,8 @@
-import EmptyState from '@/src/components/EmptyState/EmptyState';
-import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 import useFavourites from '@/src/hooks/users/useFavourites';
+
+import EmptyState from '@/src/components/EmptyState/EmptyState';
+import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 
 const Favourites = () => {
 	const { allRecipes } = useRecipes();

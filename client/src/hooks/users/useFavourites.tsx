@@ -1,9 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import useAxios from '../axios/useAxios';
-import useUser from '../auth/useUser';
 import { createConfig } from '@/src/helper';
 import { queryKeys } from '@/src/providers/Providers';
-import { User, Recipe } from '@/src/types/types';
+
+import useUser from '../auth/useUser';
+import useAxios from '../axios/useAxios';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { Recipe, User } from '@/src/types/types';
 
 type FavouriteVariables = {
 	_id: string;

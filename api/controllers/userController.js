@@ -383,7 +383,12 @@ const getUserFavourites = async (req, res, next) => {
 		const { favouriteRecipes } = req.user;
 		const favourites = await Recipe.find({ _id: { $in: favouriteRecipes } })
 			.populate('createdBy', 'username')
-			.populate('categories');
+			.populate('categories')
+			.populate({
+				path: 'ingredients._id',
+				model: 'Item',
+				select: 'name',
+			});
 
 		res.status(200).json(favourites);
 	} catch (err) {

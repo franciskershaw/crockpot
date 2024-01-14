@@ -1,7 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import useAxios from '../axios/useAxios';
 import { queryKeys } from '@/src/providers/Providers';
+
 import { useEffect, useState } from 'react';
+
+import useAxios from '../axios/useAxios';
+import { useQuery } from '@tanstack/react-query';
+
 import { Recipe } from '@/src/types/types';
 
 const useRecipes = () => {
