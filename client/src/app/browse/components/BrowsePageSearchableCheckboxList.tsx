@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Checkbox from '@/src/components/Checkbox/Checkbox';
+
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
+
+import Checkbox from '@/src/components/Checkbox/Checkbox';
+import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 
 type BrowsePageSearchableCheckboxListProps = {
 	title: string;

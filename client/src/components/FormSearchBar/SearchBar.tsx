@@ -1,5 +1,6 @@
 import { AiOutlineSearch } from 'react-icons/ai';
-import Icon from '../Icon/Icon';
+
+import Icon from '@/src/components/Icon/Icon';
 
 type SearchBarProps = {
 	label?: string;
