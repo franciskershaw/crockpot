@@ -3,6 +3,7 @@ import useAxios from '@/src/hooks/axios/useAxios';
 import { queryKeys } from '@/src/providers/Providers';
 import useUser from '@/src/hooks/auth/useUser';
 import { createConfig } from '@/src/helper';
+import { User, ShoppingListItem } from '@/src/types/types';
 
 type UpdateExtraItemsBody = {
 	quantity?: number;
@@ -57,9 +58,29 @@ const useExtraItems = () => {
 	const { mutate: updateExtraItems } = useMutation(
 		(variables: UpdateExtraItemsVariables) => updateExtraItemsReq(variables),
 		{
-			onSuccess: () => {
-				queryClient.invalidateQueries([queryKeys.user]);
-				queryClient.invalidateQueries([queryKeys.extraItems]);
+			onSuccess: (data) => {
+				queryClient.setQueryData(
+					[queryKeys.user],
+					(oldUserData: User | undefined) => {
+						if (!oldUserData) return undefined;
+						const newUserData = { ...oldUserData };
+						newUserData.extraItems = data.map((item: ShoppingListItem) => ({
+							_id: item.item._id,
+							quantity: item.quantity,
+							unit: item.unit,
+							obtained: item.obtained,
+						}));
+						return newUserData;
+					},
+				);
+
+				queryClient.setQueryData(
+					[queryKeys.extraItems],
+					(oldExtraItems: ShoppingListItem[] | undefined) => {
+						if (!oldExtraItems) return [];
+						return data;
+					},
+				);
 			},
 			onError: (error) => {
 				console.error('Error updating extra items:', error);
@@ -69,8 +90,23 @@ const useExtraItems = () => {
 
 	const { mutate: clearExtraItems } = useMutation(clearExtraItemsReq, {
 		onSuccess: () => {
-			queryClient.invalidateQueries([queryKeys.user]);
-			queryClient.invalidateQueries([queryKeys.extraItems]);
+			queryClient.setQueryData(
+				[queryKeys.user],
+				(oldUserData: User | undefined) => {
+					if (!oldUserData) return undefined;
+					const newUserData = { ...oldUserData };
+					newUserData.extraItems = [];
+					return newUserData;
+				},
+			);
+
+			queryClient.setQueryData(
+				[queryKeys.extraItems],
+				(oldExtraItems: ShoppingListItem[] | undefined) => {
+					if (!oldExtraItems) return [];
+					return [];
+				},
+			);
 		},
 		onError: (error) => {
 			console.error('Error updating extra items:', error);
