@@ -59,7 +59,9 @@ const useFavourites = () => {
 							return undefined;
 						}
 						const newUserData = { ...oldUserData };
-						newUserData.favouriteRecipes = data;
+						newUserData.favouriteRecipes = data.map(
+							(recipe: Recipe) => recipe._id,
+						);
 						return newUserData;
 					},
 				);
