@@ -164,7 +164,6 @@ const addToRecipeMenu = async (req, res, next) => {
 		const value = validateRequest(req.body, userRecipeMenuSchema);
 
 		const { _id: recipeId, serves } = value;
-
 		const user = req.user;
 
 		const existingRecipe = user.recipeMenu.find((recipe) =>
@@ -188,7 +187,29 @@ const addToRecipeMenu = async (req, res, next) => {
 		user.shoppingList = newShoppingList;
 		await user.save();
 
-		res.status(200).json(user.recipeMenu);
+		const updatedMenu = await Recipe.find({
+			_id: { $in: user.recipeMenu.map((item) => item._id) },
+		})
+			.populate({
+				path: 'ingredients._id',
+				model: 'Item',
+				select: 'name',
+			})
+			.populate({
+				path: 'createdBy',
+				model: 'User',
+				select: 'username',
+			})
+			.populate('categories');
+
+		const menu = updatedMenu.map((recipe) => {
+			const { serves } = user.recipeMenu.find((item) =>
+				item._id.equals(recipe._id),
+			);
+			return { recipe, serves };
+		});
+
+		res.status(200).json(menu);
 	} catch (err) {
 		next(err);
 	}
@@ -199,7 +220,6 @@ const removeFromRecipeMenu = async (req, res, next) => {
 		const value = validateRequest(req.body, userRecipeMenuSchema);
 
 		const { _id: recipeId, serves } = value;
-
 		const user = req.user;
 		const existingRecipe = user.recipeMenu.find((recipe) =>
 			recipe._id.equals(recipeId),
@@ -219,14 +239,6 @@ const removeFromRecipeMenu = async (req, res, next) => {
 			user.recipeMenu = user.recipeMenu.filter(
 				(recipe) => !recipe._id.equals(recipeId),
 			);
-
-			const fullRecipe = await Recipe.findById(recipeId);
-
-			fullRecipe.ingredients.forEach((ingredient) => {
-				user.extraItems = user.extraItems.filter(
-					(item) => !item._id.equals(ingredient._id),
-				);
-			});
 		} else {
 			existingRecipe.serves = serves;
 		}
@@ -235,7 +247,29 @@ const removeFromRecipeMenu = async (req, res, next) => {
 		user.shoppingList = newShoppingList;
 		await user.save();
 
-		res.status(200).json(user.recipeMenu);
+		const updatedMenu = await Recipe.find({
+			_id: { $in: user.recipeMenu.map((item) => item._id) },
+		})
+			.populate({
+				path: 'ingredients._id',
+				model: 'Item',
+				select: 'name',
+			})
+			.populate({
+				path: 'createdBy',
+				model: 'User',
+				select: 'username',
+			})
+			.populate('categories');
+
+		const menu = updatedMenu.map((recipe) => {
+			const { serves } = user.recipeMenu.find((item) =>
+				item._id.equals(recipe._id),
+			);
+			return { recipe, serves };
+		});
+
+		res.status(200).json(menu);
 	} catch (err) {
 		next(err);
 	}
