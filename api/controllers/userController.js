@@ -372,7 +372,13 @@ const editUserFavourites = async (req, res, next) => {
 
 		await user.save();
 
-		res.status(200).json(user.favouriteRecipes);
+		const updatedFavourites = await Recipe.find({
+			_id: { $in: user.favouriteRecipes },
+		})
+			.populate('createdBy', 'username')
+			.populate('categories');
+
+		res.status(200).json(updatedFavourites);
 	} catch (err) {
 		next(err);
 	}

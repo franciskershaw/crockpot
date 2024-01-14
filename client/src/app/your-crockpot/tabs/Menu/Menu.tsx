@@ -4,12 +4,16 @@ import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
 import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Modal from '@/src/components/Modal/Modal';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
+import { useMemo } from 'react';
+import { MenuRecipe } from '@/src/types/types';
 
 const Menu = () => {
 	const { allRecipes } = useRecipes();
-	const { recipeMenuRecipes, recipeMenu, updateRecipeMenu } = useRecipeMenu();
+	const { recipeMenu, updateRecipeMenu } = useRecipeMenu();
 
-	const suggestedRecipes = allRecipes.slice(0, 4);
+	const suggestedRecipes = useMemo(() => {
+		return allRecipes.slice(0, 4);
+	}, [allRecipes]);
 
 	return (
 		<>
@@ -36,8 +40,11 @@ const Menu = () => {
 					</div>
 				</div>
 				<div className='lg:hidden'>
-					{recipeMenuRecipes.length !== 0 ? (
-						<RecipeCardList recipes={recipeMenuRecipes} fullWidth />
+					{recipeMenu.length !== 0 ? (
+						<RecipeCardList
+							recipes={recipeMenu.map((recipe: MenuRecipe) => recipe.recipe)}
+							fullWidth
+						/>
 					) : (
 						<>
 							<div className='text-center mb-4'>
@@ -52,8 +59,10 @@ const Menu = () => {
 					)}
 				</div>
 				<div className='hidden container lg:block lg:w-2/3 lg:pl-4'>
-					{recipeMenuRecipes.length !== 0 ? (
-						<RecipeCardList recipes={recipeMenuRecipes} />
+					{recipeMenu.length !== 0 ? (
+						<RecipeCardList
+							recipes={recipeMenu.map((recipe: MenuRecipe) => recipe.recipe)}
+						/>
 					) : (
 						<>
 							<div className='text-center mb-4'>

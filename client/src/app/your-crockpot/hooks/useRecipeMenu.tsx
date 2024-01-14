@@ -2,8 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxios from '@/src/hooks/axios/useAxios';
 import { queryKeys } from '@/src/providers/Providers';
 import useUser from '@/src/hooks/auth/useUser';
-import { useState, useEffect } from 'react';
-import { MenuRecipe } from '@/src/types/types';
+import { useState } from 'react';
 import { createConfig } from '@/src/helper';
 
 type RecipeMenuVariables = {
@@ -14,8 +13,6 @@ type RecipeMenuVariables = {
 
 const useRecipeMenu = () => {
 	const queryClient = useQueryClient();
-
-	const [recipeMenuRecipes, setRecipeMenuRecipes] = useState([]);
 
 	const api = useAxios();
 	const { user } = useUser();
@@ -34,7 +31,12 @@ const useRecipeMenu = () => {
 	}: RecipeMenuVariables) => {
 		const config = createConfig(user);
 		const body = type !== 'clear' ? { _id: recipeId, serves } : undefined;
-		await api.put(`/api/users/recipeMenu/${type}`, body, config);
+		const response = await api.put(
+			`/api/users/recipeMenu/${type}`,
+			body,
+			config,
+		);
+		return response.data;
 	};
 
 	const { data: recipeMenu = [] } = useQuery(
@@ -46,9 +48,11 @@ const useRecipeMenu = () => {
 	const { mutate: updateRecipeMenu } = useMutation(
 		(variables: RecipeMenuVariables) => updateRecipeMenuReq(variables),
 		{
-			onSuccess: () => {
+			onSuccess: (data, changed) => {
+				// manually update user to have new recipeMenu as array
 				queryClient.invalidateQueries([queryKeys.user]);
 				queryClient.invalidateQueries([queryKeys.recipeMenu]);
+				// keep these two last ones as is I think?
 				queryClient.refetchQueries([queryKeys.shoppingList]);
 				queryClient.refetchQueries([queryKeys.extraItems]);
 			},
@@ -58,17 +62,7 @@ const useRecipeMenu = () => {
 		},
 	);
 
-	useEffect(() => {
-		if (recipeMenu.length) {
-			setRecipeMenuRecipes(
-				recipeMenu.map((recipe: MenuRecipe) => recipe.recipe),
-			);
-		} else {
-			setRecipeMenuRecipes([]);
-		}
-	}, [recipeMenu]);
-
-	return { recipeMenu, recipeMenuRecipes, updateRecipeMenu };
+	return { recipeMenu, updateRecipeMenu };
 };
 
 export default useRecipeMenu;
