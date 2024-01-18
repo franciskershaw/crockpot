@@ -21,7 +21,10 @@ const useRecipes = () => {
 		return response.data;
 	};
 
-	const { data: allRecipes = [] } = useQuery([queryKeys.recipes], getRecipes);
+	const { data: allRecipes = [], isFetching } = useQuery(
+		[queryKeys.recipes],
+		getRecipes,
+	);
 
 	useEffect(() => {
 		if (allRecipes.length) {
@@ -70,7 +73,13 @@ const useRecipes = () => {
 		return combinedResults.slice(0, 5);
 	};
 
-	return { allRecipes, shuffledRecipes, cookingTimeMinMax, filterRecipes };
+	return {
+		allRecipes,
+		shuffledRecipes,
+		cookingTimeMinMax,
+		filterRecipes,
+		isFetching,
+	};
 };
 
 export default useRecipes;
