@@ -46,8 +46,6 @@ const useAxios = () => {
 					queryClient.removeQueries([queryKeys.recipeMenu]);
 					router.push('/login');
 				}
-			} else {
-				return Promise.reject(error);
 			}
 		},
 	);

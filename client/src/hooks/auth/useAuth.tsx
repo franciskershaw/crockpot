@@ -2,7 +2,6 @@ import { toast } from 'react-toastify';
 
 import useAxios from '../axios/useAxios';
 import useUser from './useUser';
-import axios from 'axios';
 
 const useAuth = () => {
 	const api = useAxios();
@@ -11,18 +10,14 @@ const useAuth = () => {
 	const login = async (credentials: { username: string; password: string }) => {
 		try {
 			const response = await api.post('/api/users/login', credentials);
-			if (response && response.data) {
+			if (response.status === 200) {
 				updateUser(response.data);
-				toast.success(`Welcome back ${credentials.username}`);
 			}
-			return response?.data;
+			toast.success(`Welcome back ${credentials.username}`);
+			return response.data;
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				const message = (error.response?.data as { message?: string })?.message;
-				toast.error(message || 'Error logging in');
-			} else {
-				toast.error('An unexpected error occurred');
-			}
+			// toast.error(error.message);
+			console.log(error);
 		}
 	};
 
@@ -30,19 +25,13 @@ const useAuth = () => {
 		try {
 			const response = await api.post('/api/users', data);
 			updateUser(response.data);
-			toast.success(`Welcome to Crockpot, ${data.username}`);
 			return response.data;
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				const message = (error.response?.data as { message?: string })?.message;
-				toast.error(message || 'Error creating an account');
-			} else {
-				toast.error('An unexpected error occurred');
-			}
+			console.log(error);
 		}
 	};
 
-	const logout = () => {
+	const logout = async () => {
 		clearUser();
 	};
 
