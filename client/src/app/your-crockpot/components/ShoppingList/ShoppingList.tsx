@@ -116,7 +116,6 @@ const ShoppingList = () => {
 												<div>
 													<label htmlFor="">Unit</label>
 													<select
-														className="border-2 rounded h-[44px] text-xl w-full py-1"
 														name=""
 														id=""
 														onChange={(e) => setExtraUnit(e.target.value)}
