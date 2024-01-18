@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
+
+import Icon from '@/src/components/Icon/Icon';
+
 import './styles.scss';
-import Icon from '../Icon/Icon';
 
 interface ButtonProps {
 	type?: 'primary' | 'secondary' | 'tertiary';
@@ -47,7 +49,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				aria-label={ariaLabel ?? text}
 				disabled={disabled}
 			>
-				{text && <span className='w-full p-1'>{text}</span>}
+				{text && <span className="w-full p-1">{text}</span>}
 				{children && <Icon size={iconXs ? 'xs' : 'md'}>{children}</Icon>}
 			</button>
 		);

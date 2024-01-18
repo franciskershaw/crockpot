@@ -80,7 +80,7 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className="space-y-3 px-2 py-3">
+		<div className="space-y-3 p-0 md:px-2 md:py-3">
 			{user && (
 				<>
 					<Switch

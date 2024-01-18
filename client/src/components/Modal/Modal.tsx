@@ -4,9 +4,9 @@ import { GrClose } from 'react-icons/gr';
 
 import * as Dialog from '@radix-ui/react-dialog';
 
-import './styles.scss';
+import Button from '@/src/components/Button/Button';
 
-import Button from '../Button/Button';
+import './styles.scss';
 
 interface ModalProps {
 	title: string | JSX.Element;

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import ButtonCart from '../ButtonCart/ButtonCart';
-import Tabs from '../Tabs/Tabs';
+import React, { useState } from 'react';
+import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
+
 import { Recipe } from '@/src/types/types';
+
 import useUser from '@/src/hooks/auth/useUser';
-import Button from '../Button/Button';
-import { RiEdit2Line, RiDeleteBinLine } from 'react-icons/ri';
-import Modal from '../Modal/Modal';
-import AddRecipe from '../AddRecipe/AddRecipe';
 import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
+
+import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
+import Button from '@/src/components/Button/Button';
+import ButtonCart from '@/src/components/ButtonCart/ButtonCart';
+import Modal from '@/src/components/Modal/Modal';
+import Tabs from '@/src/components/Tabs/Tabs';
 
 type RecipeCardModalProps = {
 	recipe: Recipe;
