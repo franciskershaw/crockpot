@@ -1,10 +1,14 @@
-import { useState, MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { RiShoppingBasketLine } from 'react-icons/ri';
-import Button from '../Button/Button';
-import './styles.scss';
-import useRecipeMenu from '@/src/app/your-crockpot/hooks/useRecipeMenu';
+
 import { Recipe } from '@/src/types/types';
+
+import useRecipeMenu from '@/src/app/your-crockpot/hooks/useRecipeMenu';
+
+import Button from '@/src/components/Button/Button';
+
+import './styles.scss';
 
 type IsMenu = {
 	_id: string;
@@ -149,8 +153,8 @@ const ButtonCart = ({
 							? 'Add to cart'
 							: 'Cancel'
 						: quantity > 0
-						? 'Update quantity'
-						: 'Remove quantity'}
+							? 'Update quantity'
+							: 'Remove quantity'}
 				</h6>
 			)}
 		</div>

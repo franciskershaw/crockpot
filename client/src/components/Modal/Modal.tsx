@@ -11,8 +11,6 @@ import './styles.scss';
 interface ModalProps {
 	title: string | JSX.Element;
 	trigger: JSX.Element;
-	isWide?: boolean;
-	paddingOff?: boolean;
 	children: JSX.Element;
 	open?: boolean;
 	setOpen?: (open: boolean) => void;
@@ -21,8 +19,6 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({
 	title,
 	trigger,
-	isWide,
-	paddingOff,
 	children,
 	open,
 	setOpen,
@@ -32,11 +28,7 @@ const Modal: React.FC<ModalProps> = ({
 			<Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay className="DialogOverlay" />
-				<Dialog.Content
-					className={`DialogContent relative ${
-						isWide && 'DialogContent--is-wide'
-					}`}
-				>
+				<Dialog.Content className="DialogContent relative">
 					<div className="flex justify-between items-center bg-white border border-black-25 px-3 py-2 sticky top-0 left-0 z-modalHeader">
 						<Dialog.Title className="DialogTitle">{title}</Dialog.Title>
 						<div>
@@ -47,7 +39,7 @@ const Modal: React.FC<ModalProps> = ({
 							</Dialog.Close>
 						</div>
 					</div>
-					<div className={`${!paddingOff ? 'p-4' : ''}`}>{children}</div>
+					{children}
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>

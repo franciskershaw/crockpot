@@ -6,11 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Recipe } from '@/src/types/types';
 
-import './styles.scss';
+import Modal from '@/src/components/Modal/Modal';
+import RecipeCard from '@/src/components/RecipeCard/RecipeCard';
+import RecipeCardModal from '@/src/components/RecipeCardModal/RecipeCardModal';
 
-import Modal from '../Modal/Modal';
-import RecipeCard from '../RecipeCard/RecipeCard';
-import RecipeCardModal from '../RecipeCardModal/RecipeCardModal';
+import './styles.scss';
 
 type RecipeCardListProps = {
 	recipes: Recipe[];
@@ -35,9 +35,8 @@ function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 							))}
 						</div>
 					}
-					isWide
-					paddingOff
 					trigger={
+						// Recipe card class needs to be outside component for trigger functionality
 						<div className="recipe-card">
 							<RecipeCard recipe={recipe} />
 						</div>
