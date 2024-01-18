@@ -60,30 +60,31 @@ const BrowsePage = () => {
 		);
 	});
 
-	if (isFetching) return <LoadingSpinner />;
-
 	return (
-		<div className="container container--1-2">
-			<div className="hidden md:block relative p-2 ">
-				<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar border border-black">
-					<BrowsePageFiltersMenu />
+		<>
+			{isFetching ? <LoadingSpinner /> : null}
+			<div className="container container--1-2">
+				<div className="hidden md:block relative p-2 ">
+					<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar border border-black">
+						<BrowsePageFiltersMenu />
+					</div>
+				</div>
+				<div className="relative p-2">
+					<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar">
+						<BrowsePageSearchBar />
+						<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
+					</div>
+					{filteredRecipes.length !== 0 ? (
+						<RecipeCardList recipes={filteredRecipes} />
+					) : (
+						<EmptyState
+							title="No results?"
+							description="Try removing some of your filters or searching for something else."
+						/>
+					)}
 				</div>
 			</div>
-			<div className="relative p-2">
-				<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar">
-					<BrowsePageSearchBar />
-					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
-				</div>
-				{filteredRecipes.length !== 0 ? (
-					<RecipeCardList recipes={filteredRecipes} />
-				) : (
-					<EmptyState
-						title="No results?"
-						description="Try removing some of your filters or searching for something else."
-					/>
-				)}
-			</div>
-		</div>
+		</>
 	);
 };
 

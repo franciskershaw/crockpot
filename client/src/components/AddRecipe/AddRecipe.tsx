@@ -1,19 +1,22 @@
-import { FC, useState, useMemo, Fragment, useRef } from 'react';
-import ImageInput from '../FormComponents/ImageInput/ImageInput';
-import TextInput from '../FormComponents/TextInput/TextInput';
-import SelectInput from '../FormComponents/SelectInput/SelectInput';
-import QuantityInput from '../QuantityInput/QuantityInput';
-import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
-import useItems from '@/src/hooks/items/useItems';
-import SearchBar from '../FormSearchBar/SearchBar';
-import { AddRecipeIngredient, Item, Recipe, Unit } from '@/src/types/types';
-import InputGroup from '../FormComponents/InputGroup/InputGroup';
-import Button from '../Button/Button';
+import { FC, Fragment, useMemo, useRef, useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+
+import Button from '../Button/Button';
+import ImageInput from '../FormComponents/ImageInput/ImageInput';
+import InputGroup from '../FormComponents/InputGroup/InputGroup';
+import SelectInput from '../FormComponents/SelectInput/SelectInput';
+import TextInput from '../FormComponents/TextInput/TextInput';
+import SearchBar from '../FormSearchBar/SearchBar';
+import QuantityInput from '../QuantityInput/QuantityInput';
+
+import { AddRecipeIngredient, Item, Recipe, Unit } from '@/src/types/types';
+
+import useItems from '@/src/hooks/items/useItems';
 import {
 	useAddRecipe,
 	useEditRecipe,
 } from '@/src/hooks/recipes/useAddEditRecipe';
+import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;
@@ -176,10 +179,9 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			} else {
 				addRecipe(formData);
 			}
+			if (setModal) setModal(false);
 		} catch (err) {
 			console.log(err);
-		} finally {
-			if (setModal) setModal(false);
 		}
 	};
 
@@ -280,56 +282,56 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	};
 
 	return (
-		<form onSubmit={(e) => e.preventDefault()} className='mb-2'>
+		<form onSubmit={(e) => e.preventDefault()} className="mb-2">
 			<TextInput
-				id='name'
+				id="name"
 				value={name}
 				onChange={handleNameChange}
-				label='Recipe Name*'
+				label="Recipe Name*"
 			/>
 			<ImageInput
 				setImage={setSelectedImage}
-				label='Upload Image'
-				id='recipeImage'
+				label="Upload Image"
+				id="recipeImage"
 				existingImageUrl={recipe?.image.url}
 			/>
-			<div className='flex justify-between'>
+			<div className="flex justify-between">
 				<QuantityInput
 					value={timeInMinutes}
 					setValue={setTimeInMinutes}
-					id='prepTime'
-					label='Prep Time*'
+					id="prepTime"
+					label="Prep Time*"
 				/>
 				<QuantityInput
-					label='Serves*'
-					id='serves'
+					label="Serves*"
+					id="serves"
 					value={serves}
 					setValue={setServes}
 				/>
 			</div>
 			<SelectInput
-				id='selectCategory'
+				id="selectCategory"
 				options={recipeCategories.map((category) => ({
 					value: category._id,
 					label: category.name,
 				}))}
 				value={selectedCategories}
 				onChange={handleCategoryChange}
-				label='Select Categories (max 3)*'
+				label="Select Categories (max 3)*"
 				isMulti
-				placeholder='Please select categories'
+				placeholder="Please select categories"
 			/>
 
-			<InputGroup label='Ingredients*'>
-				<div className='w-full md:mb-2'>
-					<div className='relative'>
+			<InputGroup label="Ingredients*">
+				<div className="w-full md:mb-2">
+					<div className="relative">
 						<SearchBar
 							searchQuery={ingredientSearch}
 							setSearchQuery={setIngredientSearch}
-							placeholder='Search for ingredients'
+							placeholder="Search for ingredients"
 						/>
 						{searchResults.length > 0 && (
-							<div className='absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow'>
+							<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
 								{searchResults.map((result) => (
 									<p onClick={() => addIngredient(result)} key={result._id}>
 										{result.name}
@@ -340,41 +342,41 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					</div>
 					{selectedIngredients.map((ingredient, index) => (
 						<div
-							className='flex justify-between mt-4 items-center'
+							className="flex justify-between mt-4 items-center"
 							key={`${ingredient._id}_${index}`}
 						>
-							<div className=' w-1/4'>
-								<p className='text-sm'>{ingredient.name}</p>
+							<div className=" w-1/4">
+								<p className="text-sm">{ingredient.name}</p>
 							</div>
 
 							<input
-								type='number'
-								name=''
-								id=''
+								type="number"
+								name=""
+								id=""
 								value={ingredient.quantity !== null ? ingredient.quantity : ''}
 								onChange={(e) => handleQuantityChange(e, index)}
-								className='w-[50px] border border-black rounded text-center p-0.5 text-sm'
+								className="w-[50px] border border-black rounded text-center p-0.5 text-sm"
 							/>
 
-							<div className='flex flex-col gap-2'>
+							<div className="flex flex-col gap-2">
 								<select
-									className='border w-24 py-1 text-sm'
-									name=''
-									id=''
+									className="border w-24 py-1 text-sm"
+									name=""
+									id=""
 									onChange={(e) => handleUnitChange(e, index)}
 									value={ingredient.unit}
 								>
-									<option value=''>-</option>
-									<option value='cans'>Cans</option>
-									<option value='g'>g</option>
-									<option value='ml'>ml</option>
-									<option value='tbsp'>Tablespoons</option>
-									<option value='tsp'>Teaspoons</option>
+									<option value="">-</option>
+									<option value="cans">Cans</option>
+									<option value="g">g</option>
+									<option value="ml">ml</option>
+									<option value="tbsp">Tablespoons</option>
+									<option value="tsp">Teaspoons</option>
 								</select>
 							</div>
 							<Button
 								onClick={() => handleRemoveIngredient(index)}
-								type='primary'
+								type="primary"
 								border
 								iconXs
 							>
@@ -384,7 +386,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					))}
 				</div>
 			</InputGroup>
-			<InputGroup label='Instructions'>
+			<InputGroup label="Instructions">
 				{instructions.map((instruction, index) => (
 					<Fragment key={`instruction_${index}`}>
 						<TextInput
@@ -393,11 +395,11 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							value={instruction}
 							onChange={(newValue) => handleInstructionChange(index, newValue)}
 						/>
-						<div className='flex justify-center gap-4'>
+						<div className="flex justify-center gap-4">
 							{instructions.length > 1 && (
 								<Button
 									onClick={() => handleRemoveInstruction(index)}
-									type='primary'
+									type="primary"
 									border
 									iconXs
 								>
@@ -407,7 +409,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							{instruction.trim() && !(index < instructions.length - 1) && (
 								<Button
 									onClick={() => handleAddInstruction(index)}
-									type='primary'
+									type="primary"
 									border
 									iconXs
 								>
@@ -418,7 +420,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					</Fragment>
 				))}
 			</InputGroup>
-			<InputGroup label='Extra Notes'>
+			<InputGroup label="Extra Notes">
 				{notes.map((note, index) => (
 					<Fragment key={`note${index}`}>
 						<TextInput
@@ -426,11 +428,11 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							value={note}
 							onChange={(newValue) => handleNoteChange(index, newValue)}
 						/>
-						<div className='flex justify-center gap-4 mb-4'>
+						<div className="flex justify-center gap-4 mb-4">
 							{notes.length > 1 && (
 								<Button
 									onClick={() => handleRemoveNote(index)}
-									type='primary'
+									type="primary"
 									border
 									iconXs
 								>
@@ -440,7 +442,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							{note.trim() && !(index < notes.length - 1) && (
 								<Button
 									onClick={() => handleAddNote(index)}
-									type='primary'
+									type="primary"
 									border
 									iconXs
 								>
@@ -452,7 +454,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				))}
 			</InputGroup>
 
-			<div className='flex justify-center'>
+			<div className="flex justify-center">
 				<Button
 					onClick={handleSubmit}
 					border
