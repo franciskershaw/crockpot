@@ -1,8 +1,11 @@
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
-import { User } from '@/src/types/types';
 import { queryKeys } from '@/src/providers/Providers';
+
+import { useRouter } from 'next/navigation';
+
+import { useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+
+import { User } from '@/src/types/types';
 
 const useAxios = () => {
 	const router = useRouter();
@@ -43,6 +46,8 @@ const useAxios = () => {
 					queryClient.removeQueries([queryKeys.recipeMenu]);
 					router.push('/login');
 				}
+			} else {
+				return Promise.reject(error);
 			}
 		},
 	);

@@ -1,8 +1,11 @@
 'use client';
 
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { FC, ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 interface LayoutProps {
 	children: ReactNode;
@@ -15,6 +18,7 @@ const queryClient = new QueryClient({
 			cacheTime: 900000,
 			refetchOnMount: false,
 			refetchOnWindowFocus: false,
+			retry: 2,
 		},
 	},
 });
@@ -36,6 +40,7 @@ const Providers: FC<LayoutProps> = ({ children }) => {
 		<QueryClientProvider client={queryClient}>
 			{children}
 			<ReactQueryDevtools initialIsOpen={false} />
+			<ToastContainer />
 		</QueryClientProvider>
 	);
 };

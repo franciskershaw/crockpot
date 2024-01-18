@@ -1,7 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/src/providers/Providers';
+
+import { toast } from 'react-toastify';
+
 import useUser from '../auth/useUser';
 import useAxios from '../axios/useAxios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+
+import { Item } from '@/src/types/types';
 
 type itemData = {
 	name: string;
@@ -26,11 +32,13 @@ const useAddItem = () => {
 	};
 
 	const { mutate } = useMutation((itemData: itemData) => addItem(itemData), {
-		onSuccess: async () => {
+		onSuccess: async (data: Item) => {
 			await queryClient.invalidateQueries([queryKeys.items], {});
+			toast.success(`New recipe created: ${data.name}`);
 		},
-		onError: (data) => {
-			console.log(data);
+		onError: (error: AxiosError) => {
+			const message = (error.response?.data as { message?: string })?.message;
+			toast.error(message || 'Error adding item');
 		},
 	});
 
@@ -61,11 +69,13 @@ const useEditItem = () => {
 	};
 
 	const { mutate } = useMutation(editItem, {
-		onSuccess: async () => {
+		onSuccess: async (data: Item) => {
 			await queryClient.invalidateQueries([queryKeys.items]);
+			toast.success(`Item saved: ${data.name}`);
 		},
-		onError: (error) => {
-			console.log(error);
+		onError: (error: AxiosError) => {
+			const message = (error.response?.data as { message?: string })?.message;
+			toast.error(message || 'Error editting item');
 		},
 	});
 

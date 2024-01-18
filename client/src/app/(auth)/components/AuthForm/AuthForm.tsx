@@ -1,12 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 import Link from 'next/link';
-import useAuth from '../../../../hooks/auth/useAuth';
-import useUser from '@/src/hooks/auth/useUser';
 import { useRouter } from 'next/navigation';
 
+import useAuth from '../../../../hooks/auth/useAuth';
 import './_authform.scss';
+
+import useUser from '@/src/hooks/auth/useUser';
+
 import Button from '@/src/components/Button/Button';
 
 interface Props {
@@ -37,17 +41,13 @@ const AuthForm = (props: Props) => {
 			password,
 		};
 
-		try {
-			if (props.type === 'login') {
-				await auth.login(authData);
-			} else {
-				if (confirmPassword !== password) {
-					throw new Error('Boo');
-				}
-				await auth.register(authData);
+		if (props.type === 'login') {
+			await auth.login(authData);
+		} else {
+			if (confirmPassword !== password) {
+				toast.error('Passwords do not match');
 			}
-		} catch (err) {
-			console.log(err);
+			await auth.register(authData);
 		}
 	};
 
