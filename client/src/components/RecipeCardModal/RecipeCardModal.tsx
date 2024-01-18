@@ -115,8 +115,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									open={deleteRecipeConf}
 									setOpen={setDeleteRecipeConf}
 								>
-									<div className="flex flex-col items-center justify-center gap-3">
-										<p className="text-xl">Warning - cannot be undone</p>
+									<div className="p-3 flex justify-center">
 										<Button
 											onClick={handleDelete}
 											text="Delete Recipe"
