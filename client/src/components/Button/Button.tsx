@@ -38,7 +38,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const buttonClasses = `btn btn--${type || 'primary'} ${
 			border ? 'btn--border' : ''
 		} ${hoverOff ? 'btn--no-hover' : ''} ${inverse ? 'btn--inverse ' : ''} ${
-			text ? 'min-w-[125px]' : ''
+			text ? 'min-w-[140px]' : ''
 		} animate animate--grow`;
 
 		return (

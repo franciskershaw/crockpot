@@ -30,7 +30,9 @@ const Modal: React.FC<ModalProps> = ({
 				<Dialog.Overlay className="DialogOverlay" />
 				<Dialog.Content className="DialogContent relative">
 					<div className="flex justify-between items-center bg-white border border-black-25 px-3 py-2 sticky top-0 left-0 z-modalHeader">
-						<Dialog.Title className="DialogTitle">{title}</Dialog.Title>
+						<Dialog.Title className="DialogTitle truncate">
+							{title}
+						</Dialog.Title>
 						<div>
 							<Dialog.Close asChild>
 								<Button ariaLabel="Close">

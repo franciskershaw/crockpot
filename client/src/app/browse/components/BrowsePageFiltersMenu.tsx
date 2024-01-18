@@ -80,51 +80,57 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className="space-y-3 p-4 md:px-2 md:py-3">
-			{user && (
-				<>
-					<Switch
-						label={`My Favourites (${user.favouriteRecipes.length})`}
-						checked={showOnlyFavourites}
-						onChange={toggleShowOnlyFavourites}
+		<div className="p-3 md:px-2">
+			<div className="hidden md:block space-y-3 mb-3">
+				<h2 className="font-bold">Recipe Filters</h2>
+				<hr />
+			</div>
+			<div className="space-y-3">
+				{user && (
+					<>
+						<Switch
+							label={`My Favourites (${user.favouriteRecipes.length})`}
+							checked={showOnlyFavourites}
+							onChange={toggleShowOnlyFavourites}
+						/>
+						<hr />
+						<Switch
+							label={`My Recipes (${myRecipes ? myRecipes.length : '0'})`}
+							checked={showOnlyMyRecipes}
+							onChange={toggleShowOnlyMyRecipes}
+						/>
+						<hr />
+					</>
+				)}
+				<div>
+					<h3>Serving Time</h3>
+					<Slider
+						min={cookingTimeMinMax.min}
+						max={cookingTimeMinMax.max}
+						value={[cookingTimeMin, cookingTimeMax]}
+						onChange={(values: number[]) => {
+							const [newMin, newMax] = values;
+							setCookingTime(newMin, newMax);
+						}}
 					/>
-					<hr />
-					<Switch
-						label={`My Recipes (${myRecipes ? myRecipes.length : '0'})`}
-						checked={showOnlyMyRecipes}
-						onChange={toggleShowOnlyMyRecipes}
-					/>
-					<hr />
-				</>
-			)}
-			<div>
-				<h3>Serving Time</h3>
-				<Slider
-					min={cookingTimeMinMax.min}
-					max={cookingTimeMinMax.max}
-					value={[cookingTimeMin, cookingTimeMax]}
-					onChange={(values: number[]) => {
-						const [newMin, newMax] = values;
-						setCookingTime(newMin, newMax);
-					}}
+				</div>
+				<hr />
+				<BrowsePageSearchableCheckboxList
+					title={'Categories'}
+					placeholderText={'Search for a category...'}
+					checkboxes={simplifiedCategories}
+					onCheckboxChange={handleCategoryCheckboxChange}
+					listType="category"
+				/>
+				<hr />
+				<BrowsePageSearchableCheckboxList
+					title={'Ingredients'}
+					placeholderText={'Search for a ingredient...'}
+					checkboxes={simplifiedIngredients}
+					onCheckboxChange={handleIngredientCheckboxChange}
+					listType="ingredient"
 				/>
 			</div>
-			<hr />
-			<BrowsePageSearchableCheckboxList
-				title={'Categories'}
-				placeholderText={'Search for a category...'}
-				checkboxes={simplifiedCategories}
-				onCheckboxChange={handleCategoryCheckboxChange}
-				listType="category"
-			/>
-			<hr />
-			<BrowsePageSearchableCheckboxList
-				title={'Ingredients'}
-				placeholderText={'Search for a ingredient...'}
-				checkboxes={simplifiedIngredients}
-				onCheckboxChange={handleIngredientCheckboxChange}
-				listType="ingredient"
-			/>
 		</div>
 	);
 }

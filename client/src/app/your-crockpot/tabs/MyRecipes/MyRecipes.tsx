@@ -14,10 +14,8 @@ const MyRecipes = () => {
 		? allRecipes.filter((recipe: Recipe) => recipe.createdBy._id === user._id)
 		: null;
 
-	console.log(myRecipes);
-
 	return (
-		<div className="pt-4 px-4">
+		<>
 			{myRecipes ? (
 				<RecipeCardList recipes={myRecipes} fullWidth />
 			) : (
@@ -26,7 +24,7 @@ const MyRecipes = () => {
 					description="Click the plus button to add your own recipes to Your Crockpot."
 				/>
 			)}
-		</div>
+		</>
 	);
 };
 

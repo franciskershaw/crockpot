@@ -1,10 +1,12 @@
 'use client';
 
-import Tabs from '@/src/components/Tabs/Tabs';
-import Menu from './tabs/Menu/Menu';
-import Favourites from './tabs/Favourites/Favourites';
-import MyRecipes from './tabs/MyRecipes/MyRecipes';
 import useProtectedRoute from '@/src/hooks/auth/useProtectedRoute';
+
+import Tabs from '@/src/components/Tabs/Tabs';
+
+import Favourites from './tabs/Favourites/Favourites';
+import Menu from './tabs/Menu/Menu';
+import MyRecipes from './tabs/MyRecipes/MyRecipes';
 
 const YourCrockpotPage = () => {
 	const { user } = useProtectedRoute();
@@ -16,7 +18,7 @@ const YourCrockpotPage = () => {
 	const tabTitles = ['Menu', 'Favourites', 'My Recipes'];
 
 	return (
-		<div className="container pt-4 md:pt-0">
+		<div className="container">
 			<Tabs titles={tabTitles}>
 				<Menu />
 				<Favourites />

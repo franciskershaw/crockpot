@@ -11,7 +11,7 @@ const Favourites = () => {
 	const suggestedRecipes = allRecipes.slice(0, 3);
 
 	return (
-		<div className="pt-4 px-4">
+		<>
 			{favouriteRecipes.length !== 0 ? (
 				<RecipeCardList recipes={favouriteRecipes} fullWidth />
 			) : (
@@ -23,7 +23,7 @@ const Favourites = () => {
 					<RecipeCardList recipes={suggestedRecipes} fullWidth />
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 

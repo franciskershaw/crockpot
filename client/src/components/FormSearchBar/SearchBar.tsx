@@ -21,13 +21,7 @@ const SearchBar = ({
 
 	return (
 		<div className="relative w-full">
-			{label ? (
-				<label className="mr-2 text-xs" htmlFor="">
-					{label}
-				</label>
-			) : (
-				''
-			)}
+			{label ? <label htmlFor="">{label}</label> : ''}
 			<input
 				className="border-black border-2 bg-white p-2 rounded w-full focus-visible:black"
 				type="text"
