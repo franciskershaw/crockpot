@@ -18,7 +18,7 @@ button {
 .SwitchThumb {
 	@apply block w-[21px] h-[21px] bg-white rounded-full;
 
-	transition: transform 100ms;
+	transition: transform 300ms;
 	transform: translateX(2px);
 	will-change: transform;
 }

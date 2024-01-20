@@ -24,8 +24,12 @@ export default function RootLayout({
 			<body>
 				<Providers>
 					<NavbarTop />
-					<main className="mt-20 md:mt-24">{children}</main>
-					<ButtonAddRecipe />
+					<main className="mt-[74px] mb-[101px] md:mt-[85px] md:mb-4">
+						{children}
+					</main>
+					<nav className="md:hidden">
+						<ButtonAddRecipe />
+					</nav>
 					<NavbarBottom />
 				</Providers>
 			</body>

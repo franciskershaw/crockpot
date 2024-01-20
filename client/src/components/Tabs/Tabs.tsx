@@ -1,14 +1,16 @@
 import React, {
-	ReactNode,
-	FC,
 	Children,
+	FC,
+	ReactNode,
 	useEffect,
 	useRef,
 	useState,
 } from 'react';
-import * as RadixTabs from '@radix-ui/react-tabs';
-import './styles.scss';
 import AnimateHeight, { Height } from 'react-animate-height';
+
+import * as RadixTabs from '@radix-ui/react-tabs';
+
+import './styles.scss';
 
 interface Tabs {
 	children: ReactNode[];
@@ -60,30 +62,26 @@ const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 				setActiveIndex(index);
 			}}
 		>
-			<div className="max-w-screen-md md:mx-auto">
-				<RadixTabs.List className="tabs">
-					<div className="tabs-toggle" ref={sliderRef}>
-						<div className="bg-black/25 w-full h-full rounded-full" />
-					</div>
-					{titles.map((title, index) => (
-						<RadixTabs.Trigger
-							key={index}
-							value={title}
-							className="tab"
-							data-active-class="tab--active"
-						>
-							{title}
-						</RadixTabs.Trigger>
-					))}
-				</RadixTabs.List>
-			</div>
+			<RadixTabs.List className="tabs">
+				<div className="tabs-toggle" ref={sliderRef}>
+					<div className="bg-black/25 w-full h-full rounded-full" />
+				</div>
+				{titles.map((title, index) => (
+					<RadixTabs.Trigger
+						key={index}
+						value={title}
+						className="tab"
+						data-active-class="tab--active"
+					>
+						{title}
+					</RadixTabs.Trigger>
+				))}
+			</RadixTabs.List>
 
 			{isModal ? (
 				<AnimateHeight height={height} contentRef={contentDiv}>
 					{Children.map(children, (child, index) => (
-						<RadixTabs.Content className="px-4" value={titles[index]}>
-							{child}
-						</RadixTabs.Content>
+						<RadixTabs.Content value={titles[index]}>{child}</RadixTabs.Content>
 					))}
 				</AnimateHeight>
 			) : (

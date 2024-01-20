@@ -1,10 +1,11 @@
 import React from 'react';
 
+import useRecipes from '@/src/hooks/recipes/useRecipes';
+
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../../context/BrowsePageContext';
-import useRecipes from '@/src/hooks/recipes/useRecipes';
 
 import './styles.scss';
 

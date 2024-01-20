@@ -1,23 +1,27 @@
 'use client';
 
 import React from 'react';
+
 import { v4 as uuidv4 } from 'uuid';
 
-import RecipeCard from '../RecipeCard/RecipeCard';
-import RecipeCardModal from '../RecipeCardModal/RecipeCardModal';
-import Modal from '../Modal/Modal';
-
 import { Recipe } from '@/src/types/types';
+
+import Modal from '@/src/components/Modal/Modal';
+import RecipeCard from '@/src/components/RecipeCard/RecipeCard';
+import RecipeCardModal from '@/src/components/RecipeCardModal/RecipeCardModal';
 
 import './styles.scss';
 
 type RecipeCardListProps = {
 	recipes: Recipe[];
+	fullWidth?: boolean;
 };
 
-function RecipeCardList({ recipes }: RecipeCardListProps) {
+function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 	return (
-		<div className="recipe-card-list">
+		<div
+			className={`recipe-card-list ${fullWidth ? 'recipe-card-list--full' : 'recipe-card-list--1-2'}`}
+		>
 			{recipes.map((recipe) => (
 				<Modal
 					key={uuidv4()}
@@ -31,9 +35,8 @@ function RecipeCardList({ recipes }: RecipeCardListProps) {
 							))}
 						</div>
 					}
-					isWide
-					paddingOff
 					trigger={
+						// Recipe card class needs to be outside component for trigger functionality
 						<div className="recipe-card">
 							<RecipeCard recipe={recipe} />
 						</div>

@@ -2,18 +2,20 @@ import React from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
 
+import { useBrowsePageContext } from '../context/BrowsePageContext';
+
 import Button from '@/src/components/Button/Button';
 import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 import Modal from '@/src/components/Modal/Modal';
+
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
-import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 function BrowsePageSearchBar() {
 	const { recipeSearchQuery, setRecipeSearchQuery, resetFilters } =
 		useBrowsePageContext();
 
 	return (
-		<div className="flex space-x-2 p-2">
+		<div className="flex space-x-2 pb-2 pt-4">
 			<SearchBar
 				searchQuery={recipeSearchQuery}
 				setSearchQuery={setRecipeSearchQuery}

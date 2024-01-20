@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Checkbox from '@/src/components/Checkbox/Checkbox';
+
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
+
+import Checkbox from '@/src/components/Checkbox/Checkbox';
+import SearchBar from '@/src/components/FormSearchBar/SearchBar';
 
 type BrowsePageSearchableCheckboxListProps = {
 	title: string;
@@ -58,8 +60,8 @@ const BrowsePageSearchableCheckboxList: React.FC<
 	);
 
 	return (
-		<div>
-			<div className="flex justify-between mb-2">
+		<div className="space-y-2">
+			<div className="flex justify-between">
 				<h3>
 					{title} ({checkboxes.length})
 				</h3>
@@ -77,7 +79,7 @@ const BrowsePageSearchableCheckboxList: React.FC<
 				searchQuery={searchQuery}
 				setSearchQuery={setSearchQuery}
 			/>
-			<div className="mt-2 space-y-1 overflow-y-scroll max-h-[250px] bg-white p-2">
+			<div className="space-y-1 overflow-y-scroll max-h-64 md:max-h-80 bg-white">
 				{filteredCheckboxes.length === 0 ? (
 					<h4 className="text-center">0 results</h4>
 				) : (

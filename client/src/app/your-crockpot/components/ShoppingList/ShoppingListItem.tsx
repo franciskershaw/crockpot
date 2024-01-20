@@ -1,10 +1,14 @@
-import { ShoppingListItem as ShoppingListItemType } from '@/src/types/types';
-import Button from '@/src/components/Button/Button';
 import { useState } from 'react';
-import useShoppingList from '../../hooks/useShoppingList';
-import useExtraItems from '../../hooks/useExtraItems';
 import { FaTrash } from 'react-icons/fa';
+
+import { ShoppingListItem as ShoppingListItemType } from '@/src/types/types';
+
+import useExtraItems from '../../hooks/useExtraItems';
+import useShoppingList from '../../hooks/useShoppingList';
+
+import Button from '@/src/components/Button/Button';
 import Checkbox from '@/src/components/Checkbox/Checkbox';
+
 import './styles.scss';
 
 interface ShoppingListItemProps {
