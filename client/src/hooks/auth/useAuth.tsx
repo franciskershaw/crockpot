@@ -8,27 +8,19 @@ const useAuth = () => {
 	const { updateUser, clearUser } = useUser();
 
 	const login = async (credentials: { username: string; password: string }) => {
-		try {
-			const response = await api.post('/api/users/login', credentials);
-			if (response.status === 200) {
-				updateUser(response.data);
-			}
+		const response = await api.post('/api/users/login', credentials);
+		if (response && response.status === 200) {
+			updateUser(response?.data);
 			toast.success(`Welcome back ${credentials.username}`);
-			return response.data;
-		} catch (error) {
-			// toast.error(error.message);
-			console.log(error);
+			return response?.data;
 		}
 	};
 
 	const register = async (data: { username: string; password: string }) => {
-		try {
-			const response = await api.post('/api/users', data);
-			updateUser(response.data);
-			return response.data;
-		} catch (error) {
-			console.log(error);
-		}
+		const response = await api.post('/api/users', data);
+		updateUser(response.data);
+		toast.success(`Welcome to crockpot, ${data.username}`);
+		return response.data;
 	};
 
 	const logout = async () => {

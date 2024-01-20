@@ -46,8 +46,9 @@ const AuthForm = (props: Props) => {
 		} else {
 			if (confirmPassword !== password) {
 				toast.error('Passwords do not match');
+			} else if (confirmPassword === password) {
+				await auth.register(authData);
 			}
-			await auth.register(authData);
 		}
 	};
 

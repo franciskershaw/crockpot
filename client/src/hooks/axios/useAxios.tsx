@@ -1,5 +1,7 @@
 import { queryKeys } from '@/src/providers/Providers';
 
+import { toast } from 'react-toastify';
+
 import { useRouter } from 'next/navigation';
 
 import { useQueryClient } from '@tanstack/react-query';
@@ -46,6 +48,8 @@ const useAxios = () => {
 					queryClient.removeQueries([queryKeys.recipeMenu]);
 					router.push('/login');
 				}
+			} else {
+				toast.error(error.response.data.message);
 			}
 		},
 	);
