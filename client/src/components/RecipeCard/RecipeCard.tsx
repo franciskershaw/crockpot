@@ -1,12 +1,12 @@
 import React from 'react';
 
-import ButtonCart from '../ButtonCart/ButtonCart';
-import ButtonFav from '../ButtonFav/ButtonFav';
-import TimingTag from '../TimingTag/TimingTag';
-
 import { Category, Recipe } from '@/src/types/types';
 
 import useUser from '@/src/hooks/auth/useUser';
+
+import ButtonCart from '@/src/components/ButtonCart/ButtonCart';
+import ButtonFav from '@/src/components/ButtonFav/ButtonFav';
+import TimingTag from '@/src/components/TimingTag/TimingTag';
 
 type RecipeCardProps = {
 	recipe: Recipe;

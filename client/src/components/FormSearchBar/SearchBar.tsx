@@ -1,6 +1,6 @@
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import Icon from '../Icon/Icon';
+import Icon from '@/src/components/Icon/Icon';
 
 type SearchBarProps = {
 	label?: string;
@@ -22,30 +22,22 @@ const SearchBar = ({
 	};
 
 	return (
-		<>
-			<div className="relative w-full">
-				{label ? (
-					<label className="mr-2 text-xs" htmlFor="">
-						{label}
-					</label>
-				) : (
-					''
-				)}
-				<input
-					className="border-black border-2 bg-white p-2 rounded w-full focus-visible:black"
-					type="text"
-					placeholder={placeholder || 'Search for...'}
-					value={searchQuery}
-					onChange={handleInputChange}
-				/>
-				<div className="absolute bottom-0 right-0 p-1.5 pl-10">
-					<Icon type="primary">
-						<AiOutlineSearch />
-					</Icon>
-				</div>
+		<div className="relative w-full">
+			{label ? <label htmlFor="">{label}</label> : ''}
+			<input
+				className="border-black border-2 bg-white p-2 rounded w-full focus-visible:black"
+				type="text"
+				placeholder={placeholder || 'Search for...'}
+				value={searchQuery}
+				onChange={handleInputChange}
+			/>
+			<div className="absolute bottom-0 right-0 p-1.5 pl-10">
+				<Icon type="primary">
+					<AiOutlineSearch />
+				</Icon>
 			</div>
 			{error && <p className="pt-2 text-error text-xs">{error}</p>}
-		</>
+		</div>
 	);
 };
 

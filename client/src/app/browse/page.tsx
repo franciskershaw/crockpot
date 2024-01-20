@@ -1,18 +1,18 @@
 'use client';
 
-import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
-import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
-import BrowsePageSearchBar from './components/BrowsePageSearchBar';
-import {
-	CheckboxData,
-	useBrowsePageContext,
-} from './context/BrowsePageContext';
-
 import { Category, Ingredient, Recipe } from '@/src/types/types';
 
 import useUser from '@/src/hooks/auth/useUser';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 
+import {
+	CheckboxData,
+	useBrowsePageContext,
+} from './context/BrowsePageContext';
+
+import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
+import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
+import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import EmptyState from '@/src/components/EmptyState/EmptyState';
 import LoadingSpinner from '@/src/components/Loading/LoadingSpinner';
 import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
@@ -64,13 +64,13 @@ const BrowsePage = () => {
 		<>
 			{isFetching ? <LoadingSpinner /> : null}
 			<div className="container container--1-2">
-				<div className="hidden md:block relative p-2 ">
-					<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar border border-black">
+				<div className="container--1-2__1">
+					<div className="container--1-2__1__sticky-menu">
 						<BrowsePageFiltersMenu />
 					</div>
 				</div>
-				<div className="relative p-2">
-					<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar">
+				<div className="container--1-2__2">
+					<div className="container--1-2__2__sticky-menu">
 						<BrowsePageSearchBar />
 						<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
 					</div>

@@ -1,12 +1,16 @@
 'use client';
 
-import { AiOutlinePlus } from 'react-icons/ai';
-import Icon from '../Icon/Icon';
-import Modal from '../Modal/Modal';
-import AddRecipe from '../AddRecipe/AddRecipe';
 import { useState } from 'react';
-import useUser from '@/src/hooks/auth/useUser';
+import { AiOutlinePlus } from 'react-icons/ai';
+
 import { usePathname } from 'next/navigation';
+
+import useUser from '@/src/hooks/auth/useUser';
+
+import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
+import Button from '@/src/components/Button/Button';
+import Icon from '@/src/components/Icon/Icon';
+import Modal from '@/src/components/Modal/Modal';
 
 function ButtonAddRecipe() {
 	const { user } = useUser();
@@ -21,16 +25,18 @@ function ButtonAddRecipe() {
 	return (
 		<Modal
 			trigger={
-				<button
-					className='btn btn--primary btn--border fixed bottom-20 md:bottom-0 right-0 z-10 m-4'
-					aria-label='Add Recipe'
-				>
-					<Icon size='xl'>
-						<AiOutlinePlus />
-					</Icon>
-				</button>
+				<div>
+					<div className="z-addRecipe fixed m-4 right-0 bottom-[85px] md:hidden">
+						<Icon size="xl" type="primary" border>
+							<AiOutlinePlus />
+						</Icon>
+					</div>
+					<div className="hidden md:block">
+						<Button text="Add Recipe" type="primary" border />
+					</div>
+				</div>
 			}
-			title='Add new recipe'
+			title="Add new recipe"
 			open={modalOpen}
 			setOpen={setModalOpen}
 		>

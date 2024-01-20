@@ -1,5 +1,6 @@
 import * as SwitchRadix from '@radix-ui/react-switch';
 import { v4 as uuidv4 } from 'uuid';
+
 import './styles.scss';
 
 type SwitchProps = {

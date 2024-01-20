@@ -49,14 +49,26 @@ body {
 	}
 
 	&--1-2 {
-		@apply flex flex-col md:flex-row;
+		@apply flex flex-col md:flex-row md:gap-x-4;
 
-		> :nth-child(1) {
-			flex: 1; /* First child takes 1/3 of the space */
+		&__1 {
+			@apply hidden md:block relative;
+
+			flex: 1;
+
+			&__sticky-menu {
+				@apply bg-white/90 sticky top-[102px] left-0 right-0 z-searchBar border border-black;
+			}
 		}
 
-		> :nth-child(2) {
-			flex: 2; /* Second child takes 2/3 of the space */
+		&__2 {
+			@apply relative;
+
+			flex: 2;
+
+			&__sticky-menu {
+				@apply bg-white/90 sticky top-[74px] md:top-[85px] left-0 right-0 z-searchBar;
+			}
 		}
 	}
 }
@@ -87,7 +99,8 @@ label {
 }
 
 h4,
-.h4 {
+.h4,
+label {
 	@apply text-base;
 }
 
@@ -124,6 +137,17 @@ ol {
 	li {
 		@apply mb-2;
 	}
+}
+
+select {
+	-webkit-appearance: none; /* Removes default style Chrome & Safari */
+	-moz-appearance: none; /* Removes default style Firefox */
+	appearance: none; /* Removes default style IE */
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/></svg>'); /* Chevron icon */
+	background-repeat: no-repeat;
+	background-position: right 8px center;
+
+	@apply p-2 border-black border-2 bg-white rounded w-full cursor-pointer;
 }
 
 // Animation

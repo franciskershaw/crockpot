@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import * as SliderRadix from '@radix-ui/react-slider';
+
 import './styles.scss';
 
 function SliderThumbWithValue() {
@@ -29,8 +31,8 @@ function SliderThumbWithValue() {
 	}, []);
 
 	return (
-		<SliderRadix.Thumb ref={thumbRef} className='SliderThumb'>
-			<div className='SliderThumbValue'>{value}</div>
+		<SliderRadix.Thumb ref={thumbRef} className="SliderThumb">
+			<div className="SliderThumbValue">{value}</div>
 		</SliderRadix.Thumb>
 	);
 }
@@ -49,7 +51,7 @@ export default function Slider({ min, max, value, onChange }: SliderProps) {
 
 	return (
 		<SliderRadix.Root
-			className='SliderRoot'
+			className="SliderRoot"
 			value={value}
 			min={min - 10 > 5 ? min - 10 : 5}
 			max={max + 10}
@@ -57,8 +59,8 @@ export default function Slider({ min, max, value, onChange }: SliderProps) {
 			minStepsBetweenThumbs={1}
 			onValueChange={handleValueChange}
 		>
-			<SliderRadix.Track className='SliderTrack'>
-				<SliderRadix.Range className='SliderRange' />
+			<SliderRadix.Track className="SliderTrack">
+				<SliderRadix.Range className="SliderRange" />
 			</SliderRadix.Track>
 			<SliderThumbWithValue />
 			<SliderThumbWithValue />

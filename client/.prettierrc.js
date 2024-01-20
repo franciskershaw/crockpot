@@ -7,19 +7,14 @@ module.exports = {
 		'^react', // React
 		'^react-icons', // React Icons
 		'^next/', // Next.js
-		'^(?![.@]/src/)', // Packages
-		'^@/src/types/', // Global types
-		'^\\./types/', // Local types
-		'^@/src/hooks/', // Global hooks
-		'^\\./hooks/', // Local hooks
-		'^@/src/context/', // Global context
-		'^\\./context/', // Local context
-		'^@/src/components/', // Global components
-		'^\\./components/', // Local components
-		'^@/src/styles/globals.scss', // Global styles
-		'^\\./styles.scss', // Local styles
-		'^\\./',
-		'^[./]',
+		'<THIRD_PARTY_MODULES>', // Third-party modules
+		'.*/types/', // Types
+		'.*/hooks/', // Hooks
+		'.*/context/', // Context
+		'.*/components/', // Components
+		'.*\\.scss$', // Styles
+		'^\\./', // Other local imports
+		'^[./]', // Catch-all for remaining imports
 	],
 	importOrderSeparation: true,
 	importOrderSortSpecifiers: true,

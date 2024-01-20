@@ -2,19 +2,22 @@
 
 import React from 'react';
 
-import Slider from '@/src/components/Slider/Slider';
-import Switch from '@/src/components/Switch/Switch';
+import { Recipe } from '@/src/types/types';
+
 import useUser from '@/src/hooks/auth/useUser';
 import useItems from '@/src/hooks/items/useItems';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 import useRecipes from '@/src/hooks/recipes/useRecipes';
 
-import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
-
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
+
+import Slider from '@/src/components/Slider/Slider';
+import Switch from '@/src/components/Switch/Switch';
+
+import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 
 function BrowsePageFiltersMenu() {
 	const {
@@ -34,7 +37,7 @@ function BrowsePageFiltersMenu() {
 	const { user } = useUser();
 
 	const myRecipes = user
-		? allRecipes.filter((recipe) => recipe.createdBy === user._id)
+		? allRecipes.filter((recipe: Recipe) => recipe.createdBy === user._id)
 		: null;
 
 	const handleCategoryCheckboxChange = (
@@ -77,51 +80,57 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className="space-y-3 px-2 py-3">
-			{user && (
-				<>
-					<Switch
-						label={`My Favourites (${user.favouriteRecipes.length})`}
-						checked={showOnlyFavourites}
-						onChange={toggleShowOnlyFavourites}
+		<div className="p-3 md:px-2">
+			<div className="hidden md:block space-y-3 mb-3">
+				<h2 className="font-bold">Recipe Filters</h2>
+				<hr />
+			</div>
+			<div className="space-y-3">
+				{user && (
+					<>
+						<Switch
+							label={`My Favourites (${user.favouriteRecipes.length})`}
+							checked={showOnlyFavourites}
+							onChange={toggleShowOnlyFavourites}
+						/>
+						<hr />
+						<Switch
+							label={`My Recipes (${myRecipes ? myRecipes.length : '0'})`}
+							checked={showOnlyMyRecipes}
+							onChange={toggleShowOnlyMyRecipes}
+						/>
+						<hr />
+					</>
+				)}
+				<div>
+					<h3>Serving Time</h3>
+					<Slider
+						min={cookingTimeMinMax.min}
+						max={cookingTimeMinMax.max}
+						value={[cookingTimeMin, cookingTimeMax]}
+						onChange={(values: number[]) => {
+							const [newMin, newMax] = values;
+							setCookingTime(newMin, newMax);
+						}}
 					/>
-					<hr />
-					<Switch
-						label={`My Recipes (${myRecipes ? myRecipes.length : '0'})`}
-						checked={showOnlyMyRecipes}
-						onChange={toggleShowOnlyMyRecipes}
-					/>
-					<hr />
-				</>
-			)}
-			<div>
-				<h3>Serving Time</h3>
-				<Slider
-					min={cookingTimeMinMax.min}
-					max={cookingTimeMinMax.max}
-					value={[cookingTimeMin, cookingTimeMax]}
-					onChange={(values: number[]) => {
-						const [newMin, newMax] = values;
-						setCookingTime(newMin, newMax);
-					}}
+				</div>
+				<hr />
+				<BrowsePageSearchableCheckboxList
+					title={'Categories'}
+					placeholderText={'Search for a category...'}
+					checkboxes={simplifiedCategories}
+					onCheckboxChange={handleCategoryCheckboxChange}
+					listType="category"
+				/>
+				<hr />
+				<BrowsePageSearchableCheckboxList
+					title={'Ingredients'}
+					placeholderText={'Search for a ingredient...'}
+					checkboxes={simplifiedIngredients}
+					onCheckboxChange={handleIngredientCheckboxChange}
+					listType="ingredient"
 				/>
 			</div>
-			<hr />
-			<BrowsePageSearchableCheckboxList
-				title={'Categories'}
-				placeholderText={'Search for a category...'}
-				checkboxes={simplifiedCategories}
-				onCheckboxChange={handleCategoryCheckboxChange}
-				listType="category"
-			/>
-			<hr />
-			<BrowsePageSearchableCheckboxList
-				title={'Ingredients'}
-				placeholderText={'Search for a ingredient...'}
-				checkboxes={simplifiedIngredients}
-				onCheckboxChange={handleIngredientCheckboxChange}
-				listType="ingredient"
-			/>
 		</div>
 	);
 }

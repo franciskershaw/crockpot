@@ -32,15 +32,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Ordering Imports
-
-- React and React-related libraries: Start with the core React import.
-- React Icons: Follow with React icons as they are specific third-party library components.
-- Next.js Modules: After React-specific imports, include imports from Next.js. This typically includes routing and navigation modules, and other Next.js specific functionalities.
-- Third-party Libraries: Follow with imports from third-party libraries (like uuid).
-- Type Imports: Next, include any TypeScript type imports.
-- Hooks: Follow with your custom hooks imports.
-- Context: Follow with your custom context imports.
-- Shared Components: Follow with shared components from your project, then ones specific to your page.
-- Styles: Finally, include your style imports.
