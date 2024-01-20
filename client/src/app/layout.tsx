@@ -1,11 +1,12 @@
 import React from 'react';
 
+import Providers from '@/src/providers/Providers';
 import type { Metadata } from 'next';
 
 import ButtonAddRecipe from '@/src/components/ButtonAddRecipe/ButtonAddRecipe';
 import NavbarBottom from '@/src/components/Navbar/NavbarBottom/NavbarBottom';
 import NavbarTop from '@/src/components/Navbar/NavbarTop/NavbarTop';
-import Providers from '@/src/providers/Providers';
+
 import '@/src/styles/globals.scss';
 
 export const metadata: Metadata = {
@@ -22,8 +23,8 @@ export default function RootLayout({
 		<html lang="en">
 			<body>
 				<Providers>
-					{/* <NavbarTop /> */}
-					<main className="">{children}</main>
+					<NavbarTop />
+					<main className="mt-[74px] md:mt-[85px]">{children}</main>
 					{/* <ButtonAddRecipe /> */}
 					{/* <NavbarBottom /> */}
 				</Providers>

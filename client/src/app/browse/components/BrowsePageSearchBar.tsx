@@ -15,7 +15,7 @@ function BrowsePageSearchBar() {
 		useBrowsePageContext();
 
 	return (
-		<div className="flex space-x-2 p-2">
+		<div className="flex space-x-2 pb-2 pt-4">
 			<SearchBar
 				searchQuery={recipeSearchQuery}
 				setSearchQuery={setRecipeSearchQuery}

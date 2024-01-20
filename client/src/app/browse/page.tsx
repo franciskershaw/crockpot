@@ -61,13 +61,13 @@ const BrowsePage = () => {
 
 	return (
 		<div className="container container--1-2">
-			<div className="hidden md:block relative">
-				<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar border border-black">
+			<div className="container--1-2__1">
+				<div className="container--1-2__1__sticky-menu">
 					<BrowsePageFiltersMenu />
 				</div>
 			</div>
-			<div className="relative">
-				<div className="bg-white/90 sticky top-0 left-0 right-0 z-searchBar">
+			<div className="container--1-2__2">
+				<div className="container--1-2__2__sticky-menu">
 					<BrowsePageSearchBar />
 					<BrowsePageAppliedFilters recipeNum={filteredRecipes.length} />
 				</div>
