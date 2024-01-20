@@ -1,8 +1,7 @@
 // TODO - Decide on styling, add disabled prop to - button on 0
-
 import React from 'react';
-
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+
 import Button from '../Button/Button';
 import InputGroup from '../FormComponents/InputGroup/InputGroup';
 
@@ -38,7 +37,15 @@ const QuantityInput = ({
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const newValue = parseInt(event.target.value, 10);
+		const inputVal = event.target.value;
+
+		if (isNaN(parseInt(inputVal, 10)) || inputVal === '') {
+			setValue(min);
+			if (onChange) onChange(min);
+			return;
+		}
+
+		const newValue = parseInt(inputVal, 10);
 		const clampedValue = Math.max(min, Math.min(max, newValue));
 		setValue(clampedValue);
 		if (onChange) onChange(clampedValue);
