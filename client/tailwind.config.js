@@ -47,6 +47,7 @@ module.exports = {
 			back: -1,
 			modalHeader: 15,
 			searchBar: 15,
+			addRecipe: 20,
 			navBottom: 20,
 			navTop: 25,
 			navHamburger: 30,

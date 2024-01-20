@@ -6,7 +6,8 @@ import Link from 'next/link';
 
 import useUser from '@/src/hooks/auth/useUser';
 
-import Button from '../../Button/Button';
+import Button from '@/src/components/Button/Button';
+import ButtonAddRecipe from '@/src/components/ButtonAddRecipe/ButtonAddRecipe';
 
 const NavbarSharedLinks = () => {
 	const { user } = useUser();
@@ -20,6 +21,9 @@ const NavbarSharedLinks = () => {
 					<Button text="Your Crockpot" type="primary" border />
 				</Link>
 			)}
+			<nav className="hidden md:block">
+				<ButtonAddRecipe />
+			</nav>
 		</div>
 	);
 };
