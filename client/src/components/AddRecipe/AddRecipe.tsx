@@ -244,6 +244,9 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 
 	const handleNameChange = (name: string) => {
 		setNameError('');
+		if (!name.trim()) {
+			setNameError('Recipe name is required.');
+		}
 		setName(name);
 	};
 

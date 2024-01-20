@@ -34,7 +34,7 @@ const useAddItem = () => {
 	const { mutate } = useMutation((itemData: itemData) => addItem(itemData), {
 		onSuccess: async (data: Item) => {
 			await queryClient.invalidateQueries([queryKeys.items], {});
-			toast.success(`New recipe created: ${data.name}`);
+			toast.success(`New item created: ${data.name}`);
 		},
 		onError: (error: AxiosError) => {
 			const message = (error.response?.data as { message?: string })?.message;
