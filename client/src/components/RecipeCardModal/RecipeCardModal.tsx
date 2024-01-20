@@ -85,7 +85,9 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 			<div className="relative">
 				<div
 					className="bg-cover bg-center h-80 relative"
-					style={{ backgroundImage: `url(${recipe.image.url})` }}
+					style={{
+						backgroundImage: `url(${recipe.image?.url || '/images/placeholder.png'})`,
+					}}
 				>
 					{(recipe.createdBy._id === user?._id || user?.isAdmin) && (
 						<div className="absolute right-5 top-2">

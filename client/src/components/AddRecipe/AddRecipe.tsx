@@ -373,7 +373,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				setImage={setSelectedImage}
 				label="Upload Image"
 				id="recipeImage"
-				existingImageUrl={recipe?.image.url}
+				existingImageUrl={recipe?.image?.url}
 			/>
 			<div className="flex justify-between">
 				<QuantityInput

@@ -1,9 +1,12 @@
 import React from 'react';
-import ButtonFav from '../ButtonFav/ButtonFav';
+
 import ButtonCart from '../ButtonCart/ButtonCart';
+import ButtonFav from '../ButtonFav/ButtonFav';
 import TimingTag from '../TimingTag/TimingTag';
-import useUser from '@/src/hooks/auth/useUser';
+
 import { Category, Recipe } from '@/src/types/types';
+
+import useUser from '@/src/hooks/auth/useUser';
 
 type RecipeCardProps = {
 	recipe: Recipe;
@@ -26,7 +29,9 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 				{/* Background image */}
 				<div
 					className="bg-cover bg-center h-64"
-					style={{ backgroundImage: `url(${recipe.image.url})` }}
+					style={{
+						backgroundImage: `url(${recipe.image?.url || '/images/placeholder.png'})`,
+					}}
 				/>
 
 				{/* Absolute buttons */}
