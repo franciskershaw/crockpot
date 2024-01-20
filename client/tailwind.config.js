@@ -22,6 +22,9 @@ module.exports = {
 			tertiary: {
 				DEFAULT: '#fabd1e',
 			},
+			error: {
+				DEFAULT: '#ff0033',
+			},
 			white: '#feffff',
 			blue: {
 				light: '#efecf7',

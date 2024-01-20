@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
+import Select, { MultiValue, SingleValue } from 'react-select';
+
 import InputGroup from '../InputGroup/InputGroup';
-import Select, { SingleValue, MultiValue } from 'react-select';
 
 interface Option {
 	value: string;
@@ -15,6 +16,7 @@ interface SelectInputProps {
 	label: string;
 	isMulti?: boolean;
 	placeholder?: string;
+	error?: string;
 }
 
 const SelectInput: FC<SelectInputProps> = ({
@@ -25,11 +27,12 @@ const SelectInput: FC<SelectInputProps> = ({
 	label,
 	isMulti = false,
 	placeholder = 'Please select',
+	error = '',
 }) => {
 	const selectedOptions = isMulti
 		? options.filter(
 				(option) => Array.isArray(value) && value.includes(option.value),
-		  )
+			)
 		: options.find((option) => option.value === value);
 
 	const handleChange = (
@@ -59,6 +62,7 @@ const SelectInput: FC<SelectInputProps> = ({
 				placeholder={placeholder}
 				isOptionDisabled={isOptionDisabled}
 			/>
+			{error && <p className="pt-2 text-error text-xs">{error}</p>}
 		</InputGroup>
 	);
 };

@@ -49,6 +49,12 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	);
 	const [notes, setNotes] = useState<string[]>(recipe?.notes || ['']);
 
+	const [nameError, setNameError] = useState('');
+	const [categoryError, setCategoryError] = useState('');
+	const [ingredientError, setIngredientError] = useState('');
+	const [instructionError, setInstructionError] = useState('');
+	const [instructionErrors, setInstructionErrors] = useState<string[]>([]);
+
 	const initialState = useRef({
 		name: recipe?.name || '',
 		timeInMinutes: recipe?.timeInMinutes || 30,
@@ -76,7 +82,58 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 		return filterItems(ingredients, ingredientSearch);
 	}, [ingredients, ingredientSearch, filterItems]);
 
+	const validateForm = () => {
+		let isValid = true;
+
+		// Validate Recipe Name
+		if (!name.trim()) {
+			setNameError('Recipe name is required.');
+			isValid = false;
+		} else {
+			setNameError('');
+		}
+
+		// Validate Categories
+		if (selectedCategories.length === 0) {
+			setCategoryError('At least one category is required.');
+			isValid = false;
+		} else {
+			setCategoryError('');
+		}
+
+		// Validate Ingredients
+		if (selectedIngredients.length === 0) {
+			setIngredientError('At least one ingredient is required.');
+			isValid = false;
+		} else {
+			setIngredientError('');
+		}
+
+		// Validate Instructions
+		const newInstructionErrors = instructions.map((instruction, index) => {
+			if (!instruction.trim()) {
+				isValid = false;
+				return 'Instruction cannot be empty.';
+			}
+			return '';
+		});
+
+		setInstructionErrors(newInstructionErrors);
+		if (newInstructionErrors.some((error) => error !== '')) {
+			setInstructionError('All instructions must be filled.');
+			isValid = false;
+		} else {
+			setInstructionError('');
+		}
+
+		return isValid;
+	};
+
 	const handleSubmit = () => {
+		if (!validateForm()) {
+			// Prevent form submission if validation fails
+			return;
+		}
 		const formData = new FormData();
 		const isEditing = !!recipe;
 
@@ -186,14 +243,21 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	};
 
 	const handleNameChange = (name: string) => {
+		setNameError('');
 		setName(name);
 	};
 
 	const handleCategoryChange = (newCategories: string[]) => {
+		if (!newCategories.length) {
+			setCategoryError('At least one category is required.');
+		} else {
+			setCategoryError('');
+		}
 		setSelectedCategories(newCategories);
 	};
 
 	const addIngredient = (result: Item) => {
+		setIngredientError('');
 		setSelectedIngredients((prev) => [
 			...prev,
 			{
@@ -238,6 +302,9 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	};
 
 	const handleRemoveIngredient = (index: number) => {
+		if (selectedIngredients.length === 1) {
+			setIngredientError('At least one ingredient is required.');
+		}
 		setSelectedIngredients((prev) => prev.filter((_, idx) => idx !== index));
 	};
 
@@ -247,11 +314,17 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			'',
 			...prev.slice(index + 1),
 		]);
+		setInstructionErrors((prev) => [
+			...prev.slice(0, index + 1),
+			'',
+			...prev.slice(index + 1),
+		]);
 	};
 
 	const handleRemoveInstruction = (index: number) => {
 		if (instructions.length > 1) {
 			setInstructions((prev) => prev.filter((_, idx) => idx !== index));
+			setInstructionErrors((prev) => prev.filter((_, idx) => idx !== index));
 		}
 	};
 
@@ -259,6 +332,12 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 		setInstructions((prev) =>
 			prev.map((instruction, idx) => (idx === index ? newValue : instruction)),
 		);
+		setInstructionErrors((prev) =>
+			prev.map((error, idx) => (idx === index ? '' : error)),
+		);
+		if (newValue.trim() && instructionError) {
+			setInstructionError('');
+		}
 	};
 
 	const handleAddNote = (index: number) => {
@@ -288,6 +367,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				value={name}
 				onChange={handleNameChange}
 				label="Recipe Name*"
+				error={nameError}
 			/>
 			<ImageInput
 				setImage={setSelectedImage}
@@ -301,12 +381,16 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					setValue={setTimeInMinutes}
 					id="prepTime"
 					label="Prep Time*"
+					min={5}
+					max={180}
 				/>
 				<QuantityInput
 					label="Serves*"
 					id="serves"
 					value={serves}
 					setValue={setServes}
+					min={1}
+					max={20}
 				/>
 			</div>
 			<SelectInput
@@ -320,6 +404,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				label="Select Categories (max 3)*"
 				isMulti
 				placeholder="Please select categories"
+				error={categoryError}
 			/>
 
 			<InputGroup label="Ingredients*">
@@ -329,6 +414,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							searchQuery={ingredientSearch}
 							setSearchQuery={setIngredientSearch}
 							placeholder="Search for ingredients"
+							error={ingredientError}
 						/>
 						{searchResults.length > 0 && (
 							<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
@@ -387,6 +473,9 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				</div>
 			</InputGroup>
 			<InputGroup label="Instructions">
+				{instructionError && (
+					<p className="pb-2 text-error text-xs">{instructionError}</p>
+				)}
 				{instructions.map((instruction, index) => (
 					<Fragment key={`instruction_${index}`}>
 						<TextInput
@@ -394,6 +483,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							id={`instruction_${index}`}
 							value={instruction}
 							onChange={(newValue) => handleInstructionChange(index, newValue)}
+							error={instructionErrors[index]}
 						/>
 						<div className="flex justify-center gap-4">
 							{instructions.length > 1 && (
