@@ -72,7 +72,7 @@ const NavbarTop = () => {
 					)}
 				</div>
 				<div
-					className={`nav__menu bg-white flex flex-col items-center justify-center space-y-4 animate z-navMenu ${
+					className={`md:hidden nav__menu bg-white flex flex-col items-center justify-center space-y-4 animate z-navMenu ${
 						isOpen ? 'nav__menu--open' : ''
 					} `}
 				>
