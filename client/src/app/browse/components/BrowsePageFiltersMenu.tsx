@@ -37,7 +37,7 @@ function BrowsePageFiltersMenu() {
 	const { user } = useUser();
 
 	const myRecipes = user
-		? allRecipes.filter((recipe: Recipe) => recipe.createdBy === user._id)
+		? allRecipes.filter((recipe: Recipe) => recipe.createdBy._id === user._id)
 		: null;
 
 	const handleCategoryCheckboxChange = (

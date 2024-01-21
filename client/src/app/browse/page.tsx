@@ -37,7 +37,7 @@ const BrowsePage = () => {
 		const isInFavourites =
 			!showOnlyFavourites || favouriteRecipes.includes(recipe._id);
 		const isMyRecipe =
-			!showOnlyMyRecipes || (user && recipe.createdBy === user._id);
+			!showOnlyMyRecipes || (user && recipe.createdBy._id === user._id);
 
 		return (
 			isInFavourites &&
