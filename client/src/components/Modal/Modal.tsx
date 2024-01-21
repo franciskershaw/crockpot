@@ -14,6 +14,7 @@ interface ModalProps {
 	children: JSX.Element;
 	open?: boolean;
 	nested?: boolean;
+	paddingOn?: boolean;
 	setOpen?: (open: boolean) => void;
 }
 
@@ -23,6 +24,7 @@ const Modal: React.FC<ModalProps> = ({
 	children,
 	open,
 	nested,
+	paddingOn,
 	setOpen,
 }) => {
 	return (
@@ -36,7 +38,7 @@ const Modal: React.FC<ModalProps> = ({
 					className={`DialogContent relative ${nested && 'DialogContent--nested'}`}
 				>
 					<div className="flex justify-between items-center bg-white border border-black-25 px-3 py-2 sticky top-0 left-0 z-modalHeader">
-						<Dialog.Title className="DialogTitle truncate">
+						<Dialog.Title className="DialogTitle truncate capitalize pr-0.5">
 							{title}
 						</Dialog.Title>
 						<div>
@@ -47,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({
 							</Dialog.Close>
 						</div>
 					</div>
-					{children}
+					<div className={`${paddingOn ? 'p-3' : ''}`}>{children}</div>
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>

@@ -81,7 +81,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 	};
 
 	return (
-		<div>
+		<>
 			<div className="relative">
 				<div
 					className="bg-cover bg-center h-80 relative"
@@ -98,10 +98,15 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 											<RiEdit2Line />
 										</Button>
 									}
-									title={`Edit ${recipe.name}`}
+									title={
+										<>
+											Edit <i>{recipe.name}</i>
+										</>
+									}
 									open={modalOpen}
 									setOpen={setModalOpen}
 									nested
+									paddingOn
 								>
 									<AddRecipe recipe={recipe} />
 								</Modal>
@@ -115,12 +120,18 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 											<RiDeleteBinLine />
 										</Button>
 									}
-									title="Are you sure you'd like to delete this recipe?"
+									title={
+										<>
+											Delete <i>{recipe.name}</i>
+										</>
+									}
 									open={deleteRecipeConf}
 									setOpen={setDeleteRecipeConf}
 									nested
+									paddingOn
 								>
-									<div className="p-3 flex justify-center">
+									<div className="flex flex-col items-center space-y-2">
+										<p>Are you sure you'd like to delete this recipe?</p>
 										<Button
 											onClick={handleDelete}
 											text="Delete Recipe"
@@ -160,7 +171,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 					<>{tabInstructions()}</>
 				</Tabs>
 			</div>
-		</div>
+		</>
 	);
 };
 

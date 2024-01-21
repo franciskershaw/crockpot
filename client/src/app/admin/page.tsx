@@ -18,7 +18,7 @@ const AdminPage = () => {
 	}
 
 	return (
-		<div className="container pt-4 md:pt-0">
+		<div className="container pt-3 md:pt-4">
 			<Tabs titles={tabTitles}>
 				<RecipesTab />
 				<ItemsTab />

@@ -69,7 +69,7 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 	};
 
 	return (
-		<form onSubmit={(e) => e.preventDefault()} className=" h-56">
+		<form onSubmit={(e) => e.preventDefault()}>
 			<TextInput
 				label="Item name"
 				id="name"

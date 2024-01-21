@@ -27,20 +27,15 @@ const RecipesTab = () => {
 			<div className="flex items-center gap-2 my-4">
 				<Modal
 					trigger={
-						<div>
-							<Button border>
-								<AiOutlinePlus />
-							</Button>
-						</div>
+						<Button type="primary" border text="Add New Recipe"></Button>
 					}
 					title="Add new recipe"
 					open={addRecipeModalOpen}
 					setOpen={setAddRecipeModalOpen}
+					paddingOn
 				>
 					<AddRecipe setModal={setAddRecipeModalOpen} />
 				</Modal>
-
-				<p className="text-lg">Add new recipe</p>
 			</div>
 			<div className="w-full mb-4 md:w-1/3">
 				<SearchBar
@@ -58,31 +53,37 @@ const RecipesTab = () => {
 								key={result._id}
 							>
 								<p className="w-1/2 md:w-2/3">{result.name}</p>
-								<div className="flex gap-2">
+								<div className="flex space-x-2">
 									<Modal
 										trigger={
-											<div className="border-2 border-black bg-white rounded-full w-fit">
-												<Button type="primary">
-													<RiEdit2Line />
-												</Button>
-											</div>
+											<Button type="primary" border>
+												<RiEdit2Line />
+											</Button>
 										}
-										title={`Edit ${result.name}`}
+										title={
+											<>
+												Edit <i>{result.name}</i>
+											</>
+										}
+										paddingOn
 									>
 										<AddRecipe recipe={result} />
 									</Modal>
 									<Modal
 										trigger={
-											<div className="border-2 border-black bg-white rounded-full w-fit">
-												<Button type="primary">
-													<RiDeleteBinLine />
-												</Button>
-											</div>
+											<Button type="primary" border>
+												<RiDeleteBinLine />
+											</Button>
 										}
-										title={`Are you sure you'd like to delete ${result.name}?`}
+										title={
+											<>
+												Delete <i>{result.name}</i>
+											</>
+										}
+										paddingOn
 									>
-										<div className="flex flex-col items-center justify-center gap-3">
-											<p className="text-xl">Warning - cannot be undone</p>
+										<div className="flex flex-col items-center space-y-2">
+											<p>Are you sure you'd like to delete this recipe?</p>
 											<Button
 												onClick={() => deleteRecipe(result._id)}
 												text="Delete Recipe"

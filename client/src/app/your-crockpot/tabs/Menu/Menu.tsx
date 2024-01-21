@@ -29,7 +29,7 @@ const Menu = () => {
 			<div className="container--1-2__2">
 				<div className="container--1-2__2__sticky-menu p-3 flex justify-center space-x-4 md:hidden">
 					<Modal
-						title={`Shopping List`}
+						title="Shopping List"
 						trigger={<Button type="primary" border text="Shopping List" />}
 					>
 						<ShoppingList />

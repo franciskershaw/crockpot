@@ -36,9 +36,10 @@ function ButtonAddRecipe() {
 					</div>
 				</div>
 			}
-			title="Add new recipe"
+			title="Add New Recipe"
 			open={modalOpen}
 			setOpen={setModalOpen}
+			paddingOn
 		>
 			<AddRecipe setModal={setModalOpen} />
 		</Modal>

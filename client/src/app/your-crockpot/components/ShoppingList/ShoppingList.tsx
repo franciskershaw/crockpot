@@ -101,10 +101,16 @@ const ShoppingList = () => {
 								{searchResults.map((result) => (
 									<Modal
 										key={result._id}
-										title={`Add extra ${result.name} to Shopping List`}
+										title={
+											<>
+												Add extra <i>{result.name}</i> to shopping list
+											</>
+										}
 										trigger={<p>{result.name}</p>}
+										paddingOn
+										nested
 									>
-										<div className="p-3 flex flex-col justify-center">
+										<div className="flex flex-col justify-center space-y-3">
 											<div className="flex justify-center space-x-4">
 												<div>
 													<label htmlFor="">Amount</label>

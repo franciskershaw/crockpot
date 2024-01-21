@@ -27,7 +27,7 @@ function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 					key={uuidv4()}
 					title={
 						<div className="flex">
-							<div>{recipe.timeInMinutes} mins</div>
+							<div className="lowercase">{recipe.timeInMinutes} mins</div>
 							{recipe.categories.map((category, index) => (
 								<div key={index} className="ml-2 pl-2 border-l border-black">
 									{category.name}
