@@ -2,6 +2,7 @@
 
 import useProtectedRoute from '@/src/hooks/auth/useProtectedRoute';
 
+import LoadingSpinner from '@/src/components/Loading/LoadingSpinner';
 import Tabs from '@/src/components/Tabs/Tabs';
 
 import ItemsTab from './tabs/items/ItemsTab';
@@ -13,7 +14,7 @@ const AdminPage = () => {
 	const tabTitles = ['Recipes', 'Items'];
 
 	if (fetchingUser) {
-		return <div>Loading...</div>;
+		return <LoadingSpinner />;
 	}
 
 	return (
