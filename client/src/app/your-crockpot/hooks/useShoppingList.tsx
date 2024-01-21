@@ -1,18 +1,22 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import useAxios from '@/src/hooks/axios/useAxios';
-import { queryKeys } from '@/src/providers/Providers';
-import useUser from '@/src/hooks/auth/useUser';
-import { createConfig, combineArrays } from '@/src/helper';
-import useItemCategories from '@/src/hooks/items/useItemCategories';
-import {
-	ItemCategory,
-	ShoppingListItem,
-	GroupedShoppingList,
-	User,
-	ShoppingItem,
-} from '@/src/types/types';
-import useExtraItems from './useExtraItems';
 import { useMemo } from 'react';
+
+import { combineArrays, createConfig } from '@/src/helper';
+import { queryKeys } from '@/src/providers/Providers';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import {
+	GroupedShoppingList,
+	ItemCategory,
+	ShoppingItem,
+	ShoppingListItem,
+	User,
+} from '@/src/types/types';
+
+import useUser from '@/src/hooks/auth/useUser';
+import useAxios from '@/src/hooks/axios/useAxios';
+import useItemCategories from '@/src/hooks/items/useItemCategories';
+
+import useExtraItems from './useExtraItems';
 
 type ToggleVariables = {
 	itemId: string;

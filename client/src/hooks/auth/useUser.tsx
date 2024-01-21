@@ -1,7 +1,9 @@
-import useAxios from '../axios/useAxios';
-import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/src/providers/Providers';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { User } from '@/src/types/types';
+
+import useAxios from '../axios/useAxios';
 
 const useUser = () => {
 	const api = useAxios();

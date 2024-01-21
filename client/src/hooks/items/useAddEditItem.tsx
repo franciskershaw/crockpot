@@ -1,13 +1,13 @@
-import { queryKeys } from '@/src/providers/Providers';
-
 import { toast } from 'react-toastify';
 
-import useUser from '../auth/useUser';
-import useAxios from '../axios/useAxios';
+import { queryKeys } from '@/src/providers/Providers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { Item } from '@/src/types/types';
+
+import useUser from '../auth/useUser';
+import useAxios from '../axios/useAxios';
 
 type itemData = {
 	name: string;

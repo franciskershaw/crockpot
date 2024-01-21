@@ -1,4 +1,4 @@
-import { User, ShoppingListItem } from '@/src/types/types';
+import { ShoppingListItem, User } from '@/src/types/types';
 
 export const createConfig = (user: User) => {
 	return {

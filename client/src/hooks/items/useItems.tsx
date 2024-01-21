@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import useAxios from '../axios/useAxios';
 import { queryKeys } from '@/src/providers/Providers';
+import { useQuery } from '@tanstack/react-query';
+
 import { Item } from '@/src/types/types';
+
+import useAxios from '../axios/useAxios';
 
 const householdCategoryId = '6310a881b61a0ace3a1281ec';
 

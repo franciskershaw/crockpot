@@ -1,9 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import useAxios from '@/src/hooks/axios/useAxios';
-import { queryKeys } from '@/src/providers/Providers';
-import useUser from '@/src/hooks/auth/useUser';
 import { createConfig } from '@/src/helper';
-import { User, ShoppingListItem } from '@/src/types/types';
+import { queryKeys } from '@/src/providers/Providers';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { ShoppingListItem, User } from '@/src/types/types';
+
+import useUser from '@/src/hooks/auth/useUser';
+import useAxios from '@/src/hooks/axios/useAxios';
 
 type UpdateExtraItemsBody = {
 	quantity?: number;

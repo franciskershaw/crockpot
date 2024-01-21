@@ -1,9 +1,11 @@
 'use client';
 
 import useProtectedRoute from '@/src/hooks/auth/useProtectedRoute';
+
 import Tabs from '@/src/components/Tabs/Tabs';
-import RecipesTab from './tabs/recipes/RecipesTab';
+
 import ItemsTab from './tabs/items/ItemsTab';
+import RecipesTab from './tabs/recipes/RecipesTab';
 
 const AdminPage = () => {
 	const { fetchingUser } = useProtectedRoute('/your-crockpot', true);
@@ -15,7 +17,7 @@ const AdminPage = () => {
 	}
 
 	return (
-		<div className='container pt-4 md:pt-0'>
+		<div className="container pt-4 md:pt-0">
 			<Tabs titles={tabTitles}>
 				<RecipesTab />
 				<ItemsTab />

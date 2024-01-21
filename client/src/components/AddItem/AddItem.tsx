@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
 
-import Button from '../Button/Button';
-import SelectInput from '../FormComponents/SelectInput/SelectInput';
-import TextInput from '../FormComponents/TextInput/TextInput';
-
 import { Item } from '@/src/types/types';
 
 import { useAddItem, useEditItem } from '@/src/hooks/items/useAddEditItem';
 import useItemCategories from '@/src/hooks/items/useItemCategories';
+
+import Button from '../Button/Button';
+import SelectInput from '../FormComponents/SelectInput/SelectInput';
+import TextInput from '../FormComponents/TextInput/TextInput';
 
 interface AddItemProps {
 	setModal?: (open: boolean) => void;

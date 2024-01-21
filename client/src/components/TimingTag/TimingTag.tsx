@@ -1,6 +1,7 @@
 import React from 'react';
-import Icon from '../Icon/Icon';
 import { AiOutlineClockCircle } from 'react-icons/ai';
+
+import Icon from '../Icon/Icon';
 
 type TimingTagProps = {
 	time: number;

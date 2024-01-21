@@ -1,6 +1,7 @@
-import { FC, useState, useEffect, useRef } from 'react';
-import InputGroup from '../InputGroup/InputGroup';
+import { FC, useEffect, useRef, useState } from 'react';
+
 import Button from '../../Button/Button';
+import InputGroup from '../InputGroup/InputGroup';
 
 interface ImageInputProps {
 	setImage: React.Dispatch<React.SetStateAction<File | null>>;
@@ -48,26 +49,26 @@ const ImageInput: FC<ImageInputProps> = ({
 	return (
 		<InputGroup label={label} htmlFor={id}>
 			{currentImage ? (
-				<div className='flex justify-between items-center'>
+				<div className="flex justify-between items-center">
 					<img
 						src={currentImage}
-						alt='Current'
+						alt="Current"
 						style={{ maxWidth: '200px', maxHeight: '200px' }}
 					/>
-					<div className='w-full flex justify-center'>
-						<Button border text='Clear Image' onClick={handleImageClear} />
+					<div className="w-full flex justify-center">
+						<Button border text="Clear Image" onClick={handleImageClear} />
 					</div>
 				</div>
 			) : (
-				<Button border text='Choose File' onClick={handleButtonClick} />
+				<Button border text="Choose File" onClick={handleButtonClick} />
 			)}
 			<input
-				type='file'
+				type="file"
 				id={id}
 				ref={fileInputRef}
-				className='hidden'
+				className="hidden"
 				onChange={handleImageChange}
-				accept='image/*'
+				accept="image/*"
 			/>
 		</InputGroup>
 	);

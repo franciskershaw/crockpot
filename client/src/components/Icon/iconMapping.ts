@@ -1,15 +1,15 @@
 import {
-	FaFish,
-	FaPepperHot,
 	FaCarrot,
-	FaCookieBite,
-	FaWineGlass,
-	FaLemon,
 	FaCheese,
-	FaToiletPaper,
+	FaCookieBite,
+	FaFish,
+	FaLemon,
+	FaPepperHot,
 	FaQuestion,
+	FaToiletPaper,
+	FaWineGlass,
 } from 'react-icons/fa';
-import { FaJar, FaDrumstickBite } from 'react-icons/fa6';
+import { FaDrumstickBite, FaJar } from 'react-icons/fa6';
 
 const iconMapping: { [key: string]: React.ElementType } = {
 	faFish: FaFish,

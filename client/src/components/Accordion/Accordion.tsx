@@ -1,14 +1,15 @@
 // Checkbox component used on Browse page - Recipe filter, Shopping list page
-
 // TODO -
-
 import React from 'react';
-import * as AccordionRadix from '@radix-ui/react-accordion';
-import Icon from '@/src/components/Icon/Icon';
-import { BsChevronDown } from 'react-icons/bs';
-import { v4 as uuidv4 } from 'uuid';
-import './styles.scss';
 import { useState } from 'react';
+import { BsChevronDown } from 'react-icons/bs';
+
+import * as AccordionRadix from '@radix-ui/react-accordion';
+import { v4 as uuidv4 } from 'uuid';
+
+import Icon from '@/src/components/Icon/Icon';
+
+import './styles.scss';
 
 type AccordionItemProps = {
 	heading: React.ReactNode;
