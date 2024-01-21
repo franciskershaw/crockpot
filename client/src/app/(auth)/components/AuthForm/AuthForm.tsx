@@ -7,11 +7,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import useAuth from '../../../../hooks/auth/useAuth';
-import './_authform.scss';
-
 import useUser from '@/src/hooks/auth/useUser';
 
 import Button from '@/src/components/Button/Button';
+
+import './_authform.scss';
 
 interface Props {
 	type: 'register' | 'login';
@@ -55,7 +55,7 @@ const AuthForm = (props: Props) => {
 	return (
 		<form onSubmit={handleSubmit} className="auth-form">
 			<h2 className="auth-form__title">
-				{props.type === 'login' ? 'Login' : 'Register'}
+				{`${props.type === 'login' ? 'Login' : 'Register'} to Crockpot!`}
 			</h2>
 			<div className="auth-form__input-group">
 				<label htmlFor="username" className="auth-form__input-label">
@@ -116,7 +116,7 @@ const AuthForm = (props: Props) => {
 				) : (
 					<div>
 						<p>Already have an account?</p>
-						<Link href="/login">
+						<Link href="/">
 							<span className="underline">Log In</span>
 						</Link>
 					</div>

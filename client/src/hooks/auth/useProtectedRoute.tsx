@@ -1,8 +1,10 @@
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+
+import { useRouter } from 'next/navigation';
+
 import useUser from '@/src/hooks/auth/useUser';
 
-const useProtectedRoute = (redirectTo = '/login', adminOnly = false) => {
+const useProtectedRoute = (redirectTo = '/', adminOnly = false) => {
 	const router = useRouter();
 	const { user, fetchingUser } = useUser();
 

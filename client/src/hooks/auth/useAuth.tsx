@@ -1,7 +1,8 @@
 import { toast } from 'react-toastify';
 
-import useAxios from '../axios/useAxios';
 import useUser from './useUser';
+
+import useAxios from '../axios/useAxios';
 
 const useAuth = () => {
 	const api = useAxios();

@@ -63,8 +63,8 @@ const NavbarTop = () => {
 						<Button text="Logout" border onClick={handleLogout} />
 					) : (
 						<>
-							{pathname !== '/login' && pathname !== '/register' && (
-								<Link href="/login">
+							{pathname !== '/' && pathname !== '/register' && (
+								<Link href="/">
 									<Button text="Login" border />
 								</Link>
 							)}
@@ -84,7 +84,7 @@ const NavbarTop = () => {
 					{user ? (
 						<Button text="Logout" border onClick={handleLogout} />
 					) : (
-						<Link onClick={() => setIsOpen(false)} href="/login">
+						<Link onClick={() => setIsOpen(false)} href="/">
 							<Button text="Login" border />
 						</Link>
 					)}

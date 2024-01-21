@@ -1,9 +1,8 @@
-import { queryKeys } from '@/src/providers/Providers';
-
 import { toast } from 'react-toastify';
 
 import { useRouter } from 'next/navigation';
 
+import { queryKeys } from '@/src/providers/Providers';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -46,10 +45,11 @@ const useAxios = () => {
 					queryClient.removeQueries([queryKeys.shoppingList]);
 					queryClient.removeQueries([queryKeys.extraItems]);
 					queryClient.removeQueries([queryKeys.recipeMenu]);
-					router.push('/login');
+					router.push('/');
 				}
 			} else {
-				toast.error(error.response.data.message);
+				if (error.response.data.errorCode !== 'NO_TOKEN')
+					toast.error(error.response.data.message);
 			}
 		},
 	);

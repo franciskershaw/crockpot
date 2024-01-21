@@ -1,9 +1,7 @@
-const HomePage = () => {
-	return (
-		<div>
-			<h1>Crockpot landing page</h1>
-		</div>
-	);
+import AuthForm from './(auth)/components/AuthForm/AuthForm';
+
+const LoginPage = () => {
+	return <AuthForm type="login" />;
 };
 
-export default HomePage;
+export default LoginPage;
