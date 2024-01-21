@@ -56,6 +56,8 @@ module.exports = {
 			navHamburger: 30,
 			modalOverlay: 35,
 			modal: 40,
+			modalOverlayNested: 45,
+			modalNested: 50,
 		},
 		screens: {
 			xs: '440px',

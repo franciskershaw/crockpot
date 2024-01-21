@@ -101,6 +101,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									title={`Edit ${recipe.name}`}
 									open={modalOpen}
 									setOpen={setModalOpen}
+									nested
 								>
 									<AddRecipe recipe={recipe} />
 								</Modal>
@@ -117,6 +118,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									title="Are you sure you'd like to delete this recipe?"
 									open={deleteRecipeConf}
 									setOpen={setDeleteRecipeConf}
+									nested
 								>
 									<div className="p-3 flex justify-center">
 										<Button

@@ -1,5 +1,9 @@
 .DialogOverlay {
 	@apply z-modalOverlay inset-0 bg-black-50 fixed;
+
+	&--nested {
+		@apply z-modalOverlayNested;
+	}
 }
 
 .DialogContent {
@@ -12,6 +16,10 @@
 	transform: translate(-50%, -50%);
 
 	@apply bg-white overflow-y-scroll z-modal rounded-xl w-[90vw] max-h-[90vh] max-w-6xl;
+
+	&--nested {
+		@apply z-modalNested w-[80vw];
+	}
 }
 
 .DialogContent:focus {
