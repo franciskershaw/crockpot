@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
 
 import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
@@ -82,7 +81,7 @@ const RecipesTab = () => {
 										}
 										paddingOn
 									>
-										<div className="flex flex-col items-center space-y-2">
+										<div className="modal--p-and-button">
 											<p>Are you sure you'd like to delete this recipe?</p>
 											<Button
 												onClick={() => deleteRecipe(result._id)}

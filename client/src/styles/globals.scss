@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-// TODO - need global values for primary/secondary/tertiary components, focus/hover states, animation speeds, padding/margins
-
 // Don't delete!
 .tw {
 	border: black 1px solid;
@@ -99,8 +97,7 @@ label {
 }
 
 h4,
-.h4,
-label {
+.h4 {
 	@apply text-base;
 }
 
@@ -139,15 +136,43 @@ ol {
 	}
 }
 
+// Forms
+input,
+select {
+	@apply border-black border-2 bg-white p-2 rounded w-full;
+}
+
+input.searchbar,
+select {
+	background-repeat: no-repeat;
+	background-position: right 8px center;
+	background-size: 24px;
+	padding-right: 40px;
+}
+
+input.searchbar {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>'); // Magnifying glass
+}
+
 select {
 	-webkit-appearance: none; /* Removes default style Chrome & Safari */
 	-moz-appearance: none; /* Removes default style Firefox */
 	appearance: none; /* Removes default style IE */
-	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/></svg>'); /* Chevron icon */
-	background-repeat: no-repeat;
-	background-position: right 8px center;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>'); /* Chevron icon */
+}
 
-	@apply p-2 border-black border-2 bg-white rounded w-full cursor-pointer;
+label {
+}
+
+.error {
+	@apply pt-1 text-error text-xs;
+}
+
+// Modals
+.modal {
+	&--p-and-button {
+		@apply flex flex-col items-center space-y-2;
+	}
 }
 
 // Animation

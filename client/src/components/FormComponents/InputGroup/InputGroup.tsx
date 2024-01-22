@@ -13,11 +13,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
 }) => {
 	return (
 		<div className="flex flex-col">
-			{label && (
-				<label htmlFor={htmlFor} className="mb-2 text-sm font-medium">
-					{label}
-				</label>
-			)}
+			{label && <label htmlFor={htmlFor}>{label}</label>}
 			{children}
 		</div>
 	);

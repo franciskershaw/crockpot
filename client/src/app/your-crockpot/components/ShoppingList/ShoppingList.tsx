@@ -110,7 +110,7 @@ const ShoppingList = () => {
 										paddingOn
 										nested
 									>
-										<div className="flex flex-col justify-center space-y-3">
+										<div className="modal--p-and-button">
 											<div className="flex justify-center space-x-4">
 												<div>
 													<label htmlFor="">Amount</label>
@@ -136,13 +136,11 @@ const ShoppingList = () => {
 													</select>
 												</div>
 											</div>
-											<div className="mx-auto">
-												<Button
-													onClick={() => handleAddExtraItem(result)}
-													text="Add to Shopping List"
-													border
-												/>
-											</div>
+											<Button
+												onClick={() => handleAddExtraItem(result)}
+												text="Add to Shopping List"
+												border
+											/>
 										</div>
 									</Modal>
 								))}

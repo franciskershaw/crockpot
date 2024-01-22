@@ -62,7 +62,7 @@ const SelectInput: FC<SelectInputProps> = ({
 				placeholder={placeholder}
 				isOptionDisabled={isOptionDisabled}
 			/>
-			{error && <p className="pt-2 text-error text-xs">{error}</p>}
+			{error && <p className="error">{error}</p>}
 		</InputGroup>
 	);
 };

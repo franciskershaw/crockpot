@@ -22,22 +22,17 @@ const SearchBar = ({
 	};
 
 	return (
-		<div className="relative w-full">
+		<>
 			{label ? <label htmlFor="">{label}</label> : ''}
 			<input
-				className="border-black border-2 bg-white p-2 rounded w-full focus-visible:black"
+				className="searchbar"
 				type="text"
 				placeholder={placeholder || 'Search for...'}
 				value={searchQuery}
 				onChange={handleInputChange}
 			/>
-			<div className="absolute bottom-0 right-0 p-1.5 pl-10">
-				<Icon type="primary">
-					<AiOutlineSearch />
-				</Icon>
-			</div>
-			{error && <p className="pt-2 text-error text-xs">{error}</p>}
-		</div>
+			{error && <p className="error">{error}</p>}
+		</>
 	);
 };
 

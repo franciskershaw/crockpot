@@ -5,9 +5,9 @@ import { Item } from '@/src/types/types';
 import { useAddItem, useEditItem } from '@/src/hooks/items/useAddEditItem';
 import useItemCategories from '@/src/hooks/items/useItemCategories';
 
-import Button from '../Button/Button';
-import SelectInput from '../FormComponents/SelectInput/SelectInput';
-import TextInput from '../FormComponents/TextInput/TextInput';
+import Button from '@/src/components/Button/Button';
+import SelectInput from '@/src/components/FormComponents/SelectInput/SelectInput';
+import TextInput from '@/src/components/FormComponents/TextInput/TextInput';
 
 interface AddItemProps {
 	setModal?: (open: boolean) => void;
@@ -89,7 +89,7 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 				error={categoryError}
 			/>
 
-			<div className="flex justify-center items-center">
+			<div className="flex justify-center">
 				<Button text="Submit" type="primary" border onClick={handleSubmit} />
 			</div>
 		</form>

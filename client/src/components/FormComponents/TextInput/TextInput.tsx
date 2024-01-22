@@ -24,12 +24,12 @@ const TextInput: React.FC<TextInputProps> = ({
 			<input
 				type="text"
 				id={id}
-				className="border p-2 rounded-lg text-sm"
+				className=""
 				placeholder={placeholder}
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 			/>
-			{error && <p className="pt-2 text-error text-xs">{error}</p>}
+			{error && <p className="error">{error}</p>}
 		</InputGroup>
 	);
 };

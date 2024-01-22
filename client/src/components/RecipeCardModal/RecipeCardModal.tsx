@@ -130,7 +130,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									nested
 									paddingOn
 								>
-									<div className="flex flex-col items-center space-y-2">
+									<div className="modal--p-and-button">
 										<p>Are you sure you'd like to delete this recipe?</p>
 										<Button
 											onClick={handleDelete}

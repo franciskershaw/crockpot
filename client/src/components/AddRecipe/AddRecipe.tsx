@@ -10,13 +10,13 @@ import {
 } from '@/src/hooks/recipes/useAddEditRecipe';
 import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
 
-import Button from '../Button/Button';
-import ImageInput from '../FormComponents/ImageInput/ImageInput';
-import InputGroup from '../FormComponents/InputGroup/InputGroup';
-import SelectInput from '../FormComponents/SelectInput/SelectInput';
-import TextInput from '../FormComponents/TextInput/TextInput';
-import SearchBar from '../FormSearchBar/SearchBar';
-import QuantityInput from '../QuantityInput/QuantityInput';
+import Button from '@/src/components/Button/Button';
+import ImageInput from '@/src/components/FormComponents/ImageInput/ImageInput';
+import InputGroup from '@/src/components/FormComponents/InputGroup/InputGroup';
+import SelectInput from '@/src/components/FormComponents/SelectInput/SelectInput';
+import TextInput from '@/src/components/FormComponents/TextInput/TextInput';
+import SearchBar from '@/src/components/FormSearchBar/SearchBar';
+import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
 
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;

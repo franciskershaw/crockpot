@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
 
 import { useDeleteItem } from '@/src/hooks/items/useAddEditItem';
@@ -80,7 +79,7 @@ const ItemsTab = () => {
 										}
 										paddingOn
 									>
-										<div className="flex flex-col items-center space-y-2">
+										<div className="modal--p-and-button">
 											<p>Are you sure you'd like to delete this item?</p>
 											<Button
 												onClick={() => deleteItem(result._id)}

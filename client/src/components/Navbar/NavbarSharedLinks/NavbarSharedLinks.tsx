@@ -21,9 +21,9 @@ const NavbarSharedLinks = () => {
 					<Button text="Your Crockpot" type="primary" border />
 				</Link>
 			)}
-			<nav className="hidden md:block">
+			<div className="hidden md:block">
 				<ButtonAddRecipe />
-			</nav>
+			</div>
 		</div>
 	);
 };
