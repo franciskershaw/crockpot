@@ -31,6 +31,7 @@ const Menu = () => {
 					<Modal
 						title="Shopping List"
 						trigger={<Button type="primary" border text="Shopping List" />}
+						size="sm"
 					>
 						<ShoppingList />
 					</Modal>

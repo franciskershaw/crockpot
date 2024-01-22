@@ -30,6 +30,7 @@ const ItemsTab = () => {
 					open={addItemModalOpen}
 					setOpen={setAddItemModalOpen}
 					paddingOn
+					size="sm"
 				>
 					<AddItem setModal={setAddItemModalOpen} />
 				</Modal>
@@ -63,6 +64,7 @@ const ItemsTab = () => {
 											</>
 										}
 										paddingOn
+										size="sm"
 									>
 										<AddItem item={result} />
 									</Modal>
@@ -78,6 +80,7 @@ const ItemsTab = () => {
 											</>
 										}
 										paddingOn
+										size="sm"
 									>
 										<div className="modal--p-and-button">
 											<p>Are you sure you'd like to delete this item?</p>

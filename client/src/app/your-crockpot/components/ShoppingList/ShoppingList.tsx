@@ -109,6 +109,7 @@ const ShoppingList = () => {
 										trigger={<p>{result.name}</p>}
 										paddingOn
 										nested
+										size="sm"
 									>
 										<div className="modal--p-and-button">
 											<div className="flex justify-center space-x-4">

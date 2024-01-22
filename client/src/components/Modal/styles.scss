@@ -20,6 +20,14 @@
 	&--nested {
 		@apply z-modalNested w-[80vw] max-w-5xl;
 	}
+
+	&--sm {
+		@apply max-w-md;
+	}
+
+	&--md {
+		@apply max-w-2xl;
+	}
 }
 
 .DialogContent:focus {

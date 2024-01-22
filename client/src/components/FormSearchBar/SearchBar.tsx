@@ -22,7 +22,7 @@ const SearchBar = ({
 	};
 
 	return (
-		<>
+		<div className="w-full">
 			{label ? <label htmlFor="">{label}</label> : ''}
 			<input
 				className="searchbar"
@@ -32,7 +32,7 @@ const SearchBar = ({
 				onChange={handleInputChange}
 			/>
 			{error && <p className="error">{error}</p>}
-		</>
+		</div>
 	);
 };
 

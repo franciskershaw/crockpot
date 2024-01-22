@@ -40,6 +40,7 @@ function ButtonAddRecipe() {
 			open={modalOpen}
 			setOpen={setModalOpen}
 			paddingOn
+			size="md"
 		>
 			<AddRecipe setModal={setModalOpen} />
 		</Modal>

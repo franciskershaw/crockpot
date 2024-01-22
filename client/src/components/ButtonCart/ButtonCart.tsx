@@ -134,6 +134,7 @@ const ButtonCart = ({
 						min={min}
 						max={max}
 						onChange={handleChange}
+						className="border-0"
 					/>
 					<Button
 						onClick={(e: MouseEvent<HTMLElement>) => {
@@ -147,7 +148,10 @@ const ButtonCart = ({
 				</div>
 			</div>
 			{isExpanded && (
-				<h6 onClick={handleUpdateRecipeMenu} className="quantity-input-confirm">
+				<span
+					onClick={handleUpdateRecipeMenu}
+					className="quantity-input-confirm h6"
+				>
 					{!isMenu
 						? quantity > 0
 							? 'Add to cart'
@@ -155,7 +159,7 @@ const ButtonCart = ({
 						: quantity > 0
 							? 'Update quantity'
 							: 'Remove quantity'}
-				</h6>
+				</span>
 			)}
 		</div>
 	);

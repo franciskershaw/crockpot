@@ -23,6 +23,7 @@ function BrowsePageSearchBar() {
 			<div className="md:hidden">
 				<Modal
 					title="Recipe Filters"
+					size="sm"
 					trigger={
 						<Button type="primary" border>
 							<AiFillFilter />

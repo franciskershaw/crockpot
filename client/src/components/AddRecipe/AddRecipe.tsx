@@ -364,7 +364,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	};
 
 	return (
-		<form onSubmit={(e) => e.preventDefault()} className="mb-2">
+		<form onSubmit={(e) => e.preventDefault()} className="modal--form">
 			<TextInput
 				id="name"
 				value={name}
@@ -378,7 +378,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				id="recipeImage"
 				existingImageUrl={recipe?.image?.url}
 			/>
-			<div className="flex justify-between">
+			<div className="flex space-x-8 mx-auto">
 				<QuantityInput
 					value={timeInMinutes}
 					setValue={setTimeInMinutes}
@@ -411,74 +411,70 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			/>
 
 			<InputGroup label="Ingredients*">
-				<div className="w-full md:mb-2">
-					<div className="relative">
-						<SearchBar
-							searchQuery={ingredientSearch}
-							setSearchQuery={setIngredientSearch}
-							placeholder="Search for ingredients"
-							error={ingredientError}
-						/>
-						{searchResults.length > 0 && (
-							<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
-								{searchResults.map((result) => (
-									<p onClick={() => addIngredient(result)} key={result._id}>
-										{result.name}
-									</p>
-								))}
-							</div>
-						)}
-					</div>
-					{selectedIngredients.map((ingredient, index) => (
-						<div
-							className="flex justify-between mt-4 items-center"
-							key={`${ingredient._id}_${index}`}
-						>
-							<div className=" w-1/4">
-								<p className="text-sm">{ingredient.name}</p>
-							</div>
+				<div className="relative">
+					<SearchBar
+						searchQuery={ingredientSearch}
+						setSearchQuery={setIngredientSearch}
+						placeholder="Search for ingredients"
+						error={ingredientError}
+					/>
+					{searchResults.length > 0 && (
+						<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
+							{searchResults.map((result) => (
+								<p onClick={() => addIngredient(result)} key={result._id}>
+									{result.name}
+								</p>
+							))}
+						</div>
+					)}
+				</div>
+				{selectedIngredients.map((ingredient, index) => (
+					<div
+						className="flex justify-between mt-4 items-center"
+						key={`${ingredient._id}_${index}`}
+					>
+						<div className=" w-1/4">
+							<p className="text-sm">{ingredient.name}</p>
+						</div>
 
-							<input
-								type="number"
+						<input
+							type="number"
+							name=""
+							id=""
+							value={ingredient.quantity !== null ? ingredient.quantity : ''}
+							onChange={(e) => handleQuantityChange(e, index)}
+							className="w-[50px] border border-black rounded text-center p-0.5 text-sm"
+						/>
+
+						<div className="flex flex-col gap-2">
+							<select
+								className="border w-24 py-1 text-sm"
 								name=""
 								id=""
-								value={ingredient.quantity !== null ? ingredient.quantity : ''}
-								onChange={(e) => handleQuantityChange(e, index)}
-								className="w-[50px] border border-black rounded text-center p-0.5 text-sm"
-							/>
-
-							<div className="flex flex-col gap-2">
-								<select
-									className="border w-24 py-1 text-sm"
-									name=""
-									id=""
-									onChange={(e) => handleUnitChange(e, index)}
-									value={ingredient.unit}
-								>
-									<option value="">-</option>
-									<option value="cans">Cans</option>
-									<option value="g">g</option>
-									<option value="ml">ml</option>
-									<option value="tbsp">Tablespoons</option>
-									<option value="tsp">Teaspoons</option>
-								</select>
-							</div>
-							<Button
-								onClick={() => handleRemoveIngredient(index)}
-								type="primary"
-								border
-								iconXs
+								onChange={(e) => handleUnitChange(e, index)}
+								value={ingredient.unit}
 							>
-								<FaTrash />
-							</Button>
+								<option value="">-</option>
+								<option value="cans">Cans</option>
+								<option value="g">g</option>
+								<option value="ml">ml</option>
+								<option value="tbsp">Tablespoons</option>
+								<option value="tsp">Teaspoons</option>
+							</select>
 						</div>
-					))}
-				</div>
+						<Button
+							onClick={() => handleRemoveIngredient(index)}
+							type="primary"
+							border
+							iconXs
+						>
+							<FaTrash />
+						</Button>
+					</div>
+				))}
 			</InputGroup>
 			<InputGroup label="Instructions">
-				{instructionError && (
-					<p className="pb-2 text-error text-xs">{instructionError}</p>
-				)}
+				{instructionError && <p className="error">{instructionError}</p>}
 				{instructions.map((instruction, index) => (
 					<Fragment key={`instruction_${index}`}>
 						<TextInput
@@ -521,7 +517,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 							value={note}
 							onChange={(newValue) => handleNoteChange(index, newValue)}
 						/>
-						<div className="flex justify-center gap-4 mb-4">
+						<div className="flex justify-center gap-4">
 							{notes.length > 1 && (
 								<Button
 									onClick={() => handleRemoveNote(index)}
@@ -551,7 +547,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				<Button
 					onClick={handleSubmit}
 					border
-					text={`${recipe ? 'Amend' : 'Add'} Recipe`}
+					text={`${recipe ? 'Save Changes' : 'Add Recipe'}`}
 				/>
 			</div>
 		</form>

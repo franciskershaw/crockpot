@@ -12,9 +12,10 @@ interface ModalProps {
 	title: string | JSX.Element;
 	trigger: JSX.Element;
 	children: JSX.Element;
-	open?: boolean;
 	nested?: boolean;
 	paddingOn?: boolean;
+	size?: 'sm' | 'md';
+	open?: boolean;
 	setOpen?: (open: boolean) => void;
 }
 
@@ -22,9 +23,10 @@ const Modal: React.FC<ModalProps> = ({
 	title,
 	trigger,
 	children,
-	open,
 	nested,
 	paddingOn,
+	size,
+	open,
 	setOpen,
 }) => {
 	return (
@@ -35,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({
 					className={`DialogOverlay ${nested && 'DialogOverlay--nested'}`}
 				/>
 				<Dialog.Content
-					className={`DialogContent relative ${nested && 'DialogContent--nested'}`}
+					className={`DialogContent relative ${nested ? 'DialogContent--nested' : null} ${size === 'sm' ? 'DialogContent--sm' : null} ${size === 'md' ? 'DialogContent--md' : null}`}
 				>
 					<div className="flex justify-between items-center bg-white border border-black-25 px-3 py-2 sticky top-0 left-0 z-modalHeader">
 						<Dialog.Title className="DialogTitle truncate capitalize pr-0.5">

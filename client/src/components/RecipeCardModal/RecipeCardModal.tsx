@@ -107,6 +107,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									setOpen={setModalOpen}
 									nested
 									paddingOn
+									size="md"
 								>
 									<AddRecipe recipe={recipe} />
 								</Modal>
@@ -129,6 +130,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									setOpen={setDeleteRecipeConf}
 									nested
 									paddingOn
+									size="sm"
 								>
 									<div className="modal--p-and-button">
 										<p>Are you sure you'd like to delete this recipe?</p>

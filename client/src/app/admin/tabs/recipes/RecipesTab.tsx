@@ -32,6 +32,7 @@ const RecipesTab = () => {
 					open={addRecipeModalOpen}
 					setOpen={setAddRecipeModalOpen}
 					paddingOn
+					size="md"
 				>
 					<AddRecipe setModal={setAddRecipeModalOpen} />
 				</Modal>
@@ -65,6 +66,7 @@ const RecipesTab = () => {
 											</>
 										}
 										paddingOn
+										size="md"
 									>
 										<AddRecipe recipe={result} />
 									</Modal>
@@ -80,6 +82,7 @@ const RecipesTab = () => {
 											</>
 										}
 										paddingOn
+										size="sm"
 									>
 										<div className="modal--p-and-button">
 											<p>Are you sure you'd like to delete this recipe?</p>

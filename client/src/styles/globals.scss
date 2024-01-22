@@ -146,8 +146,8 @@ input.searchbar,
 select {
 	background-repeat: no-repeat;
 	background-position: right 8px center;
-	background-size: 24px;
-	padding-right: 40px;
+	background-size: 20px;
+	padding-right: 36px;
 }
 
 input.searchbar {
@@ -162,6 +162,7 @@ select {
 }
 
 label {
+	@apply text-sm mb-1;
 }
 
 .error {
@@ -172,6 +173,10 @@ label {
 .modal {
 	&--p-and-button {
 		@apply flex flex-col items-center space-y-2;
+	}
+
+	&--form {
+		@apply flex flex-col space-y-2;
 	}
 }
 
