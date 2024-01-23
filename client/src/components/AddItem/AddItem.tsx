@@ -84,7 +84,7 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 					label: category.name,
 				}))}
 				value={category}
-				label="Select relevant category"
+				label="Select category"
 				onChange={handleCategoryChange}
 				error={categoryError}
 			/>

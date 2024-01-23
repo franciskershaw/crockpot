@@ -14,7 +14,7 @@ export default function Switch({ label, checked, onChange }: SwitchProps) {
 
 	return (
 		<div className="flex items-center">
-			<label className="pr-2" htmlFor={switchId}>
+			<label className="pr-2 label--switch" htmlFor={switchId}>
 				{label}
 			</label>
 			<SwitchRadix.Root

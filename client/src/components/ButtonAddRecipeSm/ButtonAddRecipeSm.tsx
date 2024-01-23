@@ -25,16 +25,11 @@ function ButtonAddRecipe() {
 	return (
 		<Modal
 			trigger={
-				<>
-					<div className="z-addRecipe fixed m-4 right-0 bottom-[85px] md:hidden">
-						<Icon size="xl" type="primary" border>
-							<AiOutlinePlus />
-						</Icon>
-					</div>
-					<div className="hidden md:block">
-						<Button text="Add Recipe" type="primary" border />
-					</div>
-				</>
+				<div className="z-addRecipe fixed m-4 right-0 bottom-[85px] cursor-pointer lg:hidden">
+					<Icon size="xl" type="primary" border>
+						<AiOutlinePlus />
+					</Icon>
+				</div>
 			}
 			title="Add New Recipe"
 			open={modalOpen}

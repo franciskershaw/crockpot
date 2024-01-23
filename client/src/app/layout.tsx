@@ -3,7 +3,7 @@ import React from 'react';
 import Providers from '@/src/providers/Providers';
 import type { Metadata } from 'next';
 
-import ButtonAddRecipe from '@/src/components/ButtonAddRecipe/ButtonAddRecipe';
+import ButtonAddRecipeSm from '@/src/components/ButtonAddRecipeSm/ButtonAddRecipeSm';
 import NavbarBottom from '@/src/components/Navbar/NavbarBottom/NavbarBottom';
 import NavbarTop from '@/src/components/Navbar/NavbarTop/NavbarTop';
 
@@ -27,9 +27,7 @@ export default function RootLayout({
 					<main className="mt-[74px] mb-[101px] md:mt-[85px] md:mb-4">
 						{children}
 					</main>
-					<nav className="md:hidden">
-						<ButtonAddRecipe />
-					</nav>
+					<ButtonAddRecipeSm />
 					<NavbarBottom />
 				</Providers>
 			</body>

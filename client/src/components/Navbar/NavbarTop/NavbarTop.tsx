@@ -9,10 +9,14 @@ import useAuth from '@/src/hooks/auth/useAuth';
 import useUser from '@/src/hooks/auth/useUser';
 
 import Button from '@/src/components/Button/Button';
+import NavbarSharedLinks from '@/src/components/Navbar/NavbarSharedLinks/NavbarSharedLinks';
 
 import './styles.scss';
 
-import NavbarSharedLinks from '../NavbarSharedLinks/NavbarSharedLinks';
+type NavbarSharedLinksHamburgerProps = {
+	handleLogout: () => void;
+	setIsOpen: (isOpen: boolean) => void;
+};
 
 const NavbarTop = () => {
 	const pathname = usePathname();
@@ -29,6 +33,27 @@ const NavbarTop = () => {
 	const handleLogout = () => {
 		setIsOpen(false);
 		logout();
+	};
+
+	const NavbarSharedLinksHamburger: React.FC<
+		NavbarSharedLinksHamburgerProps
+	> = ({ handleLogout, setIsOpen }) => {
+		return (
+			<>
+				{user?.isAdmin && (
+					<Link onClick={() => setIsOpen(false)} href="/admin">
+						<Button text="Admin" border />
+					</Link>
+				)}
+				{user ? (
+					<Button text="Logout" border onClick={handleLogout} />
+				) : (
+					<Link onClick={() => setIsOpen(false)} href="/">
+						<Button text="Login" border />
+					</Link>
+				)}
+			</>
+		);
 	};
 
 	return (
@@ -58,36 +83,21 @@ const NavbarTop = () => {
 					</button>
 				</div>
 				{/* Login/logout on desktop */}
-				<div className="ml-auto hidden md:flex">
-					{user ? (
-						<Button text="Logout" border onClick={handleLogout} />
-					) : (
-						<>
-							{pathname !== '/' && pathname !== '/register' && (
-								<Link href="/">
-									<Button text="Login" border />
-								</Link>
-							)}
-						</>
-					)}
+				<div className="ml-auto hidden md:flex md:space-x-3 lg:space-x-4">
+					<NavbarSharedLinksHamburger
+						handleLogout={handleLogout}
+						setIsOpen={setIsOpen}
+					/>
 				</div>
 				<div
 					className={`md:hidden nav__menu bg-white flex flex-col items-center justify-center space-y-4 animate z-navMenu ${
 						isOpen ? 'nav__menu--open' : ''
 					} `}
 				>
-					{user?.isAdmin && (
-						<Link onClick={() => setIsOpen(false)} href="/admin">
-							<Button text="Admin" border />
-						</Link>
-					)}
-					{user ? (
-						<Button text="Logout" border onClick={handleLogout} />
-					) : (
-						<Link onClick={() => setIsOpen(false)} href="/">
-							<Button text="Login" border />
-						</Link>
-					)}
+					<NavbarSharedLinksHamburger
+						handleLogout={handleLogout}
+						setIsOpen={setIsOpen}
+					/>
 				</div>
 			</div>
 		</nav>
