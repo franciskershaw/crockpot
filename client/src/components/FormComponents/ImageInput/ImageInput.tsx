@@ -49,18 +49,21 @@ const ImageInput: FC<ImageInputProps> = ({
 	return (
 		<InputGroup label={label} htmlFor={id}>
 			{currentImage ? (
-				<div className="flex justify-between items-center">
-					<img
-						src={currentImage}
-						alt="Current"
-						style={{ maxWidth: '200px', maxHeight: '200px' }}
-					/>
-					<div className="w-full flex justify-center">
+				<>
+					<div className="h-[200px] w-full border rounded flex justify-center">
+						<img src={currentImage} alt="Current" style={{ height: '100%' }} />
+					</div>
+					<div className="w-full flex justify-center mt-2">
 						<Button border text="Clear Image" onClick={handleImageClear} />
 					</div>
-				</div>
+				</>
 			) : (
-				<Button border text="Choose File" onClick={handleButtonClick} />
+				<>
+					<div className="h-[200px] w-full border rounded" />
+					<div className="w-full flex justify-center mt-2">
+						<Button border text="Choose File" onClick={handleButtonClick} />
+					</div>
+				</>
 			)}
 			<input
 				type="file"
