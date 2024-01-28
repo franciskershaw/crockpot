@@ -9,6 +9,7 @@ interface TextInputProps {
 	onChange: (value: string) => void;
 	label?: string;
 	error?: string;
+	labelOnLeft?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -18,9 +19,10 @@ const TextInput: React.FC<TextInputProps> = ({
 	onChange,
 	label,
 	error = '',
+	labelOnLeft,
 }) => {
 	return (
-		<InputGroup label={label} htmlFor={id}>
+		<InputGroup label={label} htmlFor={id} labelOnLeft={labelOnLeft}>
 			<input
 				type="text"
 				id={id}

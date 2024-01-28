@@ -478,72 +478,89 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			</InputGroup>
 			<InputGroup label="Instructions">
 				{instructionError && <p className="error">{instructionError}</p>}
-				{instructions.map((instruction, index) => (
-					<Fragment key={`instruction_${index}`}>
-						<TextInput
-							label={`Instruction ${index + 1}`}
-							id={`instruction_${index}`}
-							value={instruction}
-							onChange={(newValue) => handleInstructionChange(index, newValue)}
-							error={instructionErrors[index]}
-						/>
-						<div className="flex justify-center gap-4">
-							{instructions.length > 1 && (
-								<Button
-									onClick={() => handleRemoveInstruction(index)}
-									type="primary"
-									border
-									iconXs
-								>
-									<FaTrash />
-								</Button>
-							)}
+				<div className="space-y-1">
+					{instructions.map((instruction, index) => (
+						<Fragment key={`instruction_${index}`}>
+							<div className="flex items-center space-x-1">
+								<TextInput
+									label={`${index + 1}.`}
+									id={`instruction_${index}`}
+									value={instruction}
+									onChange={(newValue) =>
+										handleInstructionChange(index, newValue)
+									}
+									error={instructionErrors[index]}
+									labelOnLeft
+								/>
+								<div className="">
+									{instructions.length > 1 && (
+										<Button
+											onClick={() => handleRemoveInstruction(index)}
+											type="primary"
+											border
+											iconXs
+										>
+											<FaTrash />
+										</Button>
+									)}
+								</div>
+							</div>
 							{instruction.trim() && !(index < instructions.length - 1) && (
-								<Button
-									onClick={() => handleAddInstruction(index)}
-									type="primary"
-									border
-									iconXs
-								>
-									<FaPlus />
-								</Button>
+								<div className="flex justify-center">
+									<Button
+										onClick={() => handleAddInstruction(index)}
+										type="primary"
+										border
+										iconXs
+									>
+										<FaPlus />
+									</Button>
+								</div>
 							)}
-						</div>
-					</Fragment>
-				))}
+						</Fragment>
+					))}
+				</div>
 			</InputGroup>
 			<InputGroup label="Extra Notes">
-				{notes.map((note, index) => (
-					<Fragment key={`note${index}`}>
-						<TextInput
-							id={`note_${index}`}
-							value={note}
-							onChange={(newValue) => handleNoteChange(index, newValue)}
-						/>
-						<div className="flex justify-center gap-4">
-							{notes.length > 1 && (
-								<Button
-									onClick={() => handleRemoveNote(index)}
-									type="primary"
-									border
-									iconXs
-								>
-									<FaTrash />
-								</Button>
-							)}
+				<div className="space-y-1">
+					{notes.map((note, index) => (
+						<Fragment key={`note${index}`}>
+							<div className="flex items-center space-x-1">
+								<TextInput
+									label={`${index + 1}.`}
+									id={`note_${index}`}
+									value={note}
+									onChange={(newValue) => handleNoteChange(index, newValue)}
+									labelOnLeft
+								/>
+								<div className="">
+									{notes.length > 1 && (
+										<Button
+											onClick={() => handleRemoveNote(index)}
+											type="primary"
+											border
+											iconXs
+										>
+											<FaTrash />
+										</Button>
+									)}
+								</div>
+							</div>
 							{note.trim() && !(index < notes.length - 1) && (
-								<Button
-									onClick={() => handleAddNote(index)}
-									type="primary"
-									border
-									iconXs
-								>
-									<FaPlus />
-								</Button>
+								<div className="flex justify-center">
+									<Button
+										onClick={() => handleAddNote(index)}
+										type="primary"
+										border
+										iconXs
+									>
+										<FaPlus />
+									</Button>
+								</div>
 							)}
-						</div>
-					</Fragment>
-				))}
+						</Fragment>
+					))}
+				</div>
 			</InputGroup>
 
 			<div className="flex justify-center">

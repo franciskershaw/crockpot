@@ -4,16 +4,27 @@ interface InputGroupProps {
 	label?: string;
 	htmlFor?: string;
 	children: ReactNode;
+	labelOnLeft?: boolean;
 }
 
 const InputGroup: React.FC<InputGroupProps> = ({
 	label,
 	htmlFor,
 	children,
+	labelOnLeft,
 }) => {
 	return (
-		<div className="flex flex-col">
-			{label && <label htmlFor={htmlFor}>{label}</label>}
+		<div
+			className={`flex ${!labelOnLeft ? 'flex-col' : 'flex-grow items-center'}`}
+		>
+			{label && (
+				<label
+					htmlFor={htmlFor}
+					className={`${labelOnLeft ? 'label--on-left' : ''}`}
+				>
+					{label}
+				</label>
+			)}
 			{children}
 		</div>
 	);

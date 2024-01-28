@@ -298,6 +298,10 @@ label {
 	&--switch {
 		@apply text-lg mb-0;
 	}
+
+	&--on-left {
+		@apply text-base mr-1 mb-0;
+	}
 }
 
 .error {
