@@ -97,7 +97,7 @@ const ShoppingList = () => {
 							label="Search Extra Items"
 						/>
 						{searchResults.length ? (
-							<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow p-1 space-y-0.5 rounded-b">
+							<div className="input-menu-dropdown">
 								{searchResults.map((result) => (
 									<Modal
 										key={result._id}

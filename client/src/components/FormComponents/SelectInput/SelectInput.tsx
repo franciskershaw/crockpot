@@ -61,6 +61,8 @@ const SelectInput: FC<SelectInputProps> = ({
 				value={selectedOptions}
 				placeholder={placeholder}
 				isOptionDisabled={isOptionDisabled}
+				className="react-select"
+				classNamePrefix="react-select"
 			/>
 			{error && <p className="error">{error}</p>}
 		</InputGroup>

@@ -419,7 +419,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 						error={ingredientError}
 					/>
 					{searchResults.length > 0 && (
-						<div className="absolute top-full left-0 z-10 w-full bg-white border border-black-25 shadow">
+						<div className="input-menu-dropdown">
 							{searchResults.map((result) => (
 								<p onClick={() => addIngredient(result)} key={result._id}>
 									{result.name}
