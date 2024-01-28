@@ -477,7 +477,9 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				) : null}
 			</InputGroup>
 			<InputGroup label="Instructions">
-				{instructionError && <p className="error">{instructionError}</p>}
+				{instructionError && (
+					<p className="error !pt-0 pb-1">{instructionError}</p>
+				)}
 				<div className="space-y-1">
 					{instructions.map((instruction, index) => (
 						<Fragment key={`instruction_${index}`}>
@@ -489,7 +491,6 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									onChange={(newValue) =>
 										handleInstructionChange(index, newValue)
 									}
-									error={instructionErrors[index]}
 									labelOnLeft
 								/>
 								<div className="">
