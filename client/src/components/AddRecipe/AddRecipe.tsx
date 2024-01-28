@@ -428,50 +428,53 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 						</div>
 					)}
 				</div>
-				{selectedIngredients.map((ingredient, index) => (
-					<div
-						className="flex justify-between mt-4 items-center"
-						key={`${ingredient._id}_${index}`}
-					>
-						<div className=" w-1/4">
-							<p className="text-sm">{ingredient.name}</p>
-						</div>
-
-						<input
-							type="number"
-							name=""
-							id=""
-							value={ingredient.quantity !== null ? ingredient.quantity : ''}
-							onChange={(e) => handleQuantityChange(e, index)}
-							className="w-[50px] border border-black rounded text-center p-0.5 text-sm"
-						/>
-
-						<div className="flex flex-col gap-2">
-							<select
-								className="border w-24 py-1 text-sm"
-								name=""
-								id=""
-								onChange={(e) => handleUnitChange(e, index)}
-								value={ingredient.unit}
+				{selectedIngredients.length > 0 ? (
+					<div className="space-y-0.5 border-t border-b p-1 mt-2">
+						{selectedIngredients.map((ingredient, index) => (
+							<div
+								className="flex justify-between items-center"
+								key={`${ingredient._id}_${index}`}
 							>
-								<option value="">-</option>
-								<option value="cans">Cans</option>
-								<option value="g">g</option>
-								<option value="ml">ml</option>
-								<option value="tbsp">Tablespoons</option>
-								<option value="tsp">Teaspoons</option>
-							</select>
-						</div>
-						<Button
-							onClick={() => handleRemoveIngredient(index)}
-							type="primary"
-							border
-							iconXs
-						>
-							<FaTrash />
-						</Button>
+								<div className="flex items-center space-x-1.5">
+									<span className="flex-shrink-0">{ingredient.name}</span>
+									<span>x</span>
+									<input
+										type="number"
+										name=""
+										id=""
+										value={
+											ingredient.quantity !== null ? ingredient.quantity : ''
+										}
+										onChange={(e) => handleQuantityChange(e, index)}
+										className="w-[50px] border border-black rounded text-center p-0.5"
+									/>
+									<select
+										className="w-[125px] border border-black rounded p-0.5 pl-1.5"
+										name=""
+										id=""
+										onChange={(e) => handleUnitChange(e, index)}
+										value={ingredient.unit}
+									>
+										<option value="">-</option>
+										<option value="cans">Cans</option>
+										<option value="g">g</option>
+										<option value="ml">ml</option>
+										<option value="tbsp">Tablespoons</option>
+										<option value="tsp">Teaspoons</option>
+									</select>
+								</div>
+								<Button
+									onClick={() => handleRemoveIngredient(index)}
+									type="primary"
+									border
+									iconXs
+								>
+									<FaTrash />
+								</Button>
+							</div>
+						))}
 					</div>
-				))}
+				) : null}
 			</InputGroup>
 			<InputGroup label="Instructions">
 				{instructionError && <p className="error">{instructionError}</p>}

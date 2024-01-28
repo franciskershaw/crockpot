@@ -164,14 +164,14 @@ select {
 	margin: 0;
 	padding: 0;
 
-	@apply border-black border-2 rounded w-full relative p-[2px];
+	@apply border-black border-2 rounded w-full relative py-[2px] min-h-[44px] flex;
 
 	.react-select__placeholder {
-		@apply m-0 p-0;
+		@apply m-0 p-0 pl-2;
 	}
 
 	.react-select__control {
-		@apply m-0 p-0 border-0 min-h-0;
+		@apply m-0 p-0 border-0 min-h-0 w-full;
 	}
 
 	.react-select__control.react-select__control--is-focused {
@@ -189,7 +189,7 @@ select {
 	}
 
 	.react-select__multi-value {
-		@apply m-0 border-2 border-solid border-black bg-white rounded cursor-pointer p-1 flex justify-between ml-0 mr-1 my-0;
+		@apply m-0 border-2 border-solid border-black bg-white rounded cursor-pointer p-1 flex justify-between mr-0 ml-1 my-0;
 
 		.react-select__multi-value__label {
 			@apply p-0 bg-white text-black text-base;
