@@ -55,7 +55,9 @@ body {
 			flex: 1;
 
 			&__sticky-menu {
-				@apply bg-white/90 sticky top-[102px] left-0 right-0 z-searchBar border border-black;
+				@apply bg-white/90 sticky top-[102px] left-0 right-0 z-searchBar border border-black overflow-auto;
+
+				max-height: calc(100vh - 85px - 32px);
 			}
 		}
 
