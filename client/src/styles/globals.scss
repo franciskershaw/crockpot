@@ -50,7 +50,7 @@ body {
 		@apply flex flex-col md:flex-row md:gap-x-4;
 
 		&__1 {
-			@apply hidden md:block relative;
+			@apply hidden md:block md:mt-[18px] relative;
 
 			flex: 1;
 
@@ -188,6 +188,10 @@ select {
 
 	.react-select__value-container {
 		@apply m-0 p-0 border-0;
+	}
+
+	.react-select__single-value {
+		@apply p-1 ml-1;
 	}
 
 	.react-select__multi-value {
