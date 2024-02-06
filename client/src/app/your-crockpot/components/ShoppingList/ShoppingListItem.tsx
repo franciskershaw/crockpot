@@ -36,14 +36,10 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		let inputValue = e.target.value;
-
-		// Limit input to a maximum of two decimal places
-		inputValue = inputValue.replace(/(\.\d{2})\d+/, '$1');
+		const inputValue = e.target.value;
 
 		const parsedQuantity = parseFloat(inputValue);
 
-		// Fallback to 0 if the parsed value is NaN
 		setQuantity(isNaN(parsedQuantity) ? 0 : parsedQuantity);
 	};
 
@@ -93,10 +89,14 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 					type="number"
 					name=""
 					id=""
-					value={quantity}
+					value={
+						!isNaN(quantity)
+							? quantity.toString().replace(/(\.\d{2})\d+/, '$1')
+							: '0'
+					}
 					onChange={handleChange}
 					onBlur={handleUpdateQuantity}
-					className="w-[50px] border border-black rounded text-center p-0.5"
+					className="w-[60px] border border-black rounded text-center p-0.5"
 				/>
 				<span>{item.unit}</span>
 			</div>

@@ -1,9 +1,8 @@
-// TODO - Decide on styling, add disabled prop to - button on 0
 import React from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
-import Button from '../Button/Button';
-import InputGroup from '../FormComponents/InputGroup/InputGroup';
+import Button from '@/src/components/Button/Button';
+import InputGroup from '@/src/components/FormComponents/InputGroup/InputGroup';
 
 interface QuantityInputProps {
 	value: number;

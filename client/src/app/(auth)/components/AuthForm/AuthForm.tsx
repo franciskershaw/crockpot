@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import useAuth from '../../../../hooks/auth/useAuth';
+import useAuth from '@/src/hooks/auth/useAuth';
 import useUser from '@/src/hooks/auth/useUser';
 
 import Button from '@/src/components/Button/Button';
@@ -54,53 +54,52 @@ const AuthForm = (props: Props) => {
 
 	return (
 		<form onSubmit={handleSubmit} className="auth-form">
-			<h2 className="auth-form__title">
+			<h2 className="text-center">
 				{`${props.type === 'login' ? 'Login' : 'Register'} to Crockpot!`}
 			</h2>
-			<div className="auth-form__input-group">
-				<label htmlFor="username" className="auth-form__input-label">
-					Username
-				</label>
-				<input
-					name="username"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
-					className="auth-form__input-field"
-					type="text"
-					id="username"
-					autoComplete="off"
-				/>
-			</div>
-
-			<div className="auth-form__input-group">
-				<label className="auth-form__input-label">Password</label>
-				<input
-					name="password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					className="auth-form__input-field"
-					type="password"
-					id="password"
-					autoComplete="off"
-					required
-				/>
-			</div>
-			{props.type === 'register' && (
-				<div className="auth-form__input-group">
-					<label className="auth-form__input-label">Confirm password</label>
+			<div className="space-y-1">
+				<div>
+					<label htmlFor="username">Username</label>
 					<input
-						name="confirmPassword"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
+						name="username"
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						className="auth-form__input-field"
+						type="text"
+						id="username"
+						autoComplete="off"
+					/>
+				</div>
+				<div>
+					<label>Password</label>
+					<input
+						name="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
 						className="auth-form__input-field"
 						type="password"
-						id="confirmPassword"
+						id="password"
 						autoComplete="off"
 						required
 					/>
 				</div>
-			)}
-			<div className="auth-form__text">
+				{props.type === 'register' && (
+					<div>
+						<label>Confirm password</label>
+						<input
+							name="confirmPassword"
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
+							className="auth-form__input-field"
+							type="password"
+							id="confirmPassword"
+							autoComplete="off"
+							required
+						/>
+					</div>
+				)}
+			</div>
+			<div className="text-center w-full flex flex-col justify-around items-center space-y-1 mt-4">
 				<Button
 					text={props.type === 'login' ? 'Login' : 'Register'}
 					type="primary"

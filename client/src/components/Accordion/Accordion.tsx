@@ -1,5 +1,3 @@
-// Checkbox component used on Browse page - Recipe filter, Shopping list page
-// TODO -
 import React from 'react';
 import { useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';

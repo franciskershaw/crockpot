@@ -25,7 +25,7 @@ function ButtonAddRecipe() {
 	return (
 		<Modal
 			trigger={
-				<div className="z-addRecipe fixed m-4 right-0 bottom-[85px] cursor-pointer lg:hidden">
+				<div className="z-addRecipe fixed m-4 right-0 bottom-[85px] md:bottom-0 cursor-pointer lg:hidden">
 					<Icon size="xl" type="primary" border>
 						<AiOutlinePlus />
 					</Icon>
