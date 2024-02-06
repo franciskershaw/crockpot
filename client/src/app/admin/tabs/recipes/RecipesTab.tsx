@@ -22,8 +22,8 @@ const RecipesTab = () => {
 	}, [allRecipes, query, filterRecipes]);
 
 	return (
-		<div className="flex flex-col justify-center items-center">
-			<div className="flex items-center gap-2 my-4">
+		<div className="admin-tabs">
+			<div className="admin-tabs__modal-trigger">
 				<Modal
 					trigger={
 						<Button type="primary" border text="Add New Recipe"></Button>
@@ -37,7 +37,7 @@ const RecipesTab = () => {
 					<AddRecipe setModal={setAddRecipeModalOpen} />
 				</Modal>
 			</div>
-			<div className="w-full mb-4 md:w-1/3">
+			<div className="admin-tabs__search-bar">
 				<SearchBar
 					searchQuery={query}
 					setSearchQuery={setQuery}
@@ -45,14 +45,11 @@ const RecipesTab = () => {
 				/>
 			</div>
 			{searchResults.length ? (
-				<div className="w-full">
-					<div className="border w-full md:w-2/3 md:mx-auto">
+				<>
+					<div className="admin-tabs__search-results-container">
 						{searchResults.map((result) => (
-							<div
-								className="flex items-center border py-4 px-2 gap-2 justify-between"
-								key={result._id}
-							>
-								<p className="w-1/2 md:w-2/3">{result.name}</p>
+							<div className="admin-tabs__search-result" key={result._id}>
+								<p>{result.name}</p>
 								<div className="flex space-x-2">
 									<Modal
 										trigger={
@@ -97,7 +94,7 @@ const RecipesTab = () => {
 							</div>
 						))}
 					</div>
-				</div>
+				</>
 			) : null}
 		</div>
 	);
