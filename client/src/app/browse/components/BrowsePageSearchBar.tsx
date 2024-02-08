@@ -25,7 +25,7 @@ function BrowsePageSearchBar() {
 					title="Recipe Filters"
 					size="sm"
 					trigger={
-						<Button type="primary" border>
+						<Button type="secondary">
 							<AiFillFilter />
 						</Button>
 					}
@@ -34,7 +34,7 @@ function BrowsePageSearchBar() {
 				</Modal>
 			</div>
 			<div className="md:hidden">
-				<Button type="primary" border onClick={resetFilters}>
+				<Button type="secondary" onClick={resetFilters}>
 					<GrRefresh />
 				</Button>
 			</div>

@@ -37,10 +37,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 				{/* Absolute buttons */}
 				{user && (
 					<>
-						<div className="absolute top-1 left-1">
+						<div className="absolute top-1.5 left-1.5">
 							<ButtonFav id={recipe._id} isFav={isFav} />
 						</div>
-						<div className="absolute top-1 right-1">
+						<div className="absolute top-1.5 right-1.5">
 							<ButtonCart recipe={recipe} isMenu={isMenu} />
 						</div>
 					</>

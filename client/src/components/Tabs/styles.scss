@@ -1,8 +1,6 @@
 .tabs {
-	outline: 2px solid !important;
 	margin-bottom: 2px;
-	@apply flex justify-between rounded-full relative
-		bg-green-light outline-green;
+	@apply flex justify-between rounded-full relative bg-black/10;
 }
 
 .tabs-toggle {

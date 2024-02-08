@@ -1,10 +1,5 @@
-/* reset */
-// button {
-//   all: unset;
-// }
-
 .CheckboxRoot {
-	@apply border-2 border-solid border-black bg-white h-6 w-6 rounded flex items-center justify-center cursor-pointer flex-shrink-0;
+	@apply border-2 border-solid border-green bg-white h-6 w-6 rounded flex items-center justify-center cursor-pointer flex-shrink-0;
 }
 
 .CheckboxRoot:hover {
@@ -15,5 +10,5 @@
 }
 
 .CheckboxIndicator {
-	@apply text-black;
+	@apply text-white bg-green;
 }

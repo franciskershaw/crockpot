@@ -50,18 +50,26 @@ const ImageInput: FC<ImageInputProps> = ({
 		<InputGroup label={label} htmlFor={id}>
 			{currentImage ? (
 				<>
-					<div className="h-[200px] w-full border rounded flex justify-center">
+					<div className="h-[200px] w-full border-2 rounded flex justify-center">
 						<img src={currentImage} alt="Current" style={{ height: '100%' }} />
 					</div>
 					<div className="w-full flex justify-center mt-2">
-						<Button border text="Clear Image" onClick={handleImageClear} />
+						<Button
+							type="secondary"
+							text="Clear Image"
+							onClick={handleImageClear}
+						/>
 					</div>
 				</>
 			) : (
 				<>
-					<div className="h-[200px] w-full border rounded" />
+					<div className="h-[200px] w-full border-2 rounded" />
 					<div className="w-full flex justify-center mt-2">
-						<Button border text="Choose File" onClick={handleButtonClick} />
+						<Button
+							type="secondary"
+							text="Choose File"
+							onClick={handleButtonClick}
+						/>
 					</div>
 				</>
 			)}

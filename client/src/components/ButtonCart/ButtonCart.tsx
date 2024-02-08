@@ -81,11 +81,9 @@ const ButtonCart = ({
 		setIsExpanded(false);
 	};
 
-	// TODO: Make global number component with confirm dropdown
-
 	return (
 		<div className="relative">
-			<div className="flex items-center border-2 border-black bg-white rounded-full w-fit">
+			<div className="flex items-center bg-white rounded-full w-fit">
 				<div className="relative">
 					<div
 						className={`absolute opacity-100 cursor-pointer fade ${
@@ -98,13 +96,14 @@ const ButtonCart = ({
 									e.stopPropagation();
 									setIsExpanded(true);
 								}}
-								type="primary"
-								inverse={isMenu ? true : false}
+								type={isMenu ? 'secondary' : 'tertiary'}
+								inverse={isMenu ? false : true}
+								border={isMenu ? false : true}
 							>
 								<RiShoppingBasketLine />
 							</Button>
 							{isMenu && (
-								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-black border border-body-light flex items-center justify-center">
+								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-green border border-body-light flex items-center justify-center">
 									<span className="text-xs text-white">{isMenu.serves}</span>
 								</div>
 							)}

@@ -386,6 +386,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					label="Prep Time*"
 					min={5}
 					max={180}
+					step={5}
 				/>
 				<QuantityInput
 					label="Serves*"
@@ -465,7 +466,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 								</div>
 								<Button
 									onClick={() => handleRemoveIngredient(index)}
-									type="primary"
+									type="secondary"
 									border
 									iconXs
 								>
@@ -497,7 +498,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									{instructions.length > 1 && (
 										<Button
 											onClick={() => handleRemoveInstruction(index)}
-											type="primary"
+											type="secondary"
 											border
 											iconXs
 										>
@@ -510,7 +511,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 								<div className="flex justify-center">
 									<Button
 										onClick={() => handleAddInstruction(index)}
-										type="primary"
+										type="secondary"
 										border
 										iconXs
 									>
@@ -538,7 +539,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									{notes.length > 1 && (
 										<Button
 											onClick={() => handleRemoveNote(index)}
-											type="primary"
+											type="secondary"
 											border
 											iconXs
 										>
@@ -551,7 +552,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 								<div className="flex justify-center">
 									<Button
 										onClick={() => handleAddNote(index)}
-										type="primary"
+										type="secondary"
 										border
 										iconXs
 									>
@@ -567,7 +568,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			<div className="flex justify-center">
 				<Button
 					onClick={handleSubmit}
-					border
+					type="secondary"
 					text={`${recipe ? 'Save Changes' : 'Add Recipe'}`}
 				/>
 			</div>
