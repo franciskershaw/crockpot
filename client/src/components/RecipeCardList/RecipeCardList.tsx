@@ -29,7 +29,7 @@ function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 						<div className="flex">
 							<div className="lowercase">{recipe.timeInMinutes} mins</div>
 							{recipe.categories.map((category, index) => (
-								<div key={index} className="ml-2 pl-2 border-l border-black">
+								<div key={index} className="ml-2 pl-2 border-l border-white">
 									{category.name}
 								</div>
 							))}

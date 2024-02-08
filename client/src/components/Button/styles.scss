@@ -1,35 +1,79 @@
 .btn {
-	@apply border-none rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0 whitespace-nowrap;
+	@apply border-2 border-solid rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0 whitespace-nowrap font-semibold;
 
 	.icon {
 		@apply bg-transparent;
 	}
 
 	&--primary {
-		@apply bg-white text-black;
+		@apply bg-yellow text-white border-yellow;
 
 		.icon {
 			svg {
-				@apply text-black;
+				@apply text-white;
+
+				path {
+					@apply stroke-white;
+				}
 			}
 		}
 
 		&.btn--border {
-			@apply border-2 border-solid border-black;
+			@apply border-white;
 		}
 
 		&.btn--inverse {
-			@apply bg-black text-white;
+			@apply bg-white text-yellow border-white;
 
 			.icon {
 				svg {
-					@apply text-white;
+					@apply text-yellow;
+
+					path {
+						@apply stroke-yellow;
+					}
 				}
 			}
 
-			// &.btn--border {
-			// 	@apply border-2 border-solid border-white;
-			// }
+			&.btn--border {
+				@apply border-yellow;
+			}
+		}
+	}
+
+	&--secondary {
+		@apply bg-green text-white border-green;
+
+		.icon {
+			svg {
+				@apply text-white;
+
+				path {
+					@apply stroke-white;
+				}
+			}
+		}
+
+		&.btn--border {
+			@apply border-white;
+		}
+
+		&.btn--inverse {
+			@apply bg-white text-green border-white;
+
+			.icon {
+				svg {
+					@apply text-green;
+
+					path {
+						@apply stroke-green;
+					}
+				}
+			}
+
+			&.btn--border {
+				@apply border-green;
+			}
 		}
 	}
 }

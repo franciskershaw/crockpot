@@ -13,8 +13,25 @@ module.exports = {
 			hover: 'rgba(100, 100, 111, 0.4) 0px 7px 29px 0px',
 		},
 		colors: {
+			yellow: {
+				light: '#f3ecdc',
+				DEFAULT: '#fabd1e',
+			},
+			green: {
+				light: '#f1ffe8',
+				DEFAULT: '#1d873c',
+			},
+			white: '#f8f8ff',
+			black: {
+				DEFAULT: 'rgba(34,34,34,1)',
+				25: 'rgba(34,34,34,0.25)',
+				50: 'rgba(34,34,34,0.5)',
+				75: 'rgba(34,34,34,0.75)',
+			},
+
 			primary: {
-				DEFAULT: '#167935',
+				light: '#f1ffe8',
+				DEFAULT: '#1d873c',
 			},
 			secondary: {
 				DEFAULT: '#F57C00',
@@ -25,7 +42,6 @@ module.exports = {
 			error: {
 				DEFAULT: '#ff0033',
 			},
-			white: '#feffff',
 			blue: {
 				light: '#efecf7',
 			},
@@ -33,12 +49,6 @@ module.exports = {
 			body: {
 				light: '#fef7f1',
 				DEFAULT: '#391e67',
-			},
-			black: {
-				DEFAULT: 'rgba(34,34,34,1)',
-				25: 'rgba(34,34,34,0.25)',
-				50: 'rgba(34,34,34,0.5)',
-				75: 'rgba(34,34,34,0.75)',
 			},
 			transparent: 'transparent',
 		},

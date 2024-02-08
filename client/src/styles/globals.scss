@@ -10,7 +10,7 @@
 
 // Add general styles here!
 body {
-	@apply bg-white;
+	@apply bg-yellow-light;
 
 	// Hide number arrows
 	input[type='number']::-webkit-outer-spin-button,
@@ -67,7 +67,7 @@ body {
 			flex: 2;
 
 			&__sticky-menu {
-				@apply bg-white/90 sticky top-[74px] md:top-[85px] left-0 right-0 z-searchBar;
+				@apply bg-yellow-light/90 sticky top-[74px] md:top-[85px] left-0 right-0 z-searchBar;
 			}
 		}
 	}

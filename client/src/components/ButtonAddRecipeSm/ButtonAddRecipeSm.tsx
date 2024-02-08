@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation';
 import useUser from '@/src/hooks/auth/useUser';
 
 import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
-import Button from '@/src/components/Button/Button';
 import Icon from '@/src/components/Icon/Icon';
 import Modal from '@/src/components/Modal/Modal';
 

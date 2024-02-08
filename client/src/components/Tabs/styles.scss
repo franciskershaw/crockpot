@@ -1,5 +1,8 @@
 .tabs {
-	@apply flex justify-between rounded-full relative bg-blue-light;
+	outline: 2px solid !important;
+	margin-bottom: 2px;
+	@apply flex justify-between rounded-full relative
+		bg-green-light outline-green;
 }
 
 .tabs-toggle {
@@ -13,5 +16,5 @@
 }
 
 [data-state='active'][data-active-class] {
-	@apply font-semibold;
+	@apply font-semibold text-white;
 }

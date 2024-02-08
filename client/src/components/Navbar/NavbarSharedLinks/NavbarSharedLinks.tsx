@@ -14,11 +14,11 @@ const NavbarSharedLinks = () => {
 	return (
 		<div className="flex space-x-12 md:space-x-3 lg:space-x-4">
 			<Link href="/browse">
-				<Button text="Browse Recipes" type="primary" border />
+				<Button text="Browse Recipes" type="primary" inverse />
 			</Link>
 			{user && (
 				<Link href="/your-crockpot">
-					<Button text="Your Crockpot" type="primary" border />
+					<Button text="Your Crockpot" type="primary" inverse />
 				</Link>
 			)}
 			<ButtonAddRecipeLg />
