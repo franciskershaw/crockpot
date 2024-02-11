@@ -447,10 +447,10 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 											ingredient.quantity !== null ? ingredient.quantity : ''
 										}
 										onChange={(e) => handleQuantityChange(e, index)}
-										className="w-[60px] border border-black rounded text-center p-0.5"
+										className="w-[60px] border border-borderDark rounded text-center p-0.5"
 									/>
 									<select
-										className="w-[125px] border border-black rounded p-0.5 pl-1.5"
+										className="w-[125px] border border-borderDark rounded p-0.5 pl-1.5"
 										name=""
 										id=""
 										onChange={(e) => handleUnitChange(e, index)}

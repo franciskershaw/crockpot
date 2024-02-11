@@ -39,7 +39,7 @@ export default function Checkbox({
 			</CheckboxRadix.Root>
 			{label && (
 				<label
-					className="pl-2 cursor-pointer truncate md:max-w-[125px] lg:max-w-full label--checkbox"
+					className="pl-2 cursor-pointer truncate md:max-w-[190px] lg:max-w-full label--checkbox"
 					htmlFor={id ? id : checkboxId}
 				>
 					{label}

@@ -24,7 +24,7 @@ function ButtonAddRecipeLg() {
 		<Modal
 			trigger={
 				<div className="hidden lg:block">
-					<Button text="Add Recipe" type="primary" inverse />
+					<Button text="Add Recipe" type="primary" border />
 				</div>
 			}
 			title="Add New Recipe"

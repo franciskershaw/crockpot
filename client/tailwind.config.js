@@ -6,21 +6,34 @@ module.exports = {
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
-		boxShadow: {
-			navTop: '3px 2px 6px 0px rgba(0, 0, 0, 0.2)',
-			navBottom: '3px -2px 6px 0px rgba(0, 0, 0, 0.2)',
-			DEFAULT: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-			hover: 'rgba(100, 100, 111, 0.4) 0px 7px 29px 0px',
+		extend: {
+			boxShadow: {
+				navTop: '3px 2px 6px 0px rgba(0, 0, 0, 0.2)',
+				navBottom: '3px -2px 6px 0px rgba(0, 0, 0, 0.2)',
+				DEFAULT: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+				hover: 'rgba(100, 100, 111, 0.4) 0px 7px 29px 0px',
+			},
 		},
 		colors: {
 			yellow: {
 				light: '#f3ecdc',
-				DEFAULT: '#fabd1e',
+				// DEFAULT: '#fabd1e',
+				DEFAULT: '#1d873c',
 			},
 			green: {
 				light: '#f1ffe8',
 				DEFAULT: '#1d873c',
 			},
+
+			background: {
+				light: 'rgba(34,34,34,0.10)',
+				main: '#f3ecdc',
+				overlay: 'rgba(34,34,34,0.50)',
+			},
+			borderLight: 'rgba(34,34,34,0.25)',
+			borderDark: 'rgba(34,34,34,0.50)',
+
+			disabled: '#BDBDBD',
 			white: '#f8f8ff',
 			black: {
 				DEFAULT: 'rgba(34,34,34,1)',
@@ -45,7 +58,6 @@ module.exports = {
 			blue: {
 				light: '#efecf7',
 			},
-			disabled: '#BDBDBD',
 			body: {
 				light: '#fef7f1',
 				DEFAULT: '#391e67',

@@ -25,9 +25,7 @@ const RecipesTab = () => {
 		<div className="admin-tabs">
 			<div className="admin-tabs__modal-trigger">
 				<Modal
-					trigger={
-						<Button type="primary" border text="Add New Recipe"></Button>
-					}
+					trigger={<Button type="primary" text="Add New Recipe"></Button>}
 					title="Add new recipe"
 					open={addRecipeModalOpen}
 					setOpen={setAddRecipeModalOpen}
@@ -53,7 +51,7 @@ const RecipesTab = () => {
 								<div className="flex space-x-2">
 									<Modal
 										trigger={
-											<Button type="primary" border>
+											<Button type="primary">
 												<RiEdit2Line />
 											</Button>
 										}
@@ -69,7 +67,7 @@ const RecipesTab = () => {
 									</Modal>
 									<Modal
 										trigger={
-											<Button type="primary" border>
+											<Button type="primary">
 												<RiDeleteBinLine />
 											</Button>
 										}

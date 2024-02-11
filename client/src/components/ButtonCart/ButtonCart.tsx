@@ -96,14 +96,14 @@ const ButtonCart = ({
 									e.stopPropagation();
 									setIsExpanded(true);
 								}}
-								type={isMenu ? 'secondary' : 'tertiary'}
+								type={isMenu ? 'secondary' : 'disabled'}
 								inverse={isMenu ? false : true}
-								border={isMenu ? false : true}
+								border
 							>
 								<RiShoppingBasketLine />
 							</Button>
 							{isMenu && (
-								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-green border border-body-light flex items-center justify-center">
+								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-green border border-white flex items-center justify-center">
 									<span className="text-xs text-white">{isMenu.serves}</span>
 								</div>
 							)}
@@ -115,7 +115,7 @@ const ButtonCart = ({
 								e.stopPropagation();
 								handleDecrease();
 							}}
-							inverse
+							border
 						>
 							<AiOutlineMinus />
 						</Button>
@@ -140,7 +140,7 @@ const ButtonCart = ({
 							e.stopPropagation();
 							handleIncrease();
 						}}
-						inverse
+						border
 					>
 						<AiOutlinePlus />
 					</Button>

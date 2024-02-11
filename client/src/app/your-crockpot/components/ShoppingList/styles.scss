@@ -24,7 +24,7 @@
 }
 
 .quantity-input-confirm {
-	@apply absolute bottom-[-19px] w-fit text-center underline cursor-pointer bg-white text-black border-2 border-black border-t pb-0.5 px-1;
+	@apply absolute bottom-[-19px] w-fit text-center underline cursor-pointer bg-white text-black border border-borderDark border-t pb-0.5 px-1;
 
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;

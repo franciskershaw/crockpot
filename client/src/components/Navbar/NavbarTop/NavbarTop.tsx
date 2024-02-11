@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 import useAuth from '@/src/hooks/auth/useAuth';
 import useUser from '@/src/hooks/auth/useUser';
@@ -19,8 +18,6 @@ type NavbarSharedLinksHamburgerProps = {
 };
 
 const NavbarTop = () => {
-	const pathname = usePathname();
-
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { user } = useUser();
@@ -57,7 +54,7 @@ const NavbarTop = () => {
 	};
 
 	return (
-		<nav className="bg-yellow border-b border-yellow-light py-5 fixed top-0 left-0 right-0 z-navTop shadow-navTop ">
+		<nav className="bg-yellow border-b border-white py-5 fixed top-0 left-0 right-0 z-navTop shadow-navTop ">
 			<div className="container flex items-center">
 				<div className="mr-4">
 					<span className="h1 bg-yellow text-white border-4 border-white rounded-full px-3 py-2">

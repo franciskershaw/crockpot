@@ -96,11 +96,11 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 					}
 					onChange={handleChange}
 					onBlur={handleUpdateQuantity}
-					className="w-[60px] border border-black rounded text-center p-0.5"
+					className="w-[60px] border border-borderDark rounded text-center p-0.5"
 				/>
 				<span>{item.unit}</span>
 			</div>
-			<Button onClick={handleDeleteItem} type="primary" border iconXs>
+			<Button onClick={handleDeleteItem} type="tertiary" border inverse iconXs>
 				<FaTrash />
 			</Button>
 		</div>

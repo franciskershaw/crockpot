@@ -103,7 +103,6 @@ const AuthForm = (props: Props) => {
 				<Button
 					text={props.type === 'login' ? 'Login' : 'Register'}
 					type="primary"
-					border
 				/>
 				{props.type === 'login' ? (
 					<div>

@@ -39,12 +39,7 @@ function BrowsePageSearchBar() {
 				</Button>
 			</div>
 			<div className="hidden md:block">
-				<Button
-					onClick={resetFilters}
-					text={'Clear filters'}
-					type="primary"
-					border
-				/>
+				<Button onClick={resetFilters} text={'Clear Filters'} type="primary" />
 			</div>
 		</div>
 	);

@@ -1,5 +1,5 @@
 .btn {
-	@apply border-2 border-solid rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0 whitespace-nowrap font-semibold;
+	@apply border border-solid rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0 whitespace-nowrap font-semibold;
 
 	.icon {
 		@apply bg-transparent;
@@ -114,7 +114,7 @@
 	}
 
 	&--disabled {
-		@apply bg-black-75 text-white border-black-75;
+		@apply bg-black-50 text-white border-black-50;
 
 		.icon {
 			svg {
@@ -131,20 +131,20 @@
 		}
 
 		&.btn--inverse {
-			@apply bg-white text-black-75 border-white;
+			@apply bg-white text-black-50 border-white;
 
 			.icon {
 				svg {
-					@apply text-black-75;
+					@apply text-black-50;
 
 					path {
-						@apply stroke-black-75;
+						@apply stroke-black-50;
 					}
 				}
 			}
 
 			&.btn--border {
-				@apply border-black-75;
+				@apply border-black-50;
 			}
 		}
 	}
