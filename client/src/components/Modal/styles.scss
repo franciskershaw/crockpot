@@ -12,7 +12,7 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	@apply bg-white overflow-y-scroll z-modal rounded-xl w-[90vw] max-h-[90vh] max-w-6xl shadow-hover;
+	@apply bg-primary-light overflow-y-scroll z-modal rounded-xl w-[90vw] max-h-[90vh] max-w-6xl shadow-hover;
 
 	&--nested {
 		@apply z-modalNested w-[80vw] max-w-5xl;

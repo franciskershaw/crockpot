@@ -14,6 +14,6 @@
 	}
 
 	&__search-result {
-		@apply flex items-center border border-borderDark rounded-xl bg-white py-4 px-2 justify-between;
+		@apply flex items-center border border-borderDark rounded-xl bg-primary-light py-4 px-2 justify-between;
 	}
 }

@@ -65,7 +65,7 @@ const BrowsePage = () => {
 			{isFetching ? <LoadingSpinner /> : null}
 			<div className="container container--1-2">
 				<div className="container--1-2__1">
-					<div className="container--1-2__1__sticky-menu">
+					<div className="container--1-2__1__sticky-menu mt-4">
 						<BrowsePageFiltersMenu />
 					</div>
 				</div>
