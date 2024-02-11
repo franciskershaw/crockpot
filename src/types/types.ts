@@ -8,7 +8,7 @@ export interface User {
 	shoppingList: ShoppingItem[];
 	recipeMenu: RecipeMenuData[];
 	regularItems: [];
-	extraItems: ShoppingListItem[];
+	extraItems: IShoppingListItem[];
 	accessToken: string;
 }
 
@@ -89,7 +89,7 @@ export interface ShoppingItem {
 	__v: number;
 }
 
-export interface ShoppingListItem {
+export interface IShoppingListItem {
 	item: ShoppingItem;
 	quantity: number;
 	unit: Unit;
@@ -101,5 +101,5 @@ export interface GroupedShoppingList {
 	categoryId: string;
 	categoryName: string;
 	faIcon: string;
-	items: ShoppingListItem[];
+	items: IShoppingListItem[];
 }

@@ -1,20 +1,19 @@
 import { useMemo } from 'react';
 
-import { combineArrays, createConfig } from '@/src/helper';
-import { queryKeys } from '@/src/providers/Providers';
+import { combineArrays, createConfig } from '@/helper';
+import { queryKeys } from '@/providers/Providers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
 	GroupedShoppingList,
+	IShoppingListItem,
 	ItemCategory,
-	ShoppingItem,
-	ShoppingListItem,
 	User,
-} from '@/src/types/types';
+} from '@/types/types';
 
-import useUser from '@/src/hooks/auth/useUser';
-import useAxios from '@/src/hooks/axios/useAxios';
-import useItemCategories from '@/src/hooks/items/useItemCategories';
+import useUser from '@/hooks/auth/useUser';
+import useAxios from '@/hooks/axios/useAxios';
+import useItemCategories from '@/hooks/items/useItemCategories';
 
 import useExtraItems from './useExtraItems';
 
@@ -55,7 +54,7 @@ const useShoppingList = () => {
 			);
 
 			const alsoInShoppingList = shoppingList?.find(
-				(item: ShoppingListItem) => item.item._id === itemId,
+				(item: IShoppingListItem) => item.item._id === itemId,
 			);
 			if (alsoInShoppingList) {
 				shopping = await api.put(
@@ -95,7 +94,7 @@ const useShoppingList = () => {
 						const newUserData = { ...oldUserData };
 						if (data?.extra) {
 							newUserData.extraItems = data.extra.map(
-								(item: ShoppingListItem) => ({
+								(item: IShoppingListItem) => ({
 									_id: item.item._id,
 									quantity: item.quantity,
 									unit: item.unit,
@@ -105,7 +104,7 @@ const useShoppingList = () => {
 						}
 						if (data?.shopping) {
 							newUserData.shoppingList = data.shopping.map(
-								(item: ShoppingListItem) => ({
+								(item: IShoppingListItem) => ({
 									_id: item.item._id,
 									quantity: item.quantity,
 									unit: item.unit,
@@ -119,7 +118,7 @@ const useShoppingList = () => {
 				if (data?.extra) {
 					queryClient.setQueryData(
 						[queryKeys.extraItems],
-						(oldExtraItems: ShoppingListItem[] | undefined) => {
+						(oldExtraItems: IShoppingListItem[] | undefined) => {
 							if (!oldExtraItems) return [];
 							return data.extra;
 						},
@@ -128,7 +127,7 @@ const useShoppingList = () => {
 				if (data?.shopping) {
 					queryClient.setQueryData(
 						[queryKeys.shoppingList],
-						(oldShoppingItems: ShoppingListItem[] | undefined) => {
+						(oldShoppingItems: IShoppingListItem[] | undefined) => {
 							if (!oldShoppingItems) return [];
 							return data.shopping;
 						},
@@ -149,8 +148,8 @@ const useShoppingList = () => {
 	const groupedShoppingList: GroupedShoppingList[] = useMemo(() => {
 		return itemCategories.reduce<GroupedShoppingList[]>(
 			(acc, category: ItemCategory) => {
-				const itemsInCategory: ShoppingListItem[] = combinedItemList.filter(
-					(shopItem: ShoppingListItem) =>
+				const itemsInCategory: IShoppingListItem[] = combinedItemList.filter(
+					(shopItem: IShoppingListItem) =>
 						shopItem.item.category === category._id,
 				);
 				if (itemsInCategory.length > 0) {

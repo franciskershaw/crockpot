@@ -1,4 +1,4 @@
-import { queryKeys } from '@/src/providers/Providers';
+import { queryKeys } from '@/providers/Providers';
 import { useQuery } from '@tanstack/react-query';
 
 import useAxios from '../axios/useAxios';

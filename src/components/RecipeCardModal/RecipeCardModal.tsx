@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
 
-import { Recipe } from '@/src/types/types';
+import { Recipe } from '@/types/types';
 
-import useUser from '@/src/hooks/auth/useUser';
-import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
+import useUser from '@/hooks/auth/useUser';
+import { useDeleteRecipe } from '@/hooks/recipes/useAddEditRecipe';
 
-import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
-import Button from '@/src/components/Button/Button';
-import ButtonCart from '@/src/components/ButtonCart/ButtonCart';
-import Modal from '@/src/components/Modal/Modal';
-import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
-import Tabs from '@/src/components/Tabs/Tabs';
+import AddRecipe from '@/components/AddRecipe/AddRecipe';
+import Button from '@/components/Button/Button';
+import ButtonCart from '@/components/ButtonCart/ButtonCart';
+import Modal from '@/components/Modal/Modal';
+import QuantityInput from '@/components/QuantityInput/QuantityInput';
+import Tabs from '@/components/Tabs/Tabs';
 
 type RecipeCardModalProps = {
 	recipe: Recipe;
@@ -133,7 +133,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									size="sm"
 								>
 									<div className="modal--p-and-button">
-										<p>Are you sure you'd like to delete this recipe?</p>
+										<p>Are you sure you&aposd like to delete this recipe?</p>
 										<Button
 											onClick={handleDelete}
 											text="Delete Recipe"

@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { Capriola } from 'next/font/google';
-import { Open_Sans, Roboto } from 'next/font/google';
+import { Capriola, Open_Sans } from 'next/font/google';
 
-import Providers from '@/src/providers/Providers';
+import Providers from '@/providers/Providers';
 import type { Metadata } from 'next';
 
-import ButtonAddRecipeSm from '@/src/components/ButtonAddRecipeSm/ButtonAddRecipeSm';
-import NavbarBottom from '@/src/components/Navbar/NavbarBottom/NavbarBottom';
-import NavbarTop from '@/src/components/Navbar/NavbarTop/NavbarTop';
+import ButtonAddRecipeSm from '@/components/ButtonAddRecipeSm/ButtonAddRecipeSm';
+import NavbarBottom from '@/components/Navbar/NavbarBottom/NavbarBottom';
+import NavbarTop from '@/components/Navbar/NavbarTop/NavbarTop';
 
-import '@/src/styles/globals.scss';
+import '@/styles/globals.scss';
 
 const openSans = Open_Sans({
 	weight: ['300', '400'],

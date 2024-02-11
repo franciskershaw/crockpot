@@ -4,7 +4,7 @@ import { AiOutlineCheck } from 'react-icons/ai';
 import * as CheckboxRadix from '@radix-ui/react-checkbox';
 import { v4 as uuidv4 } from 'uuid';
 
-import Icon from '@/src/components/Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 
 import './styles.scss';
 

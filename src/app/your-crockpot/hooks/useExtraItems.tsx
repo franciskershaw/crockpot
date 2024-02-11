@@ -1,11 +1,11 @@
-import { createConfig } from '@/src/helper';
-import { queryKeys } from '@/src/providers/Providers';
+import { createConfig } from '@/helper';
+import { queryKeys } from '@/providers/Providers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { ShoppingListItem, User } from '@/src/types/types';
+import { IShoppingListItem, User } from '@/types/types';
 
-import useUser from '@/src/hooks/auth/useUser';
-import useAxios from '@/src/hooks/axios/useAxios';
+import useUser from '@/hooks/auth/useUser';
+import useAxios from '@/hooks/axios/useAxios';
 
 type UpdateExtraItemsBody = {
 	quantity?: number;
@@ -66,7 +66,7 @@ const useExtraItems = () => {
 					(oldUserData: User | undefined) => {
 						if (!oldUserData) return undefined;
 						const newUserData = { ...oldUserData };
-						newUserData.extraItems = data.map((item: ShoppingListItem) => ({
+						newUserData.extraItems = data.map((item: IShoppingListItem) => ({
 							_id: item.item._id,
 							quantity: item.quantity,
 							unit: item.unit,
@@ -78,7 +78,7 @@ const useExtraItems = () => {
 
 				queryClient.setQueryData(
 					[queryKeys.extraItems],
-					(oldExtraItems: ShoppingListItem[] | undefined) => {
+					(oldExtraItems: IShoppingListItem[] | undefined) => {
 						if (!oldExtraItems) return [];
 						return data;
 					},
@@ -104,7 +104,7 @@ const useExtraItems = () => {
 
 			queryClient.setQueryData(
 				[queryKeys.extraItems],
-				(oldExtraItems: ShoppingListItem[] | undefined) => {
+				(oldExtraItems: IShoppingListItem[] | undefined) => {
 					if (!oldExtraItems) return [];
 					return [];
 				},

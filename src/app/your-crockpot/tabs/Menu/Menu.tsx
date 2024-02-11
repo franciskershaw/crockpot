@@ -1,15 +1,15 @@
 import { useMemo } from 'react';
 
-import { MenuRecipe } from '@/src/types/types';
+import { MenuRecipe } from '@/types/types';
 
 import useRecipeMenu from '../../hooks/useRecipeMenu';
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import useRecipes from '@/hooks/recipes/useRecipes';
 
 import ShoppingList from '../../components/ShoppingList/ShoppingList';
-import Button from '@/src/components/Button/Button';
-import EmptyState from '@/src/components/EmptyState/EmptyState';
-import Modal from '@/src/components/Modal/Modal';
-import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
+import Button from '@/components/Button/Button';
+import EmptyState from '@/components/EmptyState/EmptyState';
+import Modal from '@/components/Modal/Modal';
+import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 
 const Menu = () => {
 	const { allRecipes } = useRecipes();

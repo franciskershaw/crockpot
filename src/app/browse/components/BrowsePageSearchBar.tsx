@@ -4,9 +4,9 @@ import { GrRefresh } from 'react-icons/gr';
 
 import { useBrowsePageContext } from '../context/BrowsePageContext';
 
-import Button from '@/src/components/Button/Button';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Modal from '@/src/components/Modal/Modal';
+import Button from '@/components/Button/Button';
+import SearchBar from '@/components/FormSearchBar/SearchBar';
+import Modal from '@/components/Modal/Modal';
 
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
 

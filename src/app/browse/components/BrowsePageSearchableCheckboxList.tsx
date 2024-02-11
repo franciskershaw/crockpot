@@ -5,8 +5,8 @@ import {
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
 
-import Checkbox from '@/src/components/Checkbox/Checkbox';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
+import Checkbox from '@/components/Checkbox/Checkbox';
+import SearchBar from '@/components/FormSearchBar/SearchBar';
 
 type BrowsePageSearchableCheckboxListProps = {
 	title: string;

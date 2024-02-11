@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
 
-import { useDeleteRecipe } from '@/src/hooks/recipes/useAddEditRecipe';
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import { useDeleteRecipe } from '@/hooks/recipes/useAddEditRecipe';
+import useRecipes from '@/hooks/recipes/useRecipes';
 
-import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
-import Button from '@/src/components/Button/Button';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Modal from '@/src/components/Modal/Modal';
+import AddRecipe from '@/components/AddRecipe/AddRecipe';
+import Button from '@/components/Button/Button';
+import SearchBar from '@/components/FormSearchBar/SearchBar';
+import Modal from '@/components/Modal/Modal';
 
 const RecipesTab = () => {
 	const [query, setQuery] = useState('');
@@ -82,7 +82,7 @@ const RecipesTab = () => {
 										size="sm"
 									>
 										<div className="modal--p-and-button">
-											<p>Are you sure you'd like to delete this recipe?</p>
+											<p>Are you sure you&aposd like to delete this recipe?</p>
 											<Button
 												onClick={() => deleteRecipe(result._id)}
 												text="Delete Recipe"

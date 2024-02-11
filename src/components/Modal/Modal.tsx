@@ -4,7 +4,7 @@ import { GrClose } from 'react-icons/gr';
 
 import * as Dialog from '@radix-ui/react-dialog';
 
-import Button from '@/src/components/Button/Button';
+import Button from '@/components/Button/Button';
 
 import './styles.scss';
 

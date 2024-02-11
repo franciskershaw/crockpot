@@ -6,10 +6,10 @@ import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import useAuth from '@/src/hooks/auth/useAuth';
-import useUser from '@/src/hooks/auth/useUser';
+import useAuth from '@/hooks/auth/useAuth';
+import useUser from '@/hooks/auth/useUser';
 
-import Button from '@/src/components/Button/Button';
+import Button from '@/components/Button/Button';
 
 import './_authform.scss';
 

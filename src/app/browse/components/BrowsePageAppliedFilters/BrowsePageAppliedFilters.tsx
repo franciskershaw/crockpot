@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import useRecipes from '@/hooks/recipes/useRecipes';
 
 import {
 	CheckboxData,

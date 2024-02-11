@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { queryKeys } from '@/src/providers/Providers';
+import { queryKeys } from '@/providers/Providers';
 import { useQuery } from '@tanstack/react-query';
 
-import { Recipe } from '@/src/types/types';
+import { Recipe } from '@/types/types';
 
 import useAxios from '../axios/useAxios';
 

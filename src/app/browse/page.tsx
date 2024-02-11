@@ -1,9 +1,9 @@
 'use client';
 
-import { Category, Ingredient, Recipe } from '@/src/types/types';
+import { Category, Ingredient, Recipe } from '@/types/types';
 
-import useUser from '@/src/hooks/auth/useUser';
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import useUser from '@/hooks/auth/useUser';
+import useRecipes from '@/hooks/recipes/useRecipes';
 
 import {
 	CheckboxData,
@@ -13,9 +13,9 @@ import {
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
-import EmptyState from '@/src/components/EmptyState/EmptyState';
-import LoadingSpinner from '@/src/components/Loading/LoadingSpinner';
-import RecipeCardList from '@/src/components/RecipeCardList/RecipeCardList';
+import EmptyState from '@/components/EmptyState/EmptyState';
+import LoadingSpinner from '@/components/Loading/LoadingSpinner';
+import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 
 const BrowsePage = () => {
 	const { shuffledRecipes: allRecipes, isFetching } = useRecipes();

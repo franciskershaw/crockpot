@@ -2,11 +2,11 @@ import { toast } from 'react-toastify';
 
 import { useRouter } from 'next/navigation';
 
-import { queryKeys } from '@/src/providers/Providers';
+import { queryKeys } from '@/providers/Providers';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { User } from '@/src/types/types';
+import { User } from '@/types/types';
 
 const useAxios = () => {
 	const router = useRouter();

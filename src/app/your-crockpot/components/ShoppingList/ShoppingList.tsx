@@ -1,20 +1,20 @@
 import { useMemo, useState } from 'react';
 import { FaQuestion } from 'react-icons/fa';
 
-import { Item } from '@/src/types/types';
+import { IShoppingListItem, Item } from '@/types/types';
 
 import useExtraItems from '../../hooks/useExtraItems';
 import useRecipeMenu from '../../hooks/useRecipeMenu';
 import useShoppingList from '../../hooks/useShoppingList';
-import useItems from '@/src/hooks/items/useItems';
+import useItems from '@/hooks/items/useItems';
 
-import Accordion from '@/src/components/Accordion/Accordion';
-import Button from '@/src/components/Button/Button';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Icon from '@/src/components/Icon/Icon';
-import iconMapping from '@/src/components/Icon/iconMapping';
-import Modal from '@/src/components/Modal/Modal';
-import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
+import Accordion from '@/components/Accordion/Accordion';
+import Button from '@/components/Button/Button';
+import SearchBar from '@/components/FormSearchBar/SearchBar';
+import Icon from '@/components/Icon/Icon';
+import iconMapping from '@/components/Icon/iconMapping';
+import Modal from '@/components/Modal/Modal';
+import QuantityInput from '@/components/QuantityInput/QuantityInput';
 
 import ShoppingListItem from './ShoppingListItem';
 
@@ -43,14 +43,19 @@ const ShoppingList = () => {
 							{category.categoryName}
 						</span>
 						<span>
-							({category.items.filter((item) => item.obtained).length}/
-							{category.items.length})
+							(
+							{
+								category.items.filter(
+									(item: IShoppingListItem) => item.obtained,
+								).length
+							}
+							/{category.items.length})
 						</span>
 					</div>
 				),
 				children: (
 					<div className="space-y-0.5">
-						{category.items.map((item) => (
+						{category.items.map((item: IShoppingListItem) => (
 							<ShoppingListItem
 								key={`${item.item._id}_${item.quantity}_${item.unit}`}
 								item={item}

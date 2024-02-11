@@ -1,9 +1,9 @@
 import { MouseEvent } from 'react';
 import { AiFillHeart } from 'react-icons/ai';
 
-import useFavourites from '@/src/hooks/users/useFavourites';
+import useFavourites from '@/hooks/users/useFavourites';
 
-import Button from '@/src/components/Button/Button';
+import Button from '@/components/Button/Button';
 
 type ButtonFavProps = {
 	id: string;

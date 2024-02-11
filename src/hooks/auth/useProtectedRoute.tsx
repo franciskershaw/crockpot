@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import useUser from '@/src/hooks/auth/useUser';
+import useUser from '@/hooks/auth/useUser';
 
 const useProtectedRoute = (redirectTo = '/', adminOnly = false) => {
 	const router = useRouter();

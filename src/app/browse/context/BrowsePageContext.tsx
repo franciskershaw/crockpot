@@ -3,13 +3,14 @@
 import React, {
 	ReactNode,
 	createContext,
+	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
 	useState,
 } from 'react';
 
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import useRecipes from '@/hooks/recipes/useRecipes';
 
 export interface CheckboxData {
 	_id: string;
@@ -82,7 +83,7 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 	const toggleShowOnlyFavourites = () => setShowOnlyFavourites((prev) => !prev);
 	const toggleShowOnlyMyRecipes = () => setShowOnlyMyRecipes((prev) => !prev);
 
-	const resetFilters = () => {
+	const resetFilters = useCallback(() => {
 		setRecipeSearchQuery('');
 		setShowOnlyFavourites(false);
 		setShowOnlyMyRecipes(false);
@@ -90,7 +91,7 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 		setCookingTimeMax(cookingTimeMinMax.max);
 		setSelectedCategories([]);
 		setSelectedIngredients([]);
-	};
+	}, [cookingTimeMinMax.max, cookingTimeMinMax.min]);
 
 	const value: BrowsePageContextValue = useMemo(
 		() => ({
@@ -119,6 +120,7 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 			cookingTimeMax,
 			selectedCategories,
 			selectedIngredients,
+			resetFilters,
 		],
 	);
 

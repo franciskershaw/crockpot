@@ -1,4 +1,4 @@
-import { ShoppingListItem, User } from '@/src/types/types';
+import { IShoppingListItem, User } from '@/types/types';
 
 export const createConfig = (user: User) => {
 	return {
@@ -10,13 +10,13 @@ export const createConfig = (user: User) => {
 };
 
 export function combineArrays(
-	shoppingList: ShoppingListItem[],
-	extraItems: ShoppingListItem[],
-): ShoppingListItem[] {
-	const tempStorage: { [key: string]: ShoppingListItem } = {};
+	shoppingList: IShoppingListItem[],
+	extraItems: IShoppingListItem[],
+): IShoppingListItem[] {
+	const tempStorage: { [key: string]: IShoppingListItem } = {};
 
 	// Helper function to process each item
-	const processItem = (item: ShoppingListItem, isExtra: boolean) => {
+	const processItem = (item: IShoppingListItem, isExtra: boolean) => {
 		const key = item.item._id + item.unit; // Unique key based on _id and unit
 		if (tempStorage[key]) {
 			tempStorage[key].quantity += item.quantity;

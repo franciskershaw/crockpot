@@ -5,7 +5,7 @@ import { BsChevronDown } from 'react-icons/bs';
 import * as AccordionRadix from '@radix-ui/react-accordion';
 import { v4 as uuidv4 } from 'uuid';
 
-import Icon from '@/src/components/Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 
 import './styles.scss';
 

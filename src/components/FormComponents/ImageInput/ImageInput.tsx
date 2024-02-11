@@ -1,5 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 
+import Image from 'next/image';
+
 import Button from '../../Button/Button';
 import InputGroup from '../InputGroup/InputGroup';
 
@@ -51,7 +53,12 @@ const ImageInput: FC<ImageInputProps> = ({
 			{currentImage ? (
 				<>
 					<div className="h-[200px] w-full border rounded flex justify-center">
-						<img src={currentImage} alt="Current" style={{ height: '100%' }} />
+						<Image
+							src={currentImage}
+							alt={'Current'}
+							height={100}
+							width={100}
+						/>
 					</div>
 					<div className="w-full flex justify-center mt-2">
 						<Button border text="Clear Image" onClick={handleImageClear} />

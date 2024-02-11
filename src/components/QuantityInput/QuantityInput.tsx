@@ -1,8 +1,8 @@
 import React from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
-import Button from '@/src/components/Button/Button';
-import InputGroup from '@/src/components/FormComponents/InputGroup/InputGroup';
+import Button from '@/components/Button/Button';
+import InputGroup from '@/components/FormComponents/InputGroup/InputGroup';
 
 interface QuantityInputProps {
 	value: number;

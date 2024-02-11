@@ -3,13 +3,12 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
-import useAuth from '@/src/hooks/auth/useAuth';
-import useUser from '@/src/hooks/auth/useUser';
+import useAuth from '@/hooks/auth/useAuth';
+import useUser from '@/hooks/auth/useUser';
 
-import Button from '@/src/components/Button/Button';
-import NavbarSharedLinks from '@/src/components/Navbar/NavbarSharedLinks/NavbarSharedLinks';
+import Button from '@/components/Button/Button';
+import NavbarSharedLinks from '@/components/Navbar/NavbarSharedLinks/NavbarSharedLinks';
 
 import './styles.scss';
 
@@ -19,8 +18,6 @@ type NavbarSharedLinksHamburgerProps = {
 };
 
 const NavbarTop = () => {
-	const pathname = usePathname();
-
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { user } = useUser();

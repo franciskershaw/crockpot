@@ -1,7 +1,7 @@
-import { queryKeys } from '@/src/providers/Providers';
+import { queryKeys } from '@/providers/Providers';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { User } from '@/src/types/types';
+import { User } from '@/types/types';
 
 import useAxios from '../axios/useAxios';
 

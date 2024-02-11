@@ -2,20 +2,20 @@
 
 import React from 'react';
 
-import { Recipe } from '@/src/types/types';
+import { Recipe } from '@/types/types';
 
-import useUser from '@/src/hooks/auth/useUser';
-import useItems from '@/src/hooks/items/useItems';
-import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
-import useRecipes from '@/src/hooks/recipes/useRecipes';
+import useUser from '@/hooks/auth/useUser';
+import useItems from '@/hooks/items/useItems';
+import useRecipeCategories from '@/hooks/recipes/useRecipeCategories';
+import useRecipes from '@/hooks/recipes/useRecipes';
 
 import {
 	CheckboxData,
 	useBrowsePageContext,
 } from '../context/BrowsePageContext';
 
-import Slider from '@/src/components/Slider/Slider';
-import Switch from '@/src/components/Switch/Switch';
+import Slider from '@/components/Slider/Slider';
+import Switch from '@/components/Switch/Switch';
 
 import BrowsePageSearchableCheckboxList from './BrowsePageSearchableCheckboxList';
 

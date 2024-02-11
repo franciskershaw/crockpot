@@ -1,9 +1,9 @@
 'use client';
 
-import useProtectedRoute from '@/src/hooks/auth/useProtectedRoute';
+import useProtectedRoute from '@/hooks/auth/useProtectedRoute';
 
-import LoadingSpinner from '@/src/components/Loading/LoadingSpinner';
-import Tabs from '@/src/components/Tabs/Tabs';
+import LoadingSpinner from '@/components/Loading/LoadingSpinner';
+import Tabs from '@/components/Tabs/Tabs';
 
 import Favourites from './tabs/Favourites/Favourites';
 import Menu from './tabs/Menu/Menu';

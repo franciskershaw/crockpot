@@ -1,22 +1,19 @@
 import { FC, Fragment, useMemo, useRef, useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 
-import { AddRecipeIngredient, Item, Recipe, Unit } from '@/src/types/types';
+import { AddRecipeIngredient, Item, Recipe, Unit } from '@/types/types';
 
-import useItems from '@/src/hooks/items/useItems';
-import {
-	useAddRecipe,
-	useEditRecipe,
-} from '@/src/hooks/recipes/useAddEditRecipe';
-import useRecipeCategories from '@/src/hooks/recipes/useRecipeCategories';
+import useItems from '@/hooks/items/useItems';
+import { useAddRecipe, useEditRecipe } from '@/hooks/recipes/useAddEditRecipe';
+import useRecipeCategories from '@/hooks/recipes/useRecipeCategories';
 
-import Button from '@/src/components/Button/Button';
-import ImageInput from '@/src/components/FormComponents/ImageInput/ImageInput';
-import InputGroup from '@/src/components/FormComponents/InputGroup/InputGroup';
-import SelectInput from '@/src/components/FormComponents/SelectInput/SelectInput';
-import TextInput from '@/src/components/FormComponents/TextInput/TextInput';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import QuantityInput from '@/src/components/QuantityInput/QuantityInput';
+import Button from '@/components/Button/Button';
+import ImageInput from '@/components/FormComponents/ImageInput/ImageInput';
+import InputGroup from '@/components/FormComponents/InputGroup/InputGroup';
+import SelectInput from '@/components/FormComponents/SelectInput/SelectInput';
+import TextInput from '@/components/FormComponents/TextInput/TextInput';
+import SearchBar from '@/components/FormSearchBar/SearchBar';
+import QuantityInput from '@/components/QuantityInput/QuantityInput';
 
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;

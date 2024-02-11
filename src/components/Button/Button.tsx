@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Icon from '@/src/components/Icon/Icon';
+import Icon from '@/components/Icon/Icon';
 
 import './styles.scss';
 
@@ -55,5 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		);
 	},
 );
+
+Button.displayName = 'Button';
 
 export default Button;

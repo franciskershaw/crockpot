@@ -7,10 +7,6 @@ button {
 	@apply w-[42px] h-[25px] bg-black rounded-full relative;
 }
 
-// .SwitchRoot:focus {
-//   box-shadow: 0 0 0 2px black;
-// }
-
 .SwitchRoot[data-state='checked'] {
 	@apply bg-black;
 }

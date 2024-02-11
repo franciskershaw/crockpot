@@ -4,11 +4,11 @@ import React from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { Recipe } from '@/src/types/types';
+import { Recipe } from '@/types/types';
 
-import Modal from '@/src/components/Modal/Modal';
-import RecipeCard from '@/src/components/RecipeCard/RecipeCard';
-import RecipeCardModal from '@/src/components/RecipeCardModal/RecipeCardModal';
+import Modal from '@/components/Modal/Modal';
+import RecipeCard from '@/components/RecipeCard/RecipeCard';
+import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 
 import './styles.scss';
 

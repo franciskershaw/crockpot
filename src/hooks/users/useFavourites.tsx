@@ -1,8 +1,8 @@
-import { createConfig } from '@/src/helper';
-import { queryKeys } from '@/src/providers/Providers';
+import { createConfig } from '@/helper';
+import { queryKeys } from '@/providers/Providers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { Recipe, User } from '@/src/types/types';
+import { Recipe, User } from '@/types/types';
 
 import useUser from '../auth/useUser';
 import useAxios from '../axios/useAxios';

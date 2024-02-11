@@ -5,12 +5,12 @@ import { AiOutlinePlus } from 'react-icons/ai';
 
 import { usePathname } from 'next/navigation';
 
-import useUser from '@/src/hooks/auth/useUser';
+import useUser from '@/hooks/auth/useUser';
 
-import AddRecipe from '@/src/components/AddRecipe/AddRecipe';
-import Button from '@/src/components/Button/Button';
-import Icon from '@/src/components/Icon/Icon';
-import Modal from '@/src/components/Modal/Modal';
+import Icon from '@/components/Icon/Icon';
+import Modal from '@/components/Modal/Modal';
+
+import AddRecipe from '../AddRecipe/AddRecipe';
 
 function ButtonAddRecipe() {
 	const { user } = useUser();

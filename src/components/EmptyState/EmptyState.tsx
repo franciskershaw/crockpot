@@ -6,11 +6,7 @@ type EmptyStateProps = {
 	description: string;
 };
 
-export default function EmptyState({
-	animation,
-	title,
-	description,
-}: EmptyStateProps) {
+export default function EmptyState({ title, description }: EmptyStateProps) {
 	return (
 		<div className="text-center mb-4">
 			<h2 className="mb-2">{title}</h2>

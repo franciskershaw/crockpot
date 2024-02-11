@@ -2,11 +2,11 @@ import { MouseEvent, useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { RiShoppingBasketLine } from 'react-icons/ri';
 
-import { Recipe } from '@/src/types/types';
+import { Recipe } from '@/types/types';
 
-import useRecipeMenu from '@/src/app/your-crockpot/hooks/useRecipeMenu';
+import useRecipeMenu from '@/app/your-crockpot/hooks/useRecipeMenu';
 
-import Button from '@/src/components/Button/Button';
+import Button from '@/components/Button/Button';
 
 import './styles.scss';
 

@@ -34,7 +34,7 @@ const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 		}
 	};
 
-	useEffect(updateSliderPosition, [activeIndex]);
+	useEffect(updateSliderPosition, [activeIndex, titles.length]);
 
 	// Update height of content
 	const [height, setHeight] = useState<Height>('auto');
@@ -52,7 +52,7 @@ const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 		resizeObserver.observe(element);
 
 		return () => resizeObserver.disconnect();
-	}, [activeIndex]);
+	}, [activeIndex, isModal]);
 
 	return (
 		<RadixTabs.Root

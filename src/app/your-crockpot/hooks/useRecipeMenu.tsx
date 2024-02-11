@@ -1,13 +1,11 @@
-import { useState } from 'react';
-
-import { createConfig } from '@/src/helper';
-import { queryKeys } from '@/src/providers/Providers';
+import { createConfig } from '@/helper';
+import { queryKeys } from '@/providers/Providers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { MenuRecipe, RecipeMenuData, User } from '@/src/types/types';
+import { MenuRecipe, RecipeMenuData, User } from '@/types/types';
 
-import useUser from '@/src/hooks/auth/useUser';
-import useAxios from '@/src/hooks/axios/useAxios';
+import useUser from '@/hooks/auth/useUser';
+import useAxios from '@/hooks/axios/useAxios';
 
 type RecipeMenuVariables = {
 	recipeId?: string;

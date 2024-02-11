@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
 
-import { useDeleteItem } from '@/src/hooks/items/useAddEditItem';
-import useItems from '@/src/hooks/items/useItems';
+import { useDeleteItem } from '@/hooks/items/useAddEditItem';
+import useItems from '@/hooks/items/useItems';
 
-import AddItem from '@/src/components/AddItem/AddItem';
-import Button from '@/src/components/Button/Button';
-import SearchBar from '@/src/components/FormSearchBar/SearchBar';
-import Modal from '@/src/components/Modal/Modal';
+import AddItem from '@/components/AddItem/AddItem';
+import Button from '@/components/Button/Button';
+import SearchBar from '@/components/FormSearchBar/SearchBar';
+import Modal from '@/components/Modal/Modal';
 
 const ItemsTab = () => {
 	const [query, setQuery] = useState('');
@@ -80,7 +80,7 @@ const ItemsTab = () => {
 										size="sm"
 									>
 										<div className="modal--p-and-button">
-											<p>Are you sure you'd like to delete this item?</p>
+											<p>Are you sure you would like to delete this item?</p>
 											<Button
 												onClick={() => deleteItem(result._id)}
 												text="Delete Item"

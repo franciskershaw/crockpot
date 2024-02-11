@@ -1,7 +1,7 @@
-import { queryKeys } from '@/src/providers/Providers';
+import { queryKeys } from '@/providers/Providers';
 import { useQuery } from '@tanstack/react-query';
 
-import { Item } from '@/src/types/types';
+import { Item } from '@/types/types';
 
 import useAxios from '../axios/useAxios';
 

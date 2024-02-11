@@ -1,10 +1,10 @@
 import { toast } from 'react-toastify';
 
-import { queryKeys } from '@/src/providers/Providers';
+import { queryKeys } from '@/providers/Providers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { Recipe } from '@/src/types/types';
+import { Recipe } from '@/types/types';
 
 import useUser from '../auth/useUser';
 import useAxios from '../axios/useAxios';
