@@ -129,6 +129,7 @@ const ShoppingList = () => {
 														id=""
 														onChange={(e) => setExtraUnit(e.target.value)}
 														value={extraUnit}
+														className="min-h-[42px] h-[42px]"
 													>
 														<option value="">-</option>
 														<option value="cans">Cans</option>

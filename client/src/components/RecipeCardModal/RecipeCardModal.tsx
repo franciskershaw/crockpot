@@ -94,7 +94,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 							<div className="flex space-x-2">
 								<Modal
 									trigger={
-										<Button type="secondary" border>
+										<Button type="primary" border>
 											<RiEdit2Line />
 										</Button>
 									}
@@ -115,7 +115,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 									trigger={
 										<Button
 											onClick={openDeleteConfirmation}
-											type="secondary"
+											type="primary"
 											border
 										>
 											<RiDeleteBinLine />

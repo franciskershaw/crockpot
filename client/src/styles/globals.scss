@@ -55,9 +55,9 @@ body {
 			flex: 1;
 
 			&__sticky-menu {
-				@apply bg-white sticky top-[101px] left-0 right-0 z-searchBar border border-borderDark rounded overflow-auto;
+				@apply bg-primary-light sticky top-[99px] left-0 right-0 z-searchBar border border-borderDark rounded overflow-auto;
 
-				max-height: calc(100vh - 85px - 32px);
+				max-height: calc(100vh - 83px - 32px);
 			}
 		}
 
@@ -68,7 +68,7 @@ body {
 			min-width: calc(60% - 1rem);
 
 			&__sticky-menu {
-				@apply bg-yellow-light/90 sticky top-[74px] md:top-[85px] left-0 right-0 z-searchBar;
+				@apply bg-background-main/90 sticky top-[74px] md:top-[83px] left-0 right-0 z-searchBar;
 			}
 		}
 	}
@@ -140,15 +140,19 @@ ol {
 
 // Forms
 form {
-	@apply bg-white;
+	@apply bg-primary-light;
 }
 
 input,
 select {
-	@apply border-borderDark border bg-white p-2 rounded w-full shadow-sm;
+	@apply border-borderDark border bg-white-input p-2 rounded w-full shadow-sm;
 
 	&:focus {
-		@apply outline-green;
+		@apply outline-primary;
+	}
+
+	&::placeholder {
+		@apply text-borderDark;
 	}
 }
 
@@ -177,7 +181,7 @@ select {
 	margin: 0;
 	padding: 0;
 
-	@apply border-borderDark border bg-white rounded w-full relative py-[2px] min-h-[44px] flex;
+	@apply border-borderDark border bg-white-input rounded w-full relative py-[2px] min-h-[44px] flex;
 
 	.react-select__placeholder {
 		@apply m-0 p-0 pl-2;
@@ -201,12 +205,16 @@ select {
 		@apply m-0 p-0 border-0;
 	}
 
+	.react-select__placeholder {
+		@apply text-borderDark;
+	}
+
 	.react-select__single-value {
 		@apply p-1 ml-1;
 	}
 
 	.react-select__multi-value {
-		@apply m-0 border border-solid border-green bg-green text-white rounded cursor-pointer p-1 flex justify-between mr-0 ml-1 my-0;
+		@apply m-0 border border-solid border-primary bg-primary text-white rounded cursor-pointer p-1 flex justify-between mr-0 ml-1 my-0;
 
 		.react-select__multi-value__label {
 			@apply p-0 text-base text-white font-semibold;
@@ -220,7 +228,7 @@ select {
 			}
 
 			&:hover {
-				@apply text-white bg-green;
+				@apply text-white bg-primary;
 			}
 		}
 
@@ -271,7 +279,7 @@ select {
 	}
 
 	.react-select__menu {
-		@apply mt-0.5 absolute top-full left-0 right-0 w-full bg-white border border-black-25 shadow p-1 space-y-0.5 rounded-b;
+		@apply mt-0.5 absolute top-full left-0 right-0 w-full bg-white-input border border-borderLight shadow p-1 space-y-0.5 rounded-b;
 
 		.react-select__menu-list {
 			@apply p-0 m-0 space-y-0.5;
@@ -292,13 +300,13 @@ select {
 }
 
 .input-menu-dropdown {
-	@apply absolute top-full left-0 w-full bg-white border border-black-25 shadow p-1 space-y-0.5 rounded-b;
+	@apply absolute top-full left-0 w-full bg-white-input border border-borderLight shadow p-1 space-y-0.5 rounded-b;
 
 	p {
 		@apply cursor-pointer;
 
 		&:hover {
-			@apply underline;
+			@apply underline bg-white;
 		}
 	}
 }

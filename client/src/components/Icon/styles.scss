@@ -24,7 +24,7 @@
 
 	// Types
 	&--primary {
-		@apply bg-yellow text-white border-yellow;
+		@apply bg-primary text-white border-primary;
 
 		svg {
 			@apply text-white;
@@ -39,20 +39,20 @@
 		}
 
 		&.icon--inverse {
-			@apply bg-white text-yellow border-white;
+			@apply bg-white text-primary border-white;
 
 			svg {
-				@apply text-yellow;
+				@apply text-primary;
 			}
 
 			&.icon--border {
-				@apply border-yellow border border-solid;
+				@apply border-primary border border-solid;
 			}
 		}
 	}
 
 	&--secondary {
-		@apply bg-green text-white border-green;
+		@apply bg-secondary text-white border-secondary;
 
 		svg {
 			@apply text-white;
@@ -67,14 +67,14 @@
 		}
 
 		&.icon--inverse {
-			@apply bg-white text-green border-white;
+			@apply bg-white text-secondary border-white;
 
 			svg {
-				@apply text-green;
+				@apply text-secondary;
 			}
 
 			&.icon--border {
-				@apply border-green border border-solid;
+				@apply border-secondary border border-solid;
 			}
 		}
 	}
@@ -95,7 +95,7 @@
 		}
 
 		&.icon--inverse {
-			@apply bg-white text-black border-white;
+			@apply bg-white-input text-black border-white;
 
 			svg {
 				@apply text-black;
@@ -108,7 +108,7 @@
 	}
 
 	&--disabled {
-		@apply bg-black-75 text-white border-black-75;
+		@apply bg-borderDark text-white border-borderDark;
 
 		svg {
 			@apply text-white;
@@ -123,14 +123,14 @@
 		}
 
 		&.icon--inverse {
-			@apply bg-white text-black-75 border-white;
+			@apply bg-white text-borderDark border-white;
 
 			svg {
-				@apply text-black-75;
+				@apply text-borderDark;
 			}
 
 			&.icon--border {
-				@apply border-black-75 border border-solid;
+				@apply border-borderDark border border-solid;
 			}
 		}
 	}

@@ -30,7 +30,7 @@ const Menu = () => {
 				<div className="container--1-2__2__sticky-menu p-3 flex justify-center space-x-4 md:hidden">
 					<Modal
 						title="Shopping List"
-						trigger={<Button type="secondary" text="Shopping List" />}
+						trigger={<Button type="primary" text="Shopping List" />}
 						size="sm"
 					>
 						<ShoppingList />
@@ -38,7 +38,7 @@ const Menu = () => {
 					{recipeMenu.length ? (
 						<Button
 							onClick={() => updateRecipeMenu({ type: 'clear' })}
-							type="secondary"
+							type="primary"
 							text="Clear Menu"
 						/>
 					) : null}

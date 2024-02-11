@@ -79,7 +79,7 @@ const BrowsePageSearchableCheckboxList: React.FC<
 				searchQuery={searchQuery}
 				setSearchQuery={setSearchQuery}
 			/>
-			<div className="space-y-1 overflow-y-scroll max-h-64 md:max-h-80 bg-white">
+			<div className="space-y-1 overflow-y-scroll max-h-64 md:max-h-80 bg-primary-light">
 				{filteredCheckboxes.length === 0 ? (
 					<h4 className="text-center">0 results</h4>
 				) : (

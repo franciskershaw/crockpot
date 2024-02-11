@@ -39,13 +39,13 @@ const Modal: React.FC<ModalProps> = ({
 				<Dialog.Content
 					className={`DialogContent relative ${nested ? 'DialogContent--nested' : null} ${size === 'sm' ? 'DialogContent--sm' : null} ${size === 'md' ? 'DialogContent--md' : null}`}
 				>
-					<div className="flex justify-between items-center bg-green text-white px-3 py-2 sticky top-0 left-0 z-modalHeader">
+					<div className="flex justify-between items-center bg-primary text-white px-3 py-2 sticky top-0 left-0 z-modalHeader">
 						<Dialog.Title className="DialogTitle truncate capitalize pr-0.5">
 							{title}
 						</Dialog.Title>
 						<div>
 							<Dialog.Close asChild>
-								<Button ariaLabel="Close" type="secondary">
+								<Button ariaLabel="Close" type="primary">
 									<GrClose />
 								</Button>
 							</Dialog.Close>

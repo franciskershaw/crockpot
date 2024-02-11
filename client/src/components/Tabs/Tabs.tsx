@@ -64,7 +64,7 @@ const Tabs: FC<Tabs> = ({ children, titles, isModal }) => {
 		>
 			<RadixTabs.List className="tabs">
 				<div className="tabs-toggle" ref={sliderRef}>
-					<div className="bg-green w-full h-full rounded-full" />
+					<div className="bg-primary w-full h-full rounded-full" />
 				</div>
 				{titles.map((title, index) => (
 					<RadixTabs.Trigger

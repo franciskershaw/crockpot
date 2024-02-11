@@ -54,8 +54,8 @@ const QuantityInput = ({
 
 	return (
 		<InputGroup label={label}>
-			<div className="flex outline outline-2 outline-green -outline-offset-2 w-fit rounded-full bg-white">
-				<Button onClick={handleDecrease} type="secondary">
+			<div className="flex outline outline-primary -outline-offset-1 w-fit rounded-full bg-white-input">
+				<Button onClick={handleDecrease} type="primary">
 					<AiOutlineMinus />
 				</Button>
 				<input
@@ -65,7 +65,7 @@ const QuantityInput = ({
 					onChange={handleChange}
 					id={id}
 				/>
-				<Button onClick={handleIncrease} type="secondary">
+				<Button onClick={handleIncrease} type="primary">
 					<AiOutlinePlus />
 				</Button>
 			</div>

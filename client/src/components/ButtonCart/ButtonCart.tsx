@@ -82,8 +82,10 @@ const ButtonCart = ({
 	};
 
 	return (
-		<div className="relative">
-			<div className="flex items-center bg-white rounded-full w-fit">
+		<div
+			className={`relative rounded-full ${isExpanded ? 'outline outline-primary -outline-offset-1' : ''} `}
+		>
+			<div className="flex items-center bg-white-input rounded-full w-fit">
 				<div className="relative">
 					<div
 						className={`absolute opacity-100 cursor-pointer fade ${
@@ -96,14 +98,14 @@ const ButtonCart = ({
 									e.stopPropagation();
 									setIsExpanded(true);
 								}}
-								type={isMenu ? 'secondary' : 'disabled'}
+								type={isMenu ? 'primary' : 'disabled'}
 								inverse={isMenu ? false : true}
 								border
 							>
 								<RiShoppingBasketLine />
 							</Button>
 							{isMenu && (
-								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-green border border-white flex items-center justify-center">
+								<div className="absolute top-[-5px] right-[-5px] h-5 w-5 rounded-full bg-primary border border-white flex items-center justify-center">
 									<span className="text-xs text-white">{isMenu.serves}</span>
 								</div>
 							)}
@@ -115,7 +117,6 @@ const ButtonCart = ({
 								e.stopPropagation();
 								handleDecrease();
 							}}
-							border
 						>
 							<AiOutlineMinus />
 						</Button>
@@ -140,7 +141,6 @@ const ButtonCart = ({
 							e.stopPropagation();
 							handleIncrease();
 						}}
-						border
 					>
 						<AiOutlinePlus />
 					</Button>

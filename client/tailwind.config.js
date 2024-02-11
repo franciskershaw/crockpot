@@ -15,14 +15,17 @@ module.exports = {
 			},
 		},
 		colors: {
-			yellow: {
-				light: '#f3ecdc',
-				// DEFAULT: '#fabd1e',
+			primary: {
+				light: '#f6fef9',
 				DEFAULT: '#1d873c',
 			},
-			green: {
-				light: '#f1ffe8',
+			secondary: {
+				light: '#f6fef9',
 				DEFAULT: '#1d873c',
+			},
+
+			error: {
+				DEFAULT: '#ff0033',
 			},
 
 			background: {
@@ -33,34 +36,15 @@ module.exports = {
 			borderLight: 'rgba(34,34,34,0.25)',
 			borderDark: 'rgba(34,34,34,0.50)',
 
-			disabled: '#BDBDBD',
-			white: '#f8f8ff',
+			white: {
+				DEFAULT: '#f8f8ff',
+				input: '#ffffff',
+			},
 			black: {
 				DEFAULT: 'rgba(34,34,34,1)',
 				25: 'rgba(34,34,34,0.25)',
 				50: 'rgba(34,34,34,0.5)',
 				75: 'rgba(34,34,34,0.75)',
-			},
-
-			primary: {
-				light: '#f1ffe8',
-				DEFAULT: '#1d873c',
-			},
-			secondary: {
-				DEFAULT: '#F57C00',
-			},
-			tertiary: {
-				DEFAULT: '#fabd1e',
-			},
-			error: {
-				DEFAULT: '#ff0033',
-			},
-			blue: {
-				light: '#efecf7',
-			},
-			body: {
-				light: '#fef7f1',
-				DEFAULT: '#391e67',
 			},
 			transparent: 'transparent',
 		},

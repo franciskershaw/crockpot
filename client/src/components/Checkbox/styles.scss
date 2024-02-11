@@ -1,5 +1,5 @@
 .CheckboxRoot {
-	@apply border border-solid border-borderDark bg-white h-6 w-6 rounded flex items-center justify-center cursor-pointer flex-shrink-0;
+	@apply border border-solid border-borderDark bg-white-input h-6 w-6 rounded flex items-center justify-center cursor-pointer flex-shrink-0;
 }
 
 .CheckboxRoot:hover {
@@ -10,5 +10,5 @@
 }
 
 .CheckboxIndicator {
-	@apply text-white bg-green;
+	@apply text-white bg-primary;
 }

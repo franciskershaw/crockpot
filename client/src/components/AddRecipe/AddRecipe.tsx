@@ -407,7 +407,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 				onChange={handleCategoryChange}
 				label="Select Categories (max 3)*"
 				isMulti
-				placeholder="Please select categories"
+				placeholder="Please select categories..."
 				error={categoryError}
 			/>
 
@@ -416,7 +416,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					<SearchBar
 						searchQuery={ingredientSearch}
 						setSearchQuery={setIngredientSearch}
-						placeholder="Search for ingredients"
+						placeholder="Search for ingredients..."
 						error={ingredientError}
 					/>
 					{searchResults.length > 0 && (
@@ -450,7 +450,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 										className="w-[60px] border border-borderDark rounded text-center p-0.5"
 									/>
 									<select
-										className="w-[125px] border border-borderDark rounded p-0.5 pl-1.5"
+										className="w-[125px] min-h-[30px] border border-borderDark rounded p-0.5 pl-1.5"
 										name=""
 										id=""
 										onChange={(e) => handleUnitChange(e, index)}
@@ -466,7 +466,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 								</div>
 								<Button
 									onClick={() => handleRemoveIngredient(index)}
-									type="secondary"
+									type="tertiary"
+									inverse
 									border
 									iconXs
 								>
@@ -498,7 +499,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									{instructions.length > 1 && (
 										<Button
 											onClick={() => handleRemoveInstruction(index)}
-											type="secondary"
+											type="tertiary"
+											inverse
 											border
 											iconXs
 										>
@@ -511,7 +513,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 								<div className="flex justify-center">
 									<Button
 										onClick={() => handleAddInstruction(index)}
-										type="secondary"
+										type="tertiary"
+										inverse
 										border
 										iconXs
 									>
@@ -539,7 +542,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 									{notes.length > 1 && (
 										<Button
 											onClick={() => handleRemoveNote(index)}
-											type="secondary"
+											type="tertiary"
+											inverse
 											border
 											iconXs
 										>
@@ -552,7 +556,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 								<div className="flex justify-center">
 									<Button
 										onClick={() => handleAddNote(index)}
-										type="secondary"
+										type="tertiary"
+										inverse
 										border
 										iconXs
 									>
@@ -568,7 +573,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 			<div className="flex justify-center">
 				<Button
 					onClick={handleSubmit}
-					type="secondary"
+					type="primary"
 					text={`${recipe ? 'Save Changes' : 'Add Recipe'}`}
 				/>
 			</div>
