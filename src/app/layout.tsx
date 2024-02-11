@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { Capriola } from 'next/font/google';
+import { Open_Sans, Roboto } from 'next/font/google';
+
 import Providers from '@/src/providers/Providers';
 import type { Metadata } from 'next';
 
@@ -8,6 +11,20 @@ import NavbarBottom from '@/src/components/Navbar/NavbarBottom/NavbarBottom';
 import NavbarTop from '@/src/components/Navbar/NavbarTop/NavbarTop';
 
 import '@/src/styles/globals.scss';
+
+const openSans = Open_Sans({
+	weight: ['300', '400'],
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-opensans',
+});
+
+const capriola = Capriola({
+	weight: '400',
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-capriola',
+});
 
 export const metadata: Metadata = {
 	title: 'Crockpot',
@@ -21,7 +38,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en">
+		<html lang="en" className={`${capriola.variable} ${openSans.variable}`}>
 			<body>
 				<Providers>
 					<NavbarTop />
