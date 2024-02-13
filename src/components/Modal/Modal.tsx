@@ -32,28 +32,26 @@ const Modal: React.FC<ModalProps> = ({
 	return (
 		<Dialog.Root open={open} onOpenChange={setOpen}>
 			<Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-			<Dialog.Portal>
-				<Dialog.Overlay
-					className={`DialogOverlay ${nested && 'DialogOverlay--nested'}`}
-				/>
-				<Dialog.Content
-					className={`DialogContent relative ${nested ? 'DialogContent--nested' : null} ${size === 'sm' ? 'DialogContent--sm' : null} ${size === 'md' ? 'DialogContent--md' : null}`}
-				>
-					<div className="flex justify-between items-center bg-primary text-white px-3 py-2 sticky top-0 left-0 z-modalHeader">
-						<Dialog.Title className="DialogTitle truncate capitalize pr-0.5">
-							{title}
-						</Dialog.Title>
-						<div>
-							<Dialog.Close asChild>
-								<Button ariaLabel="Close" type="primary">
-									<GrClose />
-								</Button>
-							</Dialog.Close>
-						</div>
+			<Dialog.Overlay
+				className={`fixed inset-0 bg-background-overlay z-modalOverlay ${nested ? 'z-modalOverlayNested' : ''}`}
+			/>
+			<Dialog.Content
+				className={`DialogContent ${nested ? 'DialogContent--nested' : ''} ${size === 'sm' ? 'DialogContent--sm' : ''} ${size === 'md' ? 'DialogContent--md' : ''}`}
+			>
+				<div className="flex justify-between items-center bg-primary text-white px-3 py-2 sticky top-0 left-0 z-modalHeader">
+					<Dialog.Title className="DialogTitle truncate capitalize pr-0.5">
+						{title}
+					</Dialog.Title>
+					<div>
+						<Dialog.Close asChild>
+							<Button ariaLabel="Close" type="primary">
+								<GrClose />
+							</Button>
+						</Dialog.Close>
 					</div>
-					<div className={`${paddingOn ? 'p-3' : ''}`}>{children}</div>
-				</Dialog.Content>
-			</Dialog.Portal>
+				</div>
+				<div className={`${paddingOn ? 'p-3' : ''}`}>{children}</div>
+			</Dialog.Content>
 		</Dialog.Root>
 	);
 };

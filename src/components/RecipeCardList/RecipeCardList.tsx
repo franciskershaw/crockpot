@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import { v4 as uuidv4 } from 'uuid';
-
 import { Recipe } from '@/types/types';
 
 import Modal from '@/components/Modal/Modal';
@@ -24,7 +22,7 @@ function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 		>
 			{recipes.map((recipe) => (
 				<Modal
-					key={uuidv4()}
+					key={recipe._id}
 					title={
 						<div className="flex">
 							<div className="lowercase">{recipe.timeInMinutes} mins</div>
