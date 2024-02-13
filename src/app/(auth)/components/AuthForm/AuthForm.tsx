@@ -11,7 +11,7 @@ import useUser from '@/hooks/auth/useUser';
 
 import Button from '@/components/Button/Button';
 
-import './_authform.scss';
+import styles from './styles.module.scss';
 
 interface Props {
 	type: 'register' | 'login';
@@ -53,7 +53,7 @@ const AuthForm = (props: Props) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="auth-form">
+		<form onSubmit={handleSubmit} className={styles.authForm}>
 			<h2 className="text-center">
 				{`${props.type === 'login' ? 'Login' : 'Register'} to Crockpot!`}
 			</h2>

@@ -5,8 +5,6 @@ import useProtectedRoute from '@/hooks/auth/useProtectedRoute';
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
 import Tabs from '@/components/Tabs/Tabs';
 
-import './styles.scss';
-
 import ItemsTab from './tabs/items/ItemsTab';
 import RecipesTab from './tabs/recipes/RecipesTab';
 

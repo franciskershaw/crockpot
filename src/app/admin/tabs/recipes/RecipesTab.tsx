@@ -9,6 +9,8 @@ import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
 import Modal from '@/components/Modal/Modal';
 
+import styles from '../../styles.module.scss';
+
 const RecipesTab = () => {
 	const [query, setQuery] = useState('');
 	const [addRecipeModalOpen, setAddRecipeModalOpen] = useState(false);
@@ -22,8 +24,8 @@ const RecipesTab = () => {
 	}, [allRecipes, query, filterRecipes]);
 
 	return (
-		<div className="admin-tabs">
-			<div className="admin-tabs__modal-trigger">
+		<div className={styles.adminTabs}>
+			<div className={styles.modalTrigger}>
 				<Modal
 					trigger={<Button type="primary" text="Add New Recipe"></Button>}
 					title="Add new recipe"
@@ -35,7 +37,7 @@ const RecipesTab = () => {
 					<AddRecipe setModal={setAddRecipeModalOpen} />
 				</Modal>
 			</div>
-			<div className="admin-tabs__search-bar">
+			<div className={styles.searchBar}>
 				<SearchBar
 					searchQuery={query}
 					setSearchQuery={setQuery}
@@ -44,9 +46,9 @@ const RecipesTab = () => {
 			</div>
 			{searchResults.length ? (
 				<>
-					<div className="admin-tabs__search-results-container">
+					<div className={styles.searchResultsContainer}>
 						{searchResults.map((result) => (
-							<div className="admin-tabs__search-result" key={result._id}>
+							<div className={styles.searchResult} key={result._id}>
 								<p>{result.name}</p>
 								<div className="flex space-x-2">
 									<Modal
