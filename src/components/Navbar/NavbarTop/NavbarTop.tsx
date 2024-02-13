@@ -39,14 +39,14 @@ const NavbarTop = () => {
 			<>
 				{user?.isAdmin && (
 					<Link onClick={() => setIsOpen(false)} href="/admin">
-						<Button text="Admin" border />
+						<Button text="Admin" type="primary" border />
 					</Link>
 				)}
 				{user ? (
-					<Button text="Logout" border onClick={handleLogout} />
+					<Button text="Logout" onClick={handleLogout} type="primary" border />
 				) : (
 					<Link onClick={() => setIsOpen(false)} href="/">
-						<Button text="Login" border />
+						<Button text="Login" type="primary" border />
 					</Link>
 				)}
 			</>
@@ -54,10 +54,10 @@ const NavbarTop = () => {
 	};
 
 	return (
-		<nav className="bg-white border-b border-black py-5 fixed top-0 left-0 right-0 z-navTop shadow-navTop ">
+		<nav className="bg-primary border-b border-white py-5 fixed top-0 left-0 right-0 z-navTop shadow-navTop ">
 			<div className="container flex items-center">
 				<div className="mr-4">
-					<span className="h1 bg-white text-black border-4 border-black rounded-full px-3 py-2">
+					<span className="h1 bg-primary text-white border-4 border-white rounded-full px-3 py-2">
 						Crockpot
 					</span>
 				</div>
@@ -87,7 +87,7 @@ const NavbarTop = () => {
 					/>
 				</div>
 				<div
-					className={`md:hidden nav__menu bg-white flex flex-col items-center justify-center space-y-4 animate z-navMenu ${
+					className={`md:hidden nav__menu bg-primary border-l border-background-main flex flex-col items-center justify-center space-y-4 animate z-navMenu ${
 						isOpen ? 'nav__menu--open' : ''
 					} `}
 				>

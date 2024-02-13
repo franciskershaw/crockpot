@@ -1,35 +1,151 @@
 .btn {
-	@apply border-none rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0 whitespace-nowrap;
+	@apply border border-solid rounded-full text-center flex items-center p-1 cursor-pointer flex-shrink-0 whitespace-nowrap font-semibold;
 
 	.icon {
 		@apply bg-transparent;
 	}
 
 	&--primary {
-		@apply bg-white text-black;
+		@apply bg-primary text-white border-primary;
 
 		.icon {
 			svg {
-				@apply text-black;
+				@apply text-white;
+
+				path {
+					@apply stroke-white;
+				}
 			}
 		}
 
 		&.btn--border {
-			@apply border-2 border-solid border-black;
+			@apply border-white;
 		}
 
 		&.btn--inverse {
-			@apply bg-black text-white;
+			@apply bg-white text-primary border-white;
 
 			.icon {
 				svg {
-					@apply text-white;
+					@apply text-primary;
+
+					path {
+						@apply stroke-primary;
+					}
 				}
 			}
 
-			// &.btn--border {
-			// 	@apply border-2 border-solid border-white;
-			// }
+			&.btn--border {
+				@apply border-primary;
+			}
+		}
+	}
+
+	&--secondary {
+		@apply bg-secondary text-white border-secondary;
+
+		.icon {
+			svg {
+				@apply text-white;
+
+				path {
+					@apply stroke-white;
+				}
+			}
+		}
+
+		&.btn--border {
+			@apply border-white;
+		}
+
+		&.btn--inverse {
+			@apply bg-white text-secondary border-white;
+
+			.icon {
+				svg {
+					@apply text-secondary;
+
+					path {
+						@apply stroke-secondary;
+					}
+				}
+			}
+
+			&.btn--border {
+				@apply border-secondary;
+			}
+		}
+	}
+
+	&--tertiary {
+		@apply bg-black text-white border-black;
+
+		.icon {
+			svg {
+				@apply text-white;
+
+				path {
+					@apply stroke-white;
+				}
+			}
+		}
+
+		&.btn--border {
+			@apply border-white;
+		}
+
+		&.btn--inverse {
+			@apply bg-white-input text-black border-white;
+
+			.icon {
+				svg {
+					@apply text-black;
+
+					path {
+						@apply stroke-black;
+					}
+				}
+			}
+
+			&.btn--border {
+				@apply border-black;
+			}
+		}
+	}
+
+	&--disabled {
+		@apply bg-borderDark text-white border-borderDark;
+
+		.icon {
+			svg {
+				@apply text-white;
+
+				path {
+					@apply stroke-white;
+				}
+			}
+		}
+
+		&.btn--border {
+			@apply border-white;
+		}
+
+		&.btn--inverse {
+			@apply bg-white text-borderDark border-white;
+
+			.icon {
+				svg {
+					@apply text-borderDark;
+
+					path {
+						@apply stroke-borderDark;
+					}
+				}
+			}
+
+			&.btn--border {
+				@apply border-borderDark;
+			}
 		}
 	}
 }

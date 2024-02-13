@@ -41,7 +41,7 @@ export default function RootLayout({
 			<body>
 				<Providers>
 					<NavbarTop />
-					<main className="mt-[74px] mb-[101px] md:mt-[85px] md:mb-4">
+					<main className="mt-[74px] mb-[101px] md:mt-[83px] md:mb-4">
 						{children}
 					</main>
 					<ButtonAddRecipeSm />

@@ -7,7 +7,7 @@ import Icon from '@/components/Icon/Icon';
 import './styles.scss';
 
 interface ButtonProps {
-	type?: 'primary' | 'secondary' | 'tertiary';
+	type?: 'primary' | 'secondary' | 'tertiary' | 'disabled';
 	border?: boolean;
 	inverse?: boolean;
 	hoverOff?: boolean;

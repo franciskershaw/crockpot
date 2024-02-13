@@ -10,10 +10,10 @@
 	}
 
 	&__search-results-container {
-		@apply border w-full md:w-2/3 md:mx-auto;
+		@apply w-full md:w-2/3 md:mx-auto space-y-2;
 	}
 
 	&__search-result {
-		@apply flex items-center border py-4 px-2 justify-between;
+		@apply flex items-center border border-borderDark rounded-xl bg-primary-light py-4 px-2 justify-between;
 	}
 }

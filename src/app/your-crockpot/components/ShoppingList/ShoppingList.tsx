@@ -35,9 +35,11 @@ const ShoppingList = () => {
 			const IconComponent = iconMapping[category.faIcon] || FaQuestion;
 			return {
 				heading: (
-					<div className="flex overflow-hidden">
+					<div className="flex items-center overflow-hidden">
 						<Icon type="primary">
-							<IconComponent />
+							<div className="p-0.5">
+								<IconComponent />
+							</div>
 						</Icon>
 						<span className="h3 text-left pl-2 pr-1 truncate">
 							{category.categoryName}
@@ -132,6 +134,7 @@ const ShoppingList = () => {
 														id=""
 														onChange={(e) => setExtraUnit(e.target.value)}
 														value={extraUnit}
+														className="min-h-[42px] h-[42px]"
 													>
 														<option value="">-</option>
 														<option value="cans">Cans</option>
@@ -145,7 +148,6 @@ const ShoppingList = () => {
 											<Button
 												onClick={() => handleAddExtraItem(result)}
 												text="Add to Shopping List"
-												border
 											/>
 										</div>
 									</Modal>
@@ -157,7 +159,6 @@ const ShoppingList = () => {
 						<Button
 							onClick={() => clearExtraItems()}
 							type="primary"
-							border
 							text="Clear Extra Items"
 						/>
 					</div>
@@ -169,7 +170,6 @@ const ShoppingList = () => {
 							<Button
 								onClick={() => clearExtraItems()}
 								type="primary"
-								border
 								text="Clear Extra Items"
 							/>
 						) : null}
@@ -177,7 +177,6 @@ const ShoppingList = () => {
 							<Button
 								onClick={() => updateRecipeMenu({ type: 'clear' })}
 								type="primary"
-								border
 								text="Clear Menu"
 							/>
 						) : null}

@@ -16,6 +16,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const categoryNames = recipe.categories.map(
 		(category: Category) => category.name,
 	);
+
 	const firstThreeCategories = categoryNames.slice(0, 3);
 	const remainingCategoriesCount = categoryNames.length - 3;
 
@@ -24,7 +25,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
 
 	return (
-		<div className="rounded-xl overflow-hidden cursor-pointer shadow animate animate--grow-sm animate--shadow border border-black-25">
+		<div className="rounded-xl overflow-hidden cursor-pointer shadow animate animate--grow-sm animate--shadow border border-borderLight">
 			<div className="relative">
 				{/* Background image */}
 				<div
@@ -37,10 +38,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 				{/* Absolute buttons */}
 				{user && (
 					<>
-						<div className="absolute top-1 left-1">
+						<div className="absolute top-1.5 left-1.5">
 							<ButtonFav id={recipe._id} isFav={isFav} />
 						</div>
-						<div className="absolute top-1 right-1">
+						<div className="absolute top-1.5 right-1.5">
 							<ButtonCart recipe={recipe} isMenu={isMenu} />
 						</div>
 					</>

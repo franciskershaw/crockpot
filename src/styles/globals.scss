@@ -10,7 +10,7 @@
 
 // Add general styles here!
 body {
-	@apply bg-white;
+	@apply bg-background-main;
 
 	// Hide number arrows
 	input[type='number']::-webkit-outer-spin-button,
@@ -50,14 +50,14 @@ body {
 		@apply flex flex-col md:flex-row md:gap-x-4;
 
 		&__1 {
-			@apply hidden md:block md:mt-[18px] relative;
+			@apply hidden relative md:block md:min-w-[40%];
 
 			flex: 1;
 
 			&__sticky-menu {
-				@apply bg-white/90 sticky top-[102px] left-0 right-0 z-searchBar border border-black overflow-auto;
+				@apply bg-primary-light sticky top-[99px] left-0 right-0 z-searchBar border border-borderDark rounded overflow-auto;
 
-				max-height: calc(100vh - 85px - 32px);
+				max-height: calc(100vh - 83px - 32px);
 			}
 		}
 
@@ -65,9 +65,10 @@ body {
 			@apply relative;
 
 			flex: 2;
+			min-width: calc(60% - 1rem);
 
 			&__sticky-menu {
-				@apply bg-white/90 sticky top-[74px] md:top-[85px] left-0 right-0 z-searchBar;
+				@apply bg-background-main/90 sticky top-[74px] md:top-[83px] left-0 right-0 z-searchBar;
 			}
 		}
 	}
@@ -135,9 +136,21 @@ ol {
 }
 
 // Forms
+form {
+	@apply bg-primary-light;
+}
+
 input,
 select {
-	@apply border-black border-2 bg-white p-2 rounded w-full;
+	@apply border-borderDark border bg-white-input p-2 rounded w-full shadow-sm;
+
+	&:focus {
+		@apply outline-primary;
+	}
+
+	&::placeholder {
+		@apply text-borderDark;
+	}
 }
 
 input.searchbar,
@@ -146,24 +159,26 @@ select {
 	background-position: right 8px center;
 	background-size: 20px;
 	padding-right: 36px;
+	height: 100%;
+	min-height: 44px;
 }
 
 input.searchbar {
-	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>'); // Magnifying glass
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="black" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>'); // Magnifying glass
 }
 
 select {
 	-webkit-appearance: none; /* Removes default style Chrome & Safari */
 	-moz-appearance: none; /* Removes default style Firefox */
 	appearance: none; /* Removes default style IE */
-	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>'); /* Chevron icon */
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="black" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>'); /* Chevron icon */
 }
 
 .react-select {
 	margin: 0;
 	padding: 0;
 
-	@apply border-black border-2 rounded w-full relative py-[2px] min-h-[44px] flex;
+	@apply border-borderDark border bg-white-input rounded w-full relative py-[2px] min-h-[44px] flex;
 
 	.react-select__placeholder {
 		@apply m-0 p-0 pl-2;
@@ -187,15 +202,19 @@ select {
 		@apply m-0 p-0 border-0;
 	}
 
+	.react-select__placeholder {
+		@apply text-borderDark;
+	}
+
 	.react-select__single-value {
 		@apply p-1 ml-1;
 	}
 
 	.react-select__multi-value {
-		@apply m-0 border-2 border-solid border-black bg-white rounded cursor-pointer p-1 flex justify-between mr-0 ml-1 my-0;
+		@apply m-0 border border-solid border-primary bg-primary text-white rounded cursor-pointer p-1 flex justify-between mr-0 ml-1 my-0;
 
 		.react-select__multi-value__label {
-			@apply p-0 bg-white text-black text-base;
+			@apply p-0 text-base text-white font-semibold;
 		}
 
 		.react-select__multi-value__remove {
@@ -206,12 +225,12 @@ select {
 			}
 
 			&:hover {
-				@apply text-black bg-white;
+				@apply text-white bg-primary;
 			}
 		}
 
 		.react-select__multi-value__remove::after {
-			@apply m-0 p-0 border-0 pl-1;
+			@apply m-0 p-0 border-0 pl-1.5;
 
 			content: '\2715';
 		}
@@ -227,7 +246,7 @@ select {
 		}
 
 		.react-select__clear-indicator::after {
-			@apply m-0 p-0 border-0 text-2xl text-black pr-[10px];
+			@apply m-0 p-0 border-0 text-2xl text-black-75 pr-[10px];
 
 			content: '\2715';
 
@@ -237,7 +256,7 @@ select {
 		}
 
 		.react-select__indicator-separator {
-			@apply m-0 p-0 bg-black w-[1px];
+			@apply m-0 p-0 bg-borderDark w-[1px];
 		}
 
 		.react-select__dropdown-indicator {
@@ -248,7 +267,7 @@ select {
 			background-repeat: no-repeat;
 			background-position: right 8px center;
 			background-size: 20px;
-			background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>'); /* Chevron icon */
+			background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="black" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>'); /* Chevron icon */
 
 			svg {
 				@apply hidden;
@@ -257,7 +276,7 @@ select {
 	}
 
 	.react-select__menu {
-		@apply mt-0.5 absolute top-full left-0 right-0 w-full bg-white border border-black-25 shadow p-1 space-y-0.5 rounded-b;
+		@apply mt-0.5 absolute top-full left-0 right-0 w-full bg-white-input border border-borderLight shadow p-1 space-y-0.5 rounded-b;
 
 		.react-select__menu-list {
 			@apply p-0 m-0 space-y-0.5;
@@ -278,13 +297,13 @@ select {
 }
 
 .input-menu-dropdown {
-	@apply absolute top-full left-0 w-full bg-white border border-black-25 shadow p-1 space-y-0.5 rounded-b;
+	@apply absolute top-full left-0 w-full bg-white-input border border-borderLight shadow p-1 space-y-0.5 rounded-b;
 
 	p {
 		@apply cursor-pointer;
 
 		&:hover {
-			@apply underline;
+			@apply underline bg-white;
 		}
 	}
 }

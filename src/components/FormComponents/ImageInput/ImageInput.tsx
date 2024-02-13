@@ -52,7 +52,7 @@ const ImageInput: FC<ImageInputProps> = ({
 		<InputGroup label={label} htmlFor={id}>
 			{currentImage ? (
 				<>
-					<div className="h-[200px] w-full border rounded flex justify-center">
+					<div className="h-[200px] w-full border border-borderDark bg-white-input rounded flex justify-center">
 						<Image
 							src={currentImage}
 							alt={'Current'}
@@ -61,14 +61,22 @@ const ImageInput: FC<ImageInputProps> = ({
 						/>
 					</div>
 					<div className="w-full flex justify-center mt-2">
-						<Button border text="Clear Image" onClick={handleImageClear} />
+						<Button
+							type="primary"
+							text="Clear Image"
+							onClick={handleImageClear}
+						/>
 					</div>
 				</>
 			) : (
 				<>
-					<div className="h-[200px] w-full border rounded" />
+					<div className="h-[200px] w-full border border-borderDark bg-white-input rounded" />
 					<div className="w-full flex justify-center mt-2">
-						<Button border text="Choose File" onClick={handleButtonClick} />
+						<Button
+							type="primary"
+							text="Choose File"
+							onClick={handleButtonClick}
+						/>
 					</div>
 				</>
 			)}

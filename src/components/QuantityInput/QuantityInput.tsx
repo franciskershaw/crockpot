@@ -9,6 +9,7 @@ interface QuantityInputProps {
 	setValue: React.Dispatch<React.SetStateAction<number>>;
 	min?: number;
 	max?: number;
+	step?: number;
 	onChange?: (value: number) => void;
 	id?: string;
 	label?: string;
@@ -19,18 +20,19 @@ const QuantityInput = ({
 	setValue,
 	min = 0,
 	max = 100,
+	step = 1,
 	onChange,
 	id,
 	label,
 }: QuantityInputProps) => {
 	const handleDecrease = () => {
-		const newValue = Math.max(min, value - 1);
+		const newValue = Math.max(min, value - step);
 		setValue(newValue);
 		if (onChange) onChange(newValue);
 	};
 
 	const handleIncrease = () => {
-		const newValue = Math.min(max, value + 1);
+		const newValue = Math.min(max, value + step);
 		setValue(newValue);
 		if (onChange) onChange(newValue);
 	};
@@ -52,8 +54,8 @@ const QuantityInput = ({
 
 	return (
 		<InputGroup label={label}>
-			<div className="flex outline outline-2 outline-black -outline-offset-2 w-fit rounded-full bg-white">
-				<Button inverse onClick={handleDecrease}>
+			<div className="flex outline outline-primary -outline-offset-1 w-fit rounded-full bg-white-input">
+				<Button onClick={handleDecrease} type="primary">
 					<AiOutlineMinus />
 				</Button>
 				<input
@@ -63,7 +65,7 @@ const QuantityInput = ({
 					onChange={handleChange}
 					id={id}
 				/>
-				<Button inverse onClick={handleIncrease}>
+				<Button onClick={handleIncrease} type="primary">
 					<AiOutlinePlus />
 				</Button>
 			</div>

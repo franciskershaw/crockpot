@@ -1,5 +1,5 @@
 .DialogOverlay {
-	@apply z-modalOverlay inset-0 bg-black-50 fixed;
+	@apply z-modalOverlay inset-0 bg-background-overlay fixed;
 
 	&--nested {
 		@apply z-modalOverlayNested;
@@ -7,15 +7,12 @@
 }
 
 .DialogContent {
-	box-shadow:
-		hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-		hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-	@apply bg-white overflow-y-scroll z-modal rounded-xl w-[90vw] max-h-[90vh] max-w-6xl;
+	@apply bg-primary-light overflow-y-scroll z-modal rounded-xl w-[90vw] max-h-[90vh] max-w-6xl shadow-hover;
 
 	&--nested {
 		@apply z-modalNested w-[80vw] max-w-5xl;

@@ -4,21 +4,21 @@ button {
 }
 
 .SwitchRoot {
-	@apply w-[42px] h-[25px] bg-black rounded-full relative;
+	@apply w-[46px] h-[29px] bg-borderDark rounded-full relative;
 }
 
 .SwitchRoot[data-state='checked'] {
-	@apply bg-black;
+	@apply bg-primary;
 }
 
 .SwitchThumb {
-	@apply block w-[21px] h-[21px] bg-white rounded-full;
+	@apply block w-[21px] h-[21px] bg-white-input rounded-full;
 
 	transition: transform 300ms;
-	transform: translateX(2px);
+	transform: translateX(4px);
 	will-change: transform;
 }
 
 .SwitchThumb[data-state='checked'] {
-	transform: translateX(19px);
+	transform: translateX(20px);
 }

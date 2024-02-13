@@ -3,7 +3,7 @@
 }
 
 .SliderTrack {
-	@apply relative flex-grow bg-black h-0.5 rounded-full;
+	@apply relative flex-grow bg-black h-[1px] rounded-full shadow-sm;
 }
 
 .SliderRange {
@@ -11,7 +11,7 @@
 }
 
 .SliderThumb {
-	@apply relative flex items-center justify-center w-10 h-10 rounded-full border-black border-2 bg-white cursor-pointer;
+	@apply relative flex items-center justify-center w-10 h-10 rounded-full border border-black bg-white-input text-white cursor-pointer shadow-sm;
 }
 
 .SliderThumbValue {
