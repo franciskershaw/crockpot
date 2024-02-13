@@ -49,8 +49,8 @@ module.exports = {
 			transparent: 'transparent',
 		},
 		fontFamily: {
-			title: 'Caprasimo',
-			body: 'Lato',
+			body: ['var(--font-opensans)'],
+			title: ['var(--font-capriola)'],
 		},
 		zIndex: {
 			back: -1,
