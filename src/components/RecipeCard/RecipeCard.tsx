@@ -1,4 +1,4 @@
-import React from 'react';
+import Image from 'next/image';
 
 import { Category, Recipe } from '@/types/types';
 
@@ -27,13 +27,17 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 	return (
 		<div className="rounded-xl overflow-hidden cursor-pointer shadow animate animate--grow-sm animate--shadow border border-borderLight">
 			<div className="relative">
-				{/* Background image */}
-				<div
-					className="bg-cover bg-center h-64"
-					style={{
-						backgroundImage: `url(${recipe.image?.url || '/images/placeholder.png'})`,
-					}}
-				/>
+				<div className="h-64 relative">
+					<Image
+						src={recipe.image?.url || '/images/placeholder.png'}
+						alt={recipe.name}
+						fill
+						style={{ objectFit: 'cover' }}
+						className="bg-cover bg-center"
+						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+						priority
+					/>
+				</div>
 
 				{/* Absolute buttons */}
 				{user && (
