@@ -16,25 +16,29 @@ const config: Config = {
 			},
 			colors: {
 				primary: {
-					DEFAULT: '#167935',
+					light: '#f6fef9',
+					DEFAULT: '#1d873c',
 				},
 				secondary: {
-					DEFAULT: '#F57C00',
+					light: '#f6fef9',
+					DEFAULT: '#1d873c',
 				},
-				tertiary: {
-					DEFAULT: '#fabd1e',
-				},
+
 				error: {
 					DEFAULT: '#ff0033',
 				},
-				white: '#feffff',
-				blue: {
-					light: '#efecf7',
+
+				background: {
+					light: 'rgba(34,34,34,0.10)',
+					main: '#f3ecdc',
+					overlay: 'rgba(34,34,34,0.50)',
 				},
-				disabled: '#BDBDBD',
-				body: {
-					light: '#fef7f1',
-					DEFAULT: '#391e67',
+				borderLight: 'rgba(34,34,34,0.25)',
+				borderDark: 'rgba(34,34,34,0.50)',
+
+				white: {
+					DEFAULT: '#f8f8ff',
+					input: '#ffffff',
 				},
 				black: {
 					DEFAULT: 'rgba(34,34,34,1)',
