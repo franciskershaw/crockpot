@@ -1,17 +1,18 @@
-.AccordionChevron {
+.accordionChevron {
 	transition: transform 300ms;
 }
-.AccordionTrigger[data-state='open'] > .AccordionChevron {
+.accordionTrigger[data-state='open'] > .accordionChevron {
 	transform: rotate(180deg);
 }
 
-.AccordionContent {
+.accordionContent {
 	overflow: hidden;
+	@apply p-2;
 }
-.AccordionContent[data-state='open'] {
+.accordionContent[data-state='open'] {
 	animation: slideDown 300ms ease-out;
 }
-.AccordionContent[data-state='closed'] {
+.accordionContent[data-state='closed'] {
 	animation: slideUp 300ms ease-out;
 }
 

@@ -1,8 +1,8 @@
-.filter-tag {
+.filterTag {
 	@apply font-semibold text-white bg-primary rounded cursor-pointer p-1.5 flex justify-between mr-2 my-0.5;
 }
 
-.filter-tag::after {
+.filterTag::after {
 	@apply pl-1.5;
 	content: '\2715';
 }

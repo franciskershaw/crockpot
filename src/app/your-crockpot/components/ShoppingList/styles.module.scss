@@ -1,0 +1,9 @@
+.input {
+	text-align: center;
+	width: 40px;
+	flex-shrink: 0;
+
+	&:focus-visible {
+		outline: 0;
+	}
+}

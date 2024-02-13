@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Icon from '@/components/Icon/Icon';
 
-import './styles.scss';
+import styles from './styles.module.scss';
 
 type AccordionItemProps = {
 	heading: React.ReactNode;
@@ -20,16 +20,18 @@ const AccordionItem = ({ heading, children }: AccordionItemProps) => {
 	return (
 		<AccordionRadix.Item value={value} className="border-t border-black py-3">
 			<AccordionRadix.Header>
-				<AccordionRadix.Trigger className="AccordionTrigger flex justify-between items-center w-full">
+				<AccordionRadix.Trigger
+					className={`${styles.accordionTrigger} flex justify-between items-center w-full`}
+				>
 					{heading}
-					<div className="AccordionChevron">
+					<div className={styles.accordionChevron}>
 						<Icon>
 							<BsChevronDown />
 						</Icon>
 					</div>
 				</AccordionRadix.Trigger>
 			</AccordionRadix.Header>
-			<AccordionRadix.Content className="AccordionContent pt-2">
+			<AccordionRadix.Content className={styles.accordionContent}>
 				{children}
 			</AccordionRadix.Content>
 		</AccordionRadix.Item>

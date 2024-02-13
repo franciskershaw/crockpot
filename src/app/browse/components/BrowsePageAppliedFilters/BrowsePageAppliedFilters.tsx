@@ -7,7 +7,7 @@ import {
 	useBrowsePageContext,
 } from '../../context/BrowsePageContext';
 
-import './styles.scss';
+import styles from './styles.module.scss';
 
 type AppliedFiltersProps = {
 	recipeNum: number;
@@ -98,7 +98,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 				<div className="flex overflow-x-auto whitespace-nowrap bg-black/10 mt-1 py-1 pl-2 rounded">
 					{recipeSearchQuery && (
 						<div
-							className="filter-tag"
+							className={styles.filterTag}
 							onClick={() => removeFilter('searchQuery', recipeSearchQuery)}
 						>
 							{filterLabel('searchQuery', recipeSearchQuery)}
@@ -106,7 +106,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					)}
 					{showOnlyFavourites && (
 						<div
-							className="filter-tag"
+							className={styles.filterTag}
 							onClick={() => removeFilter('favourites')}
 						>
 							My Favourites
@@ -114,7 +114,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					)}
 					{showOnlyMyRecipes && (
 						<div
-							className="filter-tag"
+							className={styles.filterTag}
 							onClick={() => removeFilter('myRecipes')}
 						>
 							My Recipes
@@ -123,7 +123,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					{(cookingTimeMin !== cookingTimeMinMax.min ||
 						cookingTimeMax !== cookingTimeMinMax.max) && (
 						<div
-							className="filter-tag"
+							className={styles.filterTag}
 							onClick={() =>
 								removeFilter('cookingTime', [cookingTimeMin, cookingTimeMax])
 							}
@@ -134,7 +134,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					{selectedCategories.map((category: CheckboxData) => (
 						<div
 							key={category._id}
-							className="filter-tag"
+							className={styles.filterTag}
 							onClick={() => removeFilter('selectedCategories', category)}
 						>
 							{filterLabel('selectedCategories', category)}
@@ -143,7 +143,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
 					{selectedIngredients.map((ingredient: CheckboxData) => (
 						<div
 							key={ingredient._id}
-							className="filter-tag"
+							className={styles.filterTag}
 							onClick={() => removeFilter('selectedIngredients', ingredient)}
 						>
 							{filterLabel('selectedIngredients', ingredient)}

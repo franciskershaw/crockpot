@@ -9,7 +9,7 @@ import useShoppingList from '../../hooks/useShoppingList';
 import Button from '@/components/Button/Button';
 import Checkbox from '@/components/Checkbox/Checkbox';
 
-import './styles.scss';
+import styles from './styles.module.scss';
 
 interface ShoppingListItemProps {
 	item: IShoppingListItem;
@@ -96,7 +96,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item }) => {
 					}
 					onChange={handleChange}
 					onBlur={handleUpdateQuantity}
-					className="w-[60px] border border-borderDark rounded text-center p-0.5"
+					className={`w-[60px] border border-borderDark rounded text-center p-0.5 ${styles.input}`}
 				/>
 				<span>{item.unit}</span>
 			</div>
