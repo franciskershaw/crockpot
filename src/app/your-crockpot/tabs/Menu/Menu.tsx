@@ -61,26 +61,6 @@ const Menu = () => {
 			<Modal title="Shopping List" name="ShoppingList">
 				<ShoppingList />
 			</Modal>
-			{selectedRecipe ? (
-				<Modal
-					title={
-						<div className="flex">
-							<div className="lowercase">
-								{selectedRecipe.timeInMinutes} mins
-							</div>
-							{selectedRecipe.categories.map((category, index) => (
-								<div key={index} className="ml-2 pl-2 border-l border-white">
-									{category.name}
-								</div>
-							))}
-						</div>
-					}
-					name="RecipeModal"
-					onClose={() => setSelectedRecipe(null)}
-				>
-					<RecipeCardModal recipe={selectedRecipe} />
-				</Modal>
-			) : null}
 		</div>
 	);
 };

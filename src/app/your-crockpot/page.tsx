@@ -3,6 +3,9 @@
 import useProtectedRoute from '@/hooks/auth/useProtectedRoute';
 
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
+import Modal from '@/components/Modal/Modal';
+import { useModal } from '@/components/Modal/ModalContext';
+import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 import Tabs from '@/components/Tabs/Tabs';
 
 import Favourites from './tabs/Favourites/Favourites';
@@ -11,6 +14,7 @@ import MyRecipes from './tabs/MyRecipes/MyRecipes';
 
 const YourCrockpotPage = () => {
 	const { user } = useProtectedRoute();
+	const { selectedRecipe, setSelectedRecipe } = useModal();
 
 	if (!user) {
 		return <LoadingSpinner />;
@@ -31,6 +35,26 @@ const YourCrockpotPage = () => {
 					<MyRecipes />
 				</div>
 			</Tabs>
+			{selectedRecipe ? (
+				<Modal
+					title={
+						<div className="flex">
+							<div className="lowercase">
+								{selectedRecipe.timeInMinutes} mins
+							</div>
+							{selectedRecipe.categories.map((category, index) => (
+								<div key={index} className="ml-2 pl-2 border-l border-white">
+									{category.name}
+								</div>
+							))}
+						</div>
+					}
+					name="RecipeModal"
+					onClose={() => setSelectedRecipe(null)}
+				>
+					<RecipeCardModal recipe={selectedRecipe} />
+				</Modal>
+			) : null}
 		</div>
 	);
 };
