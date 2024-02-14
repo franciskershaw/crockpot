@@ -15,7 +15,9 @@ import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
+import Modal2 from '@/components/Modal2/Modal2';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
+import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 
 const BrowsePage = () => {
 	const { shuffledRecipes: allRecipes, isFetching } = useRecipes();
@@ -30,6 +32,8 @@ const BrowsePage = () => {
 		cookingTimeMax,
 		selectedCategories,
 		selectedIngredients,
+		selectedRecipe,
+		setSelectedRecipe,
 	} = useBrowsePageContext();
 
 	// Filter recipes based on search query, favourites toggle, my recipe toggle, cooking time, categories and ingredients
@@ -84,6 +88,25 @@ const BrowsePage = () => {
 					)}
 				</div>
 			</div>
+			{selectedRecipe ? (
+				<Modal2
+					title={
+						<div className="flex">
+							<div className="lowercase">
+								{selectedRecipe.timeInMinutes} mins
+							</div>
+							{selectedRecipe.categories.map((category, index) => (
+								<div key={index} className="ml-2 pl-2 border-l border-white">
+									{category.name}
+								</div>
+							))}
+						</div>
+					}
+					name="RecipeModal"
+				>
+					<RecipeCardModal recipe={selectedRecipe} />
+				</Modal2>
+			) : null}
 		</>
 	);
 };

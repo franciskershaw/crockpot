@@ -10,6 +10,8 @@ import React, {
 	useState,
 } from 'react';
 
+import { Recipe } from '@/types/types';
+
 import useRecipes from '@/hooks/recipes/useRecipes';
 
 export interface CheckboxData {
@@ -25,6 +27,7 @@ interface BrowsePageContextValue {
 	cookingTimeMax: number;
 	selectedCategories: CheckboxData[];
 	selectedIngredients: CheckboxData[];
+	selectedRecipe: Recipe | null | undefined;
 	setRecipeSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 	setShowOnlyFavourites: (show: boolean) => void;
 	toggleShowOnlyFavourites: () => void;
@@ -33,6 +36,9 @@ interface BrowsePageContextValue {
 	setCookingTime: (min: number, max: number) => void;
 	setSelectedCategories: React.Dispatch<React.SetStateAction<CheckboxData[]>>;
 	setSelectedIngredients: React.Dispatch<React.SetStateAction<CheckboxData[]>>;
+	setSelectedRecipe: React.Dispatch<
+		React.SetStateAction<Recipe | null | undefined>
+	>;
 	resetFilters: () => void;
 }
 
@@ -68,6 +74,10 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 		CheckboxData[]
 	>([]);
 
+	const [selectedRecipe, setSelectedRecipe] = useState<
+		Recipe | null | undefined
+	>();
+
 	useEffect(() => {
 		if (cookingTimeMinMax) {
 			setCookingTimeMin(cookingTimeMinMax.min);
@@ -102,6 +112,7 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 			cookingTimeMax,
 			selectedCategories,
 			selectedIngredients,
+			selectedRecipe,
 			setRecipeSearchQuery,
 			setShowOnlyFavourites,
 			toggleShowOnlyFavourites,
@@ -111,6 +122,7 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 			setSelectedCategories,
 			setSelectedIngredients,
 			resetFilters,
+			setSelectedRecipe,
 		}),
 		[
 			recipeSearchQuery,
@@ -120,6 +132,7 @@ export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
 			cookingTimeMax,
 			selectedCategories,
 			selectedIngredients,
+			selectedRecipe,
 			resetFilters,
 		],
 	);

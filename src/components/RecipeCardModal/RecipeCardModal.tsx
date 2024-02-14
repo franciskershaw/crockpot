@@ -13,19 +13,22 @@ import Modal from '@/components/Modal/Modal';
 import QuantityInput from '@/components/QuantityInput/QuantityInput';
 import Tabs from '@/components/Tabs/Tabs';
 
+import Modal2 from '../Modal2/Modal2';
+import { useModal } from '../Modal2/ModalContext';
+import OpenModal from '../Modal2/OpenModal';
+
 type RecipeCardModalProps = {
 	recipe: Recipe;
 };
 
 const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
-	const [modalOpen, setModalOpen] = useState(false);
-	const [deleteRecipeConf, setDeleteRecipeConf] = useState(false);
-
 	const { user } = useUser();
 	const deleteRecipe = useDeleteRecipe();
 
 	const isMenu = user?.recipeMenu.find((rec: Recipe) => rec._id === recipe._id);
 	const [quantity, setQuantity] = useState(isMenu ? isMenu.serves : 4);
+
+	const { openModals, closeModal } = useModal();
 
 	const tabTitles = ['Ingredients', 'Instructions'];
 
@@ -71,15 +74,6 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 		);
 	};
 
-	const openDeleteConfirmation = () => {
-		setDeleteRecipeConf(true);
-	};
-
-	const handleDelete = () => {
-		deleteRecipe(recipe._id);
-		setDeleteRecipeConf(false);
-	};
-
 	return (
 		<>
 			<div className="relative">
@@ -90,59 +84,44 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 					}}
 				>
 					{(recipe.createdBy._id === user?._id || user?.isAdmin) && (
-						<div className="absolute top-0 right-0 m-3">
-							<div className="flex space-x-2">
-								<Modal
-									trigger={
-										<Button type="primary" border>
+						<>
+							<div className="absolute top-0 right-0 m-3">
+								<div className="flex space-x-2">
+									<OpenModal name="EditRecipe">
+										<Button type="primary">
 											<RiEdit2Line />
 										</Button>
-									}
-									title={
-										<>
-											Edit <i>{recipe.name}</i>
-										</>
-									}
-									open={modalOpen}
-									setOpen={setModalOpen}
-									nested
-									paddingOn
-									size="md"
-								>
-									<AddRecipe recipe={recipe} />
-								</Modal>
-								<Modal
-									trigger={
-										<Button
-											onClick={openDeleteConfirmation}
-											type="primary"
-											border
-										>
+									</OpenModal>
+									<OpenModal name="DeleteRecipe">
+										<Button type="primary">
 											<RiDeleteBinLine />
 										</Button>
-									}
-									title={
-										<>
-											Delete <i>{recipe.name}</i>
-										</>
-									}
-									open={deleteRecipeConf}
-									setOpen={setDeleteRecipeConf}
-									nested
-									paddingOn
-									size="sm"
-								>
+									</OpenModal>
+								</div>
+							</div>
+							{recipe && openModals.includes('EditRecipe') ? (
+								<Modal2 name="EditRecipe" title={`Edit ${recipe.name} `}>
+									<AddRecipe recipe={recipe} />
+								</Modal2>
+							) : null}
+							{recipe && openModals.includes('DeleteRecipe') ? (
+								<Modal2 name="DeleteRecipe" customSize="small">
 									<div className="modal--p-and-button">
-										<p>Are you sure you&aposd like to delete this recipe?</p>
+										<p className="text-center">
+											Are you sure you would like to delete this recipe?
+										</p>
 										<Button
-											onClick={handleDelete}
+											onClick={() => {
+												deleteRecipe(recipe._id);
+												closeModal('DeleteRecipe');
+											}}
 											text="Delete Recipe"
 											border
 										/>
 									</div>
-								</Modal>
-							</div>
-						</div>
+								</Modal2>
+							) : null}
+						</>
 					)}
 				</div>
 				<div className="absolute bottom-0 left-0 right-0 m-3 p-3 md:right-auto md:w-2/3 bg-white border border-black-25 flex items-center justify-between rounded">
