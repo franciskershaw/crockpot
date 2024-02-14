@@ -367,7 +367,7 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 	};
 
 	return (
-		<form onSubmit={(e) => e.preventDefault()} className="modal--form">
+		<form onSubmit={(e) => e.preventDefault()} className="modal--form p-4">
 			<TextInput
 				id="name"
 				value={name}
