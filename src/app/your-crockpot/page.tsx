@@ -2,6 +2,7 @@
 
 import useProtectedRoute from '@/hooks/auth/useProtectedRoute';
 
+import AddRecipe from '@/components/AddRecipe/AddRecipe';
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
 import Modal from '@/components/Modal/Modal';
 import { useModal } from '@/components/Modal/ModalContext';
@@ -55,6 +56,9 @@ const YourCrockpotPage = () => {
 					<RecipeCardModal recipe={selectedRecipe} />
 				</Modal>
 			) : null}
+			<Modal name="AddRecipe" title="Add new recipe">
+				<AddRecipe />
+			</Modal>
 		</div>
 	);
 };
