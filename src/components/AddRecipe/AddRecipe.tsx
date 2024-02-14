@@ -15,7 +15,7 @@ import TextInput from '@/components/FormComponents/TextInput/TextInput';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
 import QuantityInput from '@/components/QuantityInput/QuantityInput';
 
-import { useModal } from '../Modal2/ModalContext';
+import { useModal } from '../Modal/ModalContext';
 
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;

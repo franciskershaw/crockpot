@@ -15,7 +15,7 @@ import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
-import Modal2 from '@/components/Modal2/Modal2';
+import Modal from '@/components/Modal/Modal';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 
@@ -89,7 +89,7 @@ const BrowsePage = () => {
 				</div>
 			</div>
 			{selectedRecipe ? (
-				<Modal2
+				<Modal
 					title={
 						<div className="flex">
 							<div className="lowercase">
@@ -105,7 +105,7 @@ const BrowsePage = () => {
 					name="RecipeModal"
 				>
 					<RecipeCardModal recipe={selectedRecipe} />
-				</Modal2>
+				</Modal>
 			) : null}
 		</>
 	);

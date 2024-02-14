@@ -9,9 +9,9 @@ import useRecipes from '@/hooks/recipes/useRecipes';
 import AddRecipe from '@/components/AddRecipe/AddRecipe';
 import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
-import Modal2 from '@/components/Modal2/Modal2';
-import { useModal } from '@/components/Modal2/ModalContext';
-import OpenModal from '@/components/Modal2/OpenModal';
+import Modal from '@/components/Modal/Modal';
+import { useModal } from '@/components/Modal/ModalContext';
+import OpenModal from '@/components/Modal/OpenModal';
 
 import styles from '../../styles.module.scss';
 
@@ -77,16 +77,16 @@ const RecipesTab = () => {
 					</div>
 				</>
 			) : null}
-			<Modal2 name={'AddRecipe'} title="Add new recipe">
+			<Modal name={'AddRecipe'} title="Add new recipe">
 				<AddRecipe />
-			</Modal2>
+			</Modal>
 			{selectedRecipe && openModals.includes('EditRecipe') ? (
-				<Modal2 name="EditRecipe" title={`Edit ${selectedRecipe.name} `}>
+				<Modal name="EditRecipe" title={`Edit ${selectedRecipe.name} `}>
 					<AddRecipe recipe={selectedRecipe} />
-				</Modal2>
+				</Modal>
 			) : null}
 			{selectedRecipe && openModals.includes('DeleteRecipe') ? (
-				<Modal2 name="DeleteRecipe" customSize="small">
+				<Modal name="DeleteRecipe" customSize="small">
 					<div className="modal--p-and-button">
 						<p className="text-center">
 							Are you sure you would like to delete this recipe?
@@ -100,7 +100,7 @@ const RecipesTab = () => {
 							border
 						/>
 					</div>
-				</Modal2>
+				</Modal>
 			) : null}
 		</div>
 	);

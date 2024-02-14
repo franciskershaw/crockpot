@@ -8,8 +8,8 @@ import useRecipes from '@/hooks/recipes/useRecipes';
 import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Button from '@/components/Button/Button';
 import EmptyState from '@/components/EmptyState/EmptyState';
-import Modal2 from '@/components/Modal2/Modal2';
-import OpenModal from '@/components/Modal2/OpenModal';
+import Modal from '@/components/Modal/Modal';
+import OpenModal from '@/components/Modal/OpenModal';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 
 const Menu = () => {
@@ -54,9 +54,9 @@ const Menu = () => {
 					</>
 				)}
 			</div>
-			<Modal2 title="Shopping List" name="ShoppingList">
+			<Modal title="Shopping List" name="ShoppingList">
 				<ShoppingList />
-			</Modal2>
+			</Modal>
 		</div>
 	);
 };

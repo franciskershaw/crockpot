@@ -9,13 +9,12 @@ import { useDeleteRecipe } from '@/hooks/recipes/useAddEditRecipe';
 import AddRecipe from '@/components/AddRecipe/AddRecipe';
 import Button from '@/components/Button/Button';
 import ButtonCart from '@/components/ButtonCart/ButtonCart';
-import Modal from '@/components/Modal/Modal';
 import QuantityInput from '@/components/QuantityInput/QuantityInput';
 import Tabs from '@/components/Tabs/Tabs';
 
-import Modal2 from '../Modal2/Modal2';
-import { useModal } from '../Modal2/ModalContext';
-import OpenModal from '../Modal2/OpenModal';
+import Modal from '../Modal/Modal';
+import { useModal } from '../Modal/ModalContext';
+import OpenModal from '../Modal/OpenModal';
 
 type RecipeCardModalProps = {
 	recipe: Recipe;
@@ -100,12 +99,12 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 								</div>
 							</div>
 							{recipe && openModals.includes('EditRecipe') ? (
-								<Modal2 name="EditRecipe" title={`Edit ${recipe.name} `}>
+								<Modal name="EditRecipe" title={`Edit ${recipe.name} `}>
 									<AddRecipe recipe={recipe} />
-								</Modal2>
+								</Modal>
 							) : null}
 							{recipe && openModals.includes('DeleteRecipe') ? (
-								<Modal2 name="DeleteRecipe" customSize="small">
+								<Modal name="DeleteRecipe" customSize="small">
 									<div className="modal--p-and-button">
 										<p className="text-center">
 											Are you sure you would like to delete this recipe?
@@ -119,7 +118,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 											border
 										/>
 									</div>
-								</Modal2>
+								</Modal>
 							) : null}
 						</>
 					)}

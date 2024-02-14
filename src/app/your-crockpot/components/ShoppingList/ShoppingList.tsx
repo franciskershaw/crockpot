@@ -13,9 +13,9 @@ import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
 import Icon from '@/components/Icon/Icon';
 import iconMapping from '@/components/Icon/iconMapping';
-import Modal2 from '@/components/Modal2/Modal2';
-import { useModal } from '@/components/Modal2/ModalContext';
-import OpenModal from '@/components/Modal2/OpenModal';
+import Modal from '@/components/Modal/Modal';
+import { useModal } from '@/components/Modal/ModalContext';
+import OpenModal from '@/components/Modal/OpenModal';
 import QuantityInput from '@/components/QuantityInput/QuantityInput';
 
 import ShoppingListItem from './ShoppingListItem';
@@ -153,7 +153,7 @@ const ShoppingList = () => {
 				<Accordion items={accordionItems} />
 			</div>
 			{selectedExtra ? (
-				<Modal2
+				<Modal
 					name="ExtraItem"
 					title={
 						<>
@@ -197,7 +197,7 @@ const ShoppingList = () => {
 							text="Add to Shopping List"
 						/>
 					</div>
-				</Modal2>
+				</Modal>
 			) : null}
 		</div>
 	);

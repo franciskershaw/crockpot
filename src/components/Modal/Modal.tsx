@@ -1,58 +1,46 @@
-'use client';
-
+import { FC, ReactNode } from 'react';
 import { GrClose } from 'react-icons/gr';
 
-import * as Dialog from '@radix-ui/react-dialog';
-
-import Button from '@/components/Button/Button';
-
-import './styles.scss';
+import { useModal } from './ModalContext';
 
 interface ModalProps {
-	title: string | JSX.Element;
-	trigger: JSX.Element;
-	children: JSX.Element;
-	nested?: boolean;
-	paddingOn?: boolean;
-	size?: 'sm' | 'md';
-	open?: boolean;
-	setOpen?: (open: boolean) => void;
+	name: string; // MUST BE UNIQUE
+	title?: string | JSX.Element;
+	children: ReactNode;
+	customSize?: 'small' | 'medium' | 'large';
 }
 
-const Modal: React.FC<ModalProps> = ({
-	title,
-	trigger,
-	children,
-	nested,
-	paddingOn,
-	size,
-	open,
-	setOpen,
-}) => {
+const Modal: FC<ModalProps> = ({ name, title, children, customSize }) => {
+	const { openModals, closeModal } = useModal();
+	const isOpen = openModals.includes(name);
+
+	if (!isOpen) return null;
+
+	const titleStyles = `flex items-center px-3 py-2 sticky top-0 z-10 ${title ? 'justify-between bg-primary text-white' : 'justify-end'} `;
+	const contentStyles = `relative bg-white rounded-xl shadow-lg transition-all duration-300 overflow-auto ${customSize === 'small' ? 'pb-4 max-h-[35vh] w-full sm:w-2/3 md:w-1/2 lg:w-1/3' : 'max-h-[95vh] w-full max-w-[90vh]'} `;
+
 	return (
-		<Dialog.Root open={open} onOpenChange={setOpen}>
-			<Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
-			<Dialog.Overlay
-				className={`fixed inset-0 bg-background-overlay z-modalOverlay ${nested ? 'z-modalOverlayNested' : ''}`}
-			/>
-			<Dialog.Content
-				className={`DialogContent ${nested ? 'DialogContent--nested' : ''} ${size === 'sm' ? 'DialogContent--sm' : ''} ${size === 'md' ? 'DialogContent--md' : ''}`}
-			>
-				<div className="flex justify-between items-center bg-primary text-white px-3 py-2 sticky top-0 left-0 z-modalHeader">
-					<Dialog.Title className="DialogTitle truncate capitalize pr-0.5">
-						{title}
-					</Dialog.Title>
-					<div>
-						<Dialog.Close asChild>
-							<Button ariaLabel="Close" type="primary">
-								<GrClose />
-							</Button>
-						</Dialog.Close>
-					</div>
+		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+			<div
+				className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300"
+				onClick={() => closeModal(name)}
+			></div>
+			<div className={contentStyles}>
+				<div className={titleStyles}>
+					{title && (
+						<div className="text-lg md:text-xl md:py-2 capitalize">{title}</div>
+					)}
+					<button
+						aria-label="close"
+						className="p-2"
+						onClick={() => closeModal(name)}
+					>
+						<GrClose className={title ? 'text-white' : 'text-base'} />
+					</button>
 				</div>
-				<div className={`${paddingOn ? 'p-3' : ''}`}>{children}</div>
-			</Dialog.Content>
-		</Dialog.Root>
+				<div className={title ? 'p-4' : ''}>{children}</div>
+			</div>
+		</div>
 	);
 };
 

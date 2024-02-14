@@ -6,9 +6,8 @@ import { useBrowsePageContext } from '../context/BrowsePageContext';
 
 import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
-import Modal2 from '@/components/Modal2/Modal2';
-import OpenModal from '@/components/Modal2/OpenModal';
 import Modal from '@/components/Modal/Modal';
+import OpenModal from '@/components/Modal/OpenModal';
 
 import BrowsePageFiltersMenu from './BrowsePageFiltersMenu';
 
@@ -43,9 +42,9 @@ function BrowsePageSearchBar() {
 					/>
 				</div>
 			</div>
-			<Modal2 name="mobBrowseFilters" title="Recipe Filters">
+			<Modal name="mobBrowseFilters" title="Recipe Filters">
 				<BrowsePageFiltersMenu />
-			</Modal2>
+			</Modal>
 		</>
 	);
 }

@@ -9,9 +9,9 @@ import useItems from '@/hooks/items/useItems';
 import AddItem from '@/components/AddItem/AddItem';
 import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
-import Modal2 from '@/components/Modal2/Modal2';
-import { useModal } from '@/components/Modal2/ModalContext';
-import OpenModal from '@/components/Modal2/OpenModal';
+import Modal from '@/components/Modal/Modal';
+import { useModal } from '@/components/Modal/ModalContext';
+import OpenModal from '@/components/Modal/OpenModal';
 
 import styles from '../../styles.module.scss';
 
@@ -76,16 +76,16 @@ const ItemsTab = () => {
 					</div>
 				</>
 			) : null}
-			<Modal2 name={'AddItem'} title="Add new item">
+			<Modal name={'AddItem'} title="Add new item">
 				<AddItem />
-			</Modal2>
+			</Modal>
 			{selectedItem && openModals.includes('EditItem') ? (
-				<Modal2 name="EditItem" title={`Edit ${selectedItem.name} `}>
+				<Modal name="EditItem" title={`Edit ${selectedItem.name} `}>
 					<AddItem item={selectedItem} />
-				</Modal2>
+				</Modal>
 			) : null}
 			{selectedItem && openModals.includes('DeleteItem') ? (
-				<Modal2 name="DeleteItem" customSize="small">
+				<Modal name="DeleteItem" customSize="small">
 					<div className="modal--p-and-button">
 						<p className="text-center">
 							Are you sure you would like to delete this item?
@@ -99,7 +99,7 @@ const ItemsTab = () => {
 							border
 						/>
 					</div>
-				</Modal2>
+				</Modal>
 			) : null}
 		</div>
 	);

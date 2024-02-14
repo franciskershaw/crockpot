@@ -9,7 +9,7 @@ import Button from '@/components/Button/Button';
 import SelectInput from '@/components/FormComponents/SelectInput/SelectInput';
 import TextInput from '@/components/FormComponents/TextInput/TextInput';
 
-import { useModal } from '../Modal2/ModalContext';
+import { useModal } from '../Modal/ModalContext';
 
 interface AddItemProps {
 	item?: Item;

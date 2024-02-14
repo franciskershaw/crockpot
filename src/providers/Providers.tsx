@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { ModalProvider } from '@/components/Modal2/ModalContext';
+import { ModalProvider } from '@/components/Modal/ModalContext';
 
 interface LayoutProps {
 	children: ReactNode;
