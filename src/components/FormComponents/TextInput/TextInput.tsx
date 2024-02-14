@@ -28,6 +28,7 @@ const TextInput: FC<TextInputProps> = ({
 			<input
 				type={isPassword ? 'password' : 'text'}
 				id={id}
+				name={id}
 				className=""
 				placeholder={placeholder}
 				value={value}
