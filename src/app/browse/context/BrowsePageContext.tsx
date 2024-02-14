@@ -1,8 +1,10 @@
 'use client';
 
-import React, {
+import {
+	Dispatch,
 	FC,
 	ReactNode,
+	SetStateAction,
 	createContext,
 	useCallback,
 	useContext,
@@ -26,14 +28,14 @@ interface BrowsePageContextValue {
 	cookingTimeMax: number;
 	selectedCategories: CheckboxData[];
 	selectedIngredients: CheckboxData[];
-	setRecipeSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+	setRecipeSearchQuery: Dispatch<SetStateAction<string>>;
 	setShowOnlyFavourites: (show: boolean) => void;
 	toggleShowOnlyFavourites: () => void;
 	setShowOnlyMyRecipes: (show: boolean) => void;
 	toggleShowOnlyMyRecipes: () => void;
 	setCookingTime: (min: number, max: number) => void;
-	setSelectedCategories: React.Dispatch<React.SetStateAction<CheckboxData[]>>;
-	setSelectedIngredients: React.Dispatch<React.SetStateAction<CheckboxData[]>>;
+	setSelectedCategories: Dispatch<SetStateAction<CheckboxData[]>>;
+	setSelectedIngredients: Dispatch<SetStateAction<CheckboxData[]>>;
 	resetFilters: () => void;
 }
 

@@ -78,8 +78,8 @@ function BrowsePageFiltersMenu() {
 	const simplifiedCategories = extractIdAndName(categories.recipeCategories);
 
 	return (
-		<div className="md:p-3 md:px-2">
-			<div className="hidden md:block space-y-3 mb-3">
+		<div className="p-2 md:p-4 ">
+			<div className="hidden md:block space-y-3 mb-3 ">
 				<h2 className="font-bold">Recipe Filters</h2>
 				<hr />
 			</div>
