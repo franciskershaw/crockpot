@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RiDeleteBinLine, RiEdit2Line } from 'react-icons/ri';
+
+import { Item } from '@/types/types';
 
 import { useDeleteItem } from '@/hooks/items/useAddEditItem';
 import useItems from '@/hooks/items/useItems';
@@ -7,13 +9,15 @@ import useItems from '@/hooks/items/useItems';
 import AddItem from '@/components/AddItem/AddItem';
 import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
-import Modal from '@/components/Modal/Modal';
+import Modal2 from '@/components/Modal2/Modal2';
+import { useModal } from '@/components/Modal2/ModalContext';
+import OpenModal from '@/components/Modal2/OpenModal';
 
 import styles from '../../styles.module.scss';
 
 const ItemsTab = () => {
 	const [query, setQuery] = useState('');
-	const [addItemModalOpen, setAddItemModalOpen] = useState(false);
+	const [selectedItem, setSelectedItem] = useState<Item | null>();
 
 	const { allItems, filterItems } = useItems();
 
@@ -23,21 +27,20 @@ const ItemsTab = () => {
 		return filterItems(allItems, query);
 	}, [allItems, query, filterItems]);
 
+	const { openModals, closeModal } = useModal();
+
+	useEffect(() => {
+		if (!openModals.length) {
+			setSelectedItem(null);
+		}
+	}, [openModals]);
+
 	return (
 		<div className={styles.adminTabs}>
-			<div className={styles.adminTabsModalTrigger}>
-				<Modal
-					trigger={<Button type="primary" border text="Add New Item"></Button>}
-					title="Add new item"
-					open={addItemModalOpen}
-					setOpen={setAddItemModalOpen}
-					paddingOn
-					size="sm"
-				>
-					<AddItem setModal={setAddItemModalOpen} />
-				</Modal>
-			</div>
-			<div className={styles.adminTabsSearchBar}>
+			<OpenModal name="AddItem" styles="flex items-center my-4">
+				<Button type="primary" border text="Add New Item"></Button>
+			</OpenModal>
+			<div className={styles.searchBar}>
 				<SearchBar
 					searchQuery={query}
 					setSearchQuery={setQuery}
@@ -46,55 +49,57 @@ const ItemsTab = () => {
 			</div>
 			{searchResults.length ? (
 				<>
-					<div className={styles.adminTabsSearchResultsContainer}>
+					<div className={styles.searchResultsContainer}>
 						{searchResults.map((result) => (
-							<div className={styles.adminTabsSearchResult} key={result._id}>
+							<div className={styles.searchResult} key={result._id}>
 								<p>{result.name}</p>
 								<div className="flex space-x-2">
-									<Modal
-										trigger={
-											<Button type="primary" border>
-												<RiEdit2Line />
-											</Button>
-										}
-										title={
-											<>
-												Edit <i>{result.name}</i>
-											</>
-										}
-										paddingOn
-										size="sm"
+									<OpenModal
+										onClick={() => setSelectedItem(result)}
+										name="EditItem"
 									>
-										<AddItem item={result} />
-									</Modal>
-									<Modal
-										trigger={
-											<Button type="primary" border>
-												<RiDeleteBinLine />
-											</Button>
-										}
-										title={
-											<>
-												Delete <i>{result.name}</i>
-											</>
-										}
-										paddingOn
-										size="sm"
+										<Button type="primary">
+											<RiEdit2Line />
+										</Button>
+									</OpenModal>
+									<OpenModal
+										onClick={() => setSelectedItem(result)}
+										name="DeleteItem"
 									>
-										<div className="modal--p-and-button">
-											<p>Are you sure you would like to delete this item?</p>
-											<Button
-												onClick={() => deleteItem(result._id)}
-												text="Delete Item"
-												border
-											/>
-										</div>
-									</Modal>
+										<Button type="primary">
+											<RiDeleteBinLine />
+										</Button>
+									</OpenModal>
 								</div>
 							</div>
 						))}
 					</div>
 				</>
+			) : null}
+			<Modal2 name={'AddItem'} title="Add new item">
+				<AddItem />
+			</Modal2>
+			{selectedItem && openModals.includes('EditItem') ? (
+				<Modal2 name="EditItem" title={`Edit ${selectedItem.name} `}>
+					<AddItem item={selectedItem} />
+				</Modal2>
+			) : null}
+			{selectedItem && openModals.includes('DeleteItem') ? (
+				<Modal2 name="DeleteItem" customSize="small">
+					<div className="modal--p-and-button">
+						<p className="text-center">
+							Are you sure you would like to delete this item?
+						</p>
+						<Button
+							onClick={() => {
+								deleteItem(selectedItem._id);
+								closeModal('DeleteItem');
+							}}
+							text="Delete Item"
+							border
+						/>
+					</div>
+				</Modal2>
 			) : null}
 		</div>
 	);

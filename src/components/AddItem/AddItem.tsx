@@ -9,12 +9,13 @@ import Button from '@/components/Button/Button';
 import SelectInput from '@/components/FormComponents/SelectInput/SelectInput';
 import TextInput from '@/components/FormComponents/TextInput/TextInput';
 
+import { useModal } from '../Modal2/ModalContext';
+
 interface AddItemProps {
-	setModal?: (open: boolean) => void;
 	item?: Item;
 }
 
-const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
+const AddItem: FC<AddItemProps> = ({ item }) => {
 	const [name, setName] = useState<string>(item?.name || '');
 	const [nameError, setNameError] = useState('');
 	const [category, setCategory] = useState<string>(item?.category || '');
@@ -24,6 +25,8 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 
 	const addItem = useAddItem();
 	const editItem = useEditItem();
+
+	const { closeModal } = useModal();
 
 	const handleNameChange = (name: string) => {
 		setNameError('');
@@ -65,7 +68,11 @@ const AddItem: FC<AddItemProps> = ({ setModal, item }) => {
 			addItem({ name, category });
 		}
 
-		if (setModal) setModal(false);
+		if (item) {
+			closeModal('EditItem');
+		} else {
+			closeModal('AddItem');
+		}
 	};
 
 	return (

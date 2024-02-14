@@ -63,6 +63,8 @@ const SelectInput: FC<SelectInputProps> = ({
 				isOptionDisabled={isOptionDisabled}
 				className="react-select"
 				classNamePrefix="react-select"
+				menuPortalTarget={document.body} // Append the menu to the body
+				styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }} // Ensure the menu is on top of everything else
 			/>
 			{error && <p className="error">{error}</p>}
 		</InputGroup>

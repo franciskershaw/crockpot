@@ -15,6 +15,8 @@ import TextInput from '@/components/FormComponents/TextInput/TextInput';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
 import QuantityInput from '@/components/QuantityInput/QuantityInput';
 
+import { useModal } from '../Modal2/ModalContext';
+
 interface AddRecipeProps {
 	setModal?: (open: boolean) => void;
 	recipe?: Recipe;
@@ -69,6 +71,8 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 		notes: recipe?.notes || [''],
 		selectedImage: null,
 	});
+
+	const { closeModal } = useModal();
 
 	const { recipeCategories } = useRecipeCategories();
 	const { filterItems, ingredients } = useItems();
@@ -230,8 +234,10 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 		try {
 			if (isEditing) {
 				editRecipe({ formData, _id: recipe._id });
+				closeModal('EditRecipe');
 			} else {
 				addRecipe(formData);
+				closeModal('AddRecipe');
 			}
 			if (setModal) setModal(false);
 		} catch (err) {

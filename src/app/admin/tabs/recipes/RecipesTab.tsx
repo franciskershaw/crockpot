@@ -27,7 +27,7 @@ const RecipesTab = () => {
 		return filterRecipes(allRecipes, query);
 	}, [allRecipes, query, filterRecipes]);
 
-	const { openModals } = useModal();
+	const { openModals, closeModal } = useModal();
 
 	useEffect(() => {
 		if (!openModals.length) {
@@ -58,7 +58,6 @@ const RecipesTab = () => {
 									<OpenModal
 										onClick={() => setSelectedRecipe(result)}
 										name="EditRecipe"
-										// styles="flex space-x-2"
 									>
 										<Button type="primary">
 											<RiEdit2Line />
@@ -93,7 +92,10 @@ const RecipesTab = () => {
 							Are you sure you would like to delete this recipe?
 						</p>
 						<Button
-							onClick={() => deleteRecipe(selectedRecipe._id)}
+							onClick={() => {
+								deleteRecipe(selectedRecipe._id);
+								closeModal('DeleteRecipe');
+							}}
 							text="Delete Recipe"
 							border
 						/>
