@@ -7,17 +7,17 @@ interface ModalProps {
 	name: string; // MUST BE UNIQUE
 	title?: string | JSX.Element;
 	children: ReactNode;
-	// customSize?: 'small' | 'medium' | 'large'; // for tablet size and higher
+	customSize?: 'small' | 'medium' | 'large'; // for tablet size and higher
 }
 
-const Modal2: FC<ModalProps> = ({ name, title, children }) => {
+const Modal2: FC<ModalProps> = ({ name, title, children, customSize }) => {
 	const { openModals, closeModal } = useModal();
 	const isOpen = openModals.includes(name);
 
 	if (!isOpen) return null;
 
-	const contentStyles =
-		'relative bg-white rounded-xl shadow-lg transition-all duration-300 overflow-auto h-[95vh] w-full max-w-[90vh]';
+	const titleStyles = `flex items-center px-3 py-2 sticky top-0 z-10 ${title ? 'justify-between bg-primary text-white' : 'justify-end'} `;
+	const contentStyles = `relative bg-white rounded-xl shadow-lg transition-all duration-300 overflow-auto ${customSize === 'small' ? 'pb-4 max-h-[30vh] w-full sm:w-2/3 md:w-1/2' : 'max-h-[95vh] w-full max-w-[90vh]'} `;
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -26,7 +26,7 @@ const Modal2: FC<ModalProps> = ({ name, title, children }) => {
 				onClick={() => closeModal(name)}
 			></div>
 			<div className={contentStyles}>
-				<div className="flex justify-between items-center bg-primary text-white px-3 py-2 sticky top-0 z-10">
+				<div className={titleStyles}>
 					{title && (
 						<div className="text-lg md:text-xl md:py-2 capitalize">{title}</div>
 					)}
@@ -35,10 +35,10 @@ const Modal2: FC<ModalProps> = ({ name, title, children }) => {
 						className="p-2"
 						onClick={() => closeModal(name)}
 					>
-						<GrClose className="text-white" />
+						<GrClose className={title ? 'text-white' : 'text-base'} />
 					</button>
 				</div>
-				<div className="mt-4 p-4">{children}</div>
+				<div className={title ? 'mt-4 p-4' : ''}>{children}</div>
 			</div>
 		</div>
 	);

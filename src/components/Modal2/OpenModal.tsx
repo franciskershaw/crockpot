@@ -6,13 +6,20 @@ interface OpenModalProps {
 	name: string;
 	children: ReactNode;
 	styles?: string;
+	onClick?: () => void;
 }
 
-const OpenModal: FC<OpenModalProps> = ({ name, styles, children }) => {
+const OpenModal: FC<OpenModalProps> = ({ name, styles, children, onClick }) => {
 	const { openModal } = useModal();
 
 	return (
-		<div className={styles || ''} onClick={() => openModal(name)}>
+		<div
+			className={styles || ''}
+			onClick={() => {
+				openModal(name);
+				if (onClick) onClick();
+			}}
+		>
 			{children}
 		</div>
 	);
