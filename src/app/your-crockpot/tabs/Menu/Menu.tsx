@@ -9,12 +9,16 @@ import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Button from '@/components/Button/Button';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import Modal from '@/components/Modal/Modal';
+import { useModal } from '@/components/Modal/ModalContext';
 import OpenModal from '@/components/Modal/OpenModal';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
+import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 
 const Menu = () => {
 	const { allRecipes } = useRecipes();
 	const { recipeMenu, updateRecipeMenu } = useRecipeMenu();
+
+	const { selectedRecipe, setSelectedRecipe } = useModal();
 
 	const suggestedRecipes = useMemo(() => {
 		return allRecipes.slice(0, 4);
@@ -57,6 +61,26 @@ const Menu = () => {
 			<Modal title="Shopping List" name="ShoppingList">
 				<ShoppingList />
 			</Modal>
+			{selectedRecipe ? (
+				<Modal
+					title={
+						<div className="flex">
+							<div className="lowercase">
+								{selectedRecipe.timeInMinutes} mins
+							</div>
+							{selectedRecipe.categories.map((category, index) => (
+								<div key={index} className="ml-2 pl-2 border-l border-white">
+									{category.name}
+								</div>
+							))}
+						</div>
+					}
+					name="RecipeModal"
+					onClose={() => setSelectedRecipe(null)}
+				>
+					<RecipeCardModal recipe={selectedRecipe} />
+				</Modal>
+			) : null}
 		</div>
 	);
 };

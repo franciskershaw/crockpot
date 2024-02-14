@@ -4,12 +4,11 @@ import React from 'react';
 
 import { Recipe } from '@/types/types';
 
-import { useBrowsePageContext } from '@/app/browse/context/BrowsePageContext';
-
 import RecipeCard from '@/components/RecipeCard/RecipeCard';
 
 import './styles.scss';
 
+import { useModal } from '../Modal/ModalContext';
 import OpenModal from '../Modal/OpenModal';
 
 type RecipeCardListProps = {
@@ -18,7 +17,7 @@ type RecipeCardListProps = {
 };
 
 function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
-	const { setSelectedRecipe } = useBrowsePageContext();
+	const { setSelectedRecipe } = useModal();
 	return (
 		<div
 			className={`recipe-card-list ${fullWidth ? 'recipe-card-list--full' : 'recipe-card-list--1-2'}`}

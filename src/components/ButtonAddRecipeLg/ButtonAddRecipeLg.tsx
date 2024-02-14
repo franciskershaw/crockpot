@@ -24,9 +24,6 @@ function ButtonAddRecipeLg() {
 			<OpenModal name="AddRecipe" styles="hidden lg:block">
 				<Button text="Add Recipe" type="primary" border />
 			</OpenModal>
-			<Modal name="AddRecipe" title="Add new recipe">
-				<AddRecipe />
-			</Modal>
 		</>
 	);
 }

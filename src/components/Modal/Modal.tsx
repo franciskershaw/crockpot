@@ -8,9 +8,16 @@ interface ModalProps {
 	title?: string | JSX.Element;
 	children: ReactNode;
 	customSize?: 'small' | 'medium' | 'large';
+	onClose?: () => void;
 }
 
-const Modal: FC<ModalProps> = ({ name, title, children, customSize }) => {
+const Modal: FC<ModalProps> = ({
+	name,
+	title,
+	children,
+	customSize,
+	onClose,
+}) => {
 	const { openModals, closeModal } = useModal();
 	const isOpen = openModals.includes(name);
 
@@ -23,7 +30,10 @@ const Modal: FC<ModalProps> = ({ name, title, children, customSize }) => {
 		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
 			<div
 				className="absolute inset-0 bg-black opacity-50 transition-opacity duration-300"
-				onClick={() => closeModal(name)}
+				onClick={() => {
+					if (onClose) onClose();
+					closeModal(name);
+				}}
 			></div>
 			<div className={contentStyles}>
 				<div className={titleStyles}>

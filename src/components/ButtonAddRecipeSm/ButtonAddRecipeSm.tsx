@@ -31,9 +31,6 @@ function ButtonAddRecipe() {
 					<AiOutlinePlus />
 				</Icon>
 			</OpenModal>
-			<Modal name="AddRecipe" title="Add new recipe">
-				<AddRecipe />
-			</Modal>
 		</>
 	);
 }

@@ -13,9 +13,11 @@ import {
 import BrowsePageAppliedFilters from './components/BrowsePageAppliedFilters/BrowsePageAppliedFilters';
 import BrowsePageFiltersMenu from './components/BrowsePageFiltersMenu';
 import BrowsePageSearchBar from './components/BrowsePageSearchBar';
+import AddRecipe from '@/components/AddRecipe/AddRecipe';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
 import Modal from '@/components/Modal/Modal';
+import { useModal } from '@/components/Modal/ModalContext';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 
@@ -32,9 +34,9 @@ const BrowsePage = () => {
 		cookingTimeMax,
 		selectedCategories,
 		selectedIngredients,
-		selectedRecipe,
-		setSelectedRecipe,
 	} = useBrowsePageContext();
+
+	const { selectedRecipe, setSelectedRecipe } = useModal();
 
 	// Filter recipes based on search query, favourites toggle, my recipe toggle, cooking time, categories and ingredients
 	const filteredRecipes = allRecipes.filter((recipe: Recipe) => {
@@ -103,10 +105,14 @@ const BrowsePage = () => {
 						</div>
 					}
 					name="RecipeModal"
+					onClose={() => setSelectedRecipe(null)}
 				>
 					<RecipeCardModal recipe={selectedRecipe} />
 				</Modal>
 			) : null}
+			<Modal name="AddRecipe" title="Add new recipe">
+				<AddRecipe />
+			</Modal>
 		</>
 	);
 };
