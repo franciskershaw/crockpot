@@ -1,4 +1,3 @@
-import React from 'react';
 import { AiFillFilter } from 'react-icons/ai';
 import { GrRefresh } from 'react-icons/gr';
 

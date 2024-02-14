@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface InputGroupProps {
 	label?: string;
@@ -7,7 +7,7 @@ interface InputGroupProps {
 	labelOnLeft?: boolean;
 }
 
-const InputGroup: React.FC<InputGroupProps> = ({
+const InputGroup: FC<InputGroupProps> = ({
 	label,
 	htmlFor,
 	children,

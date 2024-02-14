@@ -1,7 +1,5 @@
 'use client';
 
-import React from 'react';
-
 import { Recipe } from '@/types/types';
 
 import useUser from '@/hooks/auth/useUser';

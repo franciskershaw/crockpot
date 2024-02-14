@@ -10,6 +10,7 @@ import useAuth from '@/hooks/auth/useAuth';
 import useUser from '@/hooks/auth/useUser';
 
 import Button from '@/components/Button/Button';
+import TextInput from '@/components/FormComponents/TextInput/TextInput';
 
 import styles from './styles.module.scss';
 
@@ -54,52 +55,37 @@ const AuthForm = (props: Props) => {
 
 	return (
 		<form onSubmit={handleSubmit} className={styles.authForm}>
-			<h2 className="text-center">
+			<h2 className="text-center text-2xl">
 				{`${props.type === 'login' ? 'Login' : 'Register'} to Crockpot!`}
 			</h2>
-			<div className="space-y-1">
-				<div>
-					<label htmlFor="username">Username</label>
-					<input
-						name="username"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						className="auth-form__input-field"
-						type="text"
-						id="username"
-						autoComplete="off"
-					/>
-				</div>
-				<div>
-					<label>Password</label>
-					<input
-						name="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						className="auth-form__input-field"
-						type="password"
-						id="password"
-						autoComplete="off"
-						required
-					/>
-				</div>
+
+			<div className="space-y-6 mt-3">
+				<TextInput
+					label="Username"
+					id="username"
+					value={username}
+					onChange={(value) => setUsername(value)}
+				/>
+
+				<TextInput
+					label="Password"
+					id="password"
+					value={password}
+					onChange={(value) => setPassword(value)}
+					isPassword
+				/>
 				{props.type === 'register' && (
-					<div>
-						<label>Confirm password</label>
-						<input
-							name="confirmPassword"
-							value={confirmPassword}
-							onChange={(e) => setConfirmPassword(e.target.value)}
-							className="auth-form__input-field"
-							type="password"
-							id="confirmPassword"
-							autoComplete="off"
-							required
-						/>
-					</div>
+					<TextInput
+						label="Confirm password"
+						id="confirmPassword"
+						value={confirmPassword}
+						onChange={(value) => setConfirmPassword(value)}
+						isPassword
+					/>
 				)}
 			</div>
-			<div className="text-center w-full flex flex-col justify-around items-center space-y-1 mt-4">
+
+			<div className="text-center w-full flex flex-col justify-around items-center space-y-4 mt-6">
 				<Button
 					text={props.type === 'login' ? 'Login' : 'Register'}
 					type="primary"

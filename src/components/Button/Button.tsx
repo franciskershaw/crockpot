@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { MouseEvent, ReactNode, forwardRef } from 'react';
 
 import Icon from '@/components/Icon/Icon';
 
@@ -11,15 +11,15 @@ interface ButtonProps {
 	border?: boolean;
 	inverse?: boolean;
 	hoverOff?: boolean;
-	onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+	onClick?: (e: MouseEvent<HTMLElement>) => void;
 	text?: string;
 	ariaLabel?: string;
-	children?: React.ReactNode;
+	children?: ReactNode;
 	iconXs?: boolean;
 	disabled?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 	(
 		{
 			type,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 import {
 	CheckboxData,
@@ -16,7 +16,7 @@ type BrowsePageSearchableCheckboxListProps = {
 	listType: 'category' | 'ingredient';
 };
 
-const BrowsePageSearchableCheckboxList: React.FC<
+const BrowsePageSearchableCheckboxList: FC<
 	BrowsePageSearchableCheckboxListProps
 > = ({ title, placeholderText, checkboxes, listType }) => {
 	const [searchQuery, setSearchQuery] = useState<string>('');

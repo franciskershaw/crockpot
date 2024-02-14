@@ -1,4 +1,4 @@
-import React from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 import Button from '@/components/Button/Button';
@@ -6,7 +6,7 @@ import InputGroup from '@/components/FormComponents/InputGroup/InputGroup';
 
 interface QuantityInputProps {
 	value: number;
-	setValue: React.Dispatch<React.SetStateAction<number>>;
+	setValue: Dispatch<SetStateAction<number>>;
 	min?: number;
 	max?: number;
 	step?: number;
@@ -37,7 +37,7 @@ const QuantityInput = ({
 		if (onChange) onChange(newValue);
 	};
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const inputVal = event.target.value;
 
 		if (isNaN(parseInt(inputVal, 10)) || inputVal === '') {

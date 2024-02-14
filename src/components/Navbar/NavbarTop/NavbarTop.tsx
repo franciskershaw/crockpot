@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 import Link from 'next/link';
 
@@ -32,9 +32,10 @@ const NavbarTop = () => {
 		logout();
 	};
 
-	const NavbarSharedLinksHamburger: React.FC<
-		NavbarSharedLinksHamburgerProps
-	> = ({ handleLogout, setIsOpen }) => {
+	const NavbarSharedLinksHamburger: FC<NavbarSharedLinksHamburgerProps> = ({
+		handleLogout,
+		setIsOpen,
+	}) => {
 		return (
 			<>
 				{user?.isAdmin && (

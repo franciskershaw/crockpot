@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { Fragment } from 'react';
 
 import { Recipe } from '@/types/types';
 
@@ -23,7 +23,7 @@ function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 			className={`recipe-card-list ${fullWidth ? 'recipe-card-list--full' : 'recipe-card-list--1-2'}`}
 		>
 			{recipes.map((recipe) => (
-				<React.Fragment key={recipe._id}>
+				<Fragment key={recipe._id}>
 					<OpenModal
 						onClick={() => setSelectedRecipe(recipe)}
 						name="RecipeModal"
@@ -31,7 +31,7 @@ function RecipeCardList({ recipes, fullWidth }: RecipeCardListProps) {
 					>
 						<RecipeCard recipe={recipe} />
 					</OpenModal>
-				</React.Fragment>
+				</Fragment>
 			))}
 		</div>
 	);

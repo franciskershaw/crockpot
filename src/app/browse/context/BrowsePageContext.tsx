@@ -1,6 +1,7 @@
 'use client';
 
 import React, {
+	FC,
 	ReactNode,
 	createContext,
 	useCallback,
@@ -52,7 +53,7 @@ export const useBrowsePageContext = (): BrowsePageContextValue => {
 	return context;
 };
 
-export const BrowsePageProvider: React.FC<BrowsePageProviderProps> = ({
+export const BrowsePageProvider: FC<BrowsePageProviderProps> = ({
 	children,
 }) => {
 	const { cookingTimeMinMax } = useRecipes();

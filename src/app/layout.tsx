@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 import { Capriola, Open_Sans } from 'next/font/google';
 
@@ -31,11 +31,7 @@ export const metadata: Metadata = {
 		'Discover your next favorite meal! Explore easy-to-follow recipes and generate personalized shopping lists with ease. Perfect for busy foodies and home cooks looking for inspiration and efficiency in the kitchen. Start your culinary journey here!',
 };
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" className={`${capriola.variable} ${openSans.variable}`}>
 			<body>

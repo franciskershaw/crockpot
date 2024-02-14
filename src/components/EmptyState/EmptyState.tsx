@@ -1,5 +1,3 @@
-import React from 'react';
-
 type EmptyStateProps = {
 	animation?: boolean;
 	title: string;

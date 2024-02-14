@@ -1,7 +1,5 @@
 'use client';
 
-import React from 'react';
-
 import NavbarSharedLinks from '../NavbarSharedLinks/NavbarSharedLinks';
 
 const NavbarBottom = () => {

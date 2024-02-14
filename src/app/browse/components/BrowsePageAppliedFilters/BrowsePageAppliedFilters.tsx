@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import useRecipes from '@/hooks/recipes/useRecipes';
 
@@ -13,7 +13,7 @@ type AppliedFiltersProps = {
 	recipeNum: number;
 };
 
-const AppliedFilters: React.FC<AppliedFiltersProps> = ({ recipeNum }) => {
+const AppliedFilters: FC<AppliedFiltersProps> = ({ recipeNum }) => {
 	const {
 		recipeSearchQuery,
 		cookingTimeMin,

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { BsChevronDown } from 'react-icons/bs';
 
 import * as AccordionRadix from '@radix-ui/react-accordion';
@@ -10,12 +9,12 @@ import Icon from '@/components/Icon/Icon';
 import styles from './styles.module.scss';
 
 type AccordionItemProps = {
-	heading: React.ReactNode;
-	children: React.ReactNode;
+	heading: ReactNode;
+	children: ReactNode;
 };
 
 const AccordionItem = ({ heading, children }: AccordionItemProps) => {
-	const value = React.useMemo(() => uuidv4(), []);
+	const value = useMemo(() => uuidv4(), []);
 
 	return (
 		<AccordionRadix.Item value={value} className="border-t border-black py-3">

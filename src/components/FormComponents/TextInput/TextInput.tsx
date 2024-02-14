@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import InputGroup from '../InputGroup/InputGroup';
 
@@ -10,9 +10,10 @@ interface TextInputProps {
 	label?: string;
 	error?: string;
 	labelOnLeft?: boolean;
+	isPassword?: boolean;
 }
 
-const TextInput: React.FC<TextInputProps> = ({
+const TextInput: FC<TextInputProps> = ({
 	id,
 	placeholder = '',
 	value,
@@ -20,16 +21,18 @@ const TextInput: React.FC<TextInputProps> = ({
 	label,
 	error = '',
 	labelOnLeft,
+	isPassword = false,
 }) => {
 	return (
 		<InputGroup label={label} htmlFor={id} labelOnLeft={labelOnLeft}>
 			<input
-				type="text"
+				type={isPassword ? 'password' : 'text'}
 				id={id}
 				className=""
 				placeholder={placeholder}
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
+				autoComplete="off"
 			/>
 			{error && <p className="error">{error}</p>}
 		</InputGroup>

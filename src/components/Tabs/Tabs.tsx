@@ -1,11 +1,4 @@
-import React, {
-	Children,
-	FC,
-	ReactNode,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { Children, FC, ReactNode, useEffect, useRef, useState } from 'react';
 import AnimateHeight, { Height } from 'react-animate-height';
 
 import * as RadixTabs from '@radix-ui/react-tabs';

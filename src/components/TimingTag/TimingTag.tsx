@@ -1,4 +1,3 @@
-import React from 'react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 
 import Icon from '@/components/Icon/Icon';
