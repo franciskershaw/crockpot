@@ -1,18 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-
 import { usePathname } from 'next/navigation';
 
 import useUser from '@/hooks/auth/useUser';
 
 import AddRecipe from '@/components/AddRecipe/AddRecipe';
 import Button from '@/components/Button/Button';
-import Modal from '@/components/Modal/Modal';
+
+import Modal2 from '../Modal2/Modal2';
+import OpenModal from '../Modal2/OpenModal';
 
 function ButtonAddRecipeLg() {
 	const { user } = useUser();
-	const [modalOpen, setModalOpen] = useState(false);
 
 	const pathname = usePathname();
 
@@ -21,20 +20,14 @@ function ButtonAddRecipeLg() {
 	}
 
 	return (
-		<Modal
-			trigger={
-				<div className="hidden lg:block">
-					<Button text="Add Recipe" type="primary" border />
-				</div>
-			}
-			title="Add New Recipe"
-			open={modalOpen}
-			setOpen={setModalOpen}
-			paddingOn
-			size="md"
-		>
-			<AddRecipe setModal={setModalOpen} />
-		</Modal>
+		<>
+			<OpenModal name="AddRecipe" styles="hidden lg:block">
+				<Button text="Add Recipe" type="primary" border />
+			</OpenModal>
+			<Modal2 name={'AddRecipe'} title="Add new recipe">
+				<AddRecipe />
+			</Modal2>
+		</>
 	);
 }
 export default ButtonAddRecipeLg;

@@ -8,7 +8,8 @@ import useRecipes from '@/hooks/recipes/useRecipes';
 import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Button from '@/components/Button/Button';
 import EmptyState from '@/components/EmptyState/EmptyState';
-import Modal from '@/components/Modal/Modal';
+import Modal2 from '@/components/Modal2/Modal2';
+import OpenModal from '@/components/Modal2/OpenModal';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 
 const Menu = () => {
@@ -28,13 +29,9 @@ const Menu = () => {
 			</div>
 			<div className="container--1-2__2">
 				<div className="container--1-2__2__sticky-menu p-3 flex justify-center space-x-4 md:hidden">
-					<Modal
-						title="Shopping List"
-						trigger={<Button type="primary" text="Shopping List" />}
-						size="sm"
-					>
-						<ShoppingList />
-					</Modal>
+					<OpenModal name="ShoppingList">
+						<Button type="primary" text="Shopping List" />
+					</OpenModal>
 					{recipeMenu.length ? (
 						<Button
 							onClick={() => updateRecipeMenu({ type: 'clear' })}
@@ -57,6 +54,9 @@ const Menu = () => {
 					</>
 				)}
 			</div>
+			<Modal2 title="Shopping List" name="ShoppingList">
+				<ShoppingList />
+			</Modal2>
 		</div>
 	);
 };

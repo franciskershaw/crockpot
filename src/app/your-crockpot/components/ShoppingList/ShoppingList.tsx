@@ -13,7 +13,9 @@ import Button from '@/components/Button/Button';
 import SearchBar from '@/components/FormSearchBar/SearchBar';
 import Icon from '@/components/Icon/Icon';
 import iconMapping from '@/components/Icon/iconMapping';
-import Modal from '@/components/Modal/Modal';
+import Modal2 from '@/components/Modal2/Modal2';
+import { useModal } from '@/components/Modal2/ModalContext';
+import OpenModal from '@/components/Modal2/OpenModal';
 import QuantityInput from '@/components/QuantityInput/QuantityInput';
 
 import ShoppingListItem from './ShoppingListItem';
@@ -22,6 +24,7 @@ const ShoppingList = () => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [extraQuantity, setExtraQuantity] = useState(0);
 	const [extraUnit, setExtraUnit] = useState('');
+	const [selectedExtra, setSelectedExtra] = useState<Item>();
 
 	const { groupedShoppingList } = useShoppingList();
 	const { clearExtraItems, updateExtraItems, extraItems } = useExtraItems();
@@ -29,6 +32,8 @@ const ShoppingList = () => {
 	const { filterItems, allItems } = useItems();
 
 	const { recipeMenu, updateRecipeMenu } = useRecipeMenu();
+
+	const { closeModal } = useModal();
 
 	const accordionItems = useMemo(() => {
 		return groupedShoppingList?.map((category) => {
@@ -106,51 +111,13 @@ const ShoppingList = () => {
 						{searchResults.length ? (
 							<div className="input-menu-dropdown">
 								{searchResults.map((result) => (
-									<Modal
+									<OpenModal
+										onClick={() => setSelectedExtra(result)}
+										name="ExtraItem"
 										key={result._id}
-										title={
-											<>
-												Add extra <i>{result.name}</i> to shopping list
-											</>
-										}
-										trigger={<p>{result.name}</p>}
-										paddingOn
-										nested
-										size="sm"
 									>
-										<div className="modal--p-and-button">
-											<div className="flex justify-center space-x-4">
-												<div>
-													<label htmlFor="">Amount</label>
-													<QuantityInput
-														value={extraQuantity}
-														setValue={setExtraQuantity}
-													/>
-												</div>
-												<div>
-													<label htmlFor="">Unit</label>
-													<select
-														name=""
-														id=""
-														onChange={(e) => setExtraUnit(e.target.value)}
-														value={extraUnit}
-														className="min-h-[42px] h-[42px]"
-													>
-														<option value="">-</option>
-														<option value="cans">Cans</option>
-														<option value="g">g</option>
-														<option value="ml">ml</option>
-														<option value="tbsp">Tablespoons</option>
-														<option value="tsp">Teaspoons</option>
-													</select>
-												</div>
-											</div>
-											<Button
-												onClick={() => handleAddExtraItem(result)}
-												text="Add to Shopping List"
-											/>
-										</div>
-									</Modal>
+										<p>{result.name}</p>
+									</OpenModal>
 								))}
 							</div>
 						) : null}
@@ -185,6 +152,53 @@ const ShoppingList = () => {
 				{/* Shopping list */}
 				<Accordion items={accordionItems} />
 			</div>
+			{selectedExtra ? (
+				<Modal2
+					name="ExtraItem"
+					title={
+						<>
+							Add extra <i>{selectedExtra.name}</i> to shopping list
+						</>
+					}
+					customSize="small"
+				>
+					<div className="modal--p-and-button">
+						<div className="flex justify-center space-x-4">
+							<div>
+								<label htmlFor="">Amount</label>
+								<QuantityInput
+									value={extraQuantity}
+									setValue={setExtraQuantity}
+								/>
+							</div>
+							<div>
+								<label htmlFor="">Unit</label>
+								<select
+									name=""
+									id=""
+									onChange={(e) => setExtraUnit(e.target.value)}
+									value={extraUnit}
+									className="min-h-[42px] h-[42px]"
+								>
+									<option value="">-</option>
+									<option value="cans">Cans</option>
+									<option value="g">g</option>
+									<option value="ml">ml</option>
+									<option value="tbsp">Tablespoons</option>
+									<option value="tsp">Teaspoons</option>
+								</select>
+							</div>
+						</div>
+						<Button
+							onClick={() => {
+								handleAddExtraItem(selectedExtra);
+								closeModal('ExtraItem');
+							}}
+							text="Add to Shopping List"
+						/>
+					</div>
+				</Modal2>
+			) : null}
 		</div>
 	);
 };
