@@ -55,7 +55,7 @@ body {
 			flex: 1;
 
 			&__sticky-menu {
-				@apply bg-primary-light sticky top-[99px] left-0 right-0 z-searchBar border border-borderDark rounded overflow-auto;
+				@apply bg-white-input sticky top-[99px] left-0 right-0 z-searchBar border border-borderDark rounded overflow-auto;
 
 				max-height: calc(100vh - 83px - 32px);
 			}
@@ -132,6 +132,12 @@ ol {
 
 	li {
 		@apply mb-2;
+	}
+}
+
+.hover-underline-parent:hover {
+	.hover-underline-child {
+		@apply underline;
 	}
 }
 

@@ -90,7 +90,7 @@ const AppliedFilters: FC<AppliedFiltersProps> = ({ recipeNum }) => {
 		selectedIngredients.length > 0;
 
 	return (
-		<div className="p-4">
+		<div className="p-1 pt-0">
 			<h3 className="font-bold">
 				{recipeNum} {recipeNum === 1 ? 'recipe' : 'recipes'} found:
 			</h3>

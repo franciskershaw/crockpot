@@ -57,7 +57,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 
 			{/* Name and categories */}
 			<div className="px-2 py-3 bg-white rounded-b-xl border-t border-black-25">
-				<h3 className="truncate">{recipe.name}</h3>
+				<h3 className="truncate capitalize">{recipe.name}</h3>
 				<p className="truncate">
 					{firstThreeCategories.join(' | ')}
 					{remainingCategoriesCount > 0 &&

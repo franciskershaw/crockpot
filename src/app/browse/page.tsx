@@ -83,10 +83,12 @@ const BrowsePage = () => {
 					{filteredRecipes.length !== 0 ? (
 						<RecipeCardList recipes={filteredRecipes} />
 					) : (
-						<EmptyState
-							title="No results?"
-							description="Try removing some of your filters or searching for something else."
-						/>
+						<div className="mt-4">
+							<EmptyState
+								title="No results?"
+								description="Try removing some of your filters or searching for something else."
+							/>
+						</div>
 					)}
 				</div>
 			</div>

@@ -52,7 +52,7 @@ const ItemsTab = () => {
 					<div className={styles.searchResultsContainer}>
 						{searchResults.map((result) => (
 							<div className={styles.searchResult} key={result._id}>
-								<p>{result.name}</p>
+								<p className="capitalize">{result.name}</p>
 								<div className="flex space-x-2">
 									<OpenModal
 										onClick={() => setSelectedItem(result)}
@@ -76,17 +76,25 @@ const ItemsTab = () => {
 					</div>
 				</>
 			) : null}
-			<Modal name={'AddItem'} title="Add new item">
+			<Modal name={'AddItem'} title="Add new item" customSize="small">
 				<AddItem />
 			</Modal>
 			{selectedItem && openModals.includes('EditItem') ? (
-				<Modal name="EditItem" title={`Edit ${selectedItem.name} `}>
+				<Modal
+					name="EditItem"
+					title={`Edit ${selectedItem.name} `}
+					customSize="small"
+				>
 					<AddItem item={selectedItem} />
 				</Modal>
 			) : null}
 			{selectedItem && openModals.includes('DeleteItem') ? (
-				<Modal name="DeleteItem" customSize="small">
-					<div className="modal--p-and-button">
+				<Modal
+					name="DeleteItem"
+					customSize="small"
+					title={`Delete ${selectedItem.name} `}
+				>
+					<div className="modal--p-and-button my-4">
 						<p className="text-center">
 							Are you sure you would like to delete this item?
 						</p>

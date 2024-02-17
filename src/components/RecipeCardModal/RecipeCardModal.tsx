@@ -37,7 +37,7 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 				<ul className="flex flex-wrap">
 					{recipe.ingredients.map((ingredient, index) => (
 						<li key={index} className="w-full xs:w-1/2">
-							{ingredient._id.name} x{' '}
+							<span className="capitalize">{ingredient._id.name}</span> x{' '}
 							{((ingredient.quantity / recipe.serves) * quantity)
 								.toFixed(2)
 								.replace(/\.00$|0$/, '')}{' '}
@@ -87,25 +87,29 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 							<div className="absolute top-0 right-0 m-3">
 								<div className="flex space-x-2">
 									<OpenModal name="EditRecipe">
-										<Button type="primary">
+										<Button type="primary" border>
 											<RiEdit2Line />
 										</Button>
 									</OpenModal>
 									<OpenModal name="DeleteRecipe">
-										<Button type="primary">
+										<Button type="primary" border>
 											<RiDeleteBinLine />
 										</Button>
 									</OpenModal>
 								</div>
 							</div>
 							{recipe && openModals.includes('EditRecipe') ? (
-								<Modal name="EditRecipe" title={`Edit ${recipe.name} `}>
+								<Modal name="EditRecipe" title={`Edit ${recipe.name}`}>
 									<AddRecipe recipe={recipe} />
 								</Modal>
 							) : null}
 							{recipe && openModals.includes('DeleteRecipe') ? (
-								<Modal name="DeleteRecipe" customSize="small">
-									<div className="modal--p-and-button">
+								<Modal
+									name="DeleteRecipe"
+									customSize="small"
+									title={`Delete ${recipe.name}`}
+								>
+									<div className="modal--p-and-button my-4">
 										<p className="text-center">
 											Are you sure you would like to delete this recipe?
 										</p>
@@ -123,9 +127,9 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 						</>
 					)}
 				</div>
-				<div className="absolute bottom-0 left-0 right-0 m-3 p-3 md:right-auto md:w-2/3 bg-white border border-black-25 flex items-center justify-between rounded">
+				<div className="absolute bottom-0 left-0 right-0 m-3 p-3 md:right-auto md:w-2/3 bg-white border border-borderLight flex items-center justify-between rounded">
 					<div>
-						<h2>{recipe.name}</h2>
+						<h2 className="capitalize">{recipe.name}</h2>
 						<h3>Created by {recipe.createdBy?.username}</h3>
 					</div>
 					{user ? (
