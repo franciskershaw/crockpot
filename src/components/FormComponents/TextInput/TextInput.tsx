@@ -1,12 +1,12 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 import InputGroup from '../InputGroup/InputGroup';
 
 interface TextInputProps {
 	id: string;
 	placeholder?: string;
-	value: string;
-	onChange: (value: string) => void;
+	value?: string;
+	onChange?: (value: string) => void;
 	label?: string;
 	error?: string;
 	labelOnLeft?: boolean;
@@ -23,18 +23,34 @@ const TextInput: FC<TextInputProps> = ({
 	labelOnLeft,
 	isPassword = false,
 }) => {
+	const isClient = !!onChange;
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (onChange) {
+			onChange(e.target.value);
+		}
+	};
 	return (
 		<InputGroup label={label} htmlFor={id} labelOnLeft={labelOnLeft}>
-			<input
-				type={isPassword ? 'password' : 'text'}
-				id={id}
-				name={id}
-				className=""
-				placeholder={placeholder}
-				value={value}
-				onChange={(e) => onChange(e.target.value)}
-				autoComplete="off"
-			/>
+			{isClient ? (
+				<input
+					type={isPassword ? 'password' : 'text'}
+					id={id}
+					name={id}
+					placeholder={placeholder}
+					value={value}
+					onChange={handleChange}
+					autoComplete="off"
+				/>
+			) : (
+				<input
+					type={isPassword ? 'password' : 'text'}
+					id={id}
+					name={id}
+					placeholder={placeholder}
+					autoComplete="off"
+				/>
+			)}
+
 			{error && <p className="error">{error}</p>}
 		</InputGroup>
 	);
