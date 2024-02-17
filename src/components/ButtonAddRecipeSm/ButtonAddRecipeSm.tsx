@@ -7,10 +7,7 @@ import { usePathname } from 'next/navigation';
 import useUser from '@/hooks/auth/useUser';
 
 import Icon from '@/components/Icon/Icon';
-
-import AddRecipe from '../AddRecipe/AddRecipe';
-import Modal from '../Modal/Modal';
-import OpenModal from '../Modal/OpenModal';
+import OpenModal from '@/components/Modal/OpenModal';
 
 function ButtonAddRecipe() {
 	const { user } = useUser();
