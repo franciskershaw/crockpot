@@ -5,10 +5,10 @@ import EmptyState from '@/components/EmptyState/EmptyState';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
 
 const Favourites = () => {
-	const { allRecipes } = useRecipes();
+	const { shuffledRecipes } = useRecipes();
 	const { favouriteRecipes } = useFavourites();
 
-	const suggestedRecipes = allRecipes.slice(0, 3);
+	const suggestedRecipes = shuffledRecipes.slice(0, 4);
 
 	return (
 		<>

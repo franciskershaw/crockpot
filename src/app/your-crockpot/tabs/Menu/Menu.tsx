@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { MenuRecipe } from '@/types/types';
 
 import useRecipeMenu from '../../hooks/useRecipeMenu';
@@ -9,20 +7,14 @@ import ShoppingList from '../../components/ShoppingList/ShoppingList';
 import Button from '@/components/Button/Button';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import Modal from '@/components/Modal/Modal';
-import { useModal } from '@/components/Modal/ModalContext';
 import OpenModal from '@/components/Modal/OpenModal';
 import RecipeCardList from '@/components/RecipeCardList/RecipeCardList';
-import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
 
 const Menu = () => {
-	const { allRecipes } = useRecipes();
+	const { shuffledRecipes } = useRecipes();
 	const { recipeMenu, updateRecipeMenu } = useRecipeMenu();
 
-	const { selectedRecipe, setSelectedRecipe } = useModal();
-
-	const suggestedRecipes = useMemo(() => {
-		return allRecipes.slice(0, 4);
-	}, [allRecipes]);
+	const suggestedRecipes = shuffledRecipes.slice(0, 4);
 
 	return (
 		<div className="container--1-2">
