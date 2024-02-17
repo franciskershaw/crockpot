@@ -18,7 +18,11 @@ export async function middleware(request: NextRequest) {
 
 	// If the user is trying to access the homepage (login) and has a verified token,
 	// redirect them to '/your-crockpot'.
-	if (request.nextUrl.pathname === '/' && verifiedToken) {
+	if (
+		(request.nextUrl.pathname === '/' ||
+			request.nextUrl.pathname === '/register') &&
+		verifiedToken
+	) {
 		return NextResponse.redirect(new URL('/your-crockpot', request.url));
 	}
 
