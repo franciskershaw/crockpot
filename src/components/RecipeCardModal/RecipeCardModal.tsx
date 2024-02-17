@@ -87,25 +87,29 @@ const RecipeCardModal = ({ recipe }: RecipeCardModalProps) => {
 							<div className="absolute top-0 right-0 m-3">
 								<div className="flex space-x-2">
 									<OpenModal name="EditRecipe">
-										<Button type="primary">
+										<Button type="primary" border>
 											<RiEdit2Line />
 										</Button>
 									</OpenModal>
 									<OpenModal name="DeleteRecipe">
-										<Button type="primary">
+										<Button type="primary" border>
 											<RiDeleteBinLine />
 										</Button>
 									</OpenModal>
 								</div>
 							</div>
 							{recipe && openModals.includes('EditRecipe') ? (
-								<Modal name="EditRecipe" title={`Edit ${recipe.name} `}>
+								<Modal name="EditRecipe" title={`Edit ${recipe.name}`}>
 									<AddRecipe recipe={recipe} />
 								</Modal>
 							) : null}
 							{recipe && openModals.includes('DeleteRecipe') ? (
-								<Modal name="DeleteRecipe" customSize="small">
-									<div className="modal--p-and-button">
+								<Modal
+									name="DeleteRecipe"
+									customSize="small"
+									title={`Delete ${recipe.name}`}
+								>
+									<div className="modal--p-and-button my-4">
 										<p className="text-center">
 											Are you sure you would like to delete this recipe?
 										</p>

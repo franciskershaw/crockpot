@@ -53,7 +53,7 @@ const RecipesTab = () => {
 					<div className={styles.searchResultsContainer}>
 						{searchResults.map((result) => (
 							<div className={styles.searchResult} key={result._id}>
-								<p>{result.name}</p>
+								<p className="capitalize">{result.name}</p>
 								<div className="flex space-x-2">
 									<OpenModal
 										onClick={() => setSelectedRecipe(result)}
@@ -86,8 +86,12 @@ const RecipesTab = () => {
 				</Modal>
 			) : null}
 			{selectedRecipe && openModals.includes('DeleteRecipe') ? (
-				<Modal name="DeleteRecipe" customSize="small">
-					<div className="modal--p-and-button">
+				<Modal
+					name="DeleteRecipe"
+					customSize="small"
+					title={`Delete ${selectedRecipe.name}`}
+				>
+					<div className="modal--p-and-button my-4">
 						<p className="text-center">
 							Are you sure you would like to delete this recipe?
 						</p>

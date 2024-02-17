@@ -436,11 +436,13 @@ const AddRecipe: FC<AddRecipeProps> = ({ setModal, recipe }) => {
 					<div className="space-y-0.5 border-t border-b p-1 mt-2">
 						{selectedIngredients.map((ingredient, index) => (
 							<div
-								className="flex justify-between items-center"
+								className="flex justify-between items-center hover-underline-parent"
 								key={`${ingredient._id}_${index}`}
 							>
 								<div className="flex items-center space-x-1.5">
-									<span className="flex-shrink-0">{ingredient.name}</span>
+									<span className="flex-shrink-0 hover-underline-child">
+										{ingredient.name}
+									</span>
 									<span>x</span>
 									<input
 										type="number"

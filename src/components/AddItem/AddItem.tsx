@@ -52,7 +52,7 @@ const AddItem: FC<AddItemProps> = ({ item }) => {
 		}
 
 		if (!category.trim()) {
-			setCategoryError('Please select a category');
+			setCategoryError('Please select a category.');
 		}
 		return isValid;
 	};
@@ -78,7 +78,7 @@ const AddItem: FC<AddItemProps> = ({ item }) => {
 	return (
 		<form onSubmit={(e) => e.preventDefault()} className="modal--form p-4">
 			<TextInput
-				label="Item name"
+				label="Item Name"
 				id="name"
 				value={name}
 				onChange={handleNameChange}
@@ -91,7 +91,7 @@ const AddItem: FC<AddItemProps> = ({ item }) => {
 					label: category.name,
 				}))}
 				value={category}
-				label="Select category"
+				label="Select Category"
 				onChange={handleCategoryChange}
 				error={categoryError}
 			/>
