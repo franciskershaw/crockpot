@@ -1,4 +1,4 @@
-import { SignJWT, jwtVerify } from 'jose';
+import { JWTPayload, base64url, jwtDecrypt, jwtVerify } from 'jose';
 
 interface refreshTokenPayload {
 	jti: string;
@@ -23,6 +23,19 @@ export const verifyAuth = async (token: string) => {
 		);
 		return verified.payload as refreshTokenPayload;
 	} catch (error) {
-		throw new Error('Your token has expired.');
+		console.error('Error verifying token:', error);
+		throw new Error('Error verifying token.');
+	}
+};
+
+export const decodeToken = (token: string): JWTPayload => {
+	try {
+		const base64Payload = token.split('.')[1];
+		const payloadBuffer = Buffer.from(base64Payload, 'base64');
+		const payload = JSON.parse(payloadBuffer.toString('utf8'));
+		return payload as JWTPayload;
+	} catch (error) {
+		console.error('Error decoding token:', error);
+		throw new Error('Error decoding token');
 	}
 };

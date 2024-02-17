@@ -1,6 +1,6 @@
 'use client';
 
-import useProtectedRoute from '@/hooks/auth/useProtectedRoute';
+import useUser from '@/hooks/auth/useUser';
 
 import AddRecipe from '@/components/AddRecipe/AddRecipe';
 import LoadingSpinner from '@/components/Loading/LoadingSpinner';
@@ -14,7 +14,7 @@ import Menu from './tabs/Menu/Menu';
 import MyRecipes from './tabs/MyRecipes/MyRecipes';
 
 const YourCrockpotPage = () => {
-	const { user } = useProtectedRoute();
+	const { user } = useUser();
 	const { selectedRecipe, setSelectedRecipe } = useModal();
 
 	if (!user) {
