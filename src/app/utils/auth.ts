@@ -1,4 +1,4 @@
-import { JWTPayload, base64url, jwtDecrypt, jwtVerify } from 'jose';
+import { JWTPayload, jwtVerify } from 'jose';
 
 interface refreshTokenPayload {
 	jti: string;
