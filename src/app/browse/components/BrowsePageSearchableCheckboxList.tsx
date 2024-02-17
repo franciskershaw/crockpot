@@ -60,7 +60,7 @@ const BrowsePageSearchableCheckboxList: FC<
 	);
 
 	return (
-		<div className="space-y-2 p-4">
+		<div className="space-y-2">
 			<div className="flex justify-between">
 				<h3>
 					{title} ({checkboxes.length})
