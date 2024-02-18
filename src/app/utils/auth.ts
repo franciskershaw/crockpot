@@ -1,8 +1,11 @@
-import { JWTPayload, jwtVerify } from 'jose';
+import { JWTPayload, SignJWT, jwtVerify } from 'jose';
+
+import { User } from '@/types/types';
 
 interface refreshTokenPayload {
 	jti: string;
 	iat: number;
+	isAdmin: boolean;
 }
 
 export const getJwtSecretKey = () => {
@@ -21,7 +24,7 @@ export const verifyAuth = async (token: string) => {
 			token,
 			new TextEncoder().encode(getJwtSecretKey()),
 		);
-		return verified.payload as refreshTokenPayload;
+		return verified.payload as unknown as refreshTokenPayload;
 	} catch (error) {
 		console.error('Error verifying token:', error);
 		throw new Error('Error verifying token.');
@@ -37,5 +40,27 @@ export const decodeToken = (token: string): JWTPayload => {
 	} catch (error) {
 		console.error('Error decoding token:', error);
 		throw new Error('Error decoding token');
+	}
+};
+
+export const generateRefreshToken = async (user: User): Promise<string> => {
+	const secretKey = getJwtSecretKey();
+
+	const claims = {
+		jti: user._id,
+		isAdmin: user.isAdmin,
+	};
+
+	try {
+		const jwt = await new SignJWT(claims)
+			.setProtectedHeader({ alg: 'HS256' })
+			.setIssuedAt()
+			.setExpirationTime('30d')
+			.sign(new TextEncoder().encode(secretKey));
+
+		return jwt;
+	} catch (error) {
+		console.error('Error generating refresh token:', error);
+		throw new Error('Error generating refresh token');
 	}
 };
