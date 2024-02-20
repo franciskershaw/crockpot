@@ -51,10 +51,11 @@ const useExtraItems = () => {
 	};
 
 	// useQuery hooks
-	const { data: extraItems = [] } = useQuery(
-		[queryKeys.extraItems],
-		getExtraItemsReq,
-	);
+	const { data: extraItems = [] } = useQuery({
+		queryKey: [queryKeys.extraItems],
+		queryFn: getExtraItemsReq,
+		enabled: !!user,
+	});
 
 	// useMutation hooks
 	const { mutate: updateExtraItems } = useMutation(

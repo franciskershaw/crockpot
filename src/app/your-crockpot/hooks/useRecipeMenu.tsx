@@ -41,10 +41,11 @@ const useRecipeMenu = () => {
 		return response.data;
 	};
 
-	const { data: recipeMenu = [] } = useQuery(
-		[queryKeys.recipeMenu],
-		getRecipeMenu,
-	);
+	const { data: recipeMenu = [] } = useQuery({
+		queryKey: [queryKeys.recipeMenu],
+		queryFn: getRecipeMenu,
+		enabled: !!user,
+	});
 
 	// useMutation hooks
 	const { mutate: updateRecipeMenu } = useMutation(

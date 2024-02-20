@@ -77,10 +77,11 @@ const useShoppingList = () => {
 	};
 
 	// useQuery hooks
-	const { data: shoppingList = [] } = useQuery(
-		[queryKeys.shoppingList],
-		getShoppingListReq,
-	);
+	const { data: shoppingList = [] } = useQuery({
+		queryKey: [queryKeys.shoppingList],
+		queryFn: getShoppingListReq,
+		enabled: !!user,
+	});
 
 	// useMutation hook
 	const { mutate: toggleObtained } = useMutation(

@@ -14,10 +14,10 @@ import Menu from './tabs/Menu/Menu';
 import MyRecipes from './tabs/MyRecipes/MyRecipes';
 
 const YourCrockpotPage = () => {
-	const { user } = useProtectedRoute();
+	const { fetchingUser } = useProtectedRoute();
 	const { selectedRecipe, setSelectedRecipe } = useModal();
 
-	if (!user) {
+	if (fetchingUser) {
 		return <LoadingSpinner />;
 	}
 
