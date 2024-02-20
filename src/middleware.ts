@@ -45,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ['/', '/your-crockpot', '/admin'],
+	matcher: ['/', '/register', '/your-crockpot', '/admin'],
 };

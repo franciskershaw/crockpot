@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import useAuth from '@/hooks/auth/useAuth';
+import useUser from '@/hooks/auth/useUser';
 
 import Button from '@/components/Button/Button';
 import TextInput from '@/components/FormComponents/TextInput/TextInput';
@@ -21,7 +23,16 @@ const AuthForm = (props: Props) => {
 	const [password, setPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+	const router = useRouter();
+
 	const auth = useAuth();
+	const { user } = useUser();
+
+	useEffect(() => {
+		if (user) {
+			router.push('/your-crockpot');
+		}
+	}, [user, router]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
