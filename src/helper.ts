@@ -17,7 +17,7 @@ export function combineArrays(
 
 	// Helper function to process each item
 	const processItem = (item: IShoppingListItem, isExtra: boolean) => {
-		const key = item.item._id + item.unit; // Unique key based on _id and unit
+		const key = item.item._id + item.unit;
 		if (tempStorage[key]) {
 			tempStorage[key].quantity += item.quantity;
 			if (isExtra) tempStorage[key].extra = true;
