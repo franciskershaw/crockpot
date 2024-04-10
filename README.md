@@ -1,10 +1,10 @@
 # Crockpot - Client
 
-!(https://res.cloudinary.com/dqdjr1d4f/image/upload/v1712742105/README%20Images/Screenshot_2024-04-10_at_10.31.38_jdqjxd.png)[hero image]
+![https://res.cloudinary.com/dqdjr1d4f/image/upload/v1712742105/README%20Images/Screenshot_2024-04-10_at_10.31.38_jdqjxd.png](hero image)
 
 Crockpot is a recipe management and shopping list generation application written in Next.JS, Typescript and Tailwind. The purpose of this side project was to collate recipes (usually acquired through services like Hello Fresh or Gousto), link them to a custom database of ingredients, and have categorised shopping lists generated based on meal plans created through the selection of multiple recipes. This solves a few problems we had, namely that planning interesting meals and forming shopping lists is tiresome - while the project also provided the opportunity to try out Next.JS since the release of big changes.
 
-Version 1 was originally a full stack project using React (as a SPA) with an Express backend in the same repository. This newer version has now been split into two repos for the purposes of deployment - with the client side Next.JS project in this repository and the backend API stored in (https://github.com/franciskershaw/crockpot-api)[this separate repository]. The link to the live site can be found (https://www.crockpot.app/browse)[here].
+Version 1 was originally a full stack project using React (as a SPA) with an Express backend in the same repository. This newer version has now been split into two repos for the purposes of deployment - with the client side Next.JS project in this repository and the backend API stored in [https://github.com/franciskershaw/crockpot-api](this separate repository). The link to the live site can be found [https://www.crockpot.app/browse](here).
 
 ## Table of Contents
 - [Features](#features)
@@ -68,7 +68,7 @@ For a select few users, an admin flag has been enabled in the database. This all
 **Prerequisites**
 - Node.JS version 20.9.0 installed
 - NPM version 10.2.5 installed
-- Installation steps followed in the API repository (https://github.com/franciskershaw/crockpot-api)[(here)], with the server running and listening for incoming requests.
+- Installation steps followed in the API repository [https://github.com/franciskershaw/crockpot-api]((here)), with the server running and listening for incoming requests.
 
 - Download the repository
 - From the root, run `npm install`
@@ -80,7 +80,7 @@ NEXT_PUBLIC_API_URL=http://localhost:<port_of_choice_for_API>
 
 ## Deployment
 
-We kept deployment of this project on the client side very simple by deploying directly to (https://vercel.com/)[Vercel]. This was so we could make easy changes, with automatic deployments following merges to the main branch. Vercel redirects requests to the custom domain crockpot.app.
+We kept deployment of this project on the client side very simple by deploying directly to [https://vercel.com/](Vercel). This was so we could make easy changes, with automatic deployments following merges to the main branch. Vercel redirects requests to the custom domain crockpot.app.
 
 ## Technologies Used
 - Next.JS
