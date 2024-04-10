@@ -68,7 +68,7 @@ For a select few users, an admin flag has been enabled in the database. This all
 **Prerequisites**
 - Node.JS version 20.9.0 installed
 - NPM version 10.2.5 installed
-- Installation steps followed in the API repository [(here)](https://github.com/franciskershaw/crockpot-api), with the server running and listening for incoming requests.
+- Installation steps followed in the API repository [(here)]([https://github.com/franciskershaw/crockpot-api](https://github.com/franciskershaw/crockpot-api/blob/main/README.md#getting-started)), with the server running and listening for incoming requests.
 
 - Download the repository
 - From the root, run `npm install`
