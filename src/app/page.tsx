@@ -7,7 +7,7 @@ export default function Home() {
       {/* Hero Section with Auth Card */}
       <section className="">
         <div className="container mx-auto px-4 pt-16 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
             <HeroSection />
             <Auth />
           </div>

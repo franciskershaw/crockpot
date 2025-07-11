@@ -1,0 +1,203 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Users collection
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  googleId  String?
+  provider  String
+  password  String?
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  createdRecipes     Recipe[]       @relation("RecipeCreator")
+  favouriteRecipes   Recipe[]       @relation("UserFavourites", fields: [favouriteRecipeIds], references: [id])
+  favouriteRecipeIds String[]       @db.ObjectId
+  recipeMenus        RecipeMenu[]
+  shoppingLists      ShoppingList[]
+}
+
+// Items collection
+model Item {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String   @unique
+  categoryId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  category          ItemCategory       @relation(fields: [categoryId], references: [id])
+  allowedUnits      ItemAllowedUnit[]
+  recipeIngredients RecipeIngredient[]
+  shoppingListItems ShoppingListItem[]
+}
+
+// Item Categories collection
+model ItemCategory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  faIcon    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  items Item[]
+}
+
+// Recipes collection
+model Recipe {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  timeInMinutes Int
+  image         RecipeImage?
+  instructions  String[]
+  notes         String[]
+  approved      Boolean      @default(false)
+  serves        Int
+  createdById   String?      @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // Relations
+  createdBy       User?              @relation("RecipeCreator", fields: [createdById], references: [id])
+  categories      RecipeCategory[]   @relation(fields: [categoryIds], references: [id])
+  categoryIds     String[]           @db.ObjectId
+  favouritedBy    User[]             @relation("UserFavourites", fields: [favouritedByIds], references: [id])
+  favouritedByIds String[]           @db.ObjectId
+  ingredients     RecipeIngredient[]
+  menuEntries     RecipeMenuEntry[]
+}
+
+// Recipe Categories collection
+model RecipeCategory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  recipes   Recipe[] @relation(fields: [recipeIds], references: [id])
+  recipeIds String[] @db.ObjectId
+}
+
+// Recipe Menu collection (meal plan)
+model RecipeMenu {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries RecipeMenuEntry[]
+}
+
+// Shopping List collection
+model ShoppingList {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items ShoppingListItem[]
+}
+
+// Unit collection
+model Unit {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String   @unique
+  abbreviation String   @unique
+  category     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  allowedForItems   ItemAllowedUnit[]
+  recipeIngredients RecipeIngredient[]
+  shoppingListItems ShoppingListItem[]
+}
+
+// Junction Tables & Related Models
+
+// Item allowed units (many-to-many)
+model ItemAllowedUnit {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  itemId String @db.ObjectId
+  unitId String @db.ObjectId
+
+  // Relations
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, unitId])
+}
+
+// Recipe ingredients (separate model for relations)
+model RecipeIngredient {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  recipeId String  @db.ObjectId
+  itemId   String  @db.ObjectId
+  unitId   String? @db.ObjectId
+  quantity Float
+
+  // Relations
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  item   Item   @relation(fields: [itemId], references: [id])
+  unit   Unit?  @relation(fields: [unitId], references: [id])
+}
+
+// Recipe menu entries
+model RecipeMenuEntry {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  recipeMenuId String @db.ObjectId
+  recipeId     String @db.ObjectId
+  serves       Int
+
+  // Relations
+  recipeMenu RecipeMenu @relation(fields: [recipeMenuId], references: [id], onDelete: Cascade)
+  recipe     Recipe     @relation(fields: [recipeId], references: [id])
+
+  @@unique([recipeMenuId, recipeId])
+}
+
+// Shopping list items
+model ShoppingListItem {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  shoppingListId String  @db.ObjectId
+  itemId         String  @db.ObjectId
+  unitId         String? @db.ObjectId
+  quantity       Float
+  obtained       Boolean @default(false)
+
+  // Relations
+  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+  item         Item         @relation(fields: [itemId], references: [id])
+  unit         Unit?        @relation(fields: [unitId], references: [id])
+
+  @@unique([shoppingListId, itemId])
+}
+
+// Embedded types (only for simple data)
+type RecipeImage {
+  url      String?
+  filename String?
+}

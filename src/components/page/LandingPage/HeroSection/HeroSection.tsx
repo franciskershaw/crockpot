@@ -11,7 +11,8 @@ export default function HeroSection() {
         </h1>
         <p className="text-xl leading-relaxed">
           Discover new recipes, plan your meals effortlessly, and generate smart
-          shopping lists. Transform the way you cook and meal prep with Crockpot.
+          shopping lists. Transform the way you cook and meal prep with
+          Crockpot. §{" "}
         </p>
       </div>
 
