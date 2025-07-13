@@ -17,6 +17,8 @@ datasource db {
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique
+  firstName String
+  lastName  String
   googleId  String?
   provider  String
   password  String?
@@ -32,31 +34,30 @@ model User {
   shoppingLists      ShoppingList[]
 }
 
-// Items collection
-model Item {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  name       String   @unique
-  categoryId String   @db.ObjectId
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  // Relations
-  category          ItemCategory       @relation(fields: [categoryId], references: [id])
-  allowedUnits      ItemAllowedUnit[]
-  recipeIngredients RecipeIngredient[]
-  shoppingListItems ShoppingListItem[]
-}
-
-// Item Categories collection
+// Item Categories with default allowed units
 model ItemCategory {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String   @unique
-  faIcon    String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String   @unique
+  faIcon         String   @unique
+  defaultUnitIds String[] @db.ObjectId // Default units for this category
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   // Relations
   items Item[]
+}
+
+// Items with optional unit overrides
+model Item {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String   @unique
+  categoryId     String   @db.ObjectId
+  allowedUnitIds String[] @db.ObjectId // Override units (empty = use category defaults)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  category ItemCategory @relation(fields: [categoryId], references: [id])
 }
 
 // Recipes collection
@@ -73,14 +74,15 @@ model Recipe {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
+  // Embedded ingredients
+  ingredients RecipeIngredient[]
+
   // Relations
-  createdBy       User?              @relation("RecipeCreator", fields: [createdById], references: [id])
-  categories      RecipeCategory[]   @relation(fields: [categoryIds], references: [id])
-  categoryIds     String[]           @db.ObjectId
-  favouritedBy    User[]             @relation("UserFavourites", fields: [favouritedByIds], references: [id])
-  favouritedByIds String[]           @db.ObjectId
-  ingredients     RecipeIngredient[]
-  menuEntries     RecipeMenuEntry[]
+  createdBy       User?            @relation("RecipeCreator", fields: [createdById], references: [id])
+  categories      RecipeCategory[] @relation(fields: [categoryIds], references: [id])
+  categoryIds     String[]         @db.ObjectId
+  favouritedBy    User[]           @relation("UserFavourites", fields: [favouritedByIds], references: [id])
+  favouritedByIds String[]         @db.ObjectId
 }
 
 // Recipe Categories collection
@@ -103,9 +105,11 @@ model RecipeMenu {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
-  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Embedded entries
   entries RecipeMenuEntry[]
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Shopping List collection
@@ -116,9 +120,11 @@ model ShoppingList {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
-  user  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Embedded items
   items ShoppingListItem[]
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Unit collection
@@ -131,73 +137,31 @@ model Unit {
   updatedAt    DateTime @updatedAt
 
   // Relations
-  allowedForItems   ItemAllowedUnit[]
-  recipeIngredients RecipeIngredient[]
-  shoppingListItems ShoppingListItem[]
+  // No direct relations - units are referenced by ID in embedded types
 }
 
 // Junction Tables & Related Models
-
-// Item allowed units (many-to-many)
-model ItemAllowedUnit {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  itemId String @db.ObjectId
-  unitId String @db.ObjectId
-
-  // Relations
-  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
-  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
-
-  @@unique([itemId, unitId])
-}
-
-// Recipe ingredients (separate model for relations)
-model RecipeIngredient {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  recipeId String  @db.ObjectId
-  itemId   String  @db.ObjectId
-  unitId   String? @db.ObjectId
-  quantity Float
-
-  // Relations
-  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  item   Item   @relation(fields: [itemId], references: [id])
-  unit   Unit?  @relation(fields: [unitId], references: [id])
-}
-
-// Recipe menu entries
-model RecipeMenuEntry {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  recipeMenuId String @db.ObjectId
-  recipeId     String @db.ObjectId
-  serves       Int
-
-  // Relations
-  recipeMenu RecipeMenu @relation(fields: [recipeMenuId], references: [id], onDelete: Cascade)
-  recipe     Recipe     @relation(fields: [recipeId], references: [id])
-
-  @@unique([recipeMenuId, recipeId])
-}
-
-// Shopping list items
-model ShoppingListItem {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  shoppingListId String  @db.ObjectId
-  itemId         String  @db.ObjectId
-  unitId         String? @db.ObjectId
-  quantity       Float
-  obtained       Boolean @default(false)
-
-  // Relations
-  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
-  item         Item         @relation(fields: [itemId], references: [id])
-  unit         Unit?        @relation(fields: [unitId], references: [id])
-
-  @@unique([shoppingListId, itemId])
-}
 
 // Embedded types (only for simple data)
 type RecipeImage {
   url      String?
   filename String?
+}
+
+type RecipeIngredient {
+  itemId   String  @db.ObjectId
+  unitId   String? @db.ObjectId
+  quantity Float
+}
+
+type RecipeMenuEntry {
+  recipeId String @db.ObjectId
+  serves   Int
+}
+
+type ShoppingListItem {
+  itemId   String  @db.ObjectId
+  unitId   String? @db.ObjectId
+  quantity Float
+  obtained Boolean @default(false)
 }
