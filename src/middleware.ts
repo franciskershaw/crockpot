@@ -10,6 +10,11 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
+  // Protect dashboard routes - redirect unauthenticated users to home
+  if (nextUrl.pathname.startsWith("/dashboard") && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/", nextUrl));
+  }
+
   // Allow access to other routes
   return NextResponse.next();
 });
