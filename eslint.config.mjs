@@ -36,9 +36,9 @@ const eslintConfig = [
     },
   },
   {
-    files: ["src/data/**/*", "src/lib/prisma.ts", "prisma/**/*"],
+    files: ["src/data/**/*", "src/lib/prisma.ts", "src/auth.ts", "prisma/**/*"],
     rules: {
-      // Allow Prisma imports only in data access layer and lib/prisma
+      // Allow Prisma imports in data access layer, lib/prisma, and auth configuration
       "no-restricted-imports": "off",
     },
   },

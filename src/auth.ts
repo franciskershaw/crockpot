@@ -7,7 +7,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Google],
   session: {
-    strategy: "jwt", // Use JWT instead of database sessions for edge compatibility
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
