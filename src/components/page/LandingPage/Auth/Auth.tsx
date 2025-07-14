@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import GoogleIcon from "./GoogleIcon";
+import { signInWithGoogle } from "@/actions";
 
 export default function Auth() {
   return (
@@ -24,15 +23,17 @@ export default function Auth() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Button
-            // onClick={() => signIn("google")}
-            variant="outline"
-            className="w-full h-12 border-gray-300 hover:bg-gray-50"
-          >
-            <GoogleIcon />
-            Continue with Google
-          </Button>
-
+          <form action={signInWithGoogle}>
+            <Button
+              // onClick={() => signIn("google")}
+              type="submit"
+              variant="outline"
+              className="w-full h-12 border-gray-300 hover:bg-gray-50"
+            >
+              <GoogleIcon />
+              Continue with Google
+            </Button>
+          </form>
           <div className="relative">
             <Separator />
             <div className="absolute inset-0 flex items-center justify-center">
