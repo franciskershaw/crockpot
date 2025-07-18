@@ -3,14 +3,12 @@ import HeroSection from "@/components/page/LandingPage/HeroSection/HeroSection";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-surface-warm">
+    <div className="container mx-auto pt-16 lg:py-24">
       {/* Hero Section with Auth Card */}
       <section className="">
-        <div className="container mx-auto px-4 pt-16 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            <HeroSection />
-            <Auth />
-          </div>
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
+          <HeroSection />
+          <Auth />
         </div>
       </section>
 
