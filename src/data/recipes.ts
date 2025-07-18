@@ -34,7 +34,7 @@ function buildWhereClause(
     const categoryMode = filters.categoryMode || "include";
 
     if (categoryMode === "include") {
-      where.categoryIds = { hasSome: categoryIds };
+      where.categoryIds = { hasEvery: categoryIds };
     } else {
       // exclude mode - recipes that don't have any of these categories
       where.NOT = {

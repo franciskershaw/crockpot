@@ -2,14 +2,8 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import type { RecipeFilters } from "@/data/recipes";
 
-interface TimeRange {
-  min: number;
-  max: number;
-}
-
 interface FilterContextType {
   filters: RecipeFilters;
-  timeRange: TimeRange;
   updateFilters: (updates: Partial<RecipeFilters>) => void;
 }
 
@@ -25,7 +19,7 @@ export function useFilters() {
 
 interface FilterProviderProps {
   children: ReactNode;
-  timeRange: TimeRange;
+  timeRange: { min: number; max: number };
 }
 
 export default function FilterProvider({
@@ -37,7 +31,7 @@ export default function FilterProvider({
     minTime: timeRange.min,
     maxTime: timeRange.max,
     categoryIds: [],
-    categoryMode: 'include',
+    categoryMode: "include",
   });
 
   const updateFilters = (updates: Partial<RecipeFilters>) => {
@@ -51,7 +45,6 @@ export default function FilterProvider({
     <FilterContext.Provider
       value={{
         filters,
-        timeRange,
         updateFilters,
       }}
     >

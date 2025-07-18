@@ -4,8 +4,12 @@ import { Label } from "@/components/ui/label";
 import { useFilters } from "../FilterProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export default function TimeRangeFilter() {
-  const { filters, timeRange, updateFilters } = useFilters();
+export default function TimeRangeFilter({
+  timeRange,
+}: {
+  timeRange: { min: number; max: number };
+}) {
+  const { filters, updateFilters } = useFilters();
   const [localTimeRange, setLocalTimeRange] = useState<[number, number]>([
     filters.minTime ?? timeRange.min,
     filters.maxTime ?? timeRange.max,

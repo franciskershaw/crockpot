@@ -1,28 +1,25 @@
 "use client";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Skeleton } from "@/components/ui/skeleton";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
 import { useFilters } from "../FilterProvider";
-import { getRecipeCategories } from "@/actions";
+import type { RecipeCategory } from "@/data/types";
 
-export default function CategoryFilter() {
+export default function CategoryFilter({
+  categories = [],
+}: {
+  categories: RecipeCategory[];
+}) {
   const { filters, updateFilters } = useFilters();
   const [searchTerm, setSearchTerm] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // Fetch categories
-  const { data: categories = [], isLoading } = useQuery({
-    queryKey: ["recipe-categories"],
-    queryFn: getRecipeCategories,
-  });
 
   // Filter categories based on search
   const filteredCategories = useMemo(() => {
@@ -86,27 +83,6 @@ export default function CategoryFilter() {
   // 2. When showing all items but not scrolled to bottom (showAll && !isScrolledToBottom && hasMore)
   const shouldShowFade =
     (!showAll && hasMore) || (showAll && !isScrolledToBottom && hasMore);
-
-  if (isLoading) {
-    return (
-      <div className="space-y-4">
-        <Label className="text-sm font-medium text-gray-700">Categories</Label>
-        <div className="flex gap-6">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-16" />
-        </div>
-        <Skeleton className="h-8 w-full" />
-        <div className="space-y-2">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="flex items-center space-x-2">
-              <Skeleton className="h-4 w-4" />
-              <Skeleton className="h-4 w-20" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
