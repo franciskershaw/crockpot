@@ -10,4 +10,16 @@ export async function signOutAction() {
   await signOut({ redirectTo: "/" });
 }
 
-// export async function getRecipes() {}
+import { getRecipes as getRecipesFromDAL } from "@/data/recipes";
+
+export interface GetRecipesParams {
+  page?: number;
+  pageSize?: number;
+  query?: string;
+  categoryIds?: string[];
+  approved?: boolean;
+}
+
+export async function getRecipes(params: GetRecipesParams = {}) {
+  return getRecipesFromDAL(params);
+}
