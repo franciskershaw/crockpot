@@ -20,6 +20,18 @@ export interface GetRecipesParams {
   approved?: boolean;
 }
 
-export async function getRecipes(params: GetRecipesParams = {}) {
-  return getRecipesFromDAL(params);
+export async function getRecipes({
+  page = 1,
+  pageSize = 10,
+  query = "",
+  categoryIds = [],
+  approved = true,
+}: GetRecipesParams = {}) {
+  return await getRecipesFromDAL({
+    page,
+    pageSize,
+    query,
+    categoryIds,
+    approved,
+  });
 }
