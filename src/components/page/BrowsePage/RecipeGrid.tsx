@@ -4,8 +4,11 @@ import { useRef, useEffect } from "react";
 import { getRecipes } from "@/actions";
 import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
 import type { RecipeWithCategories } from "@/data/recipes";
+import { useFilters } from "./FilterProvider";
 
 export default function RecipeGrid({ pageSize }: { pageSize: number }) {
+  const { filters } = useFilters();
+  
   const {
     data,
     fetchNextPage,
@@ -14,9 +17,16 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
     isLoading,
     isFetched,
   } = useInfiniteQuery({
-    queryKey: ["recipes", { pageSize, approved: true }],
+    queryKey: ["recipes", { 
+      pageSize, 
+      filters,
+    }],
     queryFn: async ({ pageParam = 1 }) =>
-      getRecipes({ page: pageParam, pageSize, approved: true }),
+      getRecipes({ 
+        page: pageParam, 
+        pageSize, 
+        filters,
+      }),
     getNextPageParam: (lastPage) =>
       lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
