@@ -2,11 +2,19 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect } from "react";
 import { getRecipes } from "@/actions";
+import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
 
-// Minimal Recipe type for proof of concept
 interface Recipe {
   id: string;
   name: string;
+  timeInMinutes: number;
+  image?: { url?: string | null; filename?: string | null } | null;
+  approved: boolean;
+  serves: number;
+  createdAt: Date;
+  updatedAt: Date;
+  categories?: { id: string; name: string }[];
+  tags?: string[];
 }
 
 export default function RecipeGrid({ pageSize }: { pageSize: number }) {
@@ -31,12 +39,19 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {data?.pages.flatMap((page) =>
         page.recipes.map((recipe: Recipe) => (
-          <div className="text-3xl p-8" key={recipe.id}>
-            {recipe.name}
-          </div>
+          <RecipeCard
+            key={recipe.id}
+            recipe={{
+              ...recipe,
+              createdAt: recipe.createdAt?.toString(),
+              updatedAt: recipe.updatedAt?.toString(),
+              categories: recipe.categories ?? [],
+              tags: recipe.tags ?? [],
+            }}
+          />
         ))
       )}
       <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>
