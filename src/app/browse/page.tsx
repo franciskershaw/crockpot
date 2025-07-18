@@ -29,6 +29,7 @@ export default async function Browse() {
           maxTime: timeRange.max,
           categoryIds: [],
           categoryMode: "include",
+          ingredientIds: [],
         },
       },
     ],
@@ -42,6 +43,7 @@ export default async function Browse() {
           maxTime: timeRange.max,
           categoryIds: [],
           categoryMode: "include",
+          ingredientIds: [],
         },
       }),
   });

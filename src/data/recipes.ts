@@ -5,6 +5,7 @@ export interface RecipeFilters {
   query?: string;
   categoryIds?: string[];
   categoryMode?: "include" | "exclude";
+  ingredientIds?: string[];
   approved?: boolean;
   minTime?: number;
   maxTime?: number;
@@ -41,6 +42,17 @@ function buildWhereClause(
         categoryIds: { hasSome: categoryIds },
       };
     }
+  }
+
+  const ingredientIds = Array.isArray(filters.ingredientIds)
+    ? filters.ingredientIds
+    : [];
+  if (ingredientIds.length > 0) {
+    where.ingredients = {
+      some: {
+        itemId: { in: ingredientIds },
+      },
+    };
   }
 
   // if (typeof filters.approved === "boolean") {
@@ -121,4 +133,12 @@ export async function getRecipeCategories() {
   });
 
   return categories;
+}
+
+export async function getRecipeIngredients() {
+  const items = await prisma.item.findMany({
+    orderBy: { name: "asc" },
+  });
+
+  return items;
 }

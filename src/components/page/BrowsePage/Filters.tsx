@@ -1,12 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card";
 import TimeRangeFilter from "./filters/TimeRangeFilter";
 import CategoryFilter from "./filters/CategoryFilter";
-import { getRecipeCategories, getRecipeTimeRange } from "@/actions";
+import IngredientFilter from "./filters/IngredientFilter";
+import {
+  getRecipeCategories,
+  getRecipeTimeRange,
+  getRecipeIngredients,
+} from "@/actions";
 
 export default async function Filters() {
-  const [categories, timeRange] = await Promise.all([
+  const [categories, timeRange, ingredients] = await Promise.all([
     getRecipeCategories(),
     getRecipeTimeRange(),
+    getRecipeIngredients(),
   ]);
 
   return (
@@ -18,6 +24,7 @@ export default async function Filters() {
           </h2>
           <TimeRangeFilter timeRange={timeRange} />
           <CategoryFilter categories={categories} />
+          <IngredientFilter ingredients={ingredients} />
         </div>
       </CardContent>
     </Card>

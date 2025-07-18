@@ -32,6 +32,7 @@ export default function FilterProvider({
     maxTime: timeRange.max,
     categoryIds: [],
     categoryMode: "include",
+    ingredientIds: [],
   });
 
   const updateFilters = (updates: Partial<RecipeFilters>) => {
