@@ -28,9 +28,9 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
 
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-      {data?.pages.flatMap((page) =>
+      {data?.pages.flatMap((page, index) =>
         page.recipes.map((recipe: RecipeWithCategories) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
+          <RecipeCard key={recipe.id} recipe={recipe} priority={index === 0} />
         ))
       )}
       <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>
