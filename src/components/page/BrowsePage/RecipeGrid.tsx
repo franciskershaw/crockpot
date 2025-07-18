@@ -6,15 +6,21 @@ import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
 import type { RecipeWithCategories } from "@/data/recipes";
 
 export default function RecipeGrid({ pageSize }: { pageSize: number }) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["recipes", { pageSize, approved: true }],
-      queryFn: async ({ pageParam = 1 }) =>
-        getRecipes({ page: pageParam, pageSize, approved: true }),
-      getNextPageParam: (lastPage) =>
-        lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
-      initialPageParam: 1,
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isFetched,
+  } = useInfiniteQuery({
+    queryKey: ["recipes", { pageSize, approved: true }],
+    queryFn: async ({ pageParam = 1 }) =>
+      getRecipes({ page: pageParam, pageSize, approved: true }),
+    getNextPageParam: (lastPage) =>
+      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
+    initialPageParam: 1,
+  });
 
   const loader = useRef<HTMLDivElement | null>(null);
 
@@ -29,11 +35,20 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
 
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-      {data?.pages.flatMap((page, index) =>
-        page.recipes.map((recipe: RecipeWithCategories) => (
-          <RecipeCard key={recipe.id} recipe={recipe} priority={index === 0} />
-        ))
-      )}
+      {isLoading || !isFetched
+        ? Array.from({ length: 6 }).map((_, i) => (
+            <RecipeCard key={i} skeleton />
+          ))
+        : data?.pages.flatMap((page, index) =>
+            page.recipes.map((recipe: RecipeWithCategories) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                priority={index === 0}
+                skeleton={false}
+              />
+            ))
+          )}
       <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>
     </div>
   );

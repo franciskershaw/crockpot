@@ -6,8 +6,8 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import BrowseHeader from "@/components/page/BrowsePage/Header";
 import RecipeGrid from "@/components/page/BrowsePage/RecipeGrid";
-import BrowseHeader from "./header";
 
 export default async function Browse() {
   const queryClient = new QueryClient();
@@ -18,8 +18,8 @@ export default async function Browse() {
 
   return (
     <div className="container mx-auto py-4">
-      <BrowseHeader />
       <HydrationBoundary state={dehydrate(queryClient)}>
+        <BrowseHeader />
         <RecipeGrid pageSize={10} />
       </HydrationBoundary>
     </div>
