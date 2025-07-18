@@ -15,20 +15,36 @@ export default async function Browse() {
   const queryClient = new QueryClient();
 
   // Fetch initial data and time range
-  const [timeRange] = await Promise.all([
-    getRecipeTimeRange(),
-    queryClient.prefetchQuery({
-      queryKey: ["recipes", { 
-        pageSize: 10, 
-        filters: { approved: true },
-      }],
-      queryFn: () => getRecipes({ 
-        page: 1, 
-        pageSize: 10, 
-        filters: { approved: true },
+  const timeRange = await getRecipeTimeRange();
+
+  // Now prefetch with the same filters that the client will use
+  await queryClient.prefetchQuery({
+    queryKey: [
+      "recipes",
+      {
+        pageSize: 10,
+        filters: {
+          approved: true,
+          minTime: timeRange.min,
+          maxTime: timeRange.max,
+          categoryIds: [],
+          categoryMode: "include",
+        },
+      },
+    ],
+    queryFn: () =>
+      getRecipes({
+        page: 1,
+        pageSize: 10,
+        filters: {
+          approved: true,
+          minTime: timeRange.min,
+          maxTime: timeRange.max,
+          categoryIds: [],
+          categoryMode: "include",
+        },
       }),
-    }),
-  ]);
+  });
 
   return (
     <div className="container mx-auto py-4">

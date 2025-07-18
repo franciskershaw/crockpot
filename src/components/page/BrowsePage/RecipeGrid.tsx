@@ -6,9 +6,9 @@ import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
 import type { RecipeWithCategories } from "@/data/recipes";
 import { useFilters } from "./FilterProvider";
 
-export default function RecipeGrid({ pageSize }: { pageSize: number }) {
+export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters } = useFilters();
-  
+
   const {
     data,
     fetchNextPage,
@@ -17,14 +17,20 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
     isLoading,
     isFetched,
   } = useInfiniteQuery({
-    queryKey: ["recipes", { 
-      pageSize, 
-      filters,
-    }],
+    queryKey: [
+      "recipes",
+      {
+        pageSize,
+        filters: {
+          ...filters,
+          pageSize,
+        },
+      },
+    ],
     queryFn: async ({ pageParam = 1 }) =>
-      getRecipes({ 
-        page: pageParam, 
-        pageSize, 
+      getRecipes({
+        page: pageParam,
+        pageSize,
         filters,
       }),
     getNextPageParam: (lastPage) =>

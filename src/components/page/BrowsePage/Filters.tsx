@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import TimeRangeFilter from "./filters/TimeRangeFilter";
+import CategoryFilter from "./filters/CategoryFilter";
 
 export default function Filters() {
   return (
@@ -10,6 +11,7 @@ export default function Filters() {
             Recipe Filters
           </h2>
           <TimeRangeFilter />
+          <CategoryFilter />
         </div>
       </CardContent>
     </Card>

@@ -4,6 +4,7 @@ import type { Recipe, RecipeCategory, Prisma } from "@prisma/client";
 export interface RecipeFilters {
   query?: string;
   categoryIds?: string[];
+  categoryMode?: "include" | "exclude";
   approved?: boolean;
   minTime?: number;
   maxTime?: number;
@@ -26,8 +27,20 @@ function buildWhereClause(
     where.name = { contains: filters.query, mode: "insensitive" };
   }
 
-  if (filters.categoryIds && filters.categoryIds.length > 0) {
-    where.categoryIds = { hasSome: filters.categoryIds };
+  const categoryIds = Array.isArray(filters.categoryIds)
+    ? filters.categoryIds
+    : [];
+  if (categoryIds.length > 0) {
+    const categoryMode = filters.categoryMode || "include";
+
+    if (categoryMode === "include") {
+      where.categoryIds = { hasSome: categoryIds };
+    } else {
+      // exclude mode - recipes that don't have any of these categories
+      where.NOT = {
+        categoryIds: { hasSome: categoryIds },
+      };
+    }
   }
 
   // if (typeof filters.approved === "boolean") {
@@ -100,4 +113,12 @@ export async function getRecipeTimeRange() {
     min: result._min.timeInMinutes || 0,
     max: result._max.timeInMinutes || 120,
   };
+}
+
+export async function getRecipeCategories() {
+  const categories = await prisma.recipeCategory.findMany({
+    orderBy: { name: "asc" },
+  });
+
+  return categories;
 }

@@ -28,15 +28,20 @@ interface FilterProviderProps {
   timeRange: TimeRange;
 }
 
-export default function FilterProvider({ children, timeRange }: FilterProviderProps) {
+export default function FilterProvider({
+  children,
+  timeRange,
+}: FilterProviderProps) {
   const [filters, setFilters] = useState<RecipeFilters>({
     approved: true,
     minTime: timeRange.min,
     maxTime: timeRange.max,
+    categoryIds: [],
+    categoryMode: 'include',
   });
 
   const updateFilters = (updates: Partial<RecipeFilters>) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       ...updates,
     }));
@@ -53,4 +58,4 @@ export default function FilterProvider({ children, timeRange }: FilterProviderPr
       {children}
     </FilterContext.Provider>
   );
-} 
+}

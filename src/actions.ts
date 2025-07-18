@@ -13,6 +13,7 @@ export async function signOutAction() {
 import {
   getRecipes as getRecipesFromDAL,
   getRecipeTimeRange as getRecipeTimeRangeFromDAL,
+  getRecipeCategories as getRecipeCategoriesFromDAL,
   type RecipeFilters,
 } from "@/data/recipes";
 
@@ -36,4 +37,8 @@ export async function getRecipes({
 
 export async function getRecipeTimeRange() {
   return await getRecipeTimeRangeFromDAL();
+}
+
+export async function getRecipeCategories() {
+  return await getRecipeCategoriesFromDAL();
 }
