@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { Prisma } from "@prisma/client";
+import type { Recipe, RecipeCategory, Prisma } from "@prisma/client";
 
 export interface GetRecipesDALParams {
   page?: number;
@@ -8,6 +8,8 @@ export interface GetRecipesDALParams {
   categoryIds?: string[];
   approved?: boolean;
 }
+
+export type RecipeWithCategories = Recipe & { categories: RecipeCategory[] };
 
 export async function getRecipes({
   page = 1,
@@ -37,6 +39,7 @@ export async function getRecipes({
       skip,
       take,
       orderBy: { createdAt: "desc" },
+      include: { categories: true },
     }),
     prisma.recipe.count({ where }),
   ]);

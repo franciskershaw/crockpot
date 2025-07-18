@@ -3,19 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect } from "react";
 import { getRecipes } from "@/actions";
 import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
-
-interface Recipe {
-  id: string;
-  name: string;
-  timeInMinutes: number;
-  image?: { url?: string | null; filename?: string | null } | null;
-  approved: boolean;
-  serves: number;
-  createdAt: Date;
-  updatedAt: Date;
-  categories?: { id: string; name: string }[];
-  tags?: string[];
-}
+import type { RecipeWithCategories } from "@/data/recipes";
 
 export default function RecipeGrid({ pageSize }: { pageSize: number }) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -41,17 +29,8 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {data?.pages.flatMap((page) =>
-        page.recipes.map((recipe: Recipe) => (
-          <RecipeCard
-            key={recipe.id}
-            recipe={{
-              ...recipe,
-              createdAt: recipe.createdAt?.toString(),
-              updatedAt: recipe.updatedAt?.toString(),
-              categories: recipe.categories ?? [],
-              tags: recipe.tags ?? [],
-            }}
-          />
+        page.recipes.map((recipe: RecipeWithCategories) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))
       )}
       <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>
