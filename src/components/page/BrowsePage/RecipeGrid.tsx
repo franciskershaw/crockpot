@@ -17,6 +17,7 @@ export default function RecipeGrid({ pageSize }: { pageSize: number }) {
     });
 
   const loader = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
     const observer = new IntersectionObserver((entries) => {
