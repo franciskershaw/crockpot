@@ -12,7 +12,13 @@ import Filters from "@/components/page/BrowsePage/Filters";
 import FilterProvider from "@/components/page/BrowsePage/FilterProvider";
 
 export default async function Browse() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   // Fetch initial data and time range
   const timeRange = await getRecipeTimeRange();

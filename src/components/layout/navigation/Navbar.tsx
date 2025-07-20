@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { ChefHat, Search } from "lucide-react";
 import Link from "next/link";
+import MobileMenu from "./MobileMenu";
 
 export default async function Navbar() {
   const session = await auth();
@@ -18,9 +19,10 @@ export default async function Navbar() {
             <span className="text-gradient-brand">Crockpot</span>
           </Link>
 
-          <div className="flex items-center gap-6">
+          {/* Desktop Navigation - Hidden on mobile */}
+          <div className="hidden md:flex items-center gap-6">
             <Link
-              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
               href="/browse"
             >
               <Search className="h-4 w-4" />
@@ -29,18 +31,20 @@ export default async function Navbar() {
 
             {session?.user ? (
               <form action={signOutAction}>
-                <Button type="submit" className="w-full">
+                <Button type="submit" variant="outline">
                   Sign Out
                 </Button>
               </form>
             ) : (
-              <Link
-                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                href="/"
-              >
+              <Link href="/">
                 <Button variant="outline">Login</Button>
               </Link>
             )}
+          </div>
+
+          {/* Mobile Menu Button - Only visible on mobile */}
+          <div className="md:hidden h-full">
+            <MobileMenu session={session} />
           </div>
         </div>
       </div>
