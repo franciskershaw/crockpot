@@ -49,22 +49,14 @@ export default async function Browse() {
   });
 
   return (
-    <div className="container mx-auto py-4">
-      <FilterProvider timeRange={timeRange}>
-        <HydrationBoundary state={dehydrate(queryClient)}>
+    <FilterProvider timeRange={timeRange}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <div className="container mx-auto">
           <BrowseHeader />
-          <div className="grid lg:grid-cols-6 gap-6">
-            {/* Filters sidebar */}
-            <div className="lg:col-span-2 mb-6 lg:mb-0">
-              <Filters />
-            </div>
-            {/* Recipe grid */}
-            <div className="lg:col-span-4">
-              <RecipeGrid pageSize={10} />
-            </div>
-          </div>
-        </HydrationBoundary>
-      </FilterProvider>
-    </div>
+          <Filters />
+          <RecipeGrid pageSize={10} />
+        </div>
+      </HydrationBoundary>
+    </FilterProvider>
   );
 }

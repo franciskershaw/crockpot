@@ -38,11 +38,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-surface-warm`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-surface-warm`}
       >
         <Navbar />
         <QueryProvider>
-          <main className="px-4">{children}</main>
+          <main>{children}</main>
         </QueryProvider>
       </body>
     </html>
