@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Search, ChevronDown, ChevronUp } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface GenericFilterListProps {
   label: string;
@@ -29,6 +29,7 @@ export default function GenericFilterList({
   const [searchTerm, setSearchTerm] = useState("");
   const [showAll, setShowAll] = useState(false);
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  const [hasOverflow, setHasOverflow] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Filter options based on search
@@ -38,10 +39,8 @@ export default function GenericFilterList({
     );
   }, [options, searchTerm]);
 
-  const displayOptions = showAll
-    ? filteredOptions
-    : filteredOptions.slice(0, 5);
-  const hasMore = filteredOptions.length > 5;
+  const initialVisibleItems = 6;
+  const hasMore = filteredOptions.length > initialVisibleItems;
 
   // Handle scroll to detect if user has scrolled to bottom
   useEffect(() => {
@@ -59,7 +58,22 @@ export default function GenericFilterList({
 
     container.addEventListener("scroll", handleScroll);
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [showAll, displayOptions.length]);
+  }, [showAll, filteredOptions.length]);
+
+  // Check if content overflows and requires scrolling
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const checkOverflow = () => {
+      const { scrollHeight, clientHeight } = container;
+      setHasOverflow(scrollHeight > clientHeight);
+    };
+
+    // Check overflow after a brief delay to ensure DOM is updated
+    const timeoutId = setTimeout(checkOverflow, 0);
+    return () => clearTimeout(timeoutId);
+  }, [showAll, filteredOptions.length]);
 
   // Reset scroll position when showAll changes
   useEffect(() => {
@@ -71,13 +85,30 @@ export default function GenericFilterList({
 
   // Determine when to show fade:
   // 1. When not showing all items (!showAll && hasMore) - truncated list
-  // 2. When showing all items but not scrolled to bottom (showAll && !isScrolledToBottom && hasMore)
+  // 2. When showing all items but not scrolled to bottom AND content overflows (showAll && !isScrolledToBottom && hasMore && hasOverflow)
   const shouldShowFade =
-    (!showAll && hasMore) || (showAll && !isScrolledToBottom && hasMore);
+    (!showAll && hasMore) ||
+    (showAll && !isScrolledToBottom && hasMore && hasOverflow);
 
   return (
     <div className="space-y-4">
-      <Label className="text-sm font-medium text-gray-700">{label}</Label>
+      <div className="flex justify-between items-center">
+        <Label className="text-sm font-medium text-gray-700">{label}</Label>
+        {hasMore && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowAll(!showAll)}
+            className="h-auto p-0 text-xs text-brand-primary hover:text-brand-tertiary"
+          >
+            {showAll
+              ? "Hide"
+              : `Show All (${
+                  filteredOptions.length - initialVisibleItems
+                } more)`}
+          </Button>
+        )}
+      </div>
 
       {/* Include/Exclude Mode */}
       {showIncludeExclude && onIncludeExcludeChange && (
@@ -114,55 +145,46 @@ export default function GenericFilterList({
         />
       </div>
 
-      {/* Options list with fade effect */}
+      {/* Options list */}
       <div className="relative">
         <div
           ref={scrollContainerRef}
-          className={`space-y-2 max-h-48 overflow-y-auto ${
+          className={`space-y-1 overflow-y-auto max-h-96 md:max-h-[28rem] bg-gray-50/50 rounded p-2 ${
             shouldShowFade ? "mask-fade-bottom" : ""
           }`}
         >
-          {displayOptions.map((option) => (
-            <div key={option.id} className="flex items-center space-x-2">
-              <Checkbox
-                id={`${label}-${option.id}`}
-                checked={selectedIds.includes(option.id)}
-                onCheckedChange={(checked) =>
-                  onChange(option.id, checked as boolean)
-                }
-                className="h-4 w-4"
-              />
-              <Label
-                htmlFor={`${label}-${option.id}`}
-                className="text-xs font-normal text-gray-600 cursor-pointer capitalize"
-              >
-                {option.name}
-              </Label>
+          {filteredOptions.length === 0 ? (
+            <div className="text-center text-sm text-gray-500 py-2">
+              0 results
             </div>
-          ))}
+          ) : (
+            filteredOptions.map((option, index) => (
+              <div
+                key={option.id}
+                className={
+                  index >= initialVisibleItems && !showAll ? "hidden" : ""
+                }
+              >
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`${label}-${option.id}`}
+                    checked={selectedIds.includes(option.id)}
+                    onCheckedChange={(checked) =>
+                      onChange(option.id, checked as boolean)
+                    }
+                    className="h-4 w-4"
+                  />
+                  <Label
+                    htmlFor={`${label}-${option.id}`}
+                    className="text-xs font-normal text-gray-600 cursor-pointer capitalize"
+                  >
+                    {option.name}
+                  </Label>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-
-        {/* Show/Hide toggle */}
-        {hasMore && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowAll(!showAll)}
-            className="w-full mt-2 h-6 text-xs text-brand-primary hover:text-brand-tertiary"
-          >
-            {showAll ? (
-              <>
-                <ChevronUp className="h-3 w-3 mr-1" />
-                Show Less
-              </>
-            ) : (
-              <>
-                <ChevronDown className="h-3 w-3 mr-1" />
-                Show All ({filteredOptions.length - 5} more)
-              </>
-            )}
-          </Button>
-        )}
       </div>
     </div>
   );

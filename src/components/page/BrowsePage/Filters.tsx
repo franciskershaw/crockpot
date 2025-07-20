@@ -16,7 +16,10 @@ export default async function Filters() {
   ]);
 
   return (
-    <Card className="py-0 sticky top-32 bg-white/80 backdrop-blur-sm border-0 shadow-lg max-h-[calc(100vh-11rem)] overflow-y-auto">
+    <Card
+      className="border-0 sticky top-32 bg-white/80 backdrop-blur-sm shadow-lg overflow-auto p-0"
+      style={{ maxHeight: "calc(100vh - 9rem)" }}
+    >
       <CardContent className="p-6">
         <div className="space-y-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
