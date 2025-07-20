@@ -7,12 +7,8 @@ import { getRandomRecipes } from "@/actions";
 import Image from "next/image";
 import type { RecipeWithCategories } from "@/data/recipes";
 
-interface NoResultsProps {
-  timeRange: { min: number; max: number };
-}
-
-export default function NoResults({ timeRange }: NoResultsProps) {
-  const { filters, clearAllFilters } = useFilters();
+export default function NoResults() {
+  const { hasActiveFilters, activeFilterCount, clearAllFilters } = useFilters();
 
   // Fetch random recipes for background
   const { data: backgroundRecipes = [] } = useQuery({
@@ -20,22 +16,6 @@ export default function NoResults({ timeRange }: NoResultsProps) {
     queryFn: () => getRandomRecipes(12),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-
-  // Determine if any filters are applied beyond defaults
-  const hasActiveFilters =
-    (filters.query && filters.query.trim() !== "") ||
-    (filters.categoryIds && filters.categoryIds.length > 0) ||
-    (filters.ingredientIds && filters.ingredientIds.length > 0) ||
-    filters.minTime !== timeRange.min ||
-    filters.maxTime !== timeRange.max;
-
-  const activeFilterCount =
-    (filters.query && filters.query.trim() !== "" ? 1 : 0) +
-    (filters.categoryIds?.length || 0) +
-    (filters.ingredientIds?.length || 0) +
-    (filters.minTime !== timeRange.min || filters.maxTime !== timeRange.max
-      ? 1
-      : 0);
 
   return (
     <div className="relative col-span-full">

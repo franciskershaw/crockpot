@@ -1,6 +1,11 @@
 "use server";
 
-import { getRecipes, getRecipeTimeRange } from "@/actions";
+import {
+  getRecipes,
+  getRecipeTimeRange,
+  getRecipeCategories,
+  getRecipeIngredients,
+} from "@/actions";
 import {
   dehydrate,
   HydrationBoundary,
@@ -20,8 +25,12 @@ export default async function Browse() {
     },
   });
 
-  // Fetch initial data and time range
-  const timeRange = await getRecipeTimeRange();
+  // Fetch initial data
+  const [timeRange, categories, ingredients] = await Promise.all([
+    getRecipeTimeRange(),
+    getRecipeCategories(),
+    getRecipeIngredients(),
+  ]);
 
   // Now prefetch with the same filters that the client will use
   await queryClient.prefetchQuery({
@@ -59,15 +68,18 @@ export default async function Browse() {
   return (
     <FilterProvider timeRange={timeRange}>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <div className="container mx-auto">
-          <BrowseHeader />
-          <div className="flex gap-6">
-            <div className="w-80">
-              <Filters />
-            </div>
-            <div className="flex-1">
-              <RecipeGrid pageSize={10} />
-            </div>
+        <BrowseHeader
+          categories={categories}
+          timeRange={timeRange}
+          ingredients={ingredients}
+        />
+        <div className="flex gap-6">
+          {/* Desktop Filters - Hidden on mobile */}
+          <div className="hidden md:block w-80">
+            <Filters />
+          </div>
+          <div className="flex-1">
+            <RecipeGrid pageSize={10} />
           </div>
         </div>
       </HydrationBoundary>

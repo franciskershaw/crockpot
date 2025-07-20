@@ -8,7 +8,7 @@ import type { RecipeWithCategories } from "@/data/recipes";
 import { useFilters } from "./FilterProvider";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
-  const { filters, timeRange } = useFilters();
+  const { filters } = useFilters();
 
   // Create intelligent query key that only includes relevant filters
   const queryKey = useMemo(() => {
@@ -72,7 +72,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const hasNoResults = isFetched && !isLoading && allRecipes.length === 0;
 
   if (hasNoResults) {
-    return <NoResults timeRange={timeRange} />;
+    return <NoResults />;
   }
 
   return (

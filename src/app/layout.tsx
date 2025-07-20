@@ -42,7 +42,7 @@ export default function RootLayout({
       >
         <Navbar />
         <QueryProvider>
-          <main>{children}</main>
+          <main className="mx-auto px-4 md:px-0 container">{children}</main>
         </QueryProvider>
       </body>
     </html>

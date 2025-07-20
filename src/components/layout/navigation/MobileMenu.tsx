@@ -84,7 +84,7 @@ export default function MobileMenu({ session }: MobileMenuProps) {
   }, []);
 
   return (
-    <div className="border h-full flex items-center">
+    <div className="h-full flex items-center">
       {/* Hamburger Button - Always visible */}
       <button
         ref={hamburgerRef}

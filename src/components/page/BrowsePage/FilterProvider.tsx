@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useMemo } from "react";
 import type { RecipeFilters } from "@/data/recipes";
 
 interface FilterContextType {
@@ -7,6 +7,8 @@ interface FilterContextType {
   updateFilters: (updates: Partial<RecipeFilters>) => void;
   clearAllFilters: () => void;
   timeRange: { min: number; max: number };
+  hasActiveFilters: boolean;
+  activeFilterCount: number;
 }
 
 const FilterContext = createContext<FilterContextType | null>(null);
@@ -38,6 +40,24 @@ export default function FilterProvider({
     query: undefined,
   });
 
+  // Calculate active filters and count
+  const { hasActiveFilters, activeFilterCount } = useMemo(() => {
+    const hasQuery = filters.query && filters.query.trim() !== "";
+    const hasCategories = filters.categoryIds && filters.categoryIds.length > 0;
+    const hasIngredients = filters.ingredientIds && filters.ingredientIds.length > 0;
+    const hasTimeRange = filters.minTime !== timeRange.min || filters.maxTime !== timeRange.max;
+
+    const hasActiveFilters = hasQuery || hasCategories || hasIngredients || hasTimeRange;
+
+    const activeFilterCount =
+      (hasQuery ? 1 : 0) +
+      (filters.categoryIds?.length || 0) +
+      (filters.ingredientIds?.length || 0) +
+      (hasTimeRange ? 1 : 0);
+
+    return { hasActiveFilters, activeFilterCount };
+  }, [filters, timeRange]);
+
   const updateFilters = (updates: Partial<RecipeFilters>) => {
     setFilters((prev) => ({
       ...prev,
@@ -64,6 +84,8 @@ export default function FilterProvider({
         updateFilters,
         clearAllFilters,
         timeRange,
+        hasActiveFilters,
+        activeFilterCount,
       }}
     >
       {children}
