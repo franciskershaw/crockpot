@@ -6,6 +6,7 @@ interface FilterContextType {
   filters: RecipeFilters;
   updateFilters: (updates: Partial<RecipeFilters>) => void;
   clearAllFilters: () => void;
+  timeRange: { min: number; max: number };
 }
 
 const FilterContext = createContext<FilterContextType | null>(null);
@@ -62,6 +63,7 @@ export default function FilterProvider({
         filters,
         updateFilters,
         clearAllFilters,
+        timeRange,
       }}
     >
       {children}

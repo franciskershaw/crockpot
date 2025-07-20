@@ -16,6 +16,7 @@ import {
   getRecipeCategories as getRecipeCategoriesFromDAL,
   getRecipeIngredients as getRecipeIngredientsFromDAL,
   getRecipeCount as getRecipeCountFromDAL,
+  getRandomRecipes as getRandomRecipesFromDAL,
   type RecipeFilters,
 } from "@/data/recipes";
 
@@ -51,4 +52,8 @@ export async function getRecipeIngredients() {
 
 export async function getRecipeCount(filters: RecipeFilters = {}) {
   return await getRecipeCountFromDAL(filters);
+}
+
+export async function getRandomRecipes(count: number = 12) {
+  return await getRandomRecipesFromDAL(count);
 }

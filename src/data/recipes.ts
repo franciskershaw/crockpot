@@ -147,3 +147,19 @@ export async function getRecipeCount(filters: RecipeFilters = {}) {
   const where = buildWhereClause(filters);
   return await prisma.recipe.count({ where });
 }
+
+export async function getRandomRecipes(count: number = 12) {
+  // Get random approved recipes for background display
+  const recipes = await prisma.recipe.findMany({
+    where: {
+      approved: true,
+    },
+    include: { categories: true },
+    take: count,
+    orderBy: {
+      createdAt: "desc", // For now, just get recent ones - in future could use random ordering
+    },
+  });
+
+  return recipes;
+}
