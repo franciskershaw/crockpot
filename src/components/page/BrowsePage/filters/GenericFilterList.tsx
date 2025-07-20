@@ -31,6 +31,7 @@ export default function GenericFilterList({
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const filterSectionRef = useRef<HTMLDivElement>(null);
 
   // Filter options based on search
   const filteredOptions = useMemo(() => {
@@ -41,6 +42,21 @@ export default function GenericFilterList({
 
   const initialVisibleItems = 6;
   const hasMore = filteredOptions.length > initialVisibleItems;
+
+  const handleShowAllToggle = () => {
+    setShowAll(!showAll);
+
+    // Scroll to the filter title when expanding
+    if (!showAll && filterSectionRef.current) {
+      setTimeout(() => {
+        filterSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+      }, 100); // Small delay to ensure state update completes
+    }
+  };
 
   // Handle scroll to detect if user has scrolled to bottom
   useEffect(() => {
@@ -91,14 +107,14 @@ export default function GenericFilterList({
     (showAll && !isScrolledToBottom && hasMore && hasOverflow);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" ref={filterSectionRef}>
       <div className="flex justify-between items-center">
         <Label className="text-sm font-medium text-gray-700">{label}</Label>
         {hasMore && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setShowAll(!showAll)}
+            onClick={handleShowAllToggle}
             className="h-auto p-0 text-xs text-brand-primary hover:text-brand-tertiary"
           >
             {showAll
