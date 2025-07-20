@@ -5,6 +5,7 @@ import type { RecipeFilters } from "@/data/recipes";
 interface FilterContextType {
   filters: RecipeFilters;
   updateFilters: (updates: Partial<RecipeFilters>) => void;
+  clearAllFilters: () => void;
 }
 
 const FilterContext = createContext<FilterContextType | null>(null);
@@ -43,11 +44,24 @@ export default function FilterProvider({
     }));
   };
 
+  const clearAllFilters = () => {
+    setFilters({
+      approved: true,
+      minTime: timeRange.min,
+      maxTime: timeRange.max,
+      categoryIds: [],
+      categoryMode: "include",
+      ingredientIds: [],
+      query: undefined,
+    });
+  };
+
   return (
     <FilterContext.Provider
       value={{
         filters,
         updateFilters,
+        clearAllFilters,
       }}
     >
       {children}
