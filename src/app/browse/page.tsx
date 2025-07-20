@@ -53,8 +53,14 @@ export default async function Browse() {
       <HydrationBoundary state={dehydrate(queryClient)}>
         <div className="container mx-auto">
           <BrowseHeader />
-          <Filters />
-          <RecipeGrid pageSize={10} />
+          <div className="flex gap-6">
+            <div className="w-80">
+              <Filters />
+            </div>
+            <div className="flex-1">
+              <RecipeGrid pageSize={10} />
+            </div>
+          </div>
         </div>
       </HydrationBoundary>
     </FilterProvider>
