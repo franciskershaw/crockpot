@@ -16,7 +16,7 @@ export default async function Filters() {
   ]);
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+    <Card className="sticky top-30 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
       <CardContent className="p-6">
         <div className="space-y-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
