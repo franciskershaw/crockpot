@@ -17,7 +17,7 @@ export default async function Filters() {
 
   return (
     <Card
-      className="border-0 sticky top-32 bg-white/80 backdrop-blur-sm shadow-lg overflow-auto p-0"
+      className="border-0 sticky top-36 bg-white/80 backdrop-blur-sm shadow-lg overflow-auto p-0 mt-2"
       style={{ maxHeight: "calc(100vh - 9rem)" }}
     >
       <CardContent className="p-6">

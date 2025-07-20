@@ -50,7 +50,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-2">
       {isLoading || !isFetched
         ? Array.from({ length: 6 }).map((_, i) => (
             <RecipeCard key={i} skeleton />
