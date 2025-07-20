@@ -1,4 +1,5 @@
 import SearchBar from "./SearchBar";
+import RecipeCountBadge from "./RecipeCountBadge";
 
 const BrowseHeader = () => {
   return (
@@ -8,6 +9,7 @@ const BrowseHeader = () => {
           <h1 className="text-2xl sm:text-3xl font-bold whitespace-nowrap">
             Browse Recipes
           </h1>
+          <RecipeCountBadge />
         </div>
 
         <SearchBar />

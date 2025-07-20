@@ -142,3 +142,8 @@ export async function getRecipeIngredients() {
 
   return items;
 }
+
+export async function getRecipeCount(filters: RecipeFilters = {}) {
+  const where = buildWhereClause(filters);
+  return await prisma.recipe.count({ where });
+}
