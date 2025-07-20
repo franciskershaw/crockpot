@@ -33,6 +33,7 @@ export default function FilterProvider({
     categoryIds: [],
     categoryMode: "include",
     ingredientIds: [],
+    query: undefined,
   });
 
   const updateFilters = (updates: Partial<RecipeFilters>) => {

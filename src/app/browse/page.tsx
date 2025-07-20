@@ -6,7 +6,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import BrowseHeader from "@/components/page/BrowsePage/Header";
+import BrowseHeader from "@/components/page/BrowsePage/BrowseHeader";
 import RecipeGrid from "@/components/page/BrowsePage/RecipeGrid";
 import Filters from "@/components/page/BrowsePage/Filters";
 import FilterProvider from "@/components/page/BrowsePage/FilterProvider";
@@ -30,6 +30,7 @@ export default async function Browse() {
           categoryIds: [],
           categoryMode: "include",
           ingredientIds: [],
+          query: undefined,
         },
       },
     ],
@@ -44,6 +45,7 @@ export default async function Browse() {
           categoryIds: [],
           categoryMode: "include",
           ingredientIds: [],
+          query: undefined,
         },
       }),
   });
