@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, Clock, Users } from "lucide-react";
+import { ChefHat, Clock, Users, Star } from "lucide-react";
 import Image from "next/image";
 import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,8 +16,48 @@ export default function RecipeCard({
   priority?: boolean;
   skeleton?: boolean;
 }) {
+  // Only show relevance badges when meaningful content filters are applied (not just time)
+  const shouldShowBadges = recipe?.relevance?.hasContentFilters === true;
+  
+  // Calculate badge type based on score relative to highest score
+  let badgeType: 'best' | 'great' | 'none' = 'none';
+  
+  if (shouldShowBadges && recipe?.relevance) {
+    const { score, highestScoreInResults, maxPossibleScore, matchedIngredients, matchedCategories } = recipe.relevance;
+    
+    // Best Match: Either the highest score in results, or 80%+ of max possible
+    if (score === highestScoreInResults || (maxPossibleScore > 0 && score / maxPossibleScore >= 0.8)) {
+      badgeType = 'best';
+    }
+    // Great Match: 50%+ of max possible score OR 3+ total matches
+    else if ((maxPossibleScore > 0 && score / maxPossibleScore >= 0.5) || 
+             (matchedIngredients + matchedCategories >= 3)) {
+      badgeType = 'great';
+    }
+  }
+
   return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0">
+    <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative">
+      {/* Relevance badge for best matches */}
+      {badgeType === 'best' && (
+        <div className="absolute top-2 right-2 z-10">
+          <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 flex items-center gap-1">
+            <Star className="h-3 w-3 fill-yellow-600" />
+            Best Match
+          </Badge>
+        </div>
+      )}
+      
+      {/* Relevance badge for great matches */}
+      {badgeType === 'great' && (
+        <div className="absolute top-2 right-2 z-10">
+          <Badge className="bg-green-100 text-green-800 border-green-200 flex items-center gap-1">
+            <Star className="h-3 w-3 fill-green-600" />
+            Great Match
+          </Badge>
+        </div>
+      )}
+
       <div className="relative h-48 overflow-hidden">
         {skeleton ? (
           <Skeleton className="absolute inset-0 w-full h-full bg-gray-200" />
@@ -36,6 +76,8 @@ export default function RecipeCard({
           <ChefHat className="h-16 w-16 text-brand-secondary" />
         )}
       </div>
+
+      {/* Rest of the card content remains the same */}
       <CardContent>
         <div className="space-y-3">
           <h3 className="text-xl font-semibold group-hover:text-brand-primary transition-colors">
@@ -64,6 +106,33 @@ export default function RecipeCard({
               </>
             )}
           </div>
+
+          {/* Relevance indicators */}
+          {shouldShowBadges && recipe?.relevance && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {recipe.relevance.matchedIngredients > 0 && (
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-green-50 text-green-700 border-green-200"
+                >
+                  {recipe.relevance.matchedIngredients} ingredient
+                  {recipe.relevance.matchedIngredients > 1 ? "s" : ""} matched
+                </Badge>
+              )}
+              {recipe.relevance.matchedCategories > 0 && (
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                >
+                  {recipe.relevance.matchedCategories} category
+                  {recipe.relevance.matchedCategories > 1
+                    ? " matches"
+                    : " match"}
+                </Badge>
+              )}
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-2">
             {skeleton ? (
               <>

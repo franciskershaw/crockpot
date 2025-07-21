@@ -5,7 +5,7 @@ import { useFilters } from "./FilterProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getRandomRecipes } from "@/actions";
 import Image from "next/image";
-import type { RecipeWithCategories } from "@/data/recipes";
+import type { Recipe } from "@/data/types";
 
 export default function NoResults() {
   const { hasActiveFilters, activeFilterCount, clearAllFilters } = useFilters();
@@ -21,7 +21,7 @@ export default function NoResults() {
     <div className="relative col-span-full">
       {/* Background grid of faded recipe cards */}
       <div className="absolute inset-0 grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 opacity-10 pointer-events-none">
-        {backgroundRecipes.map((recipe: RecipeWithCategories, index) => (
+        {backgroundRecipes.map((recipe: Recipe, index) => (
           <div
             key={`${recipe.id}-${index}`}
             className="bg-white rounded-lg overflow-hidden shadow-lg"

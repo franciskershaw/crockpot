@@ -4,7 +4,7 @@ import { useRef, useEffect, useMemo } from "react";
 import { getRecipes } from "@/actions";
 import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
 import NoResults from "@/components/page/BrowsePage/NoResults";
-import type { RecipeWithCategories } from "@/data/recipes";
+import type { Recipe } from "@/data/types";
 import { useFilters } from "./FilterProvider";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
@@ -13,17 +13,17 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   // Create intelligent query key that only includes relevant filters
   const queryKey = useMemo(() => {
     const relevantFilters = { ...filters };
-    
+
     // Only include categoryMode if there are actually categories selected
     if (!filters.categoryIds || filters.categoryIds.length === 0) {
       delete relevantFilters.categoryMode;
     }
-    
+
     // Only include ingredientIds if there are actually ingredients selected
     if (!filters.ingredientIds || filters.ingredientIds.length === 0) {
       delete relevantFilters.ingredientIds;
     }
-    
+
     return [
       "recipes",
       {
@@ -81,7 +81,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
         ? Array.from({ length: 6 }).map((_, i) => (
             <RecipeCard key={i} skeleton />
           ))
-        : allRecipes.map((recipe: RecipeWithCategories, index) => (
+        : allRecipes.map((recipe: Recipe, index) => (
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
