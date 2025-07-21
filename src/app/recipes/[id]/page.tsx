@@ -9,7 +9,7 @@ import { NotesSection } from "./components/NotesSection";
 import { BackButton } from "./components/BackButton";
 
 const RecipePage = async ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+  const { id } = await params;
 
   const recipe = await getRecipeById(id);
 
@@ -32,10 +32,7 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
         <div className="lg:hidden">
           <Tabs defaultValue="ingredients" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger
-                value="ingredients"
-                className="text-sm sm:text-base"
-              >
+              <TabsTrigger value="ingredients" className="text-sm sm:text-base">
                 Ingredients ({recipe.ingredients.length})
               </TabsTrigger>
               <TabsTrigger
