@@ -6,9 +6,11 @@ import RecipeCard from "./RecipeCard";
 import NoResults from "./NoResults";
 import type { Recipe } from "@/data/types";
 import { useFilters } from "../context/FilterProvider";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters } = useFilters();
+  const { restoreScrollPosition } = useScrollRestoration();
 
   // Create intelligent query key that only includes relevant filters
   const queryKey = useMemo(() => {
@@ -66,6 +68,16 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     if (loader.current) observer.observe(loader.current);
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Restore scroll position after data loads
+  useEffect(() => {
+    if (isFetched && !isLoading) {
+      // Small delay to ensure content is rendered
+      setTimeout(() => {
+        restoreScrollPosition();
+      }, 100);
+    }
+  }, [isFetched, isLoading, restoreScrollPosition]);
 
   // Check if we have no results after loading is complete
   const allRecipes = data?.pages.flatMap((page) => page.recipes) || [];

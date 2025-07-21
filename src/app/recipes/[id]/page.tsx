@@ -6,6 +6,7 @@ import { RecipeActions } from "./components/RecipeActions";
 import { IngredientsSection } from "./components/IngredientsSection";
 import { InstructionsSection } from "./components/InstructionsSection";
 import { NotesSection } from "./components/NotesSection";
+import { BackButton } from "./components/BackButton";
 
 const RecipePage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -22,6 +23,7 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
       <div className="relative">
         <RecipeHero recipe={recipe} />
         <RecipeActions />
+        <BackButton />
       </div>
 
       {/* Main Content - Responsive Layout */}
@@ -30,10 +32,16 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
         <div className="lg:hidden">
           <Tabs defaultValue="ingredients" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="ingredients" className="text-sm sm:text-base">
+              <TabsTrigger
+                value="ingredients"
+                className="text-sm sm:text-base"
+              >
                 Ingredients ({recipe.ingredients.length})
               </TabsTrigger>
-              <TabsTrigger value="instructions" className="text-sm sm:text-base">
+              <TabsTrigger
+                value="instructions"
+                className="text-sm sm:text-base"
+              >
                 Instructions ({recipe.instructions.length})
               </TabsTrigger>
             </TabsList>
@@ -44,7 +52,10 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
 
             <TabsContent value="instructions">
               <div className="space-y-6">
-                <InstructionsSection instructions={recipe.instructions} isMobile />
+                <InstructionsSection
+                  instructions={recipe.instructions}
+                  isMobile
+                />
                 <NotesSection notes={recipe.notes} isMobile />
               </div>
             </TabsContent>

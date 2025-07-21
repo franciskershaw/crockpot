@@ -48,6 +48,18 @@ export default function RecipeCard({
     }
   }
 
+  // Save scroll position before navigating to recipe
+  const handleRecipeClick = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        const scrollPosition = window.scrollY;
+        sessionStorage.setItem('crockpot_browse_scroll_position', scrollPosition.toString());
+      } catch {
+        // Ignore storage errors
+      }
+    }
+  };
+
   const cardContent = (
     <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative w-full">
       {/* Relevance badge for best matches */}
@@ -178,11 +190,12 @@ export default function RecipeCard({
     return cardContent;
   }
 
-  // Wrap in Link with proper constraints
+  // Wrap in Link with proper constraints and scroll position saving
   return (
     <Link 
       href={`/recipes/${recipe.id}`} 
       className="block w-full min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
+      onClick={handleRecipeClick}
     >
       {cardContent}
     </Link>
