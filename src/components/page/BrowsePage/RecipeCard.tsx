@@ -18,28 +18,39 @@ export default function RecipeCard({
 }) {
   // Only show relevance badges when meaningful content filters are applied (not just time)
   const shouldShowBadges = recipe?.relevance?.hasContentFilters === true;
-  
+
   // Calculate badge type based on score relative to highest score
-  let badgeType: 'best' | 'great' | 'none' = 'none';
-  
+  let badgeType: "best" | "great" | "none" = "none";
+
   if (shouldShowBadges && recipe?.relevance) {
-    const { score, highestScoreInResults, maxPossibleScore, matchedIngredients, matchedCategories } = recipe.relevance;
-    
+    const {
+      score,
+      highestScoreInResults,
+      maxPossibleScore,
+      matchedIngredients,
+      matchedCategories,
+    } = recipe.relevance;
+
     // Best Match: Either the highest score in results, or 80%+ of max possible
-    if (score === highestScoreInResults || (maxPossibleScore > 0 && score / maxPossibleScore >= 0.8)) {
-      badgeType = 'best';
+    if (
+      score === highestScoreInResults ||
+      (maxPossibleScore > 0 && score / maxPossibleScore >= 0.8)
+    ) {
+      badgeType = "best";
     }
     // Great Match: 50%+ of max possible score OR 3+ total matches
-    else if ((maxPossibleScore > 0 && score / maxPossibleScore >= 0.5) || 
-             (matchedIngredients + matchedCategories >= 3)) {
-      badgeType = 'great';
+    else if (
+      (maxPossibleScore > 0 && score / maxPossibleScore >= 0.5) ||
+      matchedIngredients + matchedCategories >= 3
+    ) {
+      badgeType = "great";
     }
   }
 
   return (
     <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative">
       {/* Relevance badge for best matches */}
-      {badgeType === 'best' && (
+      {badgeType === "best" && (
         <div className="absolute top-2 right-2 z-10">
           <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 flex items-center gap-1">
             <Star className="h-3 w-3 fill-yellow-600" />
@@ -47,13 +58,13 @@ export default function RecipeCard({
           </Badge>
         </div>
       )}
-      
+
       {/* Relevance badge for great matches */}
-      {badgeType === 'great' && (
+      {badgeType === "great" && (
         <div className="absolute top-2 right-2 z-10">
           <Badge className="bg-green-100 text-green-800 border-green-200 flex items-center gap-1">
             <Star className="h-3 w-3 fill-green-600" />
-            Great Match
+            Good Match
           </Badge>
         </div>
       )}
@@ -80,7 +91,10 @@ export default function RecipeCard({
       {/* Rest of the card content remains the same */}
       <CardContent>
         <div className="space-y-3">
-          <h3 className="text-xl font-semibold group-hover:text-brand-primary transition-colors">
+          <h3
+            className="text-xl font-semibold group-hover:text-brand-primary transition-colors truncate whitespace-nowrap overflow-hidden text-ellipsis"
+            title={recipe?.name}
+          >
             {skeleton ? (
               <Skeleton className="h-6 w-2/3 bg-gray-200" />
             ) : (
