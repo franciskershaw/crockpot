@@ -6,6 +6,7 @@ import { ChefHat, Clock, Users, Star } from "lucide-react";
 import Image from "next/image";
 import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default function RecipeCard({
   recipe,
@@ -47,8 +48,8 @@ export default function RecipeCard({
     }
   }
 
-  return (
-    <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative">
+  const cardContent = (
+    <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative w-full">
       {/* Relevance badge for best matches */}
       {badgeType === "best" && (
         <div className="absolute top-2 right-2 z-10">
@@ -84,15 +85,17 @@ export default function RecipeCard({
             />
           </div>
         ) : (
-          <ChefHat className="h-16 w-16 text-brand-secondary" />
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <ChefHat className="h-16 w-16 text-brand-secondary" />
+          </div>
         )}
       </div>
 
-      {/* Rest of the card content remains the same */}
-      <CardContent>
+      {/* Rest of the card content */}
+      <CardContent className="p-4">
         <div className="space-y-3">
           <h3
-            className="text-xl font-semibold group-hover:text-brand-primary transition-colors truncate whitespace-nowrap overflow-hidden text-ellipsis"
+            className="text-xl font-semibold group-hover:text-brand-primary transition-colors line-clamp-2"
             title={recipe?.name}
           >
             {skeleton ? (
@@ -110,12 +113,12 @@ export default function RecipeCard({
             ) : (
               <>
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  {recipe?.timeInMinutes} mins
+                  <Clock className="h-4 w-4 flex-shrink-0" />
+                  <span className="whitespace-nowrap">{recipe?.timeInMinutes} mins</span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  Serves {recipe?.serves}
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 flex-shrink-0" />
+                  <span className="whitespace-nowrap">Serves {recipe?.serves}</span>
                 </div>
               </>
             )}
@@ -168,5 +171,20 @@ export default function RecipeCard({
         </div>
       </CardContent>
     </Card>
+  );
+
+  // If skeleton or no recipe ID, don't wrap in Link
+  if (skeleton || !recipe?.id) {
+    return cardContent;
+  }
+
+  // Wrap in Link with proper constraints
+  return (
+    <Link 
+      href={`/recipes/${recipe.id}`} 
+      className="block w-full min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
+    >
+      {cardContent}
+    </Link>
   );
 }
