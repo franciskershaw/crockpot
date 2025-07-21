@@ -17,8 +17,8 @@ import {
   getRecipeIngredients as getRecipeIngredientsFromDAL,
   getRecipeCount as getRecipeCountFromDAL,
   getRandomRecipes as getRandomRecipesFromDAL,
-  type RecipeFilters,
-} from "@/data/recipes";
+} from "@/data/recipes/getRecipes";
+import { RecipeFilters } from "@/data/types";
 
 export interface GetRecipesParams {
   page?: number;

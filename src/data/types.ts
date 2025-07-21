@@ -24,3 +24,19 @@ export type Recipe = PrismaRecipe & {
 
 export type RecipeCategory = PrismaRecipeCategory;
 export type Item = PrismaItem;
+
+export interface RecipeFilters {
+  query?: string;
+  categoryIds?: string[];
+  categoryMode?: "include" | "exclude";
+  ingredientIds?: string[];
+  approved?: boolean;
+  minTime?: number;
+  maxTime?: number;
+}
+
+export interface GetRecipesDALParams {
+  page?: number;
+  pageSize?: number;
+  filters?: RecipeFilters;
+}
