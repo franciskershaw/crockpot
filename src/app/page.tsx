@@ -1,5 +1,5 @@
-import Auth from "@/components/page/LandingPage/Auth/Auth";
-import HeroSection from "@/components/page/LandingPage/HeroSection/HeroSection";
+import Auth from "@/components/auth/Auth";
+import HeroSection from "@/components/auth/HeroSection";
 
 export default function Home() {
   return (

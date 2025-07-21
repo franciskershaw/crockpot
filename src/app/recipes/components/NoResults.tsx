@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, Plus, ChefHat } from "lucide-react";
-import { useFilters } from "./FilterProvider";
+import { useFilters } from "../context/FilterProvider";
 import { useQuery } from "@tanstack/react-query";
 import { getRandomRecipes } from "@/actions";
 import Image from "next/image";

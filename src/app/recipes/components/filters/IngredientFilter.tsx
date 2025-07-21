@@ -1,5 +1,5 @@
 "use client";
-import { useFilters } from "../FilterProvider";
+import { useFilters } from "../../context/FilterProvider";
 import type { Item } from "@/data/types";
 import GenericFilterList from "./GenericFilterList";
 

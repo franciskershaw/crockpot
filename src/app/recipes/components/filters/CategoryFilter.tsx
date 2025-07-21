@@ -1,5 +1,5 @@
 "use client";
-import { useFilters } from "../FilterProvider";
+import { useFilters } from "../../context/FilterProvider";
 import type { RecipeCategory } from "@/data/types";
 import GenericFilterList from "./GenericFilterList";
 

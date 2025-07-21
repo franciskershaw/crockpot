@@ -2,10 +2,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect, useMemo } from "react";
 import { getRecipes } from "@/actions";
-import RecipeCard from "@/components/page/BrowsePage/RecipeCard";
-import NoResults from "@/components/page/BrowsePage/NoResults";
+import RecipeCard from "./RecipeCard";
+import NoResults from "./NoResults";
 import type { Recipe } from "@/data/types";
-import { useFilters } from "./FilterProvider";
+import { useFilters } from "../context/FilterProvider";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters } = useFilters();

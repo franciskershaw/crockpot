@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getRecipeCount } from "@/actions";
-import { useFilters } from "./FilterProvider";
+import { useFilters } from "../context/FilterProvider";
 import { Badge } from "@/components/ui/badge";
 import { useMemo, useState, useEffect } from "react";
 

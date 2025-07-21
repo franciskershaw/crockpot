@@ -144,7 +144,7 @@ export default function MobileMenu({ session }: MobileMenuProps) {
           {/* Navigation Links */}
           <div className="flex-1 p-6 space-y-4">
             <Link
-              href="/browse"
+              href="/recipes"
               onClick={toggleMenu}
               className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             >

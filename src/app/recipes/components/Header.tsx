@@ -6,7 +6,7 @@ import SearchBar from "./SearchBar";
 import RecipeCountBadge from "./RecipeCountBadge";
 import MobileFilterSidebar from "./MobileFilterSidebar";
 import ClearFiltersButton from "./ClearFiltersButton";
-import { useFilters } from "./FilterProvider";
+import { useFilters } from "../context/FilterProvider";
 import type { RecipeCategory, Item } from "@/data/types";
 
 interface BrowseHeaderProps {

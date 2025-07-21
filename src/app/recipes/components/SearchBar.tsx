@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
-import { useFilters } from "./FilterProvider";
+import { useFilters } from "../context/FilterProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const SearchBar = () => {
