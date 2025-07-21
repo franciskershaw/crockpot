@@ -2,6 +2,7 @@ import {
   Recipe as PrismaRecipe,
   RecipeCategory as PrismaRecipeCategory,
   Item as PrismaItem,
+  Unit as PrismaUnit,
 } from "@prisma/client";
 
 // Relevance information for recipes when filters are applied
@@ -16,9 +17,33 @@ export interface RecipeRelevance {
   hasQueryMatch: boolean; // Whether the recipe name matches the search query
 }
 
-// Main Recipe type that includes categories and optional relevance
+// Ingredient type for enhanced recipe (populated item and unit)
+export interface Ingredient {
+  itemId: string;
+  unitId?: string | null;
+  quantity: number;
+  item?: PrismaItem & {
+    category?: {
+      id: string;
+      name: string;
+      faIcon: string;
+      defaultUnitIds: string[];
+      createdAt: Date;
+      updatedAt: Date;
+    };
+  };
+  unit?: PrismaUnit | null;
+}
+
+// Main Recipe type that includes categories, ingredients, createdBy, and optional relevance
 export type Recipe = PrismaRecipe & {
   categories: RecipeCategory[];
+  ingredients: Ingredient[];
+  createdBy?: {
+    id: string;
+    name: string | null;
+    image: string | null;
+  } | null;
   relevance?: RecipeRelevance; // Optional, only present when filters are applied
 };
 
