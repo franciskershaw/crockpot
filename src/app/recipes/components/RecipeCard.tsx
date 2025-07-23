@@ -7,6 +7,8 @@ import Image from "next/image";
 import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import RecipeActions from "./RecipeActions";
 
 export default function RecipeCard({
   recipe,
@@ -17,6 +19,8 @@ export default function RecipeCard({
   priority?: boolean;
   skeleton?: boolean;
 }) {
+  const { data: session, status } = useSession();
+
   // Only show relevance badges when meaningful content filters are applied (not just time)
   const shouldShowBadges = recipe?.relevance?.hasContentFilters === true;
 
@@ -50,10 +54,13 @@ export default function RecipeCard({
 
   // Save scroll position before navigating to recipe
   const handleRecipeClick = () => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
         const scrollPosition = window.scrollY;
-        sessionStorage.setItem('crockpot_browse_scroll_position', scrollPosition.toString());
+        sessionStorage.setItem(
+          "crockpot_browse_scroll_position",
+          scrollPosition.toString()
+        );
       } catch {
         // Ignore storage errors
       }
@@ -82,11 +89,11 @@ export default function RecipeCard({
         </div>
       )}
 
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden border">
         {skeleton ? (
           <Skeleton className="absolute inset-0 w-full h-full bg-gray-200" />
         ) : recipe?.image?.url ? (
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 border">
             <Image
               src={recipe.image.url}
               alt={recipe.name}
@@ -104,10 +111,15 @@ export default function RecipeCard({
       </div>
 
       {/* Rest of the card content */}
-      <CardContent className="p-4">
+      <CardContent className="px-4 pb-4 pt-0 ">
         <div className="space-y-3">
+          {/* Action buttons for logged-in users */}
+          {!skeleton && status === 'authenticated' && session?.user && recipe && (
+            <RecipeActions recipe={recipe} />
+          )}
+          
           <h3
-            className="text-xl font-semibold group-hover:text-brand-primary transition-colors line-clamp-2"
+            className="text-xl font-semibold group-hover:text-brand-primary transition-colors line-clamp-1 text-ellipsis"
             title={recipe?.name}
           >
             {skeleton ? (
@@ -126,11 +138,15 @@ export default function RecipeCard({
               <>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 flex-shrink-0" />
-                  <span className="whitespace-nowrap">{recipe?.timeInMinutes} mins</span>
+                  <span className="whitespace-nowrap">
+                    {recipe?.timeInMinutes} mins
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 flex-shrink-0" />
-                  <span className="whitespace-nowrap">Serves {recipe?.serves}</span>
+                  <span className="whitespace-nowrap">
+                    Serves {recipe?.serves}
+                  </span>
                 </div>
               </>
             )}
@@ -192,8 +208,8 @@ export default function RecipeCard({
 
   // Wrap in Link with proper constraints and scroll position saving
   return (
-    <Link 
-      href={`/recipes/${recipe.id}`} 
+    <Link
+      href={`/recipes/${recipe.id}`}
       className="block w-full min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
       onClick={handleRecipeClick}
     >
