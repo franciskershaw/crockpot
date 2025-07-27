@@ -16,12 +16,14 @@ interface LogoutButtonProps {
     | "destructive";
   className?: string;
   children?: React.ReactNode;
+  onLogout?: () => void; // Optional callback for additional actions like closing mobile menu
 }
 
 export default function LogoutButton({
   variant = "outline",
   className,
   children = "Sign Out",
+  onLogout,
 }: LogoutButtonProps) {
   const router = useRouter();
 
@@ -32,10 +34,12 @@ export default function LogoutButton({
       // Refresh the router to ensure server components update
       router.refresh();
       toast.success("Logged out successfully");
+      // Call optional callback (e.g., to close mobile menu)
+      onLogout?.();
     } catch (error) {
       console.error("Logout failed:", error);
     }
-  }, [router]);
+  }, [router, onLogout]);
 
   return (
     <Button onClick={handleLogout} variant={variant} className={className}>

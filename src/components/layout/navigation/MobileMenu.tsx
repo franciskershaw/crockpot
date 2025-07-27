@@ -83,6 +83,10 @@ export default function MobileMenu({ session }: MobileMenuProps) {
     setIsOpen((open) => !open);
   }, []);
 
+  const handleCloseMenu = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <div className="h-full flex items-center">
       {/* Hamburger Button - Always visible */}
@@ -153,7 +157,10 @@ export default function MobileMenu({ session }: MobileMenuProps) {
             </Link>
 
             {session?.user ? (
-              <LogoutButton className="w-full mt-6" />
+              <LogoutButton
+                className="w-full mt-6"
+                onLogout={handleCloseMenu}
+              />
             ) : (
               <Link href="/" onClick={toggleMenu} className="block mt-6">
                 <Button className="w-full" variant="outline">
