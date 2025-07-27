@@ -56,30 +56,6 @@ export async function addRecipeToMenu(
   return updatedMenu as RecipeMenu;
 }
 
-export async function updateMenuEntryServes(
-  userId: string,
-  recipeId: string,
-  serves: number
-): Promise<RecipeMenu> {
-  const existingMenu = await prisma.recipeMenu.findUnique({
-    where: { userId },
-  });
-
-  const updatedEntries = existingMenu!.entries.map((entry) =>
-    entry.recipeId === recipeId ? { ...entry, serves } : entry
-  );
-
-  const updatedMenu = await prisma.recipeMenu.update({
-    where: { userId },
-    data: {
-      entries: updatedEntries,
-      updatedAt: new Date(),
-    },
-  });
-
-  return updatedMenu as RecipeMenu;
-}
-
 export async function removeRecipeFromMenu(
   userId: string,
   recipeId: string

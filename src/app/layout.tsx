@@ -48,13 +48,7 @@ export default function RootLayout({
             <main className="mx-auto px-4 md:px-0 container">{children}</main>
           </QueryProvider>
         </SessionProvider>
-        <Toaster 
-          position="top-right"
-          richColors
-          closeButton
-          expand={false}
-          duration={5000}
-        />
+        <Toaster position="top-right" expand={false} duration={2000} />
       </body>
     </html>
   );

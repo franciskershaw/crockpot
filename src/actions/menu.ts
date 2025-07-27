@@ -4,21 +4,23 @@
 import { getUserMenu as getUserMenuFromDAL } from "@/data/menu/getMenus";
 import {
   addRecipeToMenu as addRecipeToMenuFromDAL,
-  updateMenuEntryServes as updateMenuEntryServesFromDAL,
   removeRecipeFromMenu as removeRecipeFromMenuFromDAL,
   deleteMenu as deleteMenuFromDAL,
 } from "@/data/menu/menuMutations";
 import {
   addToMenuSchema,
-  updateMenuEntrySchema,
   removeFromMenuSchema,
   type AddToMenuInput,
-  type UpdateMenuEntryInput,
   type RemoveFromMenuInput,
 } from "@/lib/validations";
 import { getAuthenticatedUserId, validateInput } from "@/lib/action-helpers";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
-import { NotFoundError, ServerError, AuthError, ValidationError } from "@/lib/errors";
+import {
+  NotFoundError,
+  ServerError,
+  AuthError,
+  ValidationError,
+} from "@/lib/errors";
 
 // Get user's menu with recipes
 export async function getUserMenu() {
@@ -55,47 +57,14 @@ export async function addRecipeToMenu(input: AddToMenuInput) {
 
     return updatedMenu;
   } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError || error instanceof NotFoundError) {
+    if (
+      error instanceof AuthError ||
+      error instanceof ValidationError ||
+      error instanceof NotFoundError
+    ) {
       throw error; // Re-throw known errors as-is
     }
     throw new ServerError("Failed to add recipe to menu");
-  }
-}
-
-// Update serves amount for a recipe in menu
-export async function updateMenuEntryServes(input: UpdateMenuEntryInput) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validatedInput = validateInput(updateMenuEntrySchema, input);
-
-    // Verify user has a menu
-    const menu = await getUserMenuFromDAL(userId);
-    if (!menu) {
-      throw new NotFoundError("Menu");
-    }
-
-    // Verify recipe exists in menu
-    const hasRecipe = menu.entries.some(
-      (entry) => entry.recipeId === validatedInput.recipeId
-    );
-    if (!hasRecipe) {
-      throw new NotFoundError("Recipe in menu", validatedInput.recipeId);
-    }
-
-    const updatedMenu = await updateMenuEntryServesFromDAL(
-      userId,
-      validatedInput.recipeId,
-      validatedInput.serves
-    );
-
-    // TODO: Update user's shopping list to reflect the new serving size
-
-    return updatedMenu;
-  } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError || error instanceof NotFoundError) {
-      throw error; // Re-throw known errors as-is
-    }
-    throw new ServerError("Failed to update recipe serving amount");
   }
 }
 
@@ -128,7 +97,11 @@ export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
 
     return updatedMenu;
   } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError || error instanceof NotFoundError) {
+    if (
+      error instanceof AuthError ||
+      error instanceof ValidationError ||
+      error instanceof NotFoundError
+    ) {
       throw error; // Re-throw known errors as-is
     }
     throw new ServerError("Failed to remove recipe from menu");
