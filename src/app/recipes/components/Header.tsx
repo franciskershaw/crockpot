@@ -15,7 +15,11 @@ interface BrowseHeaderProps {
   ingredients: Item[];
 }
 
-const BrowseHeader = ({ categories, timeRange, ingredients }: BrowseHeaderProps) => {
+const BrowseHeader = ({
+  categories,
+  timeRange,
+  ingredients,
+}: BrowseHeaderProps) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const { hasActiveFilters } = useFilters();
 
@@ -27,9 +31,7 @@ const BrowseHeader = ({ categories, timeRange, ingredients }: BrowseHeaderProps)
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold">Browse Recipes</h1>
             <div className="flex items-center gap-2">
-              {hasActiveFilters && (
-                <ClearFiltersButton />
-              )}
+              {hasActiveFilters && <ClearFiltersButton />}
               <button
                 onClick={() => setIsMobileFilterOpen(true)}
                 className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
@@ -46,7 +48,7 @@ const BrowseHeader = ({ categories, timeRange, ingredients }: BrowseHeaderProps)
         {/* Desktop Layout */}
         <div className="hidden md:flex md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-bold whitespace-nowrap">
+            <h1 className="text-3xl font-bold whitespace-nowrap">
               Browse Recipes
             </h1>
             <RecipeCountBadge />

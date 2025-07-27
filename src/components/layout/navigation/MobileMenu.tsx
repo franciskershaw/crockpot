@@ -141,7 +141,7 @@ export default function MobileMenu({ session }: MobileMenuProps) {
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b">
+          <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-xl font-bold text-gray-800">Menu</h2>
           </div>
 
@@ -155,6 +155,8 @@ export default function MobileMenu({ session }: MobileMenuProps) {
               <Search className="h-5 w-5" />
               <span className="font-medium">Browse Recipes</span>
             </Link>
+
+            <span>Future: profile settings, link to another user</span>
 
             {session?.user ? (
               <LogoutButton
