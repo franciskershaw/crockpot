@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import Navbar from "@/components/layout/navigation/Navbar";
 import QueryProvider from "@/components/providers/QueryProvider";
 import SessionProvider from "@/components/providers/SessionProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,13 @@ export default function RootLayout({
             <main className="mx-auto px-4 md:px-0 container">{children}</main>
           </QueryProvider>
         </SessionProvider>
+        <Toaster 
+          position="top-right"
+          richColors
+          closeButton
+          expand={false}
+          duration={5000}
+        />
       </body>
     </html>
   );

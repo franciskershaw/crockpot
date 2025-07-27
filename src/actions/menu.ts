@@ -18,107 +18,143 @@ import {
 } from "@/lib/validations";
 import { getAuthenticatedUserId, validateInput } from "@/lib/action-helpers";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
+import { NotFoundError, ServerError, AuthError, ValidationError } from "@/lib/errors";
 
 // Get user's menu with recipes
 export async function getUserMenu() {
-  const userId = await getAuthenticatedUserId();
-  return await getUserMenuFromDAL(userId);
+  try {
+    const userId = await getAuthenticatedUserId();
+    return await getUserMenuFromDAL(userId);
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("Authentication")) {
+      throw error; // Re-throw auth errors as-is
+    }
+    throw new ServerError("Failed to retrieve menu");
+  }
 }
 
 // Add recipe to menu (creates menu if none exists)
 export async function addRecipeToMenu(input: AddToMenuInput) {
-  const userId = await getAuthenticatedUserId();
-  const validatedInput = validateInput(addToMenuSchema, input);
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validatedInput = validateInput(addToMenuSchema, input);
 
-  // Verify recipe exists
-  const recipe = await getRecipeByIdFromDAL(validatedInput.recipeId);
-  if (!recipe) {
-    throw new Error("Recipe not found");
+    // Verify recipe exists
+    const recipe = await getRecipeByIdFromDAL(validatedInput.recipeId);
+    if (!recipe) {
+      throw new NotFoundError("Recipe", validatedInput.recipeId);
+    }
+
+    const updatedMenu = await addRecipeToMenuFromDAL(
+      userId,
+      validatedInput.recipeId,
+      validatedInput.serves
+    );
+
+    // TODO: Update user's shopping list based on the added recipe and serving size
+
+    return updatedMenu;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError || error instanceof NotFoundError) {
+      throw error; // Re-throw known errors as-is
+    }
+    throw new ServerError("Failed to add recipe to menu");
   }
-
-  const updatedMenu = await addRecipeToMenuFromDAL(
-    userId,
-    validatedInput.recipeId,
-    validatedInput.serves
-  );
-
-  // TODO: Update user's shopping list based on the added recipe and serving size
-
-  return updatedMenu;
 }
 
 // Update serves amount for a recipe in menu
 export async function updateMenuEntryServes(input: UpdateMenuEntryInput) {
-  const userId = await getAuthenticatedUserId();
-  const validatedInput = validateInput(updateMenuEntrySchema, input);
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validatedInput = validateInput(updateMenuEntrySchema, input);
 
-  // Verify user has a menu
-  const menu = await getUserMenuFromDAL(userId);
-  if (!menu) {
-    throw new Error("Menu not found");
+    // Verify user has a menu
+    const menu = await getUserMenuFromDAL(userId);
+    if (!menu) {
+      throw new NotFoundError("Menu");
+    }
+
+    // Verify recipe exists in menu
+    const hasRecipe = menu.entries.some(
+      (entry) => entry.recipeId === validatedInput.recipeId
+    );
+    if (!hasRecipe) {
+      throw new NotFoundError("Recipe in menu", validatedInput.recipeId);
+    }
+
+    const updatedMenu = await updateMenuEntryServesFromDAL(
+      userId,
+      validatedInput.recipeId,
+      validatedInput.serves
+    );
+
+    // TODO: Update user's shopping list to reflect the new serving size
+
+    return updatedMenu;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError || error instanceof NotFoundError) {
+      throw error; // Re-throw known errors as-is
+    }
+    throw new ServerError("Failed to update recipe serving amount");
   }
-
-  // Verify recipe exists in menu
-  const hasRecipe = menu.entries.some(
-    (entry) => entry.recipeId === validatedInput.recipeId
-  );
-  if (!hasRecipe) {
-    throw new Error("Recipe not found in menu");
-  }
-
-  const updatedMenu = await updateMenuEntryServesFromDAL(
-    userId,
-    validatedInput.recipeId,
-    validatedInput.serves
-  );
-
-  // TODO: Update user's shopping list to reflect the new serving size
-
-  return updatedMenu;
 }
 
 // Remove recipe from menu
 export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
-  const userId = await getAuthenticatedUserId();
-  const validatedInput = validateInput(removeFromMenuSchema, input);
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validatedInput = validateInput(removeFromMenuSchema, input);
 
-  // Verify user has a menu
-  const menu = await getUserMenuFromDAL(userId);
-  if (!menu) {
-    throw new Error("Menu not found");
+    // Verify user has a menu
+    const menu = await getUserMenuFromDAL(userId);
+    if (!menu) {
+      throw new NotFoundError("Menu");
+    }
+
+    // Verify recipe exists in menu
+    const hasRecipe = menu.entries.some(
+      (entry) => entry.recipeId === validatedInput.recipeId
+    );
+    if (!hasRecipe) {
+      throw new NotFoundError("Recipe in menu", validatedInput.recipeId);
+    }
+
+    const updatedMenu = await removeRecipeFromMenuFromDAL(
+      userId,
+      validatedInput.recipeId
+    );
+
+    // TODO: Remove recipe ingredients from user's shopping list or adjust quantities
+
+    return updatedMenu;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError || error instanceof NotFoundError) {
+      throw error; // Re-throw known errors as-is
+    }
+    throw new ServerError("Failed to remove recipe from menu");
   }
-
-  // Verify recipe exists in menu
-  const hasRecipe = menu.entries.some(
-    (entry) => entry.recipeId === validatedInput.recipeId
-  );
-  if (!hasRecipe) {
-    throw new Error("Recipe not found in menu");
-  }
-
-  const updatedMenu = await removeRecipeFromMenuFromDAL(
-    userId,
-    validatedInput.recipeId
-  );
-
-  // TODO: Remove recipe ingredients from user's shopping list or adjust quantities
-
-  return updatedMenu;
 }
 
 // Delete entire menu (clear all recipes at once)
 export async function deleteMenu() {
-  const userId = await getAuthenticatedUserId();
+  try {
+    const userId = await getAuthenticatedUserId();
 
-  // Verify user has a menu
-  const menu = await getUserMenuFromDAL(userId);
-  if (!menu) {
-    throw new Error("Menu not found");
+    // Verify user has a menu
+    const menu = await getUserMenuFromDAL(userId);
+    if (!menu) {
+      throw new NotFoundError("Menu");
+    }
+
+    await deleteMenuFromDAL(userId);
+
+    // TODO: Remove all recipe ingredients from user's shopping list when menu is deleted
+
+    return { success: true };
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof NotFoundError) {
+      throw error; // Re-throw known errors as-is
+    }
+    throw new ServerError("Failed to delete menu");
   }
-
-  await deleteMenuFromDAL(userId);
-
-  // TODO: Remove all recipe ingredients from user's shopping list when menu is deleted
-
-  return { success: true };
 }
