@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useLocalStorageState<T>(
   key: string,
@@ -8,14 +8,11 @@ export function useLocalStorageState<T>(
     deserialize?: (value: string) => T;
   } = {}
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const {
-    serialize = JSON.stringify,
-    deserialize = JSON.parse,
-  } = options;
+  const { serialize = JSON.stringify, deserialize = JSON.parse } = options;
 
   const [state, setState] = useState<T>(() => {
     // Return default value during SSR
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return defaultValue;
     }
 
@@ -31,7 +28,7 @@ export function useLocalStorageState<T>(
   });
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       window.localStorage.setItem(key, serialize(state));
@@ -41,4 +38,4 @@ export function useLocalStorageState<T>(
   }, [key, state, serialize]);
 
   return [state, setState];
-} 
+}

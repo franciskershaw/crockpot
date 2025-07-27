@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { signOutAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { Session } from "next-auth";
+import LogoutButton from "@/components/auth/LogoutButton";
 
 interface MobileMenuProps {
   session: Session | null;
@@ -153,11 +153,7 @@ export default function MobileMenu({ session }: MobileMenuProps) {
             </Link>
 
             {session?.user ? (
-              <form action={signOutAction} className="mt-6">
-                <Button type="submit" className="w-full" variant="outline">
-                  Sign Out
-                </Button>
-              </form>
+              <LogoutButton className="w-full mt-6" />
             ) : (
               <Link href="/" onClick={toggleMenu} className="block mt-6">
                 <Button className="w-full" variant="outline">

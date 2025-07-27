@@ -1,11 +1,11 @@
 "use server";
 
-import { signOutAction } from "@/actions/auth";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { ChefHat, Search } from "lucide-react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
+import LogoutButton from "@/components/auth/LogoutButton";
 
 export default async function Navbar() {
   const session = await auth();
@@ -30,11 +30,7 @@ export default async function Navbar() {
             </Link>
 
             {session?.user ? (
-              <form action={signOutAction}>
-                <Button type="submit" variant="outline">
-                  Sign Out
-                </Button>
-              </form>
+              <LogoutButton variant="outline" />
             ) : (
               <Link href="/">
                 <Button variant="outline">Login</Button>
