@@ -4,14 +4,15 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  // Keep adapter for OAuth account management only
   adapter: PrismaAdapter(prisma),
   providers: [Google],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Include user data in JWT token
       if (user) {
         token.sub = user.id;
         token.isAdmin = (user as { isAdmin?: boolean }).isAdmin || false;
@@ -19,7 +20,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      // Include token data in session
       if (session.user && token.sub) {
         session.user.id = token.sub;
         session.user.isAdmin = (token.isAdmin as boolean) || false;
@@ -27,7 +27,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async signIn() {
-      // Allow sign in
       return true;
     },
   },
