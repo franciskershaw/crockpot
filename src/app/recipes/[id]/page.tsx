@@ -2,7 +2,6 @@ import { getRecipeById } from "@/actions/recipes";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RecipeHero } from "./components/RecipeHero";
-import { RecipeActions } from "./components/RecipeActions";
 import { IngredientsSection } from "./components/IngredientsSection";
 import { InstructionsSection } from "./components/InstructionsSection";
 import { NotesSection } from "./components/NotesSection";
@@ -22,7 +21,6 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
       {/* Hero Section with Actions */}
       <div className="relative">
         <RecipeHero recipe={recipe} />
-        <RecipeActions />
         <BackButton />
       </div>
 

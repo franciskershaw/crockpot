@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, ChefHat } from "lucide-react";
 import { Recipe } from "@/data/types";
+import RecipeDetailActions from "./RecipeDetailActions";
 
 export function RecipeHero({ recipe }: { recipe: Recipe }) {
   return (
@@ -53,20 +54,25 @@ export function RecipeHero({ recipe }: { recipe: Recipe }) {
               )}
             </div>
 
-            {/* Categories */}
-            {recipe.categories.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {recipe.categories.map((category) => (
-                  <Badge
-                    key={category.id}
-                    variant="secondary"
-                    className="px-2 py-1 text-xs sm:px-3 sm:text-sm bg-white/20 backdrop-blur-sm text-white border-white/30"
-                  >
-                    {category.name}
-                  </Badge>
-                ))}
+            {/* Categories and Actions */}
+            <div className="flex items-center gap-4">
+              {recipe.categories.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {recipe.categories.map((category) => (
+                    <Badge
+                      key={category.id}
+                      variant="secondary"
+                      className="px-2 py-1 text-xs sm:px-3 sm:text-sm bg-white/20 backdrop-blur-sm text-white border-white/30"
+                    >
+                      {category.name}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              <div className="flex-shrink-0">
+                <RecipeDetailActions recipe={recipe} />
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
