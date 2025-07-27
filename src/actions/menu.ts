@@ -47,7 +47,7 @@ export async function addRecipeToMenu(input: AddToMenuInput) {
       throw new NotFoundError("Recipe", validatedInput.recipeId);
     }
 
-    const updatedMenu = await addRecipeToMenuFromDAL(
+    const result = await addRecipeToMenuFromDAL(
       userId,
       validatedInput.recipeId,
       validatedInput.serves
@@ -55,7 +55,7 @@ export async function addRecipeToMenu(input: AddToMenuInput) {
 
     // TODO: Update user's shopping list based on the added recipe and serving size
 
-    return updatedMenu;
+    return result;
   } catch (error) {
     if (
       error instanceof AuthError ||
