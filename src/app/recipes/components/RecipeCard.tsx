@@ -8,7 +8,7 @@ import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import RecipeActions from "./RecipeActions";
+import RecipeCardActions from "./RecipeCardActions";
 
 export default function RecipeCard({
   recipe,
@@ -67,6 +67,43 @@ export default function RecipeCard({
     }
   };
 
+  // Helper function to render action buttons
+  const renderActionButtons = () => {
+    if (skeleton || status !== "authenticated" || !session?.user || !recipe) {
+      return null;
+    }
+
+    return (
+      <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
+        <RecipeCardActions recipe={recipe} />
+      </div>
+    );
+  };
+
+  // Helper function to render relevance badges
+  const renderRelevanceBadges = () => {
+    if (badgeType === "none") return null;
+
+    return (
+      <div className="absolute bottom-2 right-2 z-10">
+        <Badge
+          className={`flex items-center gap-1 ${
+            badgeType === "best"
+              ? "bg-yellow-100 text-yellow-800 border-yellow-200"
+              : "bg-green-100 text-green-800 border-green-200"
+          }`}
+        >
+          <Star
+            className={`h-3 w-3 ${
+              badgeType === "best" ? "fill-yellow-600" : "fill-green-600"
+            }`}
+          />
+          {badgeType === "best" ? "Best Match" : "Good Match"}
+        </Badge>
+      </div>
+    );
+  };
+
   const cardContent = (
     <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative w-full">
       <div className="relative h-48 overflow-hidden border">
@@ -82,74 +119,14 @@ export default function RecipeCard({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority={priority}
             />
-            {/* Action buttons for logged-in users - overlay at top corners of image */}
-            {!skeleton &&
-              status === "authenticated" &&
-              session?.user &&
-              recipe && (
-                <>
-                  <div className="absolute left-2 top-2 z-10 pointer-events-auto">
-                    <RecipeActions recipe={recipe} only="cart" />
-                  </div>
-                  <div className="absolute right-2 top-2 z-10 pointer-events-auto">
-                    <RecipeActions recipe={recipe} only="heart" />
-                  </div>
-                </>
-              )}
-            {/* Relevance badge for best matches - moved to bottom right */}
-            {badgeType === "best" && (
-              <div className="absolute bottom-2 right-2 z-10">
-                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 flex items-center gap-1">
-                  <Star className="h-3 w-3 fill-yellow-600" />
-                  Best Match
-                </Badge>
-              </div>
-            )}
-            {/* Relevance badge for great matches - moved to bottom right */}
-            {badgeType === "great" && (
-              <div className="absolute bottom-2 right-2 z-10">
-                <Badge className="bg-green-100 text-green-800 border-green-200 flex items-center gap-1">
-                  <Star className="h-3 w-3 fill-green-600" />
-                  Good Match
-                </Badge>
-              </div>
-            )}
+            {renderActionButtons()}
+            {renderRelevanceBadges()}
           </div>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
             <ChefHat className="h-16 w-16 text-brand-secondary" />
-            {/* Action buttons for logged-in users - overlay at top corners of image */}
-            {!skeleton &&
-              status === "authenticated" &&
-              session?.user &&
-              recipe && (
-                <>
-                  <div className="absolute left-2 top-2 z-10 pointer-events-auto">
-                    <RecipeActions recipe={recipe} only="cart" />
-                  </div>
-                  <div className="absolute right-2 top-2 z-10 pointer-events-auto">
-                    <RecipeActions recipe={recipe} only="heart" />
-                  </div>
-                </>
-              )}
-            {/* Relevance badge for best matches - moved to bottom right */}
-            {badgeType === "best" && (
-              <div className="absolute bottom-2 right-2 z-10">
-                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 flex items-center gap-1">
-                  <Star className="h-3 w-3 fill-yellow-600" />
-                  Best Match
-                </Badge>
-              </div>
-            )}
-            {/* Relevance badge for great matches - moved to bottom right */}
-            {badgeType === "great" && (
-              <div className="absolute bottom-2 right-2 z-10">
-                <Badge className="bg-green-100 text-green-800 border-green-200 flex items-center gap-1">
-                  <Star className="h-3 w-3 fill-green-600" />
-                  Good Match
-                </Badge>
-              </div>
-            )}
+            {renderActionButtons()}
+            {renderRelevanceBadges()}
           </div>
         )}
       </div>
