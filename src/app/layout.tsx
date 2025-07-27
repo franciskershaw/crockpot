@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/navigation/Navbar";
 import QueryProvider from "@/components/providers/QueryProvider";
 import SessionProvider from "@/components/providers/SessionProvider";
 import { Toaster } from "@/components/ui/sonner";
+import BottomMobileNav from "@/components/layout/navigation/BottomMobileNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
             <main className="mx-auto px-4 md:px-0 container">{children}</main>
           </QueryProvider>
         </SessionProvider>
+        <BottomMobileNav />
         <Toaster position="top-right" expand={false} duration={2000} />
       </body>
     </html>
