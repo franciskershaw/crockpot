@@ -3,6 +3,8 @@ import {
   RecipeCategory as PrismaRecipeCategory,
   Item as PrismaItem,
   Unit as PrismaUnit,
+  RecipeMenu as PrismaRecipeMenu,
+  RecipeMenuEntry as PrismaRecipeMenuEntry,
 } from "@prisma/client";
 
 // Relevance information for recipes when filters are applied
@@ -65,3 +67,12 @@ export interface GetRecipesDALParams {
   pageSize?: number;
   filters?: RecipeFilters;
 }
+
+// Menu types
+export type RecipeMenu = PrismaRecipeMenu & {
+  entries: RecipeMenuEntry[];
+};
+
+export type RecipeMenuEntry = PrismaRecipeMenuEntry & {
+  recipe?: Recipe;
+};

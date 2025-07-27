@@ -32,7 +32,7 @@ model User {
   createdRecipes     Recipe[]       @relation("RecipeCreator")
   favouriteRecipes   Recipe[]       @relation("UserFavourites", fields: [favouriteRecipeIds], references: [id])
   favouriteRecipeIds String[]       @db.ObjectId
-  recipeMenus        RecipeMenu[]
+  recipeMenu         RecipeMenu?    @relation("UserMenu")
   shoppingLists      ShoppingList[]
 }
 
@@ -102,8 +102,7 @@ model RecipeCategory {
 // Recipe Menu collection (meal plan)
 model RecipeMenu {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
-  name      String
+  userId    String   @unique @db.ObjectId // One menu per user
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -111,7 +110,7 @@ model RecipeMenu {
   entries RecipeMenuEntry[]
 
   // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation("UserMenu", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Shopping List collection
