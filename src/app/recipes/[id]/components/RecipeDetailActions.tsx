@@ -21,7 +21,7 @@ export default function RecipeDetailActions({
 
   return (
     <div className="flex items-center gap-2">
-      <AddToFavouritesButton />
+      <AddToFavouritesButton recipeId={recipe.id} />
       <AddToMenuButton recipe={recipe} />
     </div>
   );

@@ -9,7 +9,7 @@ export default function RecipeCardActions({ recipe }: { recipe: Recipe }) {
   return (
     <div className={`flex items-center justify-between h-8 w-full`}>
       <AddToMenuButton recipe={recipe} />
-      <AddToFavouritesButton />
+      <AddToFavouritesButton recipeId={recipe.id} />
     </div>
   );
 }

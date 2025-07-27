@@ -25,15 +25,15 @@ export function validateInput<T>(schema: z.ZodSchema<T>, input: unknown): T {
     if (error instanceof z.ZodError) {
       // Extract the first validation error
       const firstError = error.errors[0];
-      const field = firstError.path.join('.');
+      const field = firstError.path.join(".");
       const message = firstError.message;
-      
+
       throw new ValidationError(
         field ? `${field}: ${message}` : message,
         field || undefined
       );
     }
-    
+
     throw new ValidationError("Invalid input");
   }
 }

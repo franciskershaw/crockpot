@@ -8,11 +8,6 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-interface SerializedError {
-  message?: string;
-  code?: string;
-}
-
 export const useAddToMenuMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -25,7 +20,7 @@ export const useAddToMenuMutation = () => {
         toast.success("Recipe added to menu");
       }
     },
-    onError: (error: SerializedError) => {
+    onError: (error) => {
       toast.error(error.message || "Failed to add recipe to menu");
     },
   });
@@ -39,7 +34,7 @@ export const useRemoveFromMenuMutation = () => {
       toast.success("Recipe removed from menu");
       queryClient.invalidateQueries({ queryKey: ["menu"] });
     },
-    onError: (error: SerializedError) => {
+    onError: (error) => {
       toast.error(error.message || "Failed to remove recipe from menu");
     },
   });

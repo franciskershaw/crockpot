@@ -13,6 +13,19 @@ export const removeFromMenuSchema = z.object({
   recipeId: z.string().min(1, "Recipe ID is required"),
 });
 
+// Favourites validation schemas
+export const addToFavouritesSchema = z.object({
+  recipeId: z.string().min(1, "Recipe ID is required"),
+});
+
+export const removeFromFavouritesSchema = z.object({
+  recipeId: z.string().min(1, "Recipe ID is required"),
+});
+
 // Type exports for the schemas
 export type AddToMenuInput = z.infer<typeof addToMenuSchema>;
 export type RemoveFromMenuInput = z.infer<typeof removeFromMenuSchema>;
+export type AddToFavouritesInput = z.infer<typeof addToFavouritesSchema>;
+export type RemoveFromFavouritesInput = z.infer<
+  typeof removeFromFavouritesSchema
+>;

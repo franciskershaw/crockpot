@@ -2,17 +2,34 @@
 
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  useAddToFavouritesMutation,
+  useRemoveFromFavouritesMutation,
+  useGetFavourites,
+} from "@/hooks/useFavourites";
 
-const AddToFavouritesButton = () => {
+const AddToFavouritesButton = ({ recipeId }: { recipeId: string }) => {
   const [isFavorited, setIsFavorited] = useState(false);
+  const addToFavouritesMutation = useAddToFavouritesMutation();
+  const removeFromFavouritesMutation = useRemoveFromFavouritesMutation();
+  const { favourites } = useGetFavourites();
+
+  useEffect(() => {
+    setIsFavorited(favourites?.some((fav) => fav.id === recipeId) ?? false);
+  }, [favourites, recipeId]);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsFavorited(!isFavorited);
-    // TODO: Add server action to update favorites
+    if (isFavorited) {
+      removeFromFavouritesMutation.mutate({ recipeId });
+    } else {
+      addToFavouritesMutation.mutate({ recipeId });
+    }
   };
+
   return (
     <Button
       size="sm"
