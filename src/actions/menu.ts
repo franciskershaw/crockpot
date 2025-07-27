@@ -1,68 +1,5 @@
 "use server";
 
-import { signIn, signOut } from "@/auth";
-
-export async function signInWithGoogle() {
-  await signIn("google");
-}
-
-export async function signOutAction() {
-  await signOut({ redirectTo: "/" });
-}
-
-import {
-  getRecipes as getRecipesFromDAL,
-  getRecipeTimeRange as getRecipeTimeRangeFromDAL,
-  getRecipeCategories as getRecipeCategoriesFromDAL,
-  getRecipeIngredients as getRecipeIngredientsFromDAL,
-  getRecipeCount as getRecipeCountFromDAL,
-  getRandomRecipes as getRandomRecipesFromDAL,
-} from "@/data/recipes/getRecipes";
-import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
-import { RecipeFilters } from "@/data/types";
-
-export interface GetRecipesParams {
-  page?: number;
-  pageSize?: number;
-  filters?: RecipeFilters;
-}
-
-export async function getRecipes({
-  page = 1,
-  pageSize = 10,
-  filters = {},
-}: GetRecipesParams = {}) {
-  return await getRecipesFromDAL({
-    page,
-    pageSize,
-    filters,
-  });
-}
-
-export async function getRecipeTimeRange() {
-  return await getRecipeTimeRangeFromDAL();
-}
-
-export async function getRecipeCategories() {
-  return await getRecipeCategoriesFromDAL();
-}
-
-export async function getRecipeIngredients() {
-  return await getRecipeIngredientsFromDAL();
-}
-
-export async function getRecipeCount(filters: RecipeFilters = {}) {
-  return await getRecipeCountFromDAL(filters);
-}
-
-export async function getRandomRecipes(count: number = 12) {
-  return await getRandomRecipesFromDAL(count);
-}
-
-export async function getRecipeById(id: string) {
-  return await getRecipeByIdFromDAL(id);
-}
-
 // Menu actions
 import { getUserMenu as getUserMenuFromDAL } from "@/data/menu/getMenus";
 import {
@@ -80,6 +17,7 @@ import {
   type RemoveFromMenuInput,
 } from "@/lib/validations";
 import { getAuthenticatedUserId, validateInput } from "@/lib/action-helpers";
+import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
 
 // Get user's menu with recipes
 export async function getUserMenu() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getRecipeCount } from "@/actions";
+import { getRecipeCount } from "@/actions/recipes";
 import { useFilters } from "../context/FilterProvider";
 import { Badge } from "@/components/ui/badge";
 import { useMemo, useState, useEffect } from "react";

@@ -1,6 +1,6 @@
 "use server";
 
-import { signOutAction } from "@/actions";
+import { signOutAction } from "@/actions/auth";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { ChefHat, Search } from "lucide-react";

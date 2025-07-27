@@ -5,7 +5,7 @@ import {
   getRecipeTimeRange,
   getRecipeCategories,
   getRecipeIngredients,
-} from "@/actions";
+} from "@/actions/recipes";
 import {
   dehydrate,
   HydrationBoundary,

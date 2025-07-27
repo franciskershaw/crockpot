@@ -1,4 +1,4 @@
-import { getRecipeById } from "@/actions";
+import { getRecipeById } from "@/actions/recipes";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RecipeHero } from "./components/RecipeHero";

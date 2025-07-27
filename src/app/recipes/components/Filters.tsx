@@ -6,7 +6,7 @@ import {
   getRecipeCategories,
   getRecipeTimeRange,
   getRecipeIngredients,
-} from "@/actions";
+} from "@/actions/recipes";
 import ClearFiltersButton from "./ClearFiltersButton";
 
 export default async function Filters() {

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import GoogleIcon from "./GoogleIcon";
-import { signInWithGoogle } from "@/actions";
+import { signInWithGoogle } from "@/actions/auth";
 
 export default function Auth() {
   return (

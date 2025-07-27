@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Filter, Plus, ChefHat } from "lucide-react";
 import { useFilters } from "../context/FilterProvider";
 import { useQuery } from "@tanstack/react-query";
-import { getRandomRecipes } from "@/actions";
+import { getRandomRecipes } from "@/actions/recipes";
 import Image from "next/image";
 import type { Recipe } from "@/data/types";
 

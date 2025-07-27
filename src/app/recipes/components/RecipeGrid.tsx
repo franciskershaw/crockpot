@@ -1,7 +1,7 @@
 "use client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect, useMemo } from "react";
-import { getRecipes } from "@/actions";
+import { getRecipes } from "@/actions/recipes";
 import RecipeCard from "./RecipeCard";
 import NoResults from "./NoResults";
 import type { Recipe } from "@/data/types";
