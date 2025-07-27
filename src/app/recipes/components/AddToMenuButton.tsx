@@ -223,8 +223,8 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
                         opacity: 1,
                         scale: 1,
                         transition: {
-                          duration: 0.15,
-                          delay: 0.2,
+                          duration: 0.25,
+                          delay: 0.3,
                           ease: "easeOut",
                         },
                       }}
