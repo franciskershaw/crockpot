@@ -1,11 +1,52 @@
 import { prisma } from "@/lib/prisma";
-import { RecipeMenu } from "../types";
+import { RecipeMenu, MenuHistoryEntry } from "../types";
+
+// Helper function to update history when adding or removing a recipe from menu
+function updateHistory(
+  currentHistory: MenuHistoryEntry[],
+  recipeId: string,
+  action: "add" | "remove"
+): MenuHistoryEntry[] {
+  const now = new Date();
+  const existingHistoryEntry = currentHistory.find(
+    (entry) => entry.recipeId === recipeId
+  );
+
+  if (existingHistoryEntry) {
+    // Update existing history entry
+    return currentHistory.map((entry) =>
+      entry.recipeId === recipeId
+        ? {
+            ...entry,
+            ...(action === "add" && {
+              timesAddedToMenu: (entry.timesAddedToMenu || 0) + 1,
+              lastAddedToMenu: now,
+            }),
+            ...(action === "remove" && {
+              lastRemovedFromMenu: now,
+            }),
+          }
+        : entry
+    );
+  } else {
+    // Create new history entry
+    const newHistoryEntry: MenuHistoryEntry = {
+      recipeId,
+      timesAddedToMenu: 1,
+      firstAddedToMenu: now,
+      lastAddedToMenu: now,
+      lastRemovedFromMenu: now,
+    };
+    return [...currentHistory, newHistoryEntry];
+  }
+}
 
 export async function createMenu(userId: string): Promise<RecipeMenu> {
   const menu = await prisma.recipeMenu.create({
     data: {
       userId,
       entries: [],
+      history: [],
     },
   });
 
@@ -43,14 +84,20 @@ export async function addRecipeToMenu(
     updatedEntries = [{ recipeId, serves }];
   }
 
+  // Update history
+  const currentHistory = existingMenu?.history || [];
+  const updatedHistory = updateHistory(currentHistory, recipeId, "add");
+
   const updatedMenu = await prisma.recipeMenu.upsert({
     where: { userId },
     create: {
       userId,
       entries: updatedEntries,
+      history: updatedHistory,
     },
     update: {
       entries: updatedEntries,
+      history: updatedHistory,
       updatedAt: new Date(),
     },
   });
@@ -66,22 +113,26 @@ export async function removeRecipeFromMenu(
     where: { userId },
   });
 
-  const updatedEntries = existingMenu!.entries.filter(
+  if (!existingMenu) {
+    return null;
+  }
+
+  const updatedEntries = existingMenu.entries.filter(
     (entry) => entry.recipeId !== recipeId
   );
 
-  // If no entries left, delete the menu
-  if (updatedEntries.length === 0) {
-    await prisma.recipeMenu.delete({
-      where: { userId },
-    });
-    return null;
-  }
+  // Update history
+  const updatedHistory = updateHistory(
+    existingMenu.history,
+    recipeId,
+    "remove"
+  );
 
   const updatedMenu = await prisma.recipeMenu.update({
     where: { userId },
     data: {
       entries: updatedEntries,
+      history: updatedHistory,
       updatedAt: new Date(),
     },
   });
@@ -89,8 +140,30 @@ export async function removeRecipeFromMenu(
   return updatedMenu as RecipeMenu;
 }
 
-export async function deleteMenu(userId: string): Promise<void> {
-  await prisma.recipeMenu.delete({
+export async function removeAllRecipesFromMenu(
+  userId: string
+): Promise<RecipeMenu | null> {
+  const existingMenu = await prisma.recipeMenu.findUnique({
     where: { userId },
   });
+
+  if (!existingMenu) {
+    return null;
+  }
+
+  // Update history for all removed recipes
+  let updatedHistory = existingMenu.history;
+  for (const entry of existingMenu.entries) {
+    updatedHistory = updateHistory(updatedHistory, entry.recipeId, "remove");
+  }
+
+  const updatedMenu = await prisma.recipeMenu.update({
+    where: { userId },
+    data: {
+      entries: [],
+      history: updatedHistory,
+      updatedAt: new Date(),
+    },
+  });
+  return updatedMenu as RecipeMenu;
 }

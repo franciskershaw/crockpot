@@ -103,8 +103,9 @@ model RecipeMenu {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Embedded entries
+  // Embedded entries and history
   entries RecipeMenuEntry[]
+  history MenuHistoryEntry[]
 
   // Relations
   user User @relation("UserMenu", fields: [userId], references: [id], onDelete: Cascade)
@@ -153,6 +154,14 @@ type RecipeIngredient {
 type RecipeMenuEntry {
   recipeId String @db.ObjectId
   serves   Int
+}
+
+type MenuHistoryEntry {
+  recipeId String @db.ObjectId
+  timesAddedToMenu Int
+  firstAddedToMenu DateTime
+  lastAddedToMenu DateTime
+  lastRemovedFromMenu DateTime
 }
 
 type ShoppingListItem {

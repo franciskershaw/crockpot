@@ -5,7 +5,7 @@ import { getUserMenu as getUserMenuFromDAL } from "@/data/menu/getMenus";
 import {
   addRecipeToMenu as addRecipeToMenuFromDAL,
   removeRecipeFromMenu as removeRecipeFromMenuFromDAL,
-  deleteMenu as deleteMenuFromDAL,
+  removeAllRecipesFromMenu as removeAllRecipesFromMenuFromDAL,
 } from "@/data/menu/menuMutations";
 import {
   addToMenuSchema,
@@ -108,26 +108,16 @@ export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
   }
 }
 
-// Delete entire menu (clear all recipes at once)
-export async function deleteMenu() {
+// Remove all recipes from menu
+export async function removeAllRecipesFromMenu() {
   try {
     const userId = await getAuthenticatedUserId();
+    const updatedMenu = await removeAllRecipesFromMenuFromDAL(userId);
 
-    // Verify user has a menu
-    const menu = await getUserMenuFromDAL(userId);
-    if (!menu) {
-      throw new NotFoundError("Menu");
-    }
-
-    await deleteMenuFromDAL(userId);
-
-    // TODO: Remove all recipe ingredients from user's shopping list when menu is deleted
-
-    return { success: true };
+    return updatedMenu;
   } catch (error) {
     if (error instanceof AuthError || error instanceof NotFoundError) {
       throw error; // Re-throw known errors as-is
     }
-    throw new ServerError("Failed to delete menu");
   }
 }

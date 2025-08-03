@@ -5,6 +5,7 @@ import {
   Unit as PrismaUnit,
   RecipeMenu as PrismaRecipeMenu,
   RecipeMenuEntry as PrismaRecipeMenuEntry,
+  MenuHistoryEntry as PrismaMenuHistoryEntry,
 } from "@prisma/client";
 
 // Relevance information for recipes when filters are applied
@@ -71,8 +72,11 @@ export interface GetRecipesDALParams {
 // Menu types
 export type RecipeMenu = PrismaRecipeMenu & {
   entries: RecipeMenuEntry[];
+  history: MenuHistoryEntry[];
 };
 
 export type RecipeMenuEntry = PrismaRecipeMenuEntry & {
   recipe?: Recipe;
 };
+
+export type MenuHistoryEntry = PrismaMenuHistoryEntry;
