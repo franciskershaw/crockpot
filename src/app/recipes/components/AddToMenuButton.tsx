@@ -261,7 +261,7 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
                   addToMenuMutation.isPending ||
                   removeFromMenuMutation.isPending
                 }
-                className="flex items-center justify-center h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center h-8 w-8 text-green-600 hover:text-green-700 rounded-full hover:bg-green-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Check className="h-4 w-4" />
                 <span className="sr-only">
