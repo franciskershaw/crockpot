@@ -1,24 +1,47 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import {
   groupIngredientsByCategory,
   getCategoryIcon,
   type Ingredient,
 } from "../helpers/helpers";
+import { useRecipeServes } from "../hooks/useRecipeServes";
+import { ServesControl } from "./ServesControl";
 
 interface IngredientsSectionProps {
   ingredients: Ingredient[];
-  isMobile?: boolean;
+  originalServes: number;
+  recipeId: string;
 }
 
 export function IngredientsSection({
   ingredients,
-  isMobile = false,
+  originalServes,
+  recipeId,
 }: IngredientsSectionProps) {
-  const ingredientsByCategory = groupIngredientsByCategory(ingredients);
+  const { effectiveServes, scaledIngredients, adjustServes, canAdjustServes } =
+    useRecipeServes({
+      recipeId,
+      originalServes,
+      ingredients,
+    });
 
-  if (isMobile) {
-    return (
-      <div className="space-y-4">
+  const ingredientsByCategory = groupIngredientsByCategory(scaledIngredients);
+
+  return (
+    <div className="space-y-4 lg:space-y-0">
+      {/* Mobile: Serves control separate from ingredient cards */}
+      <div className="lg:hidden">
+        <ServesControl
+          serves={effectiveServes}
+          onAdjustServes={adjustServes}
+          canAdjust={canAdjustServes}
+        />
+      </div>
+
+      {/* Mobile: Individual cards for each category */}
+      <div className="space-y-4 lg:hidden">
         {Object.entries(ingredientsByCategory).map(
           ([categoryName, ingredients]) => {
             const IconComponent = getCategoryIcon(ingredients);
@@ -36,11 +59,7 @@ export function IngredientsSection({
 
                   <div className="space-y-2">
                     {ingredients.map((ingredient, index) => (
-                      <IngredientItem
-                        key={index}
-                        ingredient={ingredient}
-                        size="mobile"
-                      />
+                      <IngredientItem key={index} ingredient={ingredient} />
                     ))}
                   </div>
                 </CardContent>
@@ -49,59 +68,52 @@ export function IngredientsSection({
           }
         )}
       </div>
-    );
-  }
 
-  return (
-    <Card>
-      <CardContent className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Ingredients ({ingredients.length})
-        </h2>
+      {/* Desktop: Single card with serves control, title, and sections */}
+      <Card className="hidden lg:block">
+        <CardContent className="p-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Ingredients ({scaledIngredients.length})
+          </h2>
 
-        <div className="space-y-6">
-          {Object.entries(ingredientsByCategory).map(
-            ([categoryName, ingredients]) => {
-              const IconComponent = getCategoryIcon(ingredients);
+          <ServesControl
+            serves={effectiveServes}
+            onAdjustServes={adjustServes}
+            canAdjust={canAdjustServes}
+          />
 
-              return (
-                <div key={categoryName} className="space-y-3">
-                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2">
-                    <IconComponent className="w-5 h-5 text-orange-500" />
-                    {categoryName}
-                    <span className="text-sm font-normal text-gray-500">
-                      ({ingredients.length})
-                    </span>
-                  </h3>
+          <div className="space-y-6">
+            {Object.entries(ingredientsByCategory).map(
+              ([categoryName, ingredients]) => {
+                const IconComponent = getCategoryIcon(ingredients);
 
-                  <div className="space-y-2">
-                    {ingredients.map((ingredient, index) => (
-                      <IngredientItem
-                        key={index}
-                        ingredient={ingredient}
-                        size="desktop"
-                      />
-                    ))}
+                return (
+                  <div key={categoryName} className="space-y-3">
+                    <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2 border-b border-gray-200 pb-2">
+                      <IconComponent className="w-5 h-5 text-orange-500" />
+                      {categoryName}
+                      <span className="text-sm font-normal text-gray-500">
+                        ({ingredients.length})
+                      </span>
+                    </h3>
+
+                    <div className="space-y-2">
+                      {ingredients.map((ingredient, index) => (
+                        <IngredientItem key={index} ingredient={ingredient} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              );
-            }
-          )}
-        </div>
-      </CardContent>
-    </Card>
+                );
+              }
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
-function IngredientItem({
-  ingredient,
-  size,
-}: {
-  ingredient: Ingredient;
-  size: "mobile" | "desktop";
-}) {
-  const isMobile = size === "mobile";
-
+function IngredientItem({ ingredient }: { ingredient: Ingredient }) {
   // Format quantity to show decimals only when needed
   const formattedQuantity =
     ingredient.quantity % 1 === 0
@@ -109,35 +121,17 @@ function IngredientItem({
       : ingredient.quantity.toString();
 
   return (
-    <div
-      className={`flex items-${isMobile ? "center" : "baseline"} gap-2 ${
-        isMobile
-          ? "p-2 rounded hover:bg-gray-50"
-          : "px-3 py-2 rounded-lg hover:bg-gray-50"
-      } transition-colors`}
-    >
-      <div className={"flex items-baseline gap-1 min-w-0 flex-1"}>
-        <span
-          className={`font-semibold text-gray-900 ${
-            isMobile ? "text-sm shrink-0" : "min-w-0 flex-shrink-0"
-          }`}
-        >
+    <div className="flex items-center lg:items-baseline gap-2 p-2 lg:px-3 lg:py-2 rounded lg:rounded-lg hover:bg-gray-50 transition-colors">
+      <div className="flex items-baseline gap-1 min-w-0 flex-1">
+        <span className="font-semibold text-gray-900 text-sm lg:text-base shrink-0 lg:min-w-0 lg:flex-shrink-0">
           {formattedQuantity}
         </span>
         {ingredient.unit && (
-          <span
-            className={`text-gray-600 ${
-              isMobile ? "text-xs shrink-0" : "text-sm flex-shrink-0"
-            }`}
-          >
+          <span className="text-gray-600 text-xs lg:text-sm shrink-0 lg:flex-shrink-0">
             {ingredient.unit.abbreviation}
           </span>
         )}
-        <span
-          className={`text-gray-700 ${
-            isMobile ? "text-sm truncate" : "min-w-0"
-          }`}
-        >
+        <span className="text-gray-700 text-sm lg:text-base truncate lg:min-w-0">
           {ingredient.item?.name}
         </span>
       </div>

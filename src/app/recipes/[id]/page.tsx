@@ -41,8 +41,12 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="ingredients">
-              <IngredientsSection ingredients={recipe.ingredients} isMobile />
+                        <TabsContent value="ingredients">
+              <IngredientsSection 
+                ingredients={recipe.ingredients}
+                originalServes={recipe.serves}
+                recipeId={recipe.id}
+              />
             </TabsContent>
 
             <TabsContent value="instructions">
@@ -62,7 +66,11 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
           {/* Ingredients Sidebar */}
           <div className="lg:col-span-4">
             <div className="sticky top-8">
-              <IngredientsSection ingredients={recipe.ingredients} />
+              <IngredientsSection
+                ingredients={recipe.ingredients}
+                originalServes={recipe.serves}
+                recipeId={recipe.id}
+              />
             </div>
           </div>
 
