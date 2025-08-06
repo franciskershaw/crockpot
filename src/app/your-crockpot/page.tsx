@@ -1,12 +1,40 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 const YourCrockpotPage = () => {
   return (
-    <div className="container mx-auto px-2 py-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl sm:text-3xl font-bold">Your Crockpot</h1>
+    <div className="container mx-auto px-2 py-6 max-w-7xl">
+      <div className="flex flex-col gap-2 mb-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+          Your Crockpot
+        </h1>
         <p className="text-gray-600">
           Manage your recipes, favorites, and meal planning
         </p>
       </div>
+
+      {/* Desktop Layout: Side-by-side */}
+
+      {/* Main Content Area */}
+
+      <Tabs defaultValue="menu" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="menu">Menu</TabsTrigger>
+          <TabsTrigger value="favorites">Favorites</TabsTrigger>
+          <TabsTrigger value="my-recipes">My Recipes</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="menu">
+          <div>Menu</div>
+        </TabsContent>
+
+        <TabsContent value="favorites">
+          <div>Favorites</div>
+        </TabsContent>
+
+        <TabsContent value="my-recipes">
+          <div>My Recipes</div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

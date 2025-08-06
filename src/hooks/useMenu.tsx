@@ -44,7 +44,7 @@ export const useRemoveFromMenuMutation = () => {
 export const useGetMenu = () => {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" && !!session?.user;
-  
+
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["menu"],
     queryFn: getUserMenu,
