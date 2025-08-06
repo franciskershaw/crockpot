@@ -6,6 +6,7 @@ import {
   getUserMenu,
 } from "@/actions/menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 export const useAddToMenuMutation = () => {
@@ -41,9 +42,13 @@ export const useRemoveFromMenuMutation = () => {
 };
 
 export const useGetMenu = () => {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && !!session?.user;
+  
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["menu"],
     queryFn: getUserMenu,
+    enabled: isAuthenticated, // Only fetch menu for authenticated users
   });
 
   return {
