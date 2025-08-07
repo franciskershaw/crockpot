@@ -70,13 +70,13 @@ export interface GetRecipesDALParams {
 }
 
 // Menu types
-export type RecipeMenu = PrismaRecipeMenu & {
+export type RecipeMenu = Omit<PrismaRecipeMenu, "entries"> & {
   entries: RecipeMenuEntry[];
   history: MenuHistoryEntry[];
 };
 
 export type RecipeMenuEntry = PrismaRecipeMenuEntry & {
-  recipe?: Recipe;
+  recipe: Recipe;
 };
 
 export type MenuHistoryEntry = PrismaMenuHistoryEntry;

@@ -7,6 +7,7 @@ import NoResults from "./NoResults";
 import type { Recipe } from "@/data/types";
 import { useFilters } from "../context/FilterProvider";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters } = useFilters();
@@ -88,7 +89,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   }
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <ResponsiveRecipeGrid>
       {isLoading || !isFetched
         ? Array.from({ length: 6 }).map((_, i) => (
             <RecipeCard key={i} skeleton />
@@ -102,6 +103,6 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
             />
           ))}
       <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>
-    </div>
+    </ResponsiveRecipeGrid>
   );
 }

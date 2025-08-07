@@ -1,6 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import RecipeMenu from "./components/RecipeMenu";
+import { getUserMenu } from "@/actions/menu";
 
-const YourCrockpotPage = () => {
+const YourCrockpotPage = async () => {
+  const menu = await getUserMenu();
+
   return (
     <div className="container mx-auto px-2 py-6 max-w-7xl">
       <div className="flex flex-col gap-2 mb-4">
@@ -12,23 +16,25 @@ const YourCrockpotPage = () => {
         </p>
       </div>
 
-      {/* Desktop Layout: Side-by-side */}
-
-      {/* Main Content Area */}
-
       <Tabs defaultValue="menu" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="menu">Menu</TabsTrigger>
-          <TabsTrigger value="favorites">Favorites</TabsTrigger>
-          <TabsTrigger value="my-recipes">My Recipes</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 mb-2">
+          <TabsTrigger className="text-base" value="menu">
+            Menu
+          </TabsTrigger>
+          <TabsTrigger className="text-base" value="favourites">
+            Favourites
+          </TabsTrigger>
+          <TabsTrigger className="text-base" value="my-recipes">
+            My Recipes
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="menu">
-          <div>Menu</div>
+          <RecipeMenu menu={menu} />
         </TabsContent>
 
-        <TabsContent value="favorites">
-          <div>Favorites</div>
+        <TabsContent value="favourites">
+          <div>Favourites</div>
         </TabsContent>
 
         <TabsContent value="my-recipes">
