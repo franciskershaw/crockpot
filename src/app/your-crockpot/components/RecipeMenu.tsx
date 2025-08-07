@@ -3,6 +3,9 @@ import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGr
 import type { RecipeMenu } from "@/data/types";
 
 const RecipeMenu = ({ menu }: { menu: RecipeMenu | null }) => {
+  if (!menu || menu.entries.length === 0) {
+    return <div className="text-center">Empty state - improve this later</div>;
+  }
   return (
     <div className="md:grid md:grid-cols-3 md:gap-4">
       <div className="hidden md:block col-span-1">Shopping list on desktop</div>
