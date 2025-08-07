@@ -21,6 +21,7 @@ import {
   AuthError,
   ValidationError,
 } from "@/lib/errors";
+import { revalidatePath } from "next/cache";
 
 // Get user's menu with recipes
 export async function getUserMenu() {
@@ -54,7 +55,7 @@ export async function addRecipeToMenu(input: AddToMenuInput) {
     );
 
     // TODO: Update user's shopping list based on the added recipe and serving size
-
+    revalidatePath("/your-crockpot");
     return result;
   } catch (error) {
     if (
@@ -94,7 +95,7 @@ export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
     );
 
     // TODO: Remove recipe ingredients from user's shopping list or adjust quantities
-
+    revalidatePath("/your-crockpot");
     return updatedMenu;
   } catch (error) {
     if (
@@ -114,6 +115,7 @@ export async function removeAllRecipesFromMenu() {
     const userId = await getAuthenticatedUserId();
     const updatedMenu = await removeAllRecipesFromMenuFromDAL(userId);
 
+    revalidatePath("/your-crockpot");
     return updatedMenu;
   } catch (error) {
     if (error instanceof AuthError || error instanceof NotFoundError) {
