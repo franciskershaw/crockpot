@@ -6,6 +6,8 @@ import {
   RecipeMenu as PrismaRecipeMenu,
   RecipeMenuEntry as PrismaRecipeMenuEntry,
   MenuHistoryEntry as PrismaMenuHistoryEntry,
+  ShoppingList as PrismaShoppingList,
+  ShoppingListItem as PrismaShoppingListItem,
 } from "@prisma/client";
 
 // Relevance information for recipes when filters are applied
@@ -80,3 +82,10 @@ export type RecipeMenuEntry = PrismaRecipeMenuEntry & {
 };
 
 export type MenuHistoryEntry = PrismaMenuHistoryEntry;
+
+// Shopping list types
+export type ShoppingList = PrismaShoppingList & {
+  items: ShoppingListItem[];
+};
+
+export type ShoppingListItem = PrismaShoppingListItem;

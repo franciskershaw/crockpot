@@ -54,7 +54,6 @@ export async function addRecipeToMenu(input: AddToMenuInput) {
       validatedInput.serves
     );
 
-    // TODO: Update user's shopping list based on the added recipe and serving size
     revalidatePath("/your-crockpot");
     return result;
   } catch (error) {
@@ -94,7 +93,6 @@ export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
       validatedInput.recipeId
     );
 
-    // TODO: Remove recipe ingredients from user's shopping list or adjust quantities
     revalidatePath("/your-crockpot");
     return updatedMenu;
   } catch (error) {

@@ -26,11 +26,11 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   // Relations
-  createdRecipes     Recipe[]       @relation("RecipeCreator")
-  favouriteRecipes   Recipe[]       @relation("UserFavourites", fields: [favouriteRecipeIds], references: [id])
-  favouriteRecipeIds String[]       @db.ObjectId
-  recipeMenu         RecipeMenu?    @relation("UserMenu")
-  shoppingLists      ShoppingList[]
+  createdRecipes     Recipe[]      @relation("RecipeCreator")
+  favouriteRecipes   Recipe[]      @relation("UserFavourites", fields: [favouriteRecipeIds], references: [id])
+  favouriteRecipeIds String[]      @db.ObjectId
+  recipeMenu         RecipeMenu?   @relation("UserMenu")
+  shoppingList       ShoppingList?
 }
 
 // Item Categories with default allowed units
@@ -114,7 +114,7 @@ model RecipeMenu {
 // Shopping List collection
 model ShoppingList {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId
+  userId    String   @unique @db.ObjectId
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -157,10 +157,10 @@ type RecipeMenuEntry {
 }
 
 type MenuHistoryEntry {
-  recipeId String @db.ObjectId
-  timesAddedToMenu Int
-  firstAddedToMenu DateTime
-  lastAddedToMenu DateTime
+  recipeId            String   @db.ObjectId
+  timesAddedToMenu    Int
+  firstAddedToMenu    DateTime
+  lastAddedToMenu     DateTime
   lastRemovedFromMenu DateTime
 }
 

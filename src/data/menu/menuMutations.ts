@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { RecipeMenu, MenuHistoryEntry } from "../types";
+import { rebuildShoppingListForUser } from "../shopping-list/shoppingList";
 
 // Helper function to update history when adding or removing a recipe from menu
 function updateHistory(
@@ -102,6 +103,9 @@ export async function addRecipeToMenu(
     },
   });
 
+  // Rebuild shopping list based on the updated menu
+  await rebuildShoppingListForUser(userId);
+
   return { menu: updatedMenu as RecipeMenu, wasUpdate };
 }
 
@@ -137,6 +141,9 @@ export async function removeRecipeFromMenu(
     },
   });
 
+  // Rebuild shopping list based on the updated menu
+  await rebuildShoppingListForUser(userId);
+
   return updatedMenu as RecipeMenu;
 }
 
@@ -165,5 +172,9 @@ export async function removeAllRecipesFromMenu(
       updatedAt: new Date(),
     },
   });
+
+  // Rebuild shopping list based on the updated menu
+  await rebuildShoppingListForUser(userId);
+
   return updatedMenu as RecipeMenu;
 }
