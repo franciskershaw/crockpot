@@ -22,6 +22,20 @@ import {
   ValidationError,
 } from "@/lib/errors";
 import { revalidatePath } from "next/cache";
+import {
+  toggleObtainedForItem as toggleObtainedForItemDAL,
+  removeItemFromShoppingList as removeItemFromShoppingListDAL,
+  getUserShoppingListWithDetails,
+  updateShoppingListItemQuantity as updateShoppingListItemQuantityDAL,
+} from "@/data/shopping-list/shoppingList";
+import {
+  removeShoppingListItemSchema,
+  toggleObtainedSchema,
+  type RemoveShoppingListItemInput,
+  type ToggleObtainedInput,
+  updateShoppingListItemQuantitySchema,
+  type UpdateShoppingListItemQuantityInput,
+} from "@/lib/validations";
 
 // Get user's menu with recipes
 export async function getUserMenu() {
@@ -119,5 +133,73 @@ export async function removeAllRecipesFromMenu() {
     if (error instanceof AuthError || error instanceof NotFoundError) {
       throw error; // Re-throw known errors as-is
     }
+  }
+}
+
+// Shopping list actions
+export async function getShoppingList() {
+  const userId = await getAuthenticatedUserId();
+  return await getUserShoppingListWithDetails(userId);
+}
+
+export async function toggleObtained(input: ToggleObtainedInput) {
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validated = validateInput(toggleObtainedSchema, input);
+    const updated = await toggleObtainedForItemDAL(
+      userId,
+      validated.itemId,
+      validated.unitId
+    );
+    revalidatePath("/your-crockpot");
+    return updated;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError) {
+      throw error;
+    }
+    throw new ServerError("Failed to update shopping list");
+  }
+}
+
+export async function removeShoppingListItem(
+  input: RemoveShoppingListItemInput
+) {
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validated = validateInput(removeShoppingListItemSchema, input);
+    const updated = await removeItemFromShoppingListDAL(
+      userId,
+      validated.itemId,
+      validated.unitId
+    );
+    revalidatePath("/your-crockpot");
+    return updated;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError) {
+      throw error;
+    }
+    throw new ServerError("Failed to update shopping list");
+  }
+}
+
+export async function updateShoppingListItemQuantity(
+  input: UpdateShoppingListItemQuantityInput
+) {
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validated = validateInput(updateShoppingListItemQuantitySchema, input);
+    const updated = await updateShoppingListItemQuantityDAL(
+      userId,
+      validated.itemId,
+      validated.unitId ?? null,
+      validated.quantity
+    );
+    revalidatePath("/your-crockpot");
+    return updated;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError) {
+      throw error;
+    }
+    throw new ServerError("Failed to update shopping list");
   }
 }

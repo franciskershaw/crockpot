@@ -2,6 +2,7 @@ import {
   Recipe as PrismaRecipe,
   RecipeCategory as PrismaRecipeCategory,
   Item as PrismaItem,
+  ItemCategory as PrismaItemCategory,
   Unit as PrismaUnit,
   RecipeMenu as PrismaRecipeMenu,
   RecipeMenuEntry as PrismaRecipeMenuEntry,
@@ -54,6 +55,7 @@ export type Recipe = PrismaRecipe & {
 
 export type RecipeCategory = PrismaRecipeCategory;
 export type Item = PrismaItem;
+export type ItemCategory = PrismaItemCategory;
 
 export interface RecipeFilters {
   query?: string;
@@ -89,3 +91,12 @@ export type ShoppingList = PrismaShoppingList & {
 };
 
 export type ShoppingListItem = PrismaShoppingListItem;
+
+export type PopulatedShoppingListItem = ShoppingListItem & {
+  item: Item & { category: ItemCategory };
+  unit?: PrismaUnit | null;
+};
+
+export type ShoppingListWithDetails = Omit<ShoppingList, "items"> & {
+  items: PopulatedShoppingListItem[];
+};

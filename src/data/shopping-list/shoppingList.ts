@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import type { ShoppingList } from "../types";
+import type { ShoppingList, ShoppingListWithDetails } from "../types";
+//
 
 /**
  * Rebuilds a user's shopping list based on their current menu entries.
@@ -17,11 +18,7 @@ export async function rebuildShoppingListForUser(
     // Upsert an empty shopping list if there's no menu or entries
     const emptyList = await prisma.shoppingList.upsert({
       where: { userId },
-      create: {
-        userId,
-        name: "My Shopping List",
-        items: [],
-      },
+      create: { userId, items: [] },
       update: {
         items: [],
         updatedAt: new Date(),
@@ -79,11 +76,7 @@ export async function rebuildShoppingListForUser(
   // Upsert the shopping list with aggregated items
   const list = await prisma.shoppingList.upsert({
     where: { userId },
-    create: {
-      userId,
-      name: "My Shopping List",
-      items,
-    },
+    create: { userId, items },
     update: {
       items,
       updatedAt: new Date(),
@@ -92,3 +85,101 @@ export async function rebuildShoppingListForUser(
 
   return list as ShoppingList;
 }
+
+export async function getUserShoppingListWithDetails(
+  userId: string
+): Promise<ShoppingListWithDetails | null> {
+  const list = await prisma.shoppingList.findUnique({ where: { userId } });
+  if (!list) return null;
+
+  // Load item and unit details
+  const itemIds = list.items.map((i) => i.itemId);
+  const unitIds = list.items.map((i) => i.unitId).filter(Boolean) as string[];
+
+  const [items, units] = await Promise.all([
+    prisma.item.findMany({
+      where: { id: { in: itemIds } },
+      include: { category: true },
+    }),
+    unitIds.length
+      ? prisma.unit.findMany({ where: { id: { in: unitIds } } })
+      : Promise.resolve([] as { id: string }[]),
+  ]);
+
+  const itemsMap = new Map(items.map((i) => [i.id, i]));
+  const unitsMap = new Map(units.map((u) => [u.id, u]));
+
+  return {
+    ...list,
+    items: list.items.map((i) => ({
+      ...i,
+      item: itemsMap.get(i.itemId)!,
+      unit: i.unitId ? unitsMap.get(i.unitId) || null : null,
+    })),
+  } as ShoppingListWithDetails;
+}
+
+export async function toggleObtainedForItem(
+  userId: string,
+  itemId: string,
+  unitId?: string | null
+): Promise<ShoppingList> {
+  const list = await prisma.shoppingList.findUnique({ where: { userId } });
+  if (!list) return await prisma.shoppingList.create({ data: { userId, items: [] } });
+
+  const keyMatches = (i: { itemId: string; unitId?: string | null }) =>
+    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null);
+
+  const nextItems = list.items.map((i) =>
+    keyMatches(i) ? { ...i, obtained: !i.obtained } : i
+  );
+
+  const updated = await prisma.shoppingList.update({
+    where: { userId },
+    data: { items: nextItems, updatedAt: new Date() },
+  });
+  return updated as ShoppingList;
+}
+
+export async function removeItemFromShoppingList(
+  userId: string,
+  itemId: string,
+  unitId?: string | null
+): Promise<ShoppingList> {
+  const list = await prisma.shoppingList.findUnique({ where: { userId } });
+  if (!list) return await prisma.shoppingList.create({ data: { userId, items: [] } });
+
+  const keyMatches = (i: { itemId: string; unitId?: string | null }) =>
+    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null);
+
+  const nextItems = list.items.filter((i) => !keyMatches(i));
+
+  const updated = await prisma.shoppingList.update({
+    where: { userId },
+    data: { items: nextItems, updatedAt: new Date() },
+  });
+  return updated as ShoppingList;
+}
+
+export async function updateShoppingListItemQuantity(
+  userId: string,
+  itemId: string,
+  unitId: string | null,
+  quantity: number
+): Promise<ShoppingList> {
+  const list = await prisma.shoppingList.findUnique({ where: { userId } });
+  if (!list) return await prisma.shoppingList.create({ data: { userId, items: [] } });
+
+  const nextItems = list.items.map((i) =>
+    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null)
+      ? { ...i, quantity }
+      : i
+  );
+
+  const updated = await prisma.shoppingList.update({
+    where: { userId },
+    data: { items: nextItems, updatedAt: new Date() },
+  });
+  return updated as ShoppingList;
+}
+
