@@ -29,7 +29,7 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
         {/* Mobile and Tablet: Use Tabs */}
         <div className="lg:hidden">
           <Tabs defaultValue="ingredients" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="ingredients" className="text-sm sm:text-base">
                 Ingredients ({recipe.ingredients.length})
               </TabsTrigger>
@@ -41,8 +41,8 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
               </TabsTrigger>
             </TabsList>
 
-                        <TabsContent value="ingredients">
-              <IngredientsSection 
+            <TabsContent value="ingredients">
+              <IngredientsSection
                 ingredients={recipe.ingredients}
                 originalServes={recipe.serves}
                 recipeId={recipe.id}

@@ -17,7 +17,7 @@ export function ServesControl({
   if (!canAdjust) return null;
 
   return (
-    <div className="flex items-center justify-between lg:justify-start lg:gap-3 py-3 px-4 lg:py-0 lg:px-0 lg:mb-4 bg-gray-50 lg:bg-transparent rounded-lg lg:rounded-none border lg:border-none border-gray-200">
+    <div className="flex items-center justify-between mt-2 md:mt-4 lg:justify-start lg:gap-3 py-3 px-4 lg:py-0 lg:px-0 lg:mb-4 bg-gray-50 lg:bg-transparent rounded-lg lg:rounded-none border lg:border-none border-gray-200">
       <div className="flex items-center gap-2">
         <Users className="w-4 h-4 text-orange-500" />
         <span className="text-sm font-medium text-gray-700 lg:text-gray-600">
