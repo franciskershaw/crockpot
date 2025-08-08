@@ -100,6 +100,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
               recipe={recipe}
               priority={index < 6} // First 6 items get priority
               skeleton={false}
+              fromPage="/recipes"
             />
           ))}
       <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>

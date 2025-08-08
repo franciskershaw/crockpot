@@ -32,6 +32,7 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
               key={entry.recipeId}
               recipe={entry.recipe}
               priority={index < 6}
+              fromPage="/your-crockpot"
             />
           ))}
         </ResponsiveRecipeGrid>

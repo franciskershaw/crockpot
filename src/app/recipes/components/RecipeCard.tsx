@@ -14,10 +14,12 @@ export default function RecipeCard({
   recipe,
   priority = false,
   skeleton = false,
+  fromPage,
 }: {
   recipe?: Recipe;
   priority?: boolean;
   skeleton?: boolean;
+  fromPage?: string;
 }) {
   const { data: session, status } = useSession();
 
@@ -225,7 +227,9 @@ export default function RecipeCard({
   // Wrap in Link with proper constraints and scroll position saving
   return (
     <Link
-      href={`/recipes/${recipe.id}`}
+      href={`/recipes/${recipe.id}?from=${encodeURIComponent(
+        fromPage || window.location.pathname
+      )}`}
       className="block w-full min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
       onClick={handleRecipeClick}
     >

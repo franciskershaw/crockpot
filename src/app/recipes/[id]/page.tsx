@@ -7,8 +7,14 @@ import { InstructionsSection } from "./components/InstructionsSection";
 import { NotesSection } from "./components/NotesSection";
 import { BackButton } from "./components/BackButton";
 
-const RecipePage = async ({ params }: { params: { id: string } }) => {
+interface RecipePageProps {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
+}
+
+const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
   const { id } = await params;
+  const { from } = await searchParams;
 
   const recipe = await getRecipeById(id);
 
@@ -21,7 +27,7 @@ const RecipePage = async ({ params }: { params: { id: string } }) => {
       {/* Hero Section with Actions */}
       <div className="relative">
         <RecipeHero recipe={recipe} />
-        <BackButton />
+        <BackButton from={from} />
       </div>
 
       {/* Main Content - Responsive Layout */}
