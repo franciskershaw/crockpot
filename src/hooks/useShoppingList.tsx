@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import type { Item, ShoppingListWithDetails } from "@/data/types";
 import { useMemo } from "react";
+import { WATER_ITEM_ID } from "@/data/items/getItems";
 
 export function useGetShoppingList(
   initialData?: ShoppingListWithDetails | null
@@ -150,6 +151,9 @@ export function useShoppingListCategories(
     );
     const reduced = (shoppingList?.items ?? []).reduce(
       (acc, listItem) => {
+        // Skip water items
+        if (listItem.itemId === WATER_ITEM_ID) return acc;
+
         const itemRecord = listItem.item ?? catalogById.get(listItem.itemId);
         const category = itemRecord?.category;
         if (!category) return acc; // skip until relations load; prevents crashes
@@ -190,7 +194,10 @@ export function useShoppingListCategories(
     };
   }, [shoppingList?.items, catalogItems]);
 
-  const categoryIds = Object.keys(categories);
+  // Sort category IDs by category ID for consistent ordering
+  const categoryIds = Object.keys(categories).sort((a, b) =>
+    a.localeCompare(b)
+  );
 
   return { grouped, categories, categoryIds };
 }
