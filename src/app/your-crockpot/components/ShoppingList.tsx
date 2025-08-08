@@ -17,14 +17,19 @@ import {
   useShoppingListCategories,
   useGetShoppingList,
 } from "@/hooks/useShoppingList";
-import type { ShoppingListWithDetails } from "@/data/types";
+import type { Item, ShoppingListWithDetails } from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
+import { SearchableSelect } from "@/components/ui/select";
 
 interface ShoppingListProps {
   initialData?: ShoppingListWithDetails | null;
+  items: Item[];
 }
 
-export default function ShoppingList({ initialData }: ShoppingListProps) {
+export default function ShoppingList({
+  initialData,
+  items,
+}: ShoppingListProps) {
   const { data: shoppingList } = useGetShoppingList(initialData);
   const toggleObtained = useToggleObtainedMutation();
   const removeItem = useRemoveShoppingListItemMutation();
@@ -40,6 +45,13 @@ export default function ShoppingList({ initialData }: ShoppingListProps) {
         <ShoppingBasket className="h-6 w-6 text-gray-600" />
         <h2 className="font-semibold text-gray-900">Shopping List</h2>
       </div>
+
+      <SearchableSelect
+        options={items.map((i) => ({
+          value: i.id,
+          label: i.name,
+        }))}
+      />
 
       <Accordion type="multiple" className="w-full divide-y">
         {categoryIds.map((categoryId) => {

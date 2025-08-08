@@ -3,14 +3,16 @@ import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGr
 import type { RecipeMenu } from "@/data/types";
 import ShoppingList from "./ShoppingList";
 import { getShoppingList } from "@/actions/menu";
+import { getItems } from "@/actions/items";
 
 const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
   const shoppingList = await getShoppingList();
+  const items = await getItems();
 
   return (
     <div className="md:grid md:grid-cols-3 md:gap-4">
       <div className="hidden md:block col-span-1">
-        <ShoppingList initialData={shoppingList} />
+        <ShoppingList initialData={shoppingList} items={items} />
       </div>
       <div className="col-span-2">
         <ResponsiveRecipeGrid>
