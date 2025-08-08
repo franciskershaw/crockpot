@@ -1,31 +1,58 @@
 "use client";
-import { ChefHat } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { getRandomRecipes } from "@/actions/recipes";
 import Image from "next/image";
-import type { Recipe } from "@/data/types";
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface EmptyStateWithBackgroundProps {
   children: ReactNode;
   backgroundOpacity?: number;
-  backgroundCount?: number;
   className?: string;
 }
 
 export default function EmptyStateWithBackground({
   children,
   backgroundOpacity = 10,
-  backgroundCount = 12,
   className = "",
 }: EmptyStateWithBackgroundProps) {
-  // Fetch random recipes for background with stable query key
-  const { data: backgroundRecipes = [] } = useQuery({
-    queryKey: ["randomRecipes", "emptyState"],
-    queryFn: () => getRandomRecipes(backgroundCount),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
+  // Static recipe images
+  const staticRecipes = [
+    {
+      id: 1,
+      name: "Bean and Haloumi Tacos",
+      image: "/recipe1.webp",
+      timeInMinutes: 30,
+    },
+    {
+      id: 2,
+      name: "Veggie Fajitas",
+      image: "/recipe2.webp",
+      timeInMinutes: 30,
+    },
+    {
+      id: 3,
+      name: "Pasta Carbonara",
+      image: "/recipe3.webp",
+      timeInMinutes: 30,
+    },
+    {
+      id: 4,
+      name: "Chicken Tikka Masala",
+      image: "/Recipe4.webp",
+      timeInMinutes: 30,
+    },
+    {
+      id: 5,
+      name: "Beef and Broccoli",
+      image: "/recipe5.webp",
+      timeInMinutes: 30,
+    },
+    {
+      id: 6,
+      name: "Beef and Broccoli",
+      image: "/recipe6.webp",
+      timeInMinutes: 30,
+    },
+  ];
 
   // Map opacity number to Tailwind class
   const getOpacityClass = (opacity: number) => {
@@ -51,25 +78,19 @@ export default function EmptyStateWithBackground({
           getOpacityClass(backgroundOpacity)
         )}
       >
-        {backgroundRecipes.map((recipe: Recipe, index) => (
+        {staticRecipes.map((recipe) => (
           <div
-            key={`${recipe.id}-${index}`}
+            key={`static-recipe-${recipe.id}`}
             className="bg-white rounded-lg overflow-hidden shadow-lg"
           >
             <div className="relative h-32 sm:h-48 bg-gray-200">
-              {recipe.image?.url ? (
-                <Image
-                  src={recipe.image.url}
-                  alt={recipe.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <ChefHat className="h-8 w-8 sm:h-16 sm:w-16 text-gray-400" />
-                </div>
-              )}
+              <Image
+                src={recipe.image}
+                alt={recipe.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              />
             </div>
             <div className="p-3 sm:p-4">
               <h3 className="font-semibold text-sm sm:text-lg truncate">
@@ -78,24 +99,6 @@ export default function EmptyStateWithBackground({
               <p className="text-xs sm:text-sm text-gray-600">
                 {recipe.timeInMinutes} mins
               </p>
-            </div>
-          </div>
-        ))}
-
-        {/* Fill remaining slots if we have fewer recipes */}
-        {Array.from({
-          length: Math.max(0, backgroundCount - backgroundRecipes.length),
-        }).map((_, index) => (
-          <div
-            key={`placeholder-${index}`}
-            className="bg-white rounded-lg overflow-hidden shadow-lg"
-          >
-            <div className="relative h-32 sm:h-48 bg-gray-200 flex items-center justify-center">
-              <ChefHat className="h-8 w-8 sm:h-16 sm:w-16 text-gray-400" />
-            </div>
-            <div className="p-3 sm:p-4">
-              <div className="h-4 sm:h-6 bg-gray-300 rounded mb-2"></div>
-              <div className="h-3 sm:h-4 bg-gray-300 rounded w-12 sm:w-16"></div>
             </div>
           </div>
         ))}

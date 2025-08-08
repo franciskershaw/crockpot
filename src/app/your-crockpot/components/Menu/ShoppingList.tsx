@@ -66,7 +66,7 @@ export default function ShoppingList({
         <h2 className="font-semibold text-gray-900">Shopping List</h2>
       </div>
 
-      <div className="p-4 border-b border-gray-200 sticky top-[52px] bg-white z-10 flex flex-col gap-4">
+      <div className="p-4 border-b border-gray-200 sticky top-[52px] bg-white z-10 flex flex-col">
         <Searchable
           options={items.map((i) => ({
             value: i.id,
@@ -103,7 +103,7 @@ export default function ShoppingList({
             ),
             // Clear Shopping List button (if shopping list has items)
             shoppingList?.items.length ? (
-              <div key="clear-shopping-list" className="flex-1">
+              <div key="clear-shopping-list" className="flex-1 mt-4">
                 <ClearShoppingListDialog />
               </div>
             ) : null,
