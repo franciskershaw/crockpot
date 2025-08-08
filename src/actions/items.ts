@@ -1,3 +1,5 @@
+"use server";
+
 import {
   getItems as getItemsFromDAL,
   getIngredients as getIngredientsFromDAL,
