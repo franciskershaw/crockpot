@@ -171,27 +171,6 @@ function SelectScrollDownButton({
   );
 }
 
-export interface SearchableSelectOption {
-  value: string;
-  label: string;
-  disabled?: boolean;
-}
-
-export interface SearchableSelectProps {
-  options: SearchableSelectOption[];
-  placeholder?: string;
-  emptyMessage?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
-  onSelect?: (option: SearchableSelectOption) => void;
-  disabled?: boolean;
-  className?: string;
-  inputClassName?: string;
-  contentClassName?: string;
-  maxHeight?: string;
-  label?: string;
-}
-
 export {
   Select,
   SelectContent,

@@ -21,6 +21,7 @@ import type { Item, ShoppingListWithDetails } from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
 import { useState } from "react";
 import AddItemEditor from "./AddItemEditor";
+import Searchable from "@/components/ui/searchable";
 
 interface ShoppingListProps {
   initialData?: ShoppingListWithDetails | null;
@@ -36,14 +37,8 @@ export default function ShoppingList({
   const removeItem = useRemoveShoppingListItemMutation();
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
 
-  const [selectedItem, setSelectedItem] = useState<Item | null>({
-    id: "extra",
-    name: "Extra",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    categoryId: "extra",
-    allowedUnitIds: [],
-  });
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [searchableValue, setSearchableValue] = useState("");
 
   const { grouped, categories, categoryIds } =
     useShoppingListCategories(shoppingList);
@@ -54,6 +49,35 @@ export default function ShoppingList({
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 text-lg">
         <ShoppingBasket className="h-6 w-6 text-gray-600" />
         <h2 className="font-semibold text-gray-900">Shopping List</h2>
+      </div>
+
+      <div className="p-4 border-b border-gray-200">
+        <Searchable
+          options={items.map((i) => ({
+            value: i.id,
+            label: i.name,
+          }))}
+          placeholder="Add extra items..."
+          emptyMessage="No items found"
+          value={searchableValue}
+          onValueChange={setSearchableValue}
+          onSelect={(selectedValue) => {
+            const selectedItem = items.find(
+              (item) => item.id === selectedValue
+            );
+            if (selectedItem) {
+              setSelectedItem(selectedItem);
+              setSearchableValue("");
+            }
+          }}
+          showAddNew={true}
+          addNewLabel="Add new item"
+          onAddNew={() => {
+            console.log("Add new item clicked");
+            // TODO: Open modal or navigate to add item page
+          }}
+          className="w-full"
+        />
       </div>
 
       {selectedItem && (
