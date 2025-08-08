@@ -20,9 +20,9 @@ export default function EmptyStateWithBackground({
   backgroundCount = 12,
   className = "",
 }: EmptyStateWithBackgroundProps) {
-  // Fetch random recipes for background
+  // Fetch random recipes for background with stable query key
   const { data: backgroundRecipes = [] } = useQuery({
-    queryKey: ["randomRecipes", backgroundCount],
+    queryKey: ["randomRecipes", "emptyState"],
     queryFn: () => getRandomRecipes(backgroundCount),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -47,7 +47,7 @@ export default function EmptyStateWithBackground({
       {/* Background grid of faded recipe cards */}
       <div
         className={cn(
-          "absolute inset-0 grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 pointer-events-none",
+          "absolute inset-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 pointer-events-none",
           getOpacityClass(backgroundOpacity)
         )}
       >
@@ -56,7 +56,7 @@ export default function EmptyStateWithBackground({
             key={`${recipe.id}-${index}`}
             className="bg-white rounded-lg overflow-hidden shadow-lg"
           >
-            <div className="relative h-48 bg-gray-200">
+            <div className="relative h-32 sm:h-48 bg-gray-200">
               {recipe.image?.url ? (
                 <Image
                   src={recipe.image.url}
@@ -67,13 +67,15 @@ export default function EmptyStateWithBackground({
                 />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  <ChefHat className="h-16 w-16 text-gray-400" />
+                  <ChefHat className="h-8 w-8 sm:h-16 sm:w-16 text-gray-400" />
                 </div>
               )}
             </div>
-            <div className="p-4">
-              <h3 className="font-semibold text-lg truncate">{recipe.name}</h3>
-              <p className="text-sm text-gray-600">
+            <div className="p-3 sm:p-4">
+              <h3 className="font-semibold text-sm sm:text-lg truncate">
+                {recipe.name}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600">
                 {recipe.timeInMinutes} mins
               </p>
             </div>
@@ -88,20 +90,20 @@ export default function EmptyStateWithBackground({
             key={`placeholder-${index}`}
             className="bg-white rounded-lg overflow-hidden shadow-lg"
           >
-            <div className="relative h-48 bg-gray-200 flex items-center justify-center">
-              <ChefHat className="h-16 w-16 text-gray-400" />
+            <div className="relative h-32 sm:h-48 bg-gray-200 flex items-center justify-center">
+              <ChefHat className="h-8 w-8 sm:h-16 sm:w-16 text-gray-400" />
             </div>
-            <div className="p-4">
-              <div className="h-6 bg-gray-300 rounded mb-2"></div>
-              <div className="h-4 bg-gray-300 rounded w-16"></div>
+            <div className="p-3 sm:p-4">
+              <div className="h-4 sm:h-6 bg-gray-300 rounded mb-2"></div>
+              <div className="h-3 sm:h-4 bg-gray-300 rounded w-12 sm:w-16"></div>
             </div>
           </div>
         ))}
       </div>
 
       {/* Overlay content */}
-      <div className="relative z-10 flex items-center justify-center min-h-[600px]">
-        <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 p-8 text-center space-y-6">
+      <div className="relative flex items-center justify-center min-h-[400px] md:min-h-[600px] pb-16 md:pb-0">
+        <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 p-6 md:p-8 text-center space-y-6">
           {children}
         </div>
       </div>
