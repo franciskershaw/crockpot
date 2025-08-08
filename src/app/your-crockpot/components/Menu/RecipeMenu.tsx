@@ -2,6 +2,7 @@ import RecipeCard from "@/app/recipes/components/RecipeCard";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
 import type { RecipeMenu } from "@/data/types";
 import ShoppingList from "./ShoppingList";
+import MobileShoppingListSheet from "./MobileShoppingListSheet";
 import { getShoppingList } from "@/actions/menu";
 import { getItems } from "@/actions/items";
 import { getUnits } from "@/actions/units";
@@ -13,6 +14,12 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
 
   return (
     <div className="md:grid md:grid-cols-3 md:gap-4">
+      {/* Mobile floating sheet */}
+      <MobileShoppingListSheet
+        initialData={shoppingList}
+        items={items}
+        units={units}
+      />
       <div className="hidden md:block col-span-1">
         <ShoppingList initialData={shoppingList} items={items} units={units} />
       </div>
