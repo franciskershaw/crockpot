@@ -18,22 +18,30 @@ import {
   useGetShoppingList,
   useAddManualShoppingListItemMutation,
 } from "@/hooks/useShoppingList";
-import type { Item, ShoppingListWithDetails, Unit } from "@/data/types";
+import type {
+  Item,
+  RecipeMenu,
+  ShoppingListWithDetails,
+  Unit,
+} from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
 import { useState } from "react";
 import AddItemEditor from "./AddItemEditor";
 import Searchable from "@/components/ui/searchable";
+import ClearMenuDialog from "./ClearMenuDialog";
 
 interface ShoppingListProps {
   initialData?: ShoppingListWithDetails | null;
   items: Item[];
   units: Unit[];
+  menu?: RecipeMenu | null;
 }
 
 export default function ShoppingList({
   initialData,
   items,
   units,
+  menu,
 }: ShoppingListProps) {
   const { data: shoppingList } = useGetShoppingList(initialData);
   const toggleObtained = useToggleObtainedMutation();
@@ -57,7 +65,7 @@ export default function ShoppingList({
         <h2 className="font-semibold text-gray-900">Shopping List</h2>
       </div>
 
-      <div className="p-4 border-b border-gray-200 sticky top-[52px] bg-white z-10">
+      <div className="p-4 border-b border-gray-200 sticky top-[52px] bg-white z-10 flex flex-col gap-4">
         <Searchable
           options={items.map((i) => ({
             value: i.id,
@@ -84,6 +92,10 @@ export default function ShoppingList({
           }}
           className="w-full"
         />
+
+        {!menu?.entries || menu.entries.length === 0 ? null : (
+          <ClearMenuDialog />
+        )}
       </div>
 
       {selectedItem && (
