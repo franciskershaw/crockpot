@@ -3,14 +3,14 @@ import TimeRangeFilter from "./filters/TimeRangeFilter";
 import CategoryFilter from "./filters/CategoryFilter";
 import IngredientFilter from "./filters/IngredientFilter";
 import { getRecipeCategories, getRecipeTimeRange } from "@/actions/recipes";
-import { getItems } from "@/actions/items";
+import { getIngredients } from "@/actions/items";
 import ClearFiltersButton from "./ClearFiltersButton";
 
 export default async function Filters() {
   const [categories, timeRange, ingredients] = await Promise.all([
     getRecipeCategories(),
     getRecipeTimeRange(),
-    getItems(),
+    getIngredients(),
   ]);
 
   return (

@@ -5,7 +5,7 @@ import {
   getRecipeTimeRange,
   getRecipeCategories,
 } from "@/actions/recipes";
-import { getItems } from "@/actions/items";
+import { getIngredients } from "@/actions/items";
 import {
   dehydrate,
   HydrationBoundary,
@@ -29,7 +29,7 @@ export default async function Recipes() {
   const [timeRange, categories, ingredients] = await Promise.all([
     getRecipeTimeRange(),
     getRecipeCategories(),
-    getItems(),
+    getIngredients(),
   ]);
 
   // Now prefetch with the same filters that the client will use
