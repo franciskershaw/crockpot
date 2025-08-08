@@ -4,15 +4,17 @@ import type { RecipeMenu } from "@/data/types";
 import ShoppingList from "./ShoppingList";
 import { getShoppingList } from "@/actions/menu";
 import { getItems } from "@/actions/items";
+import { getUnits } from "@/actions/units";
 
 const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
   const shoppingList = await getShoppingList();
   const items = await getItems();
+  const units = await getUnits();
 
   return (
     <div className="md:grid md:grid-cols-3 md:gap-4">
       <div className="hidden md:block col-span-1">
-        <ShoppingList initialData={shoppingList} items={items} />
+        <ShoppingList initialData={shoppingList} items={items} units={units} />
       </div>
       <div className="col-span-2">
         <ResponsiveRecipeGrid>

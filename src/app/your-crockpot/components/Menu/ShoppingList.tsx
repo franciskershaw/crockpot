@@ -17,7 +17,7 @@ import {
   useShoppingListCategories,
   useGetShoppingList,
 } from "@/hooks/useShoppingList";
-import type { Item, ShoppingListWithDetails } from "@/data/types";
+import type { Item, ShoppingListWithDetails, Unit } from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
 import { useState } from "react";
 import AddItemEditor from "./AddItemEditor";
@@ -26,11 +26,13 @@ import Searchable from "@/components/ui/searchable";
 interface ShoppingListProps {
   initialData?: ShoppingListWithDetails | null;
   items: Item[];
+  units: Unit[];
 }
 
 export default function ShoppingList({
   initialData,
   items,
+  units,
 }: ShoppingListProps) {
   const { data: shoppingList } = useGetShoppingList(initialData);
   const toggleObtained = useToggleObtainedMutation();
@@ -84,6 +86,7 @@ export default function ShoppingList({
         <AddItemEditor
           item={selectedItem}
           onCancel={() => setSelectedItem(null)}
+          units={units}
           onConfirm={(quantity, unitId) => {
             console.log("Adding item:", {
               itemId: selectedItem.id,

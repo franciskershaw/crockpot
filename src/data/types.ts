@@ -100,3 +100,5 @@ export type PopulatedShoppingListItem = ShoppingListItem & {
 export type ShoppingListWithDetails = Omit<ShoppingList, "items"> & {
   items: PopulatedShoppingListItem[];
 };
+
+export type Unit = PrismaUnit;

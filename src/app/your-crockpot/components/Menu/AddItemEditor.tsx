@@ -8,21 +8,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Item } from "@/data/types";
+import type { Item, Unit } from "@/data/types";
 
 type AddItemEditorProps = {
   item: Item;
   onCancel: () => void;
   onConfirm: (quantity: number, unitId: string | null) => void;
+  units: Unit[];
 };
 
 export function formatQty(value: number) {
   return Number.isInteger(value) ? String(value) : value.toFixed(2);
 }
 
-function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
+function AddItemEditor({
+  item,
+  onCancel,
+  onConfirm,
+  units,
+}: AddItemEditorProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedUnitId, setSelectedUnitId] = useState<string>("none");
+  const [selectedUnitId, setSelectedUnitId] = useState<string>(
+    units.length > 0 ? units[0].id : "none"
+  );
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -43,15 +51,14 @@ function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
   const handleConfirm = () => {
     const numericValue = parseFloat(quantity.toString());
     if (!isNaN(numericValue) && numericValue >= 0) {
-      const unitId = selectedUnitId === "none" ? null : selectedUnitId;
-      onConfirm(numericValue, unitId);
+      onConfirm(numericValue, selectedUnitId);
     }
   };
 
   return (
     <div className="flex items-center gap-2 p-4 border-b border-gray-200">
       <div className="flex items-center gap-1 flex-1">
-        <span className="text-gray-800">{item.name}</span>
+        <span className="text-gray-800 text-sm">{item.name}</span>
         <span className="mx-1 text-gray-500">×</span>
 
         {/* Main control - mimics ShoppingListRowEditor */}
@@ -91,13 +98,20 @@ function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
                 value={selectedUnitId}
                 onValueChange={(value) => setSelectedUnitId(value)}
               >
-                <SelectTrigger className="h-8 w-20 text-sm bg-transparent border-none shadow-none focus:ring-0">
-                  <SelectValue placeholder="Unit" />
+                <SelectTrigger className="h-8 max-w-24 text-sm bg-transparent border-none shadow-none focus:ring-0">
+                  <SelectValue>
+                    {selectedUnitId &&
+                      (() => {
+                        const unit = units.find((u) => u.id === selectedUnitId);
+                        return unit?.abbreviation || "-";
+                      })()}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  {item.allowedUnitIds.map((unitId) => (
-                    <SelectItem key={unitId} value={unitId}>
-                      {unitId}
+                  {/* TODO: use 'allowedUnitIts' once those have been populated */}
+                  {units.map((unit) => (
+                    <SelectItem key={unit.id} value={unit.id}>
+                      {unit.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
