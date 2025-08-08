@@ -14,16 +14,18 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
 
   return (
     <div className="md:grid md:grid-cols-3 md:gap-4">
-      {/* Mobile floating sheet */}
-      <MobileShoppingListSheet
-        initialData={shoppingList}
-        items={items}
-        units={units}
-      />
       <div className="hidden md:block col-span-1">
         <ShoppingList initialData={shoppingList} items={items} units={units} />
       </div>
       <div className="col-span-2">
+        {/* Mobile: inline button to open Shopping List sheet */}
+        <div className="md:hidden mb-3">
+          <MobileShoppingListSheet
+            initialData={shoppingList}
+            items={items}
+            units={units}
+          />
+        </div>
         <ResponsiveRecipeGrid>
           {menu?.entries.map((entry, index) => (
             <RecipeCard

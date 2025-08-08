@@ -31,8 +31,9 @@ export default function MobileShoppingListSheet({
         <SheetTrigger asChild>
           <Button
             aria-label="Open shopping list"
-            className="fixed bottom-4 right-4 z-50 h-12 w-12 rounded-full shadow-lg"
+            className="bg-brand-primary text-white w-1/2"
           >
+            Shopping list
             <ShoppingBasket className="h-5 w-5" />
           </Button>
         </SheetTrigger>
