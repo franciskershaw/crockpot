@@ -29,6 +29,7 @@ import { useState } from "react";
 import AddItemEditor from "./AddItemEditor";
 import Searchable from "@/components/ui/searchable";
 import ClearMenuDialog from "./ClearMenuDialog";
+import ClearShoppingListDialog from "./ClearShoppingListDialog";
 
 interface ShoppingListProps {
   initialData?: ShoppingListWithDetails | null;
@@ -92,10 +93,22 @@ export default function ShoppingList({
           }}
           className="w-full"
         />
-
-        {!menu?.entries || menu.entries.length === 0 ? null : (
-          <ClearMenuDialog />
-        )}
+        <div className="flex gap-2">
+          {[
+            // Clear Menu button (if menu has entries)
+            !menu?.entries || menu.entries.length === 0 ? null : (
+              <div key="clear-menu" className="flex-1">
+                <ClearMenuDialog />
+              </div>
+            ),
+            // Clear Shopping List button (if shopping list has items)
+            shoppingList?.items.length ? (
+              <div key="clear-shopping-list" className="flex-1">
+                <ClearShoppingListDialog />
+              </div>
+            ) : null,
+          ].filter(Boolean)}
+        </div>
       </div>
 
       {selectedItem && (
