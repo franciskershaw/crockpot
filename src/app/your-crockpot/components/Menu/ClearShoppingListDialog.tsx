@@ -12,8 +12,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { toast } from "sonner";
+import { useClearShoppingListMutation } from "@/hooks/useShoppingList";
+import { toast } from "sonner";
 
 interface ClearShoppingListDialogProps {
   isMenuEmpty?: boolean;
@@ -23,20 +23,8 @@ export default function ClearShoppingListDialog({
   isMenuEmpty = false,
 }: ClearShoppingListDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  //   const queryClient = useQueryClient();
-  //   const { mutate: clearShoppingList, isPending } = useMutation({
-  //     mutationFn: clearShoppingList,
-  //     onSuccess: () => {
-  //       setIsOpen(false);
-  //       queryClient.invalidateQueries({ queryKey: ["shoppingList"] });
-  //       toast.success("Shopping list cleared successfully");
-  //     },
-  //     onError: (error) => {
-  //       toast.error(
-  //         error instanceof Error ? error.message : "Failed to clear shopping list"
-  //       );
-  //     },
-  //   });
+  const { mutate: clearShoppingList, isPending } =
+    useClearShoppingListMutation();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild disabled={isMenuEmpty}>
@@ -64,11 +52,17 @@ export default function ClearShoppingListDialog({
           <Button
             variant="destructive"
             type="submit"
-            // onClick={() => clearShoppingList()}
-            // disabled={isPending}
+            onClick={() =>
+              clearShoppingList(undefined, {
+                onSuccess: () => {
+                  setIsOpen(false);
+                  toast.success("Shopping list cleared successfully");
+                },
+              })
+            }
+            disabled={isPending}
           >
-            {/* {isPending ? "Clearing..." : "Clear Shopping List"} */}
-            Clear Shopping List
+            {isPending ? "Clearing..." : "Clear Shopping List"}
           </Button>
         </DialogFooter>
       </DialogContent>

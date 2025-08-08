@@ -6,6 +6,7 @@ import {
   toggleObtained,
   updateShoppingListItemQuantity,
   addManualShoppingListItem,
+  clearShoppingList,
 } from "@/actions/menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -244,6 +245,33 @@ export function useAddManualShoppingListItemMutation() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
+    },
+  });
+}
+
+export function useClearShoppingListMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: clearShoppingList,
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
+      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
+        ["shopping-list"]
+      );
+      if (previous) {
+        const next: ShoppingListWithDetails = { ...previous, items: [] };
+        queryClient.setQueryData(["shopping-list"], next);
+      }
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous)
+        queryClient.setQueryData(["shopping-list"], ctx.previous);
+      toast.error("Failed to clear shopping list");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
+      toast.success("Shopping list cleared");
     },
   });
 }

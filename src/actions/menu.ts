@@ -28,6 +28,7 @@ import {
   getUserShoppingListWithDetails,
   updateShoppingListItemQuantity as updateShoppingListItemQuantityDAL,
   addManualItemToShoppingList as addManualItemToShoppingListDAL,
+  clearAllItemsFromShoppingList as clearAllItemsFromShoppingListDAL,
 } from "@/data/shopping-list/shoppingList";
 import {
   removeShoppingListItemSchema,
@@ -192,7 +193,10 @@ export async function updateShoppingListItemQuantity(
 ) {
   try {
     const userId = await getAuthenticatedUserId();
-    const validated = validateInput(updateShoppingListItemQuantitySchema, input);
+    const validated = validateInput(
+      updateShoppingListItemQuantitySchema,
+      input
+    );
     const updated = await updateShoppingListItemQuantityDAL(
       userId,
       validated.itemId,
@@ -229,5 +233,19 @@ export async function addManualShoppingListItem(
       throw error;
     }
     throw new ServerError("Failed to add item to shopping list");
+  }
+}
+
+export async function clearShoppingList() {
+  try {
+    const userId = await getAuthenticatedUserId();
+    const updated = await clearAllItemsFromShoppingListDAL(userId);
+    revalidatePath("/your-crockpot");
+    return updated;
+  } catch (error) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+    throw new ServerError("Failed to clear shopping list");
   }
 }
