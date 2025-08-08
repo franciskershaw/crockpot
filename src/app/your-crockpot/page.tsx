@@ -1,9 +1,28 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecipeMenu from "./components/RecipeMenu";
-import { getUserMenu } from "@/actions/menu";
+import { getShoppingList, getUserMenu } from "@/actions/menu";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
 const YourCrockpotPage = async () => {
   const menu = await getUserMenu();
+
+  // React Query SSR prefetch for shopping list to hydrate client cache
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["shopping-list"],
+    queryFn: getShoppingList,
+  });
 
   return (
     <div className="container mx-auto px-2 py-6 max-w-7xl">
@@ -16,31 +35,33 @@ const YourCrockpotPage = async () => {
         </p>
       </div>
 
-      <Tabs defaultValue="menu" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-2">
-          <TabsTrigger className="text-base" value="menu">
-            Menu
-          </TabsTrigger>
-          <TabsTrigger className="text-base" value="favourites">
-            Favourites
-          </TabsTrigger>
-          <TabsTrigger className="text-base" value="my-recipes">
-            My Recipes
-          </TabsTrigger>
-        </TabsList>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Tabs defaultValue="menu" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-2">
+            <TabsTrigger className="text-base" value="menu">
+              Menu
+            </TabsTrigger>
+            <TabsTrigger className="text-base" value="favourites">
+              Favourites
+            </TabsTrigger>
+            <TabsTrigger className="text-base" value="my-recipes">
+              My Recipes
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="menu">
-          <RecipeMenu menu={menu} />
-        </TabsContent>
+          <TabsContent value="menu">
+            <RecipeMenu menu={menu} />
+          </TabsContent>
 
-        <TabsContent value="favourites">
-          <div>Favourites</div>
-        </TabsContent>
+          <TabsContent value="favourites">
+            <div>Favourites</div>
+          </TabsContent>
 
-        <TabsContent value="my-recipes">
-          <div>My Recipes</div>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="my-recipes">
+            <div>My Recipes</div>
+          </TabsContent>
+        </Tabs>
+      </HydrationBoundary>
     </div>
   );
 };

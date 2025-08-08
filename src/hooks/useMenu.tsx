@@ -15,12 +15,12 @@ export const useAddToMenuMutation = () => {
     mutationFn: addRecipeToMenu,
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
       if (result.wasUpdate) {
         toast.success("Menu serving size updated");
       } else {
         toast.success("Recipe added to menu");
       }
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
     },
     onError: (error) => {
       toast.error(error.message || "Failed to add recipe to menu");
