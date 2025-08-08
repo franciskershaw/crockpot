@@ -168,6 +168,8 @@ type ShoppingListItem {
   unitId   String? @db.ObjectId
   quantity Float
   obtained Boolean @default(false)
+  // True when the item was added manually by the user (not derived from recipes)
+  isManual Boolean @default(false)
 }
 
 // Auth.js models:

@@ -27,6 +27,7 @@ import {
   removeItemFromShoppingList as removeItemFromShoppingListDAL,
   getUserShoppingListWithDetails,
   updateShoppingListItemQuantity as updateShoppingListItemQuantityDAL,
+  addManualItemToShoppingList as addManualItemToShoppingListDAL,
 } from "@/data/shopping-list/shoppingList";
 import {
   removeShoppingListItemSchema,
@@ -35,6 +36,8 @@ import {
   type ToggleObtainedInput,
   updateShoppingListItemQuantitySchema,
   type UpdateShoppingListItemQuantityInput,
+  addManualShoppingListItemSchema,
+  type AddManualShoppingListItemInput,
 } from "@/lib/validations";
 
 // Get user's menu with recipes
@@ -149,7 +152,8 @@ export async function toggleObtained(input: ToggleObtainedInput) {
     const updated = await toggleObtainedForItemDAL(
       userId,
       validated.itemId,
-      validated.unitId
+      validated.unitId,
+      validated.isManual
     );
     revalidatePath("/your-crockpot");
     return updated;
@@ -170,7 +174,8 @@ export async function removeShoppingListItem(
     const updated = await removeItemFromShoppingListDAL(
       userId,
       validated.itemId,
-      validated.unitId
+      validated.unitId,
+      validated.isManual
     );
     revalidatePath("/your-crockpot");
     return updated;
@@ -192,7 +197,8 @@ export async function updateShoppingListItemQuantity(
       userId,
       validated.itemId,
       validated.unitId ?? null,
-      validated.quantity
+      validated.quantity,
+      validated.isManual
     );
     revalidatePath("/your-crockpot");
     return updated;
@@ -201,5 +207,27 @@ export async function updateShoppingListItemQuantity(
       throw error;
     }
     throw new ServerError("Failed to update shopping list");
+  }
+}
+
+export async function addManualShoppingListItem(
+  input: AddManualShoppingListItemInput
+) {
+  try {
+    const userId = await getAuthenticatedUserId();
+    const validated = validateInput(addManualShoppingListItemSchema, input);
+    const updated = await addManualItemToShoppingListDAL(
+      userId,
+      validated.itemId,
+      validated.unitId ?? null,
+      validated.quantity
+    );
+    revalidatePath("/your-crockpot");
+    return updated;
+  } catch (error) {
+    if (error instanceof AuthError || error instanceof ValidationError) {
+      throw error;
+    }
+    throw new ServerError("Failed to add item to shopping list");
   }
 }

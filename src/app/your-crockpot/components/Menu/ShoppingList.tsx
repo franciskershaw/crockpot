@@ -16,6 +16,7 @@ import {
   useUpdateShoppingListItemQuantityMutation,
   useShoppingListCategories,
   useGetShoppingList,
+  useAddManualShoppingListItemMutation,
 } from "@/hooks/useShoppingList";
 import type { Item, ShoppingListWithDetails, Unit } from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
@@ -38,12 +39,15 @@ export default function ShoppingList({
   const toggleObtained = useToggleObtainedMutation();
   const removeItem = useRemoveShoppingListItemMutation();
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
+  const addManualItem = useAddManualShoppingListItemMutation();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
 
-  const { grouped, categories, categoryIds } =
-    useShoppingListCategories(shoppingList);
+  const { grouped, categories, categoryIds } = useShoppingListCategories(
+    shoppingList,
+    items
+  );
 
   return (
     <div className="w-full rounded-md border bg-white">
@@ -88,10 +92,10 @@ export default function ShoppingList({
           onCancel={() => setSelectedItem(null)}
           units={units}
           onConfirm={(quantity, unitId) => {
-            console.log("Adding item:", {
+            addManualItem.mutate({
               itemId: selectedItem.id,
               quantity,
-              unitId,
+              unitId: unitId && unitId !== "none" ? unitId : null,
             });
             setSelectedItem(null);
           }}
@@ -145,6 +149,7 @@ export default function ShoppingList({
                               toggleObtained.mutate({
                                 itemId: i.itemId,
                                 unitId: i.unitId ?? null,
+                                isManual: i.isManual ?? false,
                               })
                             }
                             aria-label={
@@ -155,8 +160,18 @@ export default function ShoppingList({
 
                           <div className="flex-1 min-w-0 text-sm">
                             <ShoppingListRowEditor
-                              label={i.item.name}
-                              unitAbbr={i.unit?.abbreviation ?? ""}
+                              label={
+                                (i as unknown as { displayLabel?: string })
+                                  .displayLabel ??
+                                i.item?.name ??
+                                ""
+                              }
+                              unitAbbr={
+                                (i as unknown as { displayUnitAbbr?: string })
+                                  .displayUnitAbbr ??
+                                i.unit?.abbreviation ??
+                                ""
+                              }
                               struck={i.obtained}
                               quantity={i.quantity}
                               onCommit={(next) =>
@@ -164,6 +179,7 @@ export default function ShoppingList({
                                   itemId: i.itemId,
                                   unitId: i.unitId ?? null,
                                   quantity: next,
+                                  isManual: i.isManual ?? false,
                                 })
                               }
                             />
@@ -175,6 +191,7 @@ export default function ShoppingList({
                               removeItem.mutate({
                                 itemId: i.itemId,
                                 unitId: i.unitId ?? null,
+                                isManual: i.isManual ?? false,
                               })
                             }
                             size="icon"

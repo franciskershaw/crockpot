@@ -5,11 +5,12 @@ import {
   removeShoppingListItem,
   toggleObtained,
   updateShoppingListItemQuantity,
+  addManualShoppingListItem,
 } from "@/actions/menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import type { ShoppingListWithDetails } from "@/data/types";
+import type { Item, ShoppingListWithDetails } from "@/data/types";
 import { useMemo } from "react";
 
 export function useGetShoppingList(
@@ -134,27 +135,115 @@ export function useUpdateShoppingListItemQuantityMutation() {
 }
 
 export function useShoppingListCategories(
-  shoppingList: ShoppingListWithDetails | null | undefined
+  shoppingList: ShoppingListWithDetails | null | undefined,
+  catalogItems?: Item[]
 ) {
+  type DisplayItem = ShoppingListWithDetails["items"][number] & {
+    displayLabel: string;
+    displayUnitAbbr: string;
+  };
+
   const { grouped, categories } = useMemo(() => {
-    const byCategory: Record<
-      string,
-      NonNullable<typeof shoppingList>["items"]
-    > = {} as Record<string, NonNullable<typeof shoppingList>["items"]>;
-    const cats: Record<string, { id: string; name: string; faIcon: string }> =
-      {};
-    for (const item of shoppingList?.items || []) {
-      const cat = item.item.category;
-      if (!byCategory[cat.id])
-        byCategory[cat.id] = [] as NonNullable<typeof shoppingList>["items"];
-      byCategory[cat.id] = [...byCategory[cat.id], item];
-      if (!cats[cat.id])
-        cats[cat.id] = { id: cat.id, name: cat.name, faIcon: cat.faIcon };
-    }
-    return { grouped: byCategory, categories: cats };
-  }, [shoppingList?.items]);
+    const catalogById = new Map<string, Item>(
+      (catalogItems ?? []).map((it) => [it.id, it])
+    );
+    const reduced = (shoppingList?.items ?? []).reduce(
+      (acc, listItem) => {
+        const itemRecord = listItem.item ?? catalogById.get(listItem.itemId);
+        const category = itemRecord?.category;
+        if (!category) return acc; // skip until relations load; prevents crashes
+
+        const displayItem: DisplayItem = {
+          ...listItem,
+          displayLabel: itemRecord?.name ?? "",
+          displayUnitAbbr: listItem.unit?.abbreviation ?? "",
+        };
+
+        acc.groupedByCategory[category.id] = [
+          ...(acc.groupedByCategory[category.id] ?? []),
+          displayItem,
+        ];
+
+        if (!acc.categoriesById[category.id]) {
+          acc.categoriesById[category.id] = {
+            id: category.id,
+            name: category.name,
+            faIcon: category.faIcon,
+          };
+        }
+
+        return acc;
+      },
+      {
+        groupedByCategory: {} as Record<string, DisplayItem[]>,
+        categoriesById: {} as Record<
+          string,
+          { id: string; name: string; faIcon: string }
+        >,
+      }
+    );
+
+    return {
+      grouped: reduced.groupedByCategory,
+      categories: reduced.categoriesById,
+    };
+  }, [shoppingList?.items, catalogItems]);
 
   const categoryIds = Object.keys(categories);
 
   return { grouped, categories, categoryIds };
+}
+
+export function useAddManualShoppingListItemMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addManualShoppingListItem,
+    onMutate: async (input) => {
+      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
+      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
+        ["shopping-list"]
+      );
+      if (previous) {
+        const keyMatches = (it: ShoppingListWithDetails["items"][number]) =>
+          it.itemId === input.itemId &&
+          (it.unitId ?? null) === (input.unitId ?? null) &&
+          it.isManual === true;
+        const existingIndex = previous.items.findIndex(keyMatches);
+        let nextItems;
+        if (existingIndex >= 0) {
+          nextItems = previous.items.map((it, idx) =>
+            idx === existingIndex
+              ? { ...it, quantity: it.quantity + input.quantity }
+              : it
+          );
+        } else {
+          nextItems = [
+            ...previous.items,
+            {
+              itemId: input.itemId,
+              unitId: input.unitId ?? null,
+              quantity: input.quantity,
+              obtained: false,
+              isManual: true,
+              // optimistic relations are not needed for grouping as we only read category from items list which is already fetched
+            },
+          ];
+        }
+        const next: ShoppingListWithDetails = {
+          ...previous,
+          items: nextItems as ShoppingListWithDetails["items"],
+        };
+        queryClient.setQueryData(["shopping-list"], next);
+      }
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous)
+        queryClient.setQueryData(["shopping-list"], ctx.previous);
+      toast.error("Failed to add item");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
+    },
+  });
 }

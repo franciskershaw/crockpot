@@ -11,16 +11,20 @@ import type { ShoppingList, ShoppingListWithDetails } from "../types";
 export async function rebuildShoppingListForUser(
   userId: string
 ): Promise<ShoppingList> {
+  // Preserve any manual items the user has added
+  const existingList = await prisma.shoppingList.findUnique({ where: { userId } });
+  const manualItems = (existingList?.items || []).filter((i) => i.isManual);
+
   // Load the user's current menu
   const menu = await prisma.recipeMenu.findUnique({ where: { userId } });
 
   if (!menu || menu.entries.length === 0) {
-    // Upsert an empty shopping list if there's no menu or entries
+    // Upsert only manual items if there's no menu or entries
     const emptyList = await prisma.shoppingList.upsert({
       where: { userId },
-      create: { userId, items: [] },
+      create: { userId, items: manualItems },
       update: {
-        items: [],
+        items: manualItems,
         updatedAt: new Date(),
       },
     });
@@ -66,12 +70,15 @@ export async function rebuildShoppingListForUser(
     }
   }
 
-  const items = Array.from(aggregate.values()).map((a) => ({
+  const aggregatedItems = Array.from(aggregate.values()).map((a) => ({
     itemId: a.itemId,
     unitId: a.unitId,
     quantity: a.quantity,
     obtained: false,
+    isManual: false,
   }));
+
+  const items = [...aggregatedItems, ...manualItems];
 
   // Upsert the shopping list with aggregated items
   const list = await prisma.shoppingList.upsert({
@@ -122,13 +129,15 @@ export async function getUserShoppingListWithDetails(
 export async function toggleObtainedForItem(
   userId: string,
   itemId: string,
-  unitId?: string | null
+  unitId?: string | null,
+  isManual?: boolean
 ): Promise<ShoppingList> {
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list) return await prisma.shoppingList.create({ data: { userId, items: [] } });
 
-  const keyMatches = (i: { itemId: string; unitId?: string | null }) =>
-    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null);
+  const keyMatches = (i: { itemId: string; unitId?: string | null; isManual?: boolean }) =>
+    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null) &&
+    (typeof isManual === "boolean" ? i.isManual === isManual : true);
 
   const nextItems = list.items.map((i) =>
     keyMatches(i) ? { ...i, obtained: !i.obtained } : i
@@ -144,13 +153,15 @@ export async function toggleObtainedForItem(
 export async function removeItemFromShoppingList(
   userId: string,
   itemId: string,
-  unitId?: string | null
+  unitId?: string | null,
+  isManual?: boolean
 ): Promise<ShoppingList> {
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list) return await prisma.shoppingList.create({ data: { userId, items: [] } });
 
-  const keyMatches = (i: { itemId: string; unitId?: string | null }) =>
-    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null);
+  const keyMatches = (i: { itemId: string; unitId?: string | null; isManual?: boolean }) =>
+    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null) &&
+    (typeof isManual === "boolean" ? i.isManual === isManual : true);
 
   const nextItems = list.items.filter((i) => !keyMatches(i));
 
@@ -165,21 +176,66 @@ export async function updateShoppingListItemQuantity(
   userId: string,
   itemId: string,
   unitId: string | null,
-  quantity: number
+  quantity: number,
+  isManual?: boolean
 ): Promise<ShoppingList> {
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list) return await prisma.shoppingList.create({ data: { userId, items: [] } });
 
-  const nextItems = list.items.map((i) =>
-    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null)
-      ? { ...i, quantity }
-      : i
-  );
+  const nextItems = list.items.map((i) => {
+    const matches =
+      i.itemId === itemId &&
+      (i.unitId ?? null) === (unitId ?? null) &&
+      (typeof isManual === "boolean" ? i.isManual === isManual : true);
+    return matches ? { ...i, quantity } : i;
+  });
 
   const updated = await prisma.shoppingList.update({
     where: { userId },
     data: { items: nextItems, updatedAt: new Date() },
   });
+  return updated as ShoppingList;
+}
+
+export async function addManualItemToShoppingList(
+  userId: string,
+  itemId: string,
+  unitId: string | null,
+  quantity: number
+): Promise<ShoppingList> {
+  const list = await prisma.shoppingList.findUnique({ where: { userId } });
+
+  const items = list?.items || [];
+
+  // Try to find existing manual item with same key
+  const keyMatches = (i: { itemId: string; unitId?: string | null; isManual?: boolean }) =>
+    i.itemId === itemId && (i.unitId ?? null) === (unitId ?? null) && i.isManual === true;
+
+  let nextItems;
+  const existingIndex = items.findIndex(keyMatches);
+  if (existingIndex >= 0) {
+    nextItems = items.map((i, idx) =>
+      idx === existingIndex ? { ...i, quantity: (i.quantity || 0) + quantity } : i
+    );
+  } else {
+    nextItems = [
+      ...items,
+      {
+        itemId,
+        unitId,
+        quantity,
+        obtained: false,
+        isManual: true,
+      },
+    ];
+  }
+
+  const updated = await prisma.shoppingList.upsert({
+    where: { userId },
+    create: { userId, items: nextItems },
+    update: { items: nextItems, updatedAt: new Date() },
+  });
+
   return updated as ShoppingList;
 }
 

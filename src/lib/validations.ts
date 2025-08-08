@@ -34,11 +34,13 @@ export type RemoveFromFavouritesInput = z.infer<
 export const toggleObtainedSchema = z.object({
   itemId: z.string().min(1),
   unitId: z.string().optional().nullable(),
+  isManual: z.boolean().optional(),
 });
 
 export const removeShoppingListItemSchema = z.object({
   itemId: z.string().min(1),
   unitId: z.string().optional().nullable(),
+  isManual: z.boolean().optional(),
 });
 
 export type ToggleObtainedInput = z.infer<typeof toggleObtainedSchema>;
@@ -50,8 +52,19 @@ export const updateShoppingListItemQuantitySchema = z.object({
   itemId: z.string().min(1),
   unitId: z.string().optional().nullable(),
   quantity: z.number().min(0),
+  isManual: z.boolean().optional(),
 });
 
 export type UpdateShoppingListItemQuantityInput = z.infer<
   typeof updateShoppingListItemQuantitySchema
+>;
+
+export const addManualShoppingListItemSchema = z.object({
+  itemId: z.string().min(1),
+  unitId: z.string().optional().nullable(),
+  quantity: z.number().min(0.01),
+});
+
+export type AddManualShoppingListItemInput = z.infer<
+  typeof addManualShoppingListItemSchema
 >;
