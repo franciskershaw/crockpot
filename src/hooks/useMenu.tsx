@@ -20,6 +20,7 @@ export const useAddToMenuMutation = () => {
       } else {
         toast.success("Recipe added to menu");
       }
+      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
     },
     onError: (error) => {
       toast.error(error.message || "Failed to add recipe to menu");
@@ -34,6 +35,7 @@ export const useRemoveFromMenuMutation = () => {
     onSuccess: () => {
       toast.success("Recipe removed from menu");
       queryClient.invalidateQueries({ queryKey: ["menu"] });
+      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
     },
     onError: (error) => {
       toast.error(error.message || "Failed to remove recipe from menu");

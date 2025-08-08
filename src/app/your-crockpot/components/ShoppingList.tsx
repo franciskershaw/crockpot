@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -12,41 +12,31 @@ import { getIconComponent } from "@/lib/icon-map";
 import { Trash2, Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  useGetShoppingList,
   useRemoveShoppingListItemMutation,
   useToggleObtainedMutation,
   useUpdateShoppingListItemQuantityMutation,
+  useShoppingListCategories,
+  useGetShoppingList,
 } from "@/hooks/useShoppingList";
+import type { ShoppingListWithDetails } from "@/data/types";
 
 function formatQty(value: number) {
   return Number.isInteger(value) ? String(value) : value.toFixed(2);
 }
 
-export default function ShoppingList() {
-  const { data: shoppingList } = useGetShoppingList();
+interface ShoppingListProps {
+  initialData?: ShoppingListWithDetails | null;
+}
+
+export default function ShoppingList({ initialData }: ShoppingListProps) {
+  const { data: shoppingList } = useGetShoppingList(initialData);
   const toggleObtained = useToggleObtainedMutation();
   const removeItem = useRemoveShoppingListItemMutation();
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
 
-  const { grouped, categories } = useMemo(() => {
-    const byCategory: Record<
-      string,
-      NonNullable<typeof shoppingList>["items"]
-    > = {} as Record<string, NonNullable<typeof shoppingList>["items"]>;
-    const cats: Record<string, { id: string; name: string; faIcon: string }> =
-      {};
-    for (const item of shoppingList?.items || []) {
-      const cat = item.item.category;
-      if (!byCategory[cat.id])
-        byCategory[cat.id] = [] as NonNullable<typeof shoppingList>["items"];
-      byCategory[cat.id] = [...byCategory[cat.id], item];
-      if (!cats[cat.id])
-        cats[cat.id] = { id: cat.id, name: cat.name, faIcon: cat.faIcon };
-    }
-    return { grouped: byCategory, categories: cats };
-  }, [shoppingList?.items]);
+  const { grouped, categories, categoryIds } =
+    useShoppingListCategories(shoppingList);
 
-  const categoryIds = Object.keys(categories);
   if (!shoppingList || categoryIds.length === 0) {
     return (
       <div className="rounded-md border bg-white p-4 text-sm text-gray-600">
