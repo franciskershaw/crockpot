@@ -41,8 +41,6 @@ export default function ShoppingList({ initialData }: ShoppingListProps) {
     );
   }
 
-  const STEP = 0.5;
-
   return (
     <Accordion
       type="multiple"
@@ -103,7 +101,6 @@ export default function ShoppingList({ initialData }: ShoppingListProps) {
                           unitAbbr={i.unit?.abbreviation ?? ""}
                           struck={i.obtained}
                           quantity={i.quantity}
-                          step={STEP}
                           onCommit={(next) =>
                             updateQuantity.mutate({
                               itemId: i.itemId,

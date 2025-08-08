@@ -7,7 +7,6 @@ type ShoppingListRowEditorProps = {
   unitAbbr: string;
   struck: boolean;
   quantity: number;
-  step: number;
   onCommit: (nextQuantity: number) => void;
 };
 
@@ -20,7 +19,6 @@ function ShoppingListRowEditor({
   unitAbbr,
   struck,
   quantity,
-  step,
   onCommit,
 }: ShoppingListRowEditorProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -30,16 +28,32 @@ function ShoppingListRowEditor({
     setDraftQty(quantity);
   }, [quantity]);
 
-  const dec = () =>
-    setDraftQty((q) => Math.max(0, Math.round((q - step) * 100) / 100));
-  const inc = () => setDraftQty((q) => Math.round((q + step) * 100) / 100);
   const cancel = () => {
     setDraftQty(quantity);
     setIsEditing(false);
   };
   const confirm = () => {
-    onCommit(draftQty);
+    const numericValue = parseFloat(draftQty.toString());
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      onCommit(numericValue);
+    }
     setIsEditing(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow empty string, numbers, and decimal points, but limit to 4 digits total
+    if (value === "" || /^\d{0,4}(\.\d{0,2})?$/.test(value)) {
+      setDraftQty(value === "" ? 0 : parseFloat(value) || 0);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      confirm();
+    } else if (e.key === "Escape") {
+      cancel();
+    }
   };
 
   return (
@@ -51,7 +65,6 @@ function ShoppingListRowEditor({
           {label}
         </span>
         <span className="mx-1 text-gray-500">×</span>
-        {/* <span className="text-xs text-gray-600 ml-1">{unitAbbr}</span> */}
 
         {/* Morphing control – mirrors AddToMenuButton */}
         <div className="relative">
@@ -109,7 +122,7 @@ function ShoppingListRowEditor({
                     className="w-px h-4 bg-gray-300"
                   />
 
-                  {/* Controls */}
+                  {/* Editable input */}
                   <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
@@ -117,28 +130,15 @@ function ShoppingListRowEditor({
                     transition={{ duration: 0.1 }}
                     className="flex items-center px-2 relative"
                   >
-                    <button
-                      onClick={dec}
-                      disabled={draftQty <= 0}
-                      className="flex items-center justify-center h-6 w-6 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-                    >
-                      <span className="text-sm font-bold leading-none">−</span>
-                    </button>
-                    <div
-                      className="text-sm font-medium text-gray-800 min-w-[2rem] text-center px-2 flex items-center justify-center"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                    >
-                      {formatQty(draftQty)}
-                    </div>
-                    <button
-                      onClick={inc}
-                      className="flex items-center justify-center h-6 w-6 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 transition-colors cursor-pointer"
-                    >
-                      <span className="text-sm font-bold leading-none">+</span>
-                    </button>
+                    <input
+                      type="text"
+                      value={draftQty === 0 ? "" : formatQty(draftQty)}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                      className="text-sm font-medium text-gray-800 w-16 text-center px-2 bg-transparent border-none outline-none focus:ring-0"
+                      autoFocus
+                      maxLength={6}
+                    />
                   </motion.div>
 
                   {/* Separator */}
