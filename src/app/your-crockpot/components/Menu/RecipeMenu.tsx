@@ -6,6 +6,8 @@ import MobileShoppingListSheet from "./MobileShoppingListSheet";
 import { getShoppingList } from "@/actions/menu";
 import { getItems } from "@/actions/items";
 import { getUnits } from "@/actions/units";
+import { Button } from "@/components/ui/button";
+import ClearMenuDialog from "./ClearMenuDialog";
 
 const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
   const shoppingList = await getShoppingList();
@@ -19,12 +21,26 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
       </div>
       <div className="col-span-2">
         {/* Mobile: inline button to open Shopping List sheet */}
-        <div className="md:hidden mb-3">
-          <MobileShoppingListSheet
-            initialData={shoppingList}
-            items={items}
-            units={units}
-          />
+        <div className="md:hidden mb-3 flex gap-2">
+          <div className="flex-1">
+            <MobileShoppingListSheet
+              initialData={shoppingList}
+              items={items}
+              units={units}
+            />
+          </div>
+          <div className="flex-1">
+            <ClearMenuDialog
+              isMenuEmpty={!menu?.entries || menu.entries.length === 0}
+            >
+              <Button
+                className="w-full"
+                disabled={!menu?.entries || menu.entries.length === 0}
+              >
+                Clear Menu
+              </Button>
+            </ClearMenuDialog>
+          </div>
         </div>
         <ResponsiveRecipeGrid>
           {menu?.entries.map((entry, index) => (
