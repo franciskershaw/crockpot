@@ -10,7 +10,7 @@ type ShoppingListRowEditorProps = {
   onCommit: (nextQuantity: number) => void;
 };
 
-function formatQty(value: number) {
+export function formatQty(value: number) {
   return Number.isInteger(value) ? String(value) : value.toFixed(2);
 }
 

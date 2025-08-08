@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import RecipeMenu from "./components/RecipeMenu";
+import RecipeMenu from "./components/Menu/RecipeMenu";
 import { getShoppingList, getUserMenu } from "@/actions/menu";
 import {
   dehydrate,

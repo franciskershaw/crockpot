@@ -5,8 +5,6 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 function Select({
   ...props
@@ -194,112 +192,6 @@ export interface SearchableSelectProps {
   label?: string;
 }
 
-function SearchableSelect({
-  options,
-  placeholder = "Search and select...",
-  emptyMessage = "No options found.",
-  value,
-  onValueChange,
-  onSelect,
-  disabled = false,
-  className,
-  inputClassName,
-  contentClassName,
-  maxHeight = "300px",
-  label,
-}: SearchableSelectProps) {
-  const [open, setOpen] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setSearchValue(newValue);
-    onValueChange?.(newValue);
-  };
-
-  const handleSelect = (option: SearchableSelectOption) => {
-    setSearchValue(option.label);
-    onValueChange?.(option.value);
-    onSelect?.(option);
-    setOpen(false);
-    inputRef.current?.blur();
-  };
-
-  const handleInputFocus = () => {
-    setOpen(true);
-  };
-
-  const handleInputBlur = () => {
-    // Delay closing to allow for option selection
-    setTimeout(() => setOpen(false), 200);
-  };
-
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchValue.toLowerCase())
-  );
-
-  return (
-    <div className={cn("space-y-2", className)}>
-      {label && (
-        <Label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          {label}
-        </Label>
-      )}
-      <div className="relative">
-        <Input
-          ref={inputRef}
-          type="text"
-          value={searchValue}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={inputClassName}
-        />
-        {open && (
-          <div
-            className={cn(
-              "absolute top-full z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md",
-              contentClassName
-            )}
-          >
-            <div className="overflow-y-auto" style={{ maxHeight }}>
-              {filteredOptions.length === 0 ? (
-                <div className="px-3 py-2 text-sm text-muted-foreground">
-                  {emptyMessage}
-                </div>
-              ) : (
-                filteredOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => handleSelect(option)}
-                    disabled={option.disabled}
-                    className={cn(
-                      "flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none",
-                      option.disabled && "opacity-50 cursor-not-allowed"
-                    )}
-                  >
-                    <CheckIcon
-                      className={cn(
-                        "h-4 w-4",
-                        value === option.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {option.label}
-                  </button>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 export {
   Select,
   SelectContent,
@@ -311,5 +203,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-  SearchableSelect,
 };
