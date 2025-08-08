@@ -4,7 +4,6 @@ import {
   getRecipes as getRecipesFromDAL,
   getRecipeTimeRange as getRecipeTimeRangeFromDAL,
   getRecipeCategories as getRecipeCategoriesFromDAL,
-  getRecipeIngredients as getRecipeIngredientsFromDAL,
   getRecipeCount as getRecipeCountFromDAL,
   getRandomRecipes as getRandomRecipesFromDAL,
 } from "@/data/recipes/getRecipes";
@@ -35,10 +34,6 @@ export async function getRecipeTimeRange() {
 
 export async function getRecipeCategories() {
   return await getRecipeCategoriesFromDAL();
-}
-
-export async function getRecipeIngredients() {
-  return await getRecipeIngredientsFromDAL();
 }
 
 export async function getRecipeCount(filters: RecipeFilters = {}) {

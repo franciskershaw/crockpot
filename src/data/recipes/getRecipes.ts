@@ -126,14 +126,6 @@ export async function getRecipeCategories() {
   return categories;
 }
 
-export async function getRecipeIngredients() {
-  const items = await prisma.item.findMany({
-    orderBy: { name: "asc" },
-  });
-
-  return items;
-}
-
 export async function getRecipeCount(filters: RecipeFilters = {}) {
   const where = buildWhereClause(filters);
   return await prisma.recipe.count({ where });
