@@ -7,7 +7,7 @@ import { getShoppingList } from "@/actions/menu";
 import { getItems } from "@/actions/items";
 import { getUnits } from "@/actions/units";
 import ClearMenuDialog from "./ClearMenuDialog";
-import EmptyStateWithBackground from "@/components/ui/empty-state";
+import EmptyState from "@/components/ui/empty-state";
 import { ChefHat, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -45,7 +45,7 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
         </div>
 
         {!menu?.entries || menu.entries.length === 0 ? (
-          <EmptyStateWithBackground backgroundOpacity={5}>
+          <EmptyState>
             {/* Icon */}
             <div className="flex justify-center">
               <div className="w-16 h-16 bg-gradient-to-br from-orange-50 to-amber-100 rounded-full flex items-center justify-center">
@@ -82,7 +82,7 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
             <p className="text-xs text-gray-500">
               Add recipes to your menu to generate shopping lists and plan meals
             </p>
-          </EmptyStateWithBackground>
+          </EmptyState>
         ) : (
           <ResponsiveRecipeGrid>
             {menu.entries.map((entry, index) => (

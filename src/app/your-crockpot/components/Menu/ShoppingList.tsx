@@ -97,7 +97,7 @@ export default function ShoppingList({
           {[
             // Clear Menu button (if menu has entries)
             !menu?.entries || menu.entries.length === 0 ? null : (
-              <div key="clear-menu" className="flex-1">
+              <div key="clear-menu" className="flex-1 mt-4">
                 <ClearMenuDialog />
               </div>
             ),
