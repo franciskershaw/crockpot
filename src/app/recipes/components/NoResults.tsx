@@ -2,14 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { Search, Filter, Plus, ChefHat } from "lucide-react";
 import { useFilters } from "../context/FilterProvider";
-import EmptyStateWithBackground from "@/components/ui/empty-state";
+import EmptyState from "@/components/ui/empty-state";
 
 export default function NoResults() {
   const { hasActiveFilters, activeFilterCount, clearAllFilters } = useFilters();
 
   if (hasActiveFilters) {
     return (
-      <EmptyStateWithBackground>
+      <EmptyState minHeight="min-h-[calc(100vh-12rem)] md:min-h-[calc(100vh-10rem)]">
         {/* Icon */}
         <div className="flex justify-center">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-full flex items-center justify-center">
@@ -56,12 +56,12 @@ export default function NoResults() {
 
         {/* Helper Text */}
         <p className="text-xs text-gray-500">Recipe submission coming soon</p>
-      </EmptyStateWithBackground>
+      </EmptyState>
     );
   }
 
   return (
-    <EmptyStateWithBackground>
+    <EmptyState minHeight="min-h-[calc(100vh-12rem)] md:min-h-[calc(100vh-10rem)]">
       {/* Icon */}
       <div className="flex justify-center">
         <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-full flex items-center justify-center">
@@ -91,6 +91,6 @@ export default function NoResults() {
 
       {/* Helper Text */}
       <p className="text-xs text-gray-500">Recipe submission coming soon</p>
-    </EmptyStateWithBackground>
+    </EmptyState>
   );
 }

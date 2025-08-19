@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 interface EmptyStateWithBackgroundProps {
   children: ReactNode;
   className?: string;
+  minHeight?: string;
 }
 
 export default function EmptyStateWithBackground({
   children,
   className = "",
+  minHeight,
 }: EmptyStateWithBackgroundProps) {
   // Static recipe images
   const staticRecipes = [
@@ -61,7 +63,12 @@ export default function EmptyStateWithBackground({
       </div>
 
       {/* Overlay content */}
-      <div className="relative flex items-center justify-center min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-16rem)] pb-16 md:pb-0">
+      <div 
+        className={cn(
+          "relative flex items-center justify-center pb-16 md:pb-0",
+          minHeight || "min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-16rem)]"
+        )}
+      >
         <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 p-6 md:p-8 text-center space-y-6">
           {children}
         </div>

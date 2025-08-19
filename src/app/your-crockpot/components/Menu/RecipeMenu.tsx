@@ -45,7 +45,7 @@ const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
         </div>
 
         {!menu?.entries || menu.entries.length === 0 ? (
-          <EmptyState>
+          <EmptyState minHeight="min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-16rem)]">
             {/* Icon */}
             <div className="flex justify-center">
               <div className="w-16 h-16 bg-gradient-to-br from-orange-50 to-amber-100 rounded-full flex items-center justify-center">
