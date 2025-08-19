@@ -1,8 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecipeMenu from "./components/Menu/RecipeMenu";
 import RecipeFavourites from "./components/Favourites/RecipeFavourites";
+import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
 import { getShoppingList, getUserMenu } from "@/actions/menu";
 import { getUserFavourites } from "@/actions/favourites";
+import { getUserCreatedRecipes } from "@/actions/user-recipes";
 import {
   dehydrate,
   HydrationBoundary,
@@ -29,6 +31,11 @@ const YourCrockpotPage = async () => {
   await queryClient.prefetchQuery({
     queryKey: ["favourites"],
     queryFn: getUserFavourites,
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["user-recipes"],
+    queryFn: getUserCreatedRecipes,
   });
 
   return (
@@ -65,7 +72,7 @@ const YourCrockpotPage = async () => {
           </TabsContent>
 
           <TabsContent value="my-recipes">
-            <div>My Recipes</div>
+            <RecipeUserRecipes />
           </TabsContent>
         </Tabs>
       </HydrationBoundary>
