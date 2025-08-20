@@ -8,133 +8,55 @@ import {
   addManualShoppingListItem,
   clearShoppingList,
 } from "@/actions/menu";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
 import type { Item, ShoppingListWithDetails } from "@/data/types";
 import { useMemo } from "react";
 import { WATER_ITEM_ID } from "@/data/items/getItems";
+import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
+import { 
+  createShoppingListMutation, 
+  createShoppingListRemovalMutation,
+  useOptimisticMutation 
+} from "./shared/useOptimisticMutation";
 
 export function useGetShoppingList(
   initialData?: ShoppingListWithDetails | null
 ) {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === "authenticated" && !!session?.user;
-
-  const query = useQuery<ShoppingListWithDetails | null>({
-    queryKey: ["shopping-list"],
-    queryFn: getShoppingList,
-    enabled: isAuthenticated,
-    initialData: initialData,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
-
-  return query;
+  return useAuthenticatedQuery(
+    ["shopping-list"],
+    getShoppingList,
+    {
+      initialData,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    }
+  );
 }
 
-export function useToggleObtainedMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: toggleObtained,
-    onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
-      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
-        ["shopping-list"]
-      );
-      if (previous) {
-        const next: ShoppingListWithDetails = {
-          ...previous,
-          items: previous.items.map((it) =>
-            it.itemId === input.itemId &&
-            (it.unitId ?? null) === (input.unitId ?? null)
-              ? { ...it, obtained: !it.obtained }
-              : it
-          ),
-        };
-        queryClient.setQueryData(["shopping-list"], next);
-      }
-      return { previous };
-    },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.previous)
-        queryClient.setQueryData(["shopping-list"], ctx.previous);
-      toast.error("Failed to toggle obtained");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-    },
-  });
-}
+export const useToggleObtainedMutation = createShoppingListMutation({
+  mutationFn: toggleObtained,
+  itemMatcher: (item, input) => 
+    item.itemId === input.itemId && (item.unitId ?? null) === (input.unitId ?? null),
+  itemUpdater: (item) => ({ ...item, obtained: !item.obtained }),
+  errorMessage: "Failed to toggle obtained",
+  requireAuth: true, // Enable authentication checks
+});
 
-export function useRemoveShoppingListItemMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: removeShoppingListItem,
-    onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
-      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
-        ["shopping-list"]
-      );
-      if (previous) {
-        const next: ShoppingListWithDetails = {
-          ...previous,
-          items: previous.items.filter(
-            (it) =>
-              !(
-                it.itemId === input.itemId &&
-                (it.unitId ?? null) === (input.unitId ?? null)
-              )
-          ),
-        };
-        queryClient.setQueryData(["shopping-list"], next);
-      }
-      return { previous };
-    },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.previous)
-        queryClient.setQueryData(["shopping-list"], ctx.previous);
-      toast.error("Failed to remove item");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-      toast.success("Removed from shopping list");
-    },
-  });
-}
+export const useRemoveShoppingListItemMutation = createShoppingListRemovalMutation({
+  mutationFn: removeShoppingListItem,
+  itemMatcher: (item, input) => 
+    item.itemId === input.itemId && (item.unitId ?? null) === (input.unitId ?? null),
+  successMessage: "Removed from shopping list",
+  errorMessage: "Failed to remove item",
+  requireAuth: true, // Enable authentication checks
+});
 
-export function useUpdateShoppingListItemQuantityMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateShoppingListItemQuantity,
-    onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
-      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
-        ["shopping-list"]
-      );
-      if (previous) {
-        const next: ShoppingListWithDetails = {
-          ...previous,
-          items: previous.items.map((it) =>
-            it.itemId === input.itemId &&
-            (it.unitId ?? null) === (input.unitId ?? null)
-              ? { ...it, quantity: input.quantity }
-              : it
-          ),
-        };
-        queryClient.setQueryData(["shopping-list"], next);
-      }
-      return { previous };
-    },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.previous)
-        queryClient.setQueryData(["shopping-list"], ctx.previous);
-      toast.error("Failed to update quantity");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-    },
-  });
-}
+export const useUpdateShoppingListItemQuantityMutation = createShoppingListMutation({
+  mutationFn: updateShoppingListItemQuantity,
+  itemMatcher: (item, input) => 
+    item.itemId === input.itemId && (item.unitId ?? null) === (input.unitId ?? null),
+  itemUpdater: (item, input) => ({ ...item, quantity: input.quantity }),
+  errorMessage: "Failed to update quantity",
+  requireAuth: true, // Enable authentication checks
+});
 
 export function useShoppingListCategories(
   shoppingList: ShoppingListWithDetails | null | undefined,
@@ -202,83 +124,61 @@ export function useShoppingListCategories(
   return { grouped, categories, categoryIds };
 }
 
-export function useAddManualShoppingListItemMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
+export const useAddManualShoppingListItemMutation = () => {
+  return useOptimisticMutation<{ itemId: string; unitId?: string | null; quantity: number }, unknown, ShoppingListWithDetails>({
     mutationFn: addManualShoppingListItem,
-    onMutate: async (input) => {
-      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
-      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
-        ["shopping-list"]
-      );
-      if (previous) {
-        const keyMatches = (it: ShoppingListWithDetails["items"][number]) =>
-          it.itemId === input.itemId &&
-          (it.unitId ?? null) === (input.unitId ?? null) &&
-          it.isManual === true;
-        const existingIndex = previous.items.findIndex(keyMatches);
-        let nextItems;
-        if (existingIndex >= 0) {
-          nextItems = previous.items.map((it, idx) =>
-            idx === existingIndex
-              ? { ...it, quantity: it.quantity + input.quantity }
-              : it
-          );
-        } else {
-          nextItems = [
-            ...previous.items,
-            {
-              itemId: input.itemId,
-              unitId: input.unitId ?? null,
-              quantity: input.quantity,
-              obtained: false,
-              isManual: true,
-              // optimistic relations are not needed for grouping as we only read category from items list which is already fetched
-            },
-          ];
-        }
-        const next: ShoppingListWithDetails = {
-          ...previous,
-          items: nextItems as ShoppingListWithDetails["items"],
-        };
-        queryClient.setQueryData(["shopping-list"], next);
+    queryKey: ["shopping-list"],
+    optimisticUpdate: (previous, input) => {
+      if (!previous) return previous;
+      
+      const keyMatches = (it: ShoppingListWithDetails["items"][number]) =>
+        it.itemId === input.itemId &&
+        (it.unitId ?? null) === (input.unitId ?? null) &&
+        it.isManual === true;
+      
+      const existingIndex = previous.items.findIndex(keyMatches);
+      let nextItems;
+      
+      if (existingIndex >= 0) {
+        nextItems = previous.items.map((it, idx) =>
+          idx === existingIndex
+            ? { ...it, quantity: it.quantity + input.quantity }
+            : it
+        );
+      } else {
+        nextItems = [
+          ...previous.items,
+          {
+            itemId: input.itemId,
+            unitId: input.unitId ?? null,
+            quantity: input.quantity,
+            obtained: false,
+            isManual: true,
+            // optimistic relations are not needed for grouping as we only read category from items list which is already fetched
+          },
+        ];
       }
-      return { previous };
+      
+      return {
+        ...previous,
+        items: nextItems as ShoppingListWithDetails["items"],
+      };
     },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.previous)
-        queryClient.setQueryData(["shopping-list"], ctx.previous);
-      toast.error("Failed to add item");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-    },
+    errorMessage: "Failed to add item",
+    requireAuth: true, // Enable authentication checks
   });
-}
+};
 
-export function useClearShoppingListMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
+export const useClearShoppingListMutation = () => {
+  return useOptimisticMutation<void, unknown, ShoppingListWithDetails>({
     mutationFn: clearShoppingList,
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ["shopping-list"] });
-      const previous = queryClient.getQueryData<ShoppingListWithDetails | null>(
-        ["shopping-list"]
-      );
-      if (previous) {
-        const next: ShoppingListWithDetails = { ...previous, items: [] };
-        queryClient.setQueryData(["shopping-list"], next);
-      }
-      return { previous };
+    queryKey: ["shopping-list"],
+    optimisticUpdate: (previous) => {
+      if (!previous) return previous;
+      return { ...previous, items: [] };
     },
-    onError: (_err, _vars, ctx) => {
-      if (ctx?.previous)
-        queryClient.setQueryData(["shopping-list"], ctx.previous);
-      toast.error("Failed to clear shopping list");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-      toast.success("Shopping list cleared");
-    },
+    successMessage: "Shopping list cleared",
+    errorMessage: "Failed to clear shopping list",
+    requireAuth: true, // Enable authentication checks
   });
-}
+};

@@ -5,58 +5,42 @@ import {
   removeRecipeFromMenu,
   getUserMenu,
 } from "@/actions/menu";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { toast } from "sonner";
+import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
+import { useBasicMutation } from "./shared/useBasicMutation";
 
 export const useAddToMenuMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
+  return useBasicMutation({
     mutationFn: addRecipeToMenu,
-    onSuccess: (result) => {
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-      if (result.wasUpdate) {
-        toast.success("Menu serving size updated");
-      } else {
-        toast.success("Recipe added to menu");
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to add recipe to menu");
-    },
+    invalidateQueries: [["menu"], ["shopping-list"]],
+    successMessage: (result) => result.wasUpdate 
+      ? "Menu serving size updated"
+      : "Recipe added to menu",
+    errorMessage: "Failed to add recipe to menu",
+    requireAuth: true, // Enable authentication checks
   });
 };
 
 export const useRemoveFromMenuMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
+  return useBasicMutation({
     mutationFn: removeRecipeFromMenu,
-    onSuccess: () => {
-      toast.success("Recipe removed from menu");
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to remove recipe from menu");
-    },
+    invalidateQueries: [["menu"], ["shopping-list"]],
+    successMessage: "Recipe removed from menu",
+    errorMessage: "Failed to remove recipe from menu",
+    requireAuth: true, // Enable authentication checks
   });
 };
 
 export const useGetMenu = () => {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === "authenticated" && !!session?.user;
-
-  const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["menu"],
-    queryFn: getUserMenu,
-    enabled: isAuthenticated, // Only fetch menu for authenticated users
-  });
+  const { data, isLoading, error, isError, isAuthenticated } = useAuthenticatedQuery(
+    ["menu"],
+    getUserMenu
+  );
 
   return {
     menu: data,
     isLoading,
     error,
     isError,
+    isAuthenticated,
   };
 };

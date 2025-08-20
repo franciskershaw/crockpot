@@ -1,49 +1,34 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addRecipeToFavourites,
   getUserFavourites,
   removeRecipeFromFavourites,
 } from "@/actions/favourites";
-import { toast } from "sonner";
+import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
+import { createAddRemoveMutations } from "./shared/useBasicMutation";
 
-export const useAddToFavouritesMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: addRecipeToFavourites,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favourites"] });
-      toast.success("Recipe added to favourites");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to add recipe to favourites");
-    },
-  });
-};
+// Create add/remove mutations using the factory
+const { useAddMutation, useRemoveMutation } = createAddRemoveMutations({
+  addMutationFn: addRecipeToFavourites,
+  removeMutationFn: removeRecipeFromFavourites,
+  queryKey: ["favourites"],
+  resourceName: "Recipe to favourites",
+  requireAuth: true, // Enable authentication checks
+});
 
-export const useRemoveFromFavouritesMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: removeRecipeFromFavourites,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favourites"] });
-      toast.success("Recipe removed from favourites");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to remove recipe from favourites");
-    },
-  });
-};
+export const useAddToFavouritesMutation = useAddMutation;
+export const useRemoveFromFavouritesMutation = useRemoveMutation;
 
 export const useGetFavourites = () => {
-  const { data, isLoading, error, isError } = useQuery({
-    queryKey: ["favourites"],
-    queryFn: getUserFavourites,
-  });
+  const { data, isLoading, error, isError, isAuthenticated } = useAuthenticatedQuery(
+    ["favourites"],
+    getUserFavourites
+  );
 
   return {
     favourites: data,
     isLoading,
     error,
     isError,
+    isAuthenticated,
   };
 };
