@@ -15,6 +15,8 @@ export function RecipeHero({ recipe }: { recipe: Recipe }) {
             fill
             className="object-cover"
             priority
+            sizes="100vw"
+            quality={85}
           />
           <div className="absolute inset-0 bg-black/30" />
         </div>
