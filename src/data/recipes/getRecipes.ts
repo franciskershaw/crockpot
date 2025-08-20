@@ -5,6 +5,7 @@ import {
   calculateRelevance,
   hasActiveFilters,
 } from "./helper";
+import { recipeCategoriesInclude, recentFirstOrderBy } from "@/data/fragments/query-fragments";
 
 export async function getRecipes({
   page = 1,
@@ -25,8 +26,8 @@ export async function getRecipes({
         where,
         skip,
         take,
-        orderBy: { createdAt: "desc" },
-        include: { categories: true },
+        orderBy: recentFirstOrderBy,
+        include: recipeCategoriesInclude,
       }),
       prisma.recipe.count({ where }),
     ]);
@@ -100,30 +101,55 @@ export async function getRecipes({
 }
 
 export async function getRecipeTimeRange() {
-  const result = await prisma.recipe.aggregate({
-    _min: {
-      timeInMinutes: true,
-    },
-    _max: {
-      timeInMinutes: true,
-    },
-    where: {
-      approved: true,
-    },
-  });
+  const { unstable_cache } = await import("next/cache");
+  
+  const getCachedTimeRange = unstable_cache(
+    async () => {
+      const result = await prisma.recipe.aggregate({
+        _min: {
+          timeInMinutes: true,
+        },
+        _max: {
+          timeInMinutes: true,
+        },
+        where: {
+          approved: true,
+        },
+      });
 
-  return {
-    min: result._min.timeInMinutes || 0,
-    max: result._max.timeInMinutes || 120,
-  };
+      return {
+        min: result._min.timeInMinutes || 0,
+        max: result._max.timeInMinutes || 120,
+      };
+    },
+    ["recipe-time-range"],
+    {
+      revalidate: 3600, // Cache for 1 hour
+      tags: ["recipes", "time-range"],
+    }
+  );
+
+  return getCachedTimeRange();
 }
 
 export async function getRecipeCategories() {
-  const categories = await prisma.recipeCategory.findMany({
-    orderBy: { name: "asc" },
-  });
+  const { unstable_cache } = await import("next/cache");
+  
+  const getCachedCategories = unstable_cache(
+    async () => {
+      const categories = await prisma.recipeCategory.findMany({
+        orderBy: { name: "asc" },
+      });
+      return categories;
+    },
+    ["recipe-categories"],
+    {
+      revalidate: 3600, // Cache for 1 hour
+      tags: ["recipes", "categories"],
+    }
+  );
 
-  return categories;
+  return getCachedCategories();
 }
 
 export async function getRecipeCount(filters: RecipeFilters = {}) {
@@ -137,11 +163,9 @@ export async function getRandomRecipes(count: number = 12) {
     where: {
       approved: true,
     },
-    include: { categories: true },
+    include: recipeCategoriesInclude,
     take: count,
-    orderBy: {
-      createdAt: "desc", // For now, just get recent ones - in future could use random ordering
-    },
+    orderBy: recentFirstOrderBy,
   });
 
   return recipes;

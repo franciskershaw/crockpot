@@ -1,27 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import { Recipe } from "@/data/types";
 import { validateUserId } from "@/lib/security";
+import { 
+  recipeWithDetailsInclude, 
+  recentFirstOrderBy,
+  approvedRecipesWhere 
+} from "@/data/fragments/query-fragments";
 
 export async function getUserCreatedRecipes(userId: string): Promise<Recipe[]> {
   validateUserId(userId);
   const recipes = await prisma.recipe.findMany({
     where: {
       createdById: userId,
-      approved: true, // Only return approved recipes
+      ...approvedRecipesWhere,
     },
-    include: {
-      categories: true,
-      createdBy: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc", // Most recent first
-    },
+    include: recipeWithDetailsInclude,
+    orderBy: recentFirstOrderBy,
   });
 
   // Transform to match Recipe type with ingredients

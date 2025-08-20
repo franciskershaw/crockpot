@@ -1,6 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { validateRecipeId } from "@/lib/security";
 import { ValidationError } from "@/lib/errors";
+import { 
+  recipeWithDetailsInclude, 
+  itemWithCategoryInclude 
+} from "@/data/fragments/query-fragments";
 
 export async function getRecipeById(id: string) {
   try {
@@ -16,16 +20,7 @@ export async function getRecipeById(id: string) {
   try {
     const recipe = await prisma.recipe.findUnique({
       where: { id, approved: true },
-      include: {
-        categories: true,
-        createdBy: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-      },
+      include: recipeWithDetailsInclude,
     });
 
     if (!recipe) {
@@ -38,9 +33,7 @@ export async function getRecipeById(id: string) {
       where: {
         id: { in: ingredientItemIds },
       },
-      include: {
-        category: true,
-      },
+      include: itemWithCategoryInclude,
     });
 
     // Get the units for ingredients that have unitId
