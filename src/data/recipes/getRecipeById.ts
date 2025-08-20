@@ -1,4 +1,4 @@
-import { prisma } from "../../../prisma/prisma";
+import { prisma } from "@/lib/prisma";
 
 // Helper function to validate MongoDB ObjectId
 function isValidObjectId(id: string): boolean {

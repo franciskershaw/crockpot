@@ -1,4 +1,4 @@
-import { prisma } from "../../../prisma/prisma";
+import { prisma } from "@/lib/prisma";
 import { RecipeMenu, MenuHistoryEntry } from "../types";
 import { rebuildShoppingListForUser } from "../shopping-list/shoppingList";
 
