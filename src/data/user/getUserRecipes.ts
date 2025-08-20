@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../prisma/prisma";
 import { Recipe } from "../types";
 
 export async function getUserCreatedRecipes(userId: string): Promise<Recipe[]> {

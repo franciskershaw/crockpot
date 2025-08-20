@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "../../../prisma/prisma";
 import { GetRecipesDALParams, Recipe, RecipeFilters } from "../types";
 import {
   buildWhereClause,
