@@ -1,11 +1,10 @@
 import { prisma } from "@/lib/prisma";
-import { GetRecipesDALParams, Recipe, RecipeFilters } from "@/data/types";
+import { GetRecipesDALParams, RecipeFilters } from "@/data/types";
+import { buildWhereClause, hasActiveFilters } from "./helper";
 import {
-  buildWhereClause,
-  calculateRelevance,
-  hasActiveFilters,
-} from "./helper";
-import { recipeCategoriesInclude, recentFirstOrderBy } from "@/data/fragments/query-fragments";
+  recipeCategoriesInclude,
+  recentFirstOrderBy,
+} from "@/data/fragments/query-fragments";
 
 export async function getRecipes({
   page = 1,
@@ -41,68 +40,19 @@ export async function getRecipes({
     };
   }
 
-  // Filters are active - get ALL results, calculate relevance, sort by relevance, then paginate
-  const [allRecipes, total] = await Promise.all([
-    prisma.recipe.findMany({
-      where,
-      include: { categories: true },
-      // No skip/take - get everything that matches the filters
-    }),
-    prisma.recipe.count({ where }),
-  ]);
-
-  // First pass: calculate relevance scores to find the highest score
-  const recipesWithTempRelevance = allRecipes.map((recipe) => {
-    const relevance = calculateRelevance(recipe, filters, timeRange);
-    return { recipe, relevance };
-  });
-
-  // Find the highest score among all results
-  const highestScore = Math.max(
-    ...recipesWithTempRelevance.map((r) => r.relevance.score)
-  );
-
-  // Second pass: calculate final relevance with highest score information
-  const recipesWithRelevance: Recipe[] = recipesWithTempRelevance.map(
-    ({ recipe }) => {
-      const relevance = calculateRelevance(
-        recipe,
-        filters,
-        timeRange,
-        highestScore
-      );
-      return { ...recipe, relevance };
-    }
-  );
-
-  // Sort all recipes by relevance (highest score first)
-  recipesWithRelevance.sort((a, b) => {
-    const scoreA = a.relevance?.score || 0;
-    const scoreB = b.relevance?.score || 0;
-    // Primary sort by relevance score (descending)
-    if (scoreA !== scoreB) {
-      return scoreB - scoreA;
-    }
-    // Secondary sort by creation date (descending) for recipes with same score
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
-
-  // Apply pagination to the sorted results
-  const skip = (page - 1) * pageSize;
-  const paginatedRecipes = recipesWithRelevance.slice(skip, skip + pageSize);
-
-  return {
-    recipes: paginatedRecipes,
-    total,
+  // Filters are active - use optimized cached relevance approach
+  const { getRecipesWithCachedRelevance } = await import("./relevance-cache");
+  return getRecipesWithCachedRelevance({
     page,
     pageSize,
-    totalPages: Math.ceil(total / pageSize),
-  };
+    filters,
+    timeRange,
+  });
 }
 
 export async function getRecipeTimeRange() {
   const { unstable_cache } = await import("next/cache");
-  
+
   const getCachedTimeRange = unstable_cache(
     async () => {
       const result = await prisma.recipe.aggregate({
@@ -134,7 +84,7 @@ export async function getRecipeTimeRange() {
 
 export async function getRecipeCategories() {
   const { unstable_cache } = await import("next/cache");
-  
+
   const getCachedCategories = unstable_cache(
     async () => {
       const categories = await prisma.recipeCategory.findMany({
