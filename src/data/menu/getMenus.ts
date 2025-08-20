@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { RecipeMenu } from "@/data/types";
+import { validateUserId } from "@/lib/security";
 
 export async function getUserMenu(userId: string): Promise<RecipeMenu | null> {
+  validateUserId(userId);
   const menu = await prisma.recipeMenu.findUnique({
     where: { userId },
   });

@@ -1,5 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import type { ShoppingList, ShoppingListWithDetails } from "@/data/types";
+import {
+  validateUserId,
+  validateItemId,
+  validateOptionalObjectId,
+} from "@/lib/security";
 //
 
 /**
@@ -11,6 +16,7 @@ import type { ShoppingList, ShoppingListWithDetails } from "@/data/types";
 export async function rebuildShoppingListForUser(
   userId: string
 ): Promise<ShoppingList> {
+  validateUserId(userId);
   // Preserve any manual items the user has added
   const existingList = await prisma.shoppingList.findUnique({
     where: { userId },
@@ -98,6 +104,7 @@ export async function rebuildShoppingListForUser(
 export async function getUserShoppingListWithDetails(
   userId: string
 ): Promise<ShoppingListWithDetails | null> {
+  validateUserId(userId);
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list) return null;
 
@@ -134,6 +141,9 @@ export async function toggleObtainedForItem(
   unitId?: string | null,
   isManual?: boolean
 ): Promise<ShoppingList> {
+  validateUserId(userId);
+  validateItemId(itemId);
+  validateOptionalObjectId(unitId, "unitId");
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list)
     return await prisma.shoppingList.create({ data: { userId, items: [] } });
@@ -164,6 +174,9 @@ export async function removeItemFromShoppingList(
   unitId?: string | null,
   isManual?: boolean
 ): Promise<ShoppingList> {
+  validateUserId(userId);
+  validateItemId(itemId);
+  validateOptionalObjectId(unitId, "unitId");
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list)
     return await prisma.shoppingList.create({ data: { userId, items: [] } });
@@ -193,6 +206,9 @@ export async function updateShoppingListItemQuantity(
   quantity: number,
   isManual?: boolean
 ): Promise<ShoppingList> {
+  validateUserId(userId);
+  validateItemId(itemId);
+  validateOptionalObjectId(unitId, "unitId");
   const list = await prisma.shoppingList.findUnique({ where: { userId } });
   if (!list)
     return await prisma.shoppingList.create({ data: { userId, items: [] } });

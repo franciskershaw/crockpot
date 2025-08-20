@@ -1,7 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { Recipe } from "@/data/types";
+import { validateUserId, validateRecipeId } from "@/lib/security";
 
 export async function getUserFavourites(userId: string): Promise<Recipe[]> {
+  validateUserId(userId);
+
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: {
@@ -24,6 +27,8 @@ export async function addRecipeToFavourites(
   userId: string,
   recipeId: string
 ): Promise<{ wasAdded: boolean }> {
+  validateUserId(userId);
+  validateRecipeId(recipeId);
   // Check if recipe exists
   const recipe = await prisma.recipe.findUnique({
     where: { id: recipeId },
@@ -66,6 +71,8 @@ export async function removeRecipeFromFavourites(
   userId: string,
   recipeId: string
 ): Promise<{ wasRemoved: boolean }> {
+  validateUserId(userId);
+  validateRecipeId(recipeId);
   // Get current user
   const user = await prisma.user.findUnique({
     where: { id: userId },

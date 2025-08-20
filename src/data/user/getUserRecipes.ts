@@ -1,11 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { Recipe } from "@/data/types";
+import { validateUserId } from "@/lib/security";
 
 export async function getUserCreatedRecipes(userId: string): Promise<Recipe[]> {
+  validateUserId(userId);
   const recipes = await prisma.recipe.findMany({
-    where: { 
+    where: {
       createdById: userId,
-      approved: true // Only return approved recipes
+      approved: true, // Only return approved recipes
     },
     include: {
       categories: true,
@@ -29,8 +31,8 @@ export async function getUserCreatedRecipes(userId: string): Promise<Recipe[]> {
       itemId: ing.itemId,
       unitId: ing.unitId,
       quantity: ing.quantity,
-      item: null, // Will be populated if needed
-      unit: null, // Will be populated if needed
+      item: undefined, // Will be populated if needed
+      unit: undefined, // Will be populated if needed
     })),
   }));
 

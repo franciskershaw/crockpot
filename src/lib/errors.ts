@@ -13,7 +13,7 @@ export class AppError extends Error {
   ) {
     super(message);
     this.name = this.constructor.name;
-    
+
     // Maintains proper stack trace for where error was thrown (only available on V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, this.constructor);
@@ -53,7 +53,7 @@ export class ValidationError extends AppError {
  */
 export class NotFoundError extends AppError {
   constructor(resource = "Resource", id?: string) {
-    const message = id 
+    const message = id
       ? `${resource} with ID "${id}" not found`
       : `${resource} not found`;
     super(message, "NOT_FOUND", 404);
@@ -70,17 +70,8 @@ export class ServerError extends AppError {
 }
 
 /**
- * Rate limiting error
- */
-export class RateLimitError extends AppError {
-  constructor(message = "Too many requests. Please try again later.") {
-    super(message, "RATE_LIMIT", 429);
-  }
-}
-
-/**
  * Type guard to check if error is an AppError
  */
 export function isAppError(error: unknown): error is AppError {
   return error instanceof AppError;
-} 
+}

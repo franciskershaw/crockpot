@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { RecipeMenu, MenuHistoryEntry } from "@/data/types";
 import { rebuildShoppingListForUser } from "@/data/shopping-list/shoppingList";
+import { validateUserId, validateRecipeId } from "@/lib/security";
 
 // Helper function to update history when adding or removing a recipe from menu
 function updateHistory(
@@ -59,6 +60,8 @@ export async function addRecipeToMenu(
   recipeId: string,
   serves: number
 ): Promise<{ menu: RecipeMenu; wasUpdate: boolean }> {
+  validateUserId(userId);
+  validateRecipeId(recipeId);
   // Get current menu
   const existingMenu = await prisma.recipeMenu.findUnique({
     where: { userId },
@@ -113,6 +116,8 @@ export async function removeRecipeFromMenu(
   userId: string,
   recipeId: string
 ): Promise<RecipeMenu | null> {
+  validateUserId(userId);
+  validateRecipeId(recipeId);
   const existingMenu = await prisma.recipeMenu.findUnique({
     where: { userId },
   });

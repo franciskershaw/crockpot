@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/prisma";
-
-// Helper function to validate MongoDB ObjectId
-function isValidObjectId(id: string): boolean {
-  // MongoDB ObjectId is exactly 24 hex characters
-  return /^[0-9a-fA-F]{24}$/.test(id);
-}
+import { validateRecipeId } from "@/lib/security";
+import { ValidationError } from "@/lib/errors";
 
 export async function getRecipeById(id: string) {
-  // Validate the ID format before making the database query
-  if (!isValidObjectId(id)) {
-    return null;
+  try {
+    // Validate the ID format before making the database query
+    validateRecipeId(id);
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      return null; // Invalid ID format, return null instead of throwing
+    }
+    throw error;
   }
 
   try {
