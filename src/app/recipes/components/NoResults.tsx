@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, Plus, ChefHat } from "lucide-react";
-import { useFilters } from "../context/FilterProvider";
+import { useFilters } from "@/app/recipes/context/FilterProvider";
 import EmptyState from "@/components/ui/empty-state";
 
 export default function NoResults() {

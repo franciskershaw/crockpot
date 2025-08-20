@@ -5,7 +5,7 @@ import { getRecipes } from "@/actions/recipes";
 import RecipeCard from "./RecipeCard";
 import NoResults from "./NoResults";
 import type { Recipe } from "@/data/types";
-import { useFilters } from "../context/FilterProvider";
+import { useFilters } from "@/app/recipes/context/FilterProvider";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
 

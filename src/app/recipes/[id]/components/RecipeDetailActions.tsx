@@ -2,8 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { Recipe } from "@/data/types";
-import AddToMenuButton from "../../components/AddToMenuButton";
-import AddToFavouritesButton from "../../components/AddToFavouritesButton";
+import AddToMenuButton from "@/app/recipes/components/AddToMenuButton";
+import AddToFavouritesButton from "@/app/recipes/components/AddToFavouritesButton";
 
 interface RecipeDetailActionsProps {
   recipe: Recipe;

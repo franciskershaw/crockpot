@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Recipe } from "../types";
+import { Recipe } from "@/data/types";
 
 export async function getUserFavourites(userId: string): Promise<Recipe[]> {
   const user = await prisma.user.findUnique({

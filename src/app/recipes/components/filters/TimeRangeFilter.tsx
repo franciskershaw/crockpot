@@ -1,7 +1,7 @@
 "use client";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { useFilters } from "../../context/FilterProvider";
+import { useFilters } from "@/app/recipes/context/FilterProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function TimeRangeFilter({

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { RecipeMenu, MenuHistoryEntry } from "../types";
-import { rebuildShoppingListForUser } from "../shopping-list/shoppingList";
+import { RecipeMenu, MenuHistoryEntry } from "@/data/types";
+import { rebuildShoppingListForUser } from "@/data/shopping-list/shoppingList";
 
 // Helper function to update history when adding or removing a recipe from menu
 function updateHistory(

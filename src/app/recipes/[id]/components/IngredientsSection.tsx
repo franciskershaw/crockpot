@@ -6,7 +6,7 @@ import {
   getCategoryIcon,
   type Ingredient,
 } from "../helpers/helpers";
-import { useRecipeServes } from "../hooks/useRecipeServes";
+import { useRecipeServes } from "@/app/recipes/[id]/hooks/useRecipeServes";
 import { ServesControl } from "./ServesControl";
 
 interface IngredientsSectionProps {

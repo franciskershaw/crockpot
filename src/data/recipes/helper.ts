@@ -1,4 +1,4 @@
-import { Recipe, RecipeRelevance, RecipeFilters } from "../types";
+import { Recipe, RecipeRelevance, RecipeFilters } from "@/data/types";
 import type { Prisma } from "@prisma/client";
 
 // Calculate the maximum possible relevance score for given filters

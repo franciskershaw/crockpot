@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { ShoppingList, ShoppingListWithDetails } from "../types";
+import type { ShoppingList, ShoppingListWithDetails } from "@/data/types";
 //
 
 /**

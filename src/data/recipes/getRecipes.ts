@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { GetRecipesDALParams, Recipe, RecipeFilters } from "../types";
+import { GetRecipesDALParams, Recipe, RecipeFilters } from "@/data/types";
 import {
   buildWhereClause,
   calculateRelevance,
