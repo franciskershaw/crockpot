@@ -7,20 +7,13 @@ import {
   removeRecipeFromMenu as removeRecipeFromMenuFromDAL,
   removeAllRecipesFromMenu as removeAllRecipesFromMenuFromDAL,
 } from "@/data/menu/menuMutations";
+import { addToMenuSchema, removeFromMenuSchema } from "@/lib/validations";
 import {
-  addToMenuSchema,
-  removeFromMenuSchema,
-  type AddToMenuInput,
-  type RemoveFromMenuInput,
-} from "@/lib/validations";
-import { getAuthenticatedUserId, validateInput } from "@/lib/action-helpers";
+  withAuthentication,
+  withAuthAndValidation,
+} from "@/lib/action-helpers";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
-import {
-  NotFoundError,
-  ServerError,
-  AuthError,
-  ValidationError,
-} from "@/lib/errors";
+import { NotFoundError } from "@/lib/errors";
 import { revalidatePath } from "next/cache";
 import {
   toggleObtainedForItem as toggleObtainedForItemDAL,
@@ -33,33 +26,19 @@ import {
 import {
   removeShoppingListItemSchema,
   toggleObtainedSchema,
-  type RemoveShoppingListItemInput,
-  type ToggleObtainedInput,
   updateShoppingListItemQuantitySchema,
-  type UpdateShoppingListItemQuantityInput,
   addManualShoppingListItemSchema,
-  type AddManualShoppingListItemInput,
 } from "@/lib/validations";
 
 // Get user's menu with recipes
-export async function getUserMenu() {
-  try {
-    const userId = await getAuthenticatedUserId();
-    return await getUserMenuFromDAL(userId);
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("Authentication")) {
-      throw error; // Re-throw auth errors as-is
-    }
-    throw new ServerError("Failed to retrieve menu");
-  }
-}
+export const getUserMenu = withAuthentication(async (userId) => {
+  return await getUserMenuFromDAL(userId);
+});
 
 // Add recipe to menu (creates menu if none exists)
-export async function addRecipeToMenu(input: AddToMenuInput) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validatedInput = validateInput(addToMenuSchema, input);
-
+export const addRecipeToMenu = withAuthAndValidation(
+  addToMenuSchema,
+  async (validatedInput, userId) => {
     // Verify recipe exists
     const recipe = await getRecipeByIdFromDAL(validatedInput.recipeId);
     if (!recipe) {
@@ -74,24 +53,13 @@ export async function addRecipeToMenu(input: AddToMenuInput) {
 
     revalidatePath("/your-crockpot");
     return result;
-  } catch (error) {
-    if (
-      error instanceof AuthError ||
-      error instanceof ValidationError ||
-      error instanceof NotFoundError
-    ) {
-      throw error; // Re-throw known errors as-is
-    }
-    throw new ServerError("Failed to add recipe to menu");
   }
-}
+);
 
 // Remove recipe from menu
-export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validatedInput = validateInput(removeFromMenuSchema, input);
-
+export const removeRecipeFromMenu = withAuthAndValidation(
+  removeFromMenuSchema,
+  async (validatedInput, userId) => {
     // Verify user has a menu
     const menu = await getUserMenuFromDAL(userId);
     if (!menu) {
@@ -113,43 +81,24 @@ export async function removeRecipeFromMenu(input: RemoveFromMenuInput) {
 
     revalidatePath("/your-crockpot");
     return updatedMenu;
-  } catch (error) {
-    if (
-      error instanceof AuthError ||
-      error instanceof ValidationError ||
-      error instanceof NotFoundError
-    ) {
-      throw error; // Re-throw known errors as-is
-    }
-    throw new ServerError("Failed to remove recipe from menu");
   }
-}
+);
 
 // Remove all recipes from menu
-export async function removeAllRecipesFromMenu() {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const updatedMenu = await removeAllRecipesFromMenuFromDAL(userId);
-
-    revalidatePath("/your-crockpot");
-    return updatedMenu;
-  } catch (error) {
-    if (error instanceof AuthError || error instanceof NotFoundError) {
-      throw error; // Re-throw known errors as-is
-    }
-  }
-}
+export const removeAllRecipesFromMenu = withAuthentication(async (userId) => {
+  const updatedMenu = await removeAllRecipesFromMenuFromDAL(userId);
+  revalidatePath("/your-crockpot");
+  return updatedMenu;
+});
 
 // Shopping list actions
-export async function getShoppingList() {
-  const userId = await getAuthenticatedUserId();
+export const getShoppingList = withAuthentication(async (userId) => {
   return await getUserShoppingListWithDetails(userId);
-}
+});
 
-export async function toggleObtained(input: ToggleObtainedInput) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validated = validateInput(toggleObtainedSchema, input);
+export const toggleObtained = withAuthAndValidation(
+  toggleObtainedSchema,
+  async (validated, userId) => {
     const updated = await toggleObtainedForItemDAL(
       userId,
       validated.itemId,
@@ -158,20 +107,12 @@ export async function toggleObtained(input: ToggleObtainedInput) {
     );
     revalidatePath("/your-crockpot");
     return updated;
-  } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError) {
-      throw error;
-    }
-    throw new ServerError("Failed to update shopping list");
   }
-}
+);
 
-export async function removeShoppingListItem(
-  input: RemoveShoppingListItemInput
-) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validated = validateInput(removeShoppingListItemSchema, input);
+export const removeShoppingListItem = withAuthAndValidation(
+  removeShoppingListItemSchema,
+  async (validated, userId) => {
     const updated = await removeItemFromShoppingListDAL(
       userId,
       validated.itemId,
@@ -180,23 +121,12 @@ export async function removeShoppingListItem(
     );
     revalidatePath("/your-crockpot");
     return updated;
-  } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError) {
-      throw error;
-    }
-    throw new ServerError("Failed to update shopping list");
   }
-}
+);
 
-export async function updateShoppingListItemQuantity(
-  input: UpdateShoppingListItemQuantityInput
-) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validated = validateInput(
-      updateShoppingListItemQuantitySchema,
-      input
-    );
+export const updateShoppingListItemQuantity = withAuthAndValidation(
+  updateShoppingListItemQuantitySchema,
+  async (validated, userId) => {
     const updated = await updateShoppingListItemQuantityDAL(
       userId,
       validated.itemId,
@@ -206,20 +136,12 @@ export async function updateShoppingListItemQuantity(
     );
     revalidatePath("/your-crockpot");
     return updated;
-  } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError) {
-      throw error;
-    }
-    throw new ServerError("Failed to update shopping list");
   }
-}
+);
 
-export async function addManualShoppingListItem(
-  input: AddManualShoppingListItemInput
-) {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const validated = validateInput(addManualShoppingListItemSchema, input);
+export const addManualShoppingListItem = withAuthAndValidation(
+  addManualShoppingListItemSchema,
+  async (validated, userId) => {
     const updated = await addManualItemToShoppingListDAL(
       userId,
       validated.itemId,
@@ -228,24 +150,11 @@ export async function addManualShoppingListItem(
     );
     revalidatePath("/your-crockpot");
     return updated;
-  } catch (error) {
-    if (error instanceof AuthError || error instanceof ValidationError) {
-      throw error;
-    }
-    throw new ServerError("Failed to add item to shopping list");
   }
-}
+);
 
-export async function clearShoppingList() {
-  try {
-    const userId = await getAuthenticatedUserId();
-    const updated = await clearAllItemsFromShoppingListDAL(userId);
-    revalidatePath("/your-crockpot");
-    return updated;
-  } catch (error) {
-    if (error instanceof AuthError) {
-      throw error;
-    }
-    throw new ServerError("Failed to clear shopping list");
-  }
-}
+export const clearShoppingList = withAuthentication(async (userId) => {
+  const updated = await clearAllItemsFromShoppingListDAL(userId);
+  revalidatePath("/your-crockpot");
+  return updated;
+});

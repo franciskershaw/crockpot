@@ -1,70 +1,103 @@
 import { z } from "zod";
+import { objectIdSchema, optionalObjectIdSchema } from "@/lib/security";
 
-// Menu validation schemas
-export const addToMenuSchema = z.object({
-  recipeId: z.string().min(1, "Recipe ID is required"),
-  serves: z
-    .number()
-    .min(1, "Serves must be at least 1")
-    .max(20, "Serves cannot exceed 20"),
+// ===================================
+// SHARED VALIDATION SCHEMAS
+// ===================================
+
+/**
+ * Common field validators
+ */
+export const recipeIdField = objectIdSchema;
+export const itemIdField = objectIdSchema;
+export const unitIdField = optionalObjectIdSchema;
+export const userIdField = objectIdSchema;
+
+/**
+ * Common object schemas
+ */
+export const servesField = z
+  .number()
+  .min(1, "Serves must be at least 1")
+  .max(20, "Serves cannot exceed 20");
+
+export const quantityField = z.number().min(0, "Quantity cannot be negative");
+
+export const positiveQuantityField = z
+  .number()
+  .min(0.01, "Quantity must be greater than 0");
+
+export const isManualField = z.boolean().optional();
+
+/**
+ * Shopping list item base schema - reused across multiple operations
+ */
+export const shoppingListItemBaseSchema = z.object({
+  itemId: itemIdField,
+  unitId: unitIdField,
+  isManual: isManualField,
 });
 
-export const removeFromMenuSchema = z.object({
-  recipeId: z.string().min(1, "Recipe ID is required"),
+/**
+ * Recipe operation base schema - reused for favorites and menu operations
+ */
+export const recipeOperationBaseSchema = z.object({
+  recipeId: recipeIdField,
 });
 
-// Favourites validation schemas
-export const addToFavouritesSchema = z.object({
-  recipeId: z.string().min(1, "Recipe ID is required"),
+// ===================================
+// SPECIFIC OPERATION SCHEMAS
+// ===================================
+
+/**
+ * Menu operations
+ */
+export const addToMenuSchema = recipeOperationBaseSchema.extend({
+  serves: servesField,
 });
 
-export const removeFromFavouritesSchema = z.object({
-  recipeId: z.string().min(1, "Recipe ID is required"),
-});
+export const removeFromMenuSchema = recipeOperationBaseSchema;
 
-// Type exports for the schemas
+/**
+ * Favourites operations
+ */
+export const addToFavouritesSchema = recipeOperationBaseSchema;
+export const removeFromFavouritesSchema = recipeOperationBaseSchema;
+
+/**
+ * Shopping list operations
+ */
+export const toggleObtainedSchema = shoppingListItemBaseSchema;
+
+export const removeShoppingListItemSchema = shoppingListItemBaseSchema;
+
+export const updateShoppingListItemQuantitySchema =
+  shoppingListItemBaseSchema.extend({
+    quantity: quantityField,
+  });
+
+export const addManualShoppingListItemSchema =
+  shoppingListItemBaseSchema.extend({
+    quantity: positiveQuantityField,
+  });
+
+// ===================================
+// TYPE EXPORTS
+// ===================================
+
 export type AddToMenuInput = z.infer<typeof addToMenuSchema>;
 export type RemoveFromMenuInput = z.infer<typeof removeFromMenuSchema>;
 export type AddToFavouritesInput = z.infer<typeof addToFavouritesSchema>;
 export type RemoveFromFavouritesInput = z.infer<
   typeof removeFromFavouritesSchema
 >;
-
-// Shopping list validation schemas
-export const toggleObtainedSchema = z.object({
-  itemId: z.string().min(1),
-  unitId: z.string().optional().nullable(),
-  isManual: z.boolean().optional(),
-});
-
-export const removeShoppingListItemSchema = z.object({
-  itemId: z.string().min(1),
-  unitId: z.string().optional().nullable(),
-  isManual: z.boolean().optional(),
-});
-
 export type ToggleObtainedInput = z.infer<typeof toggleObtainedSchema>;
 export type RemoveShoppingListItemInput = z.infer<
   typeof removeShoppingListItemSchema
 >;
-
-export const updateShoppingListItemQuantitySchema = z.object({
-  itemId: z.string().min(1),
-  unitId: z.string().optional().nullable(),
-  quantity: z.number().min(0),
-  isManual: z.boolean().optional(),
-});
-
 export type UpdateShoppingListItemQuantityInput = z.infer<
   typeof updateShoppingListItemQuantitySchema
 >;
-
-export const addManualShoppingListItemSchema = z.object({
-  itemId: z.string().min(1),
-  unitId: z.string().optional().nullable(),
-  quantity: z.number().min(0.01),
-});
-
 export type AddManualShoppingListItemInput = z.infer<
   typeof addManualShoppingListItemSchema
 >;

@@ -4,11 +4,12 @@ import {
   getItems as getItemsFromDAL,
   getIngredients as getIngredientsFromDAL,
 } from "@/data/items/getItems";
+import { createPublicAction } from "@/lib/action-helpers";
 
-export async function getItems() {
+export const getItems = createPublicAction(async () => {
   return await getItemsFromDAL();
-}
+});
 
-export async function getIngredients() {
+export const getIngredients = createPublicAction(async () => {
   return await getIngredientsFromDAL();
-}
+});
