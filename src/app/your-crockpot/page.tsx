@@ -11,6 +11,8 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
+export const dynamic = "force-dynamic";
+
 const YourCrockpotPage = async () => {
   const menu = await getUserMenu();
 

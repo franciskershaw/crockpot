@@ -146,15 +146,6 @@ export async function getAuthenticatedUserWithMinimumRole(
 }
 
 /**
- * Legacy function for backward compatibility - use getAuthenticatedUserWithMinimumRole instead
- * @deprecated Use getAuthenticatedUserWithMinimumRole(UserRole.ADMIN) instead
- */
-export async function getAuthenticatedAdminUserId(): Promise<string> {
-  const user = await getAuthenticatedUserWithMinimumRole(UserRole.ADMIN);
-  return user.id;
-}
-
-/**
  * Helper function to validate input with Zod schema
  * Throws ValidationError if validation fails
  */
