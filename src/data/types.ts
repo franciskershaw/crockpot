@@ -9,6 +9,7 @@ import {
   MenuHistoryEntry as PrismaMenuHistoryEntry,
   ShoppingList as PrismaShoppingList,
   ShoppingListItem as PrismaShoppingListItem,
+  UserRole,
 } from "@prisma/client";
 
 // Relevance information for recipes when filters are applied
@@ -102,3 +103,5 @@ export type ShoppingListWithDetails = Omit<ShoppingList, "items"> & {
 };
 
 export type Unit = PrismaUnit;
+
+export { UserRole };

@@ -13,6 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User roles and tiers enum
+enum UserRole {
+  FREE // Logged in user - can favourite recipes and create menu/shopping list
+  PREMIUM // Paid tier 1 - can add custom recipes/items (pending approval)
+  PRO // Paid tier 2 - access to AI features and advanced functionality  
+  ADMIN // Full admin access - god mode with admin panel access
+}
+
 // Users collection
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -21,7 +29,7 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
-  isAdmin       Boolean   @default(false)
+  role          UserRole  @default(FREE)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

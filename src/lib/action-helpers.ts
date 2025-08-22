@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { z } from "zod";
+import { UserRole } from "@/data/types";
 import {
   AuthError,
   ValidationError,
@@ -7,6 +8,75 @@ import {
   NotFoundError,
   ServerError,
 } from "@/lib/errors";
+
+/**
+ * Permission levels for different features
+ */
+export enum Permission {
+  VIEW_RECIPES = "VIEW_RECIPES", // Not logged in + all others
+  MANAGE_FAVOURITES = "MANAGE_FAVOURITES", // FREE + paid + admin
+  MANAGE_MENU = "MANAGE_MENU", // FREE + paid + admin
+  CREATE_RECIPES = "CREATE_RECIPES", // PREMIUM + PRO + admin
+  CREATE_ITEMS = "CREATE_ITEMS", // PREMIUM + PRO + admin
+  AI_FEATURES = "AI_FEATURES", // PRO + admin
+  ADMIN_PANEL = "ADMIN_PANEL", // ADMIN only
+  APPROVE_CONTENT = "APPROVE_CONTENT", // ADMIN only
+}
+
+/**
+ * Role hierarchy mapping - higher values include permissions of lower values
+ */
+const ROLE_HIERARCHY: Record<UserRole, number> = {
+  FREE: 1,
+  PREMIUM: 2,
+  PRO: 3,
+  ADMIN: 4,
+};
+
+/**
+ * Permission requirements mapping
+ */
+const PERMISSION_REQUIREMENTS: Record<Permission, UserRole[]> = {
+  [Permission.VIEW_RECIPES]: [], // No authentication required
+  [Permission.MANAGE_FAVOURITES]: [
+    UserRole.FREE,
+    UserRole.PREMIUM,
+    UserRole.PRO,
+    UserRole.ADMIN,
+  ],
+  [Permission.MANAGE_MENU]: [
+    UserRole.FREE,
+    UserRole.PREMIUM,
+    UserRole.PRO,
+    UserRole.ADMIN,
+  ],
+  [Permission.CREATE_RECIPES]: [UserRole.PREMIUM, UserRole.PRO, UserRole.ADMIN],
+  [Permission.CREATE_ITEMS]: [UserRole.PREMIUM, UserRole.PRO, UserRole.ADMIN],
+  [Permission.AI_FEATURES]: [UserRole.PRO, UserRole.ADMIN],
+  [Permission.ADMIN_PANEL]: [UserRole.ADMIN],
+  [Permission.APPROVE_CONTENT]: [UserRole.ADMIN],
+};
+
+/**
+ * Helper function to check if a role has permission for a specific action
+ */
+export function hasPermission(
+  userRole: UserRole,
+  permission: Permission
+): boolean {
+  const allowedRoles = PERMISSION_REQUIREMENTS[permission];
+  return allowedRoles.includes(userRole);
+}
+
+/**
+ * Helper function to check if a role meets minimum requirement
+ */
+export function hasMinimumRole(
+  userRole: UserRole,
+  minimumRole: UserRole
+): boolean {
+  return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[minimumRole];
+}
 
 /**
  * Helper function to get authenticated user ID
@@ -21,35 +91,67 @@ export async function getAuthenticatedUserId(): Promise<string> {
 }
 
 /**
- * Helper function to get authenticated user with admin verification
+ * Helper function to get authenticated user with role information
  * Throws AuthError if user is not authenticated
- * Throws ForbiddenError if user is not an admin
  */
-export async function getAuthenticatedAdminUserId(): Promise<string> {
+export async function getAuthenticatedUser(): Promise<{
+  id: string;
+  role: UserRole;
+}> {
   const session = await auth();
   if (!session?.user?.id) {
     throw new AuthError("Please sign in to continue");
   }
-
-  // Re-verify admin status from database to prevent client-side manipulation
-  if (!session.user.isAdmin) {
-    throw new ForbiddenError("Admin access required");
-  }
-
-  return session.user.id;
+  return {
+    id: session.user.id,
+    role: session.user.role as UserRole,
+  };
 }
 
 /**
- * Helper function to get authenticated user ID with optional admin check
- * @param requireAdmin - Whether admin privileges are required
+ * Helper function to get authenticated user with permission verification
+ * Throws AuthError if user is not authenticated
+ * Throws ForbiddenError if user doesn't have required permission
  */
-export async function getAuthenticatedUserIdWithRole(
-  requireAdmin = false
-): Promise<string> {
-  if (requireAdmin) {
-    return getAuthenticatedAdminUserId();
+export async function getAuthenticatedUserWithPermission(
+  permission: Permission
+): Promise<{ id: string; role: UserRole }> {
+  const user = await getAuthenticatedUser();
+
+  if (!hasPermission(user.role, permission)) {
+    const permissionName = permission.toLowerCase().replace(/_/g, " ");
+    throw new ForbiddenError(`You don't have permission to ${permissionName}`);
   }
-  return getAuthenticatedUserId();
+
+  return user;
+}
+
+/**
+ * Helper function to get authenticated user with minimum role verification
+ * Throws AuthError if user is not authenticated
+ * Throws ForbiddenError if user doesn't meet minimum role requirement
+ */
+export async function getAuthenticatedUserWithMinimumRole(
+  minimumRole: UserRole
+): Promise<{ id: string; role: UserRole }> {
+  const user = await getAuthenticatedUser();
+
+  if (!hasMinimumRole(user.role, minimumRole)) {
+    throw new ForbiddenError(
+      `This feature requires ${minimumRole.toLowerCase()} access or higher`
+    );
+  }
+
+  return user;
+}
+
+/**
+ * Legacy function for backward compatibility - use getAuthenticatedUserWithMinimumRole instead
+ * @deprecated Use getAuthenticatedUserWithMinimumRole(UserRole.ADMIN) instead
+ */
+export async function getAuthenticatedAdminUserId(): Promise<string> {
+  const user = await getAuthenticatedUserWithMinimumRole(UserRole.ADMIN);
+  return user.id;
 }
 
 /**
@@ -110,16 +212,45 @@ function withErrorHandling<TArgs extends unknown[], TReturn>(
  * Provides authenticated user ID to the handler
  */
 export function withAuthentication<TArgs extends unknown[], TReturn>(
-  handler: (userId: string, ...args: TArgs) => Promise<TReturn>,
-  options: {
-    requireAdmin?: boolean;
-  } = {}
+  handler: (userId: string, ...args: TArgs) => Promise<TReturn>
 ): (...args: TArgs) => Promise<TReturn> {
-  const { requireAdmin = false } = options;
-
   return withErrorHandling(async (...args: TArgs): Promise<TReturn> => {
-    const userId = await getAuthenticatedUserIdWithRole(requireAdmin);
+    const userId = await getAuthenticatedUserId();
     return await handler(userId, ...args);
+  });
+}
+
+/**
+ * Permission-based authentication wrapper for server actions
+ * Provides authenticated user with role to the handler after permission check
+ */
+export function withPermission<TArgs extends unknown[], TReturn>(
+  permission: Permission,
+  handler: (
+    user: { id: string; role: UserRole },
+    ...args: TArgs
+  ) => Promise<TReturn>
+): (...args: TArgs) => Promise<TReturn> {
+  return withErrorHandling(async (...args: TArgs): Promise<TReturn> => {
+    const user = await getAuthenticatedUserWithPermission(permission);
+    return await handler(user, ...args);
+  });
+}
+
+/**
+ * Role-based authentication wrapper for server actions
+ * Provides authenticated user with role to the handler after role check
+ */
+export function withMinimumRole<TArgs extends unknown[], TReturn>(
+  minimumRole: UserRole,
+  handler: (
+    user: { id: string; role: UserRole },
+    ...args: TArgs
+  ) => Promise<TReturn>
+): (...args: TArgs) => Promise<TReturn> {
+  return withErrorHandling(async (...args: TArgs): Promise<TReturn> => {
+    const user = await getAuthenticatedUserWithMinimumRole(minimumRole);
+    return await handler(user, ...args);
   });
 }
 
@@ -149,18 +280,61 @@ export function withAuthAndValidation<TInput, TArgs extends unknown[], TReturn>(
     validatedInput: TInput,
     userId: string,
     ...args: TArgs
-  ) => Promise<TReturn>,
-  options: {
-    requireAdmin?: boolean;
-  } = {}
+  ) => Promise<TReturn>
 ): (input: TInput, ...args: TArgs) => Promise<TReturn> {
-  const { requireAdmin = false } = options;
-
   return withErrorHandling(
     async (input: TInput, ...args: TArgs): Promise<TReturn> => {
-      const userId = await getAuthenticatedUserIdWithRole(requireAdmin);
+      const userId = await getAuthenticatedUserId();
       const validatedInput = validateInput(schema, input);
       return await handler(validatedInput, userId, ...args);
+    }
+  );
+}
+
+/**
+ * Combined permission check and validation wrapper
+ * For actions that need permission verification and input validation
+ */
+export function withPermissionAndValidation<
+  TInput,
+  TArgs extends unknown[],
+  TReturn
+>(
+  permission: Permission,
+  schema: z.ZodSchema<TInput>,
+  handler: (
+    validatedInput: TInput,
+    user: { id: string; role: UserRole },
+    ...args: TArgs
+  ) => Promise<TReturn>
+): (input: TInput, ...args: TArgs) => Promise<TReturn> {
+  return withErrorHandling(
+    async (input: TInput, ...args: TArgs): Promise<TReturn> => {
+      const user = await getAuthenticatedUserWithPermission(permission);
+      const validatedInput = validateInput(schema, input);
+      return await handler(validatedInput, user, ...args);
+    }
+  );
+}
+
+/**
+ * Combined role check and validation wrapper
+ * For actions that need role verification and input validation
+ */
+export function withRoleAndValidation<TInput, TArgs extends unknown[], TReturn>(
+  minimumRole: UserRole,
+  schema: z.ZodSchema<TInput>,
+  handler: (
+    validatedInput: TInput,
+    user: { id: string; role: UserRole },
+    ...args: TArgs
+  ) => Promise<TReturn>
+): (input: TInput, ...args: TArgs) => Promise<TReturn> {
+  return withErrorHandling(
+    async (input: TInput, ...args: TArgs): Promise<TReturn> => {
+      const user = await getAuthenticatedUserWithMinimumRole(minimumRole);
+      const validatedInput = validateInput(schema, input);
+      return await handler(validatedInput, user, ...args);
     }
   );
 }

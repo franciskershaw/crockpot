@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
+import { UserRole } from "@/data/types";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // Keep adapter for OAuth account management only
@@ -53,14 +54,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
-        token.isAdmin = (user as { isAdmin?: boolean }).isAdmin || false;
+        token.role = (user as { role?: UserRole }).role || "FREE";
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;
-        session.user.isAdmin = (token.isAdmin as boolean) || false;
+        session.user.role = (token.role as UserRole) || "FREE";
       }
       return session;
     },
