@@ -18,27 +18,27 @@ export default function EmptyStateWithBackground({
   const staticRecipes = [
     {
       id: 1,
-      image: "/recipe1.webp",
+      image: "/images/recipe1.webp",
     },
     {
       id: 2,
-      image: "/recipe2.webp",
+      image: "/images/recipe2.webp",
     },
     {
       id: 3,
-      image: "/recipe3.webp",
+      image: "/images/recipe3.webp",
     },
     {
       id: 4,
-      image: "/Recipe4.webp",
+      image: "/images/recipe4.webp",
     },
     {
       id: 5,
-      image: "/recipe5.webp",
+      image: "/images/recipe5.webp",
     },
     {
       id: 6,
-      image: "/recipe6.webp",
+      image: "/images/recipe6.webp",
     },
   ];
 
@@ -63,7 +63,7 @@ export default function EmptyStateWithBackground({
       </div>
 
       {/* Overlay content */}
-      <div 
+      <div
         className={cn(
           "relative flex items-center justify-center pb-16 md:pb-0",
           minHeight || "min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-16rem)]"
