@@ -58,6 +58,26 @@ export type RecipeCategory = PrismaRecipeCategory;
 export type Item = PrismaItem;
 export type ItemCategory = PrismaItemCategory;
 
+export interface CreateRecipeInput {
+  name: string;
+  timeInMinutes: number;
+  instructions: string[];
+  notes?: string[];
+  serves: number;
+  categoryIds: string[];
+  ingredients: CreateRecipeIngredient[];
+  image?: {
+    url: string;
+    filename: string;
+  };
+}
+
+export interface CreateRecipeIngredient {
+  itemId: string;
+  unitId?: string | null;
+  quantity: number;
+}
+
 export interface RecipeFilters {
   query?: string;
   categoryIds?: string[];

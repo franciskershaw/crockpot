@@ -8,6 +8,11 @@ cloudinary.config({
 
 export { cloudinary };
 
+/**
+ * Upload image to Cloudinary with automatic optimization
+ * For server-side uploads, we still need to use the Cloudinary SDK
+ * next-cloudinary is primarily for client-side components and URL generation
+ */
 export const uploadImage = async (
   file: File | Buffer,
   folder: string = "Crockpot"
@@ -28,9 +33,27 @@ export const uploadImage = async (
       {
         folder: folder,
         resource_type: "auto",
-        format: "webp",
+        // Automatic format optimization (WebP, AVIF when supported)
+        format: "auto",
         quality: "auto:good",
         fetch_format: "auto",
+        // File size limits at Cloudinary level (5MB backup)
+        bytes: 5000000,
+        // Enable automatic optimization features
+        flags: "progressive",
+        // Generate responsive breakpoints for different screen sizes
+        responsive_breakpoints: [
+          {
+            create_derived: true,
+            bytes_step: 20000,
+            min_width: 200,
+            max_width: 1000,
+            transformation: {
+              quality: "auto:good",
+              fetch_format: "auto",
+            },
+          },
+        ],
       }
     );
 

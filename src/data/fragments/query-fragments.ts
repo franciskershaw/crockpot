@@ -65,3 +65,12 @@ export const recentFirstOrderBy = {
 export const approvedRecipesWhere = {
   approved: true,
 } as const;
+
+/**
+ * Base where clause for user's created recipes (including pending approval)
+ * Used in: getUserCreatedRecipes
+ */
+export const userCreatedRecipesWhere = (userId: string) =>
+  ({
+    createdById: userId,
+  } as const);

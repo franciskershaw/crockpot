@@ -81,6 +81,56 @@ export const addManualShoppingListItemSchema =
     quantity: positiveQuantityField,
   });
 
+/**
+ * Recipe creation operations
+ */
+const createRecipeIngredientSchema = z.object({
+  itemId: itemIdField,
+  unitId: unitIdField,
+  quantity: positiveQuantityField,
+});
+
+const recipeImageSchema = z
+  .object({
+    url: z.string().url("Invalid image URL"),
+    filename: z.string().min(1, "Image filename is required"),
+  })
+  .optional();
+
+export const createRecipeSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Recipe name must be at least 3 characters")
+    .max(100, "Recipe name must be less than 100 characters"),
+  timeInMinutes: z
+    .number()
+    .int("Time must be a whole number")
+    .min(1, "Time must be at least 1 minute")
+    .max(1440, "Time cannot exceed 24 hours"),
+  instructions: z
+    .array(z.string().min(1, "Instructions cannot be empty"))
+    .min(1, "At least one instruction is required")
+    .max(50, "Cannot have more than 50 instructions"),
+  notes: z
+    .array(z.string())
+    .max(10, "Cannot have more than 10 notes")
+    .default([]),
+  serves: z
+    .number()
+    .int("Serves must be a whole number")
+    .min(1, "Must serve at least 1 person")
+    .max(50, "Cannot serve more than 50 people"),
+  categoryIds: z
+    .array(objectIdSchema)
+    .min(1, "At least one category is required")
+    .max(3, "Cannot have more than 3 categories"),
+  ingredients: z
+    .array(createRecipeIngredientSchema)
+    .min(1, "At least one ingredient is required")
+    .max(50, "Cannot have more than 50 ingredients"),
+  image: recipeImageSchema,
+});
+
 // ===================================
 // TYPE EXPORTS
 // ===================================
@@ -101,3 +151,4 @@ export type UpdateShoppingListItemQuantityInput = z.infer<
 export type AddManualShoppingListItemInput = z.infer<
   typeof addManualShoppingListItemSchema
 >;
+export type CreateRecipeInput = z.infer<typeof createRecipeSchema>;
