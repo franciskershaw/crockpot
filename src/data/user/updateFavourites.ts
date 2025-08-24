@@ -1,22 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Recipe } from "@/data/types";
 import { validateUserId, validateRecipeId } from "@/lib/security";
-import { favouriteRecipesInclude } from "@/data/fragments/query-fragments";
-
-export async function getUserFavourites(userId: string): Promise<Recipe[]> {
-  validateUserId(userId);
-
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    include: favouriteRecipesInclude,
-  });
-
-  if (!user) {
-    return [];
-  }
-
-  return user.favouriteRecipes as Recipe[];
-}
 
 export async function addRecipeToFavourites(
   userId: string,

@@ -4,9 +4,9 @@
 import {
   addRecipeToFavourites as addRecipeToFavouritesFromDAL,
   removeRecipeFromFavourites as removeRecipeFromFavouritesFromDAL,
-  getUserFavourites as getUserFavouritesFromDAL,
   clearUserFavourites as clearUserFavouritesFromDAL,
 } from "@/data/user/updateFavourites";
+import { getUserFavourites as getUserFavouritesFromDAL } from "@/data/user/getUserFavourites";
 import {
   addToFavouritesSchema,
   removeFromFavouritesSchema,
