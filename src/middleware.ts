@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
+  const userRole = req.auth?.user?.role;
 
   // Redirect authenticated users away from landing page
   if (isLoggedIn && nextUrl.pathname === "/") {
@@ -13,6 +14,22 @@ export default auth((req) => {
   // Protect authenticated routes - redirect unauthenticated users to home
   if (nextUrl.pathname.startsWith("/your-crockpot") && !isLoggedIn) {
     return NextResponse.redirect(new URL("/", nextUrl));
+  }
+
+  // Protect premium routes - require PREMIUM, PRO, or ADMIN role
+  if (nextUrl.pathname.startsWith("/recipes/new")) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL("/", nextUrl));
+    }
+
+    const isPremiumOrHigher = ["PREMIUM", "PRO", "ADMIN"].includes(
+      userRole as string
+    );
+    if (!isPremiumOrHigher) {
+      return NextResponse.redirect(
+        new URL("/your-crockpot?error=premium-required", nextUrl)
+      );
+    }
   }
 
   // Allow access to other routes with security headers
