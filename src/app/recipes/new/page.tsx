@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { hasPermission, Permission } from "@/lib/action-helpers";
-
-export const dynamic = "force-dynamic";
+import CreateRecipeForm from "./components/CreateRecipeForm";
 
 export default async function NewRecipePage() {
   const session = await auth();
@@ -18,7 +17,7 @@ export default async function NewRecipePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto md:px-4 py-6 max-w-4xl">
       <div className="mb-6">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
           Create New Recipe
@@ -27,6 +26,7 @@ export default async function NewRecipePage() {
           Share your culinary creation with the community
         </p>
       </div>
+      <CreateRecipeForm />
     </div>
   );
 }
