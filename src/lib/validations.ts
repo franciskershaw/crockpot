@@ -111,10 +111,7 @@ export const createRecipeSchema = z.object({
     .array(z.string().min(1, "Instructions cannot be empty"))
     .min(1, "At least one instruction is required")
     .max(50, "Cannot have more than 50 instructions"),
-  notes: z
-    .array(z.string())
-    .max(10, "Cannot have more than 10 notes")
-    .default([]),
+  notes: z.array(z.string()).max(10, "Cannot have more than 10 notes"),
   serves: z
     .number()
     .int("Serves must be a whole number")

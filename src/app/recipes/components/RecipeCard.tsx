@@ -114,7 +114,7 @@ export default function RecipeCard({
         ) : recipe?.image?.url ? (
           <div className="absolute inset-0 border">
             <Image
-              src={recipe.image.url}
+              src={recipe.image.url ?? ""}
               alt={recipe.name}
               fill
               className="object-cover"
