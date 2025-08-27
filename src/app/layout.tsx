@@ -46,7 +46,7 @@ export default function RootLayout({
         <Navbar />
         <SessionProvider>
           <QueryProvider>
-            <main className="mx-auto px-4 md:px-0 container">{children}</main>
+            <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">{children}</main>
           </QueryProvider>
         </SessionProvider>
         <BottomMobileNav />
