@@ -75,7 +75,7 @@ export default function Searchable({
             className
           )}
         >
-          <span className="truncate">
+          <span className={cn("truncate", !value && "text-muted-foreground")}>
             {value
               ? options.find((option) => option.value === value)?.label
               : placeholder}
