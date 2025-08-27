@@ -146,11 +146,11 @@ export default function IngredientManager({
             {selectedIngredients.map((ingredient) => (
               <div
                 key={ingredient.id}
-                className="flex items-center gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50"
+                className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg bg-gray-50"
               >
                 {/* Ingredient Name */}
                 <div className="flex-1 min-w-0">
-                  <span className="font-medium text-gray-900 truncate block">
+                  <span className="font-medium text-gray-900 truncate block text-sm">
                     {ingredient.itemName}
                   </span>
                 </div>
