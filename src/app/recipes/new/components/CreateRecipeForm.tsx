@@ -29,10 +29,11 @@ import {
   transformInstructionsForForm,
   transformNotesForTextarea,
   transformTextareaToNotes,
+  type EditRecipeInput,
 } from "../helpers/recipe-form-helpers";
 
 interface CreateRecipeFormProps {
-  recipe?: Partial<CreateRecipeInput>;
+  recipe?: Partial<CreateRecipeInput> | EditRecipeInput;
   recipeCategories: RecipeCategory[];
   ingredients: Item[];
   units: Unit[];
@@ -44,6 +45,7 @@ const CreateRecipeForm = ({
   ingredients,
   units,
 }: CreateRecipeFormProps) => {
+  console.log("recipe", recipe);
   const createRecipeMutation = useCreateRecipe();
   const [imagePreview, setImagePreview] = useState<string | null>(
     recipe?.image?.url || null

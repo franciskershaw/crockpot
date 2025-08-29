@@ -3,11 +3,17 @@ import type { CreateRecipeInput } from "@/lib/validations";
 import type { IngredientItem } from "../components/IngredientManager";
 import type { Instruction } from "../components/Instructions";
 
+// Extended type for editing that includes the recipe ID
+export type EditRecipeInput = CreateRecipeInput & {
+  id: string;
+};
+
 /**
- * Transform a recipe from database format to form format
+ * Transform a recipe from database format to form format for editing
  */
-export function transformRecipeForForm(recipe: Recipe): CreateRecipeInput {
+export function transformRecipeForForm(recipe: Recipe): EditRecipeInput {
   return {
+    id: recipe.id,
     name: recipe.name,
     timeInMinutes: recipe.timeInMinutes,
     serves: recipe.serves,
