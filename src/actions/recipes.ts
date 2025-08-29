@@ -186,7 +186,7 @@ export async function editRecipe(formData: FormData) {
     const validatedInput = updateRecipeSchema.parse(recipeData);
 
     // Handle image processing only if image has changed
-    let imageData: { url: string; filename: string } | undefined;
+    let imageData: { url: string; filename: string } | null | undefined;
     let shouldDeleteOldImage = false;
 
     if (extractedData.hasImageChanged) {
@@ -195,8 +195,8 @@ export async function editRecipe(formData: FormData) {
         imageData = await processRecipeImage(extractedData.imageFile);
         shouldDeleteOldImage = !!extractedData.currentImageFilename;
       } else {
-        // User removed the image
-        imageData = undefined;
+        // User removed the image - explicitly set to null to remove it
+        imageData = null;
         shouldDeleteOldImage = !!extractedData.currentImageFilename;
       }
     }

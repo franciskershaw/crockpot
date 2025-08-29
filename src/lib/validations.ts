@@ -95,7 +95,8 @@ const recipeImageSchema = z
     url: z.string().url("Invalid image URL"),
     filename: z.string().min(1, "Image filename is required"),
   })
-  .optional();
+  .optional()
+  .nullable();
 
 export const createRecipeSchema = z.object({
   name: z

@@ -31,6 +31,7 @@ import {
   transformTextareaToNotes,
   type EditRecipeInput,
 } from "../helpers/recipe-form-helpers";
+import { useEditRecipe } from "@/hooks/useEditRecipe";
 
 interface CreateRecipeFormProps {
   recipe?: Partial<CreateRecipeInput> | EditRecipeInput;
@@ -46,10 +47,15 @@ const CreateRecipeForm = ({
   units,
 }: CreateRecipeFormProps) => {
   const createRecipeMutation = useCreateRecipe();
+  const editRecipeMutation = useEditRecipe();
   const [imagePreview, setImagePreview] = useState<string | null>(
     recipe?.image?.url || null
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [hasImageChanged, setHasImageChanged] = useState(false);
+
+  // Determine if we're editing or creating
+  const isEditing = recipe && "id" in recipe && recipe.id;
 
   // Initialize state using helper functions for better readability
   const initialIngredients = recipe?.ingredients
@@ -121,12 +127,29 @@ const CreateRecipeForm = ({
     formData.append("instructions", JSON.stringify(data.instructions));
     formData.append("notes", JSON.stringify(data.notes || []));
 
-    // Add image file if present
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
+    if (isEditing) {
+      // Add edit-specific fields
+      formData.append("recipeId", (recipe as EditRecipeInput).id);
+      formData.append("hasImageChanged", hasImageChanged.toString());
+      formData.append(
+        "currentImageFilename",
+        (recipe as EditRecipeInput).image?.filename || ""
+      );
 
-    createRecipeMutation.mutate(formData);
+      // Add image file if present and changed
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      editRecipeMutation.mutate(formData);
+    } else {
+      // Add image file if present (for create)
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      createRecipeMutation.mutate(formData);
+    }
   };
 
   return (
@@ -144,6 +167,7 @@ const CreateRecipeForm = ({
                 onImageChange={(file, preview) => {
                   setImageFile(file);
                   setImagePreview(preview);
+                  setHasImageChanged(true);
                 }}
               />
 
@@ -285,23 +309,25 @@ const CreateRecipeForm = ({
             <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 shadow-lg rounded-b-lg">
               <Button
                 type="submit"
-                disabled={createRecipeMutation.isPending}
+                disabled={
+                  isEditing
+                    ? editRecipeMutation.isPending
+                    : createRecipeMutation.isPending
+                }
                 className="w-full sm:w-auto min-w-[200px]"
                 size="lg"
               >
-                {createRecipeMutation.isPending ? (
+                {(
+                  isEditing
+                    ? editRecipeMutation.isPending
+                    : createRecipeMutation.isPending
+                ) ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {`${
-                      recipe && "id" in recipe && recipe.id
-                        ? "Updating Recipe..."
-                        : "Creating Recipe..."
-                    }`}
+                    {isEditing ? "Updating Recipe..." : "Creating Recipe..."}
                   </>
                 ) : (
-                  `${
-                    recipe && "id" in recipe && recipe.id ? "Update" : "Create"
-                  } Recipe`
+                  `${isEditing ? "Update" : "Create"} Recipe`
                 )}
               </Button>
             </div>

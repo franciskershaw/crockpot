@@ -69,7 +69,7 @@ export interface CreateRecipeInput {
   image?: {
     url: string;
     filename: string;
-  };
+  } | null;
 }
 
 export interface CreateRecipeIngredient {
