@@ -1,23 +1,24 @@
 import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
-import { createRecipe } from "@/actions/recipes";
+import { deleteRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
 import type { Recipe } from "@/data/types";
 
-export function useCreateRecipe() {
+export function useDeleteRecipe() {
   const router = useRouter();
 
   return useBasicMutation<
-    FormData,
+    string,
     { success: boolean; recipe: Recipe; message: string }
   >({
-    mutationFn: createRecipe,
+    mutationFn: deleteRecipe,
     requireAuth: true,
-    successMessage: (data) => data.message || "Recipe created successfully!",
-    errorMessage: "Failed to create recipe. Please try again.",
+    successMessage: (data) => data.message || "Recipe deleted successfully!",
+    errorMessage: "Failed to delete recipe. Please try again.",
     invalidateQueries: [["recipes"], ["user-recipes"], ["recipeCount"]],
     onSuccess: (data) => {
-      if (data.success && data.recipe) {
-        router.push(`/recipes/${data.recipe.id}`);
+      if (data.success) {
+        // Navigate back to recipes list after successful deletion
+        router.push("/recipes");
       }
     },
   });

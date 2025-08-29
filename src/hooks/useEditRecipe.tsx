@@ -14,7 +14,7 @@ export function useEditRecipe() {
     requireAuth: true,
     successMessage: (data) => data.message || "Recipe updated successfully!",
     errorMessage: "Failed to update recipe. Please try again.",
-    invalidateQueries: [["recipes"], ["user-recipes"], ["recipe-count"]],
+    invalidateQueries: [["recipes"], ["user-recipes"], ["recipeCount"]],
     onSuccess: (data) => {
       if (data.success && data.recipe) {
         router.push(`/recipes/${data.recipe.id}`);

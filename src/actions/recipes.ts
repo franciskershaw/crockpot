@@ -288,8 +288,8 @@ export async function deleteRecipe(recipeId: string) {
 
     // Revalidate relevant paths in parallel
     await Promise.all([
-      revalidatePath("/recipes"),
-      revalidatePath("/your-crockpot"),
+      revalidatePath("/recipes", "page"),
+      revalidatePath("/your-crockpot", "page"),
     ]);
 
     return {
