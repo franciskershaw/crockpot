@@ -8,12 +8,20 @@ import {
   getRandomRecipes as getRandomRecipesFromDAL,
 } from "@/data/recipes/getRecipes";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
-import { createRecipe as createRecipeDAL } from "@/data/recipes/createRecipe";
+import {
+  createRecipe as createRecipeDAL,
+  editRecipe as editRecipeDAL,
+} from "@/data/recipes/createRecipe";
 import { RecipeFilters } from "@/data/types";
-import { createPublicAction } from "@/lib/action-helpers";
-import { createRecipeSchema } from "@/lib/validations";
+import {
+  createPublicAction,
+  extractRecipeFormData,
+  extractEditRecipeFormData,
+  canEditRecipe,
+} from "@/lib/action-helpers";
+import { createRecipeSchema, updateRecipeSchema } from "@/lib/validations";
 import { validateRecipeReferences } from "@/lib/security";
-import { processRecipeImage } from "@/lib/upload-helpers";
+import { processRecipeImage, deleteRecipeImage } from "@/lib/upload-helpers";
 import { revalidatePath } from "next/cache";
 
 export interface GetRecipesParams {
@@ -56,44 +64,6 @@ export const getRecipeById = createPublicAction(async (id: string) => {
   return await getRecipeByIdFromDAL(id);
 });
 
-// Helper function to extract form data with potential prefixed keys
-function extractFormData(formData: FormData) {
-  const getFormValue = (key: string): string | File | null => {
-    // Try exact key first
-    const value = formData.get(key);
-    if (value !== null) return value;
-
-    // Try with React 19 potential prefix
-    for (const [formKey, formValue] of formData.entries()) {
-      if (formKey.endsWith(`_${key}`)) {
-        return formValue;
-      }
-    }
-
-    return null;
-  };
-
-  const name = getFormValue("name") as string;
-  const timeInMinutes = parseInt(getFormValue("timeInMinutes") as string);
-  const serves = parseInt(getFormValue("serves") as string);
-  const categoryIds = JSON.parse(getFormValue("categoryIds") as string);
-  const ingredients = JSON.parse(getFormValue("ingredients") as string);
-  const instructions = JSON.parse(getFormValue("instructions") as string);
-  const notes = JSON.parse((getFormValue("notes") as string) || "[]");
-  const imageFile = getFormValue("image") as File | null;
-
-  return {
-    name,
-    timeInMinutes,
-    serves,
-    categoryIds,
-    ingredients,
-    instructions,
-    notes,
-    imageFile,
-  };
-}
-
 export async function createRecipe(formData: FormData) {
   "use server";
 
@@ -111,7 +81,7 @@ export async function createRecipe(formData: FormData) {
     }
 
     // Extract form data
-    const extractedData = extractFormData(formData);
+    const extractedData = extractRecipeFormData(formData);
 
     // Create the recipe data
     const recipeData = {
@@ -166,6 +136,108 @@ export async function createRecipe(formData: FormData) {
     };
   } catch (error) {
     console.error("Recipe creation failed:", error);
+    throw error;
+  }
+}
+
+export async function editRecipe(formData: FormData) {
+  "use server";
+
+  try {
+    const { hasPermission, Permission, getAuthenticatedUserWithMinimumRole } =
+      await import("@/lib/action-helpers");
+    const { UserRole } = await import("@prisma/client");
+
+    // Get authenticated user
+    const user = await getAuthenticatedUserWithMinimumRole(UserRole.PREMIUM);
+
+    // Check permissions
+    if (!hasPermission(user.role, Permission.CREATE_RECIPES)) {
+      throw new Error("You don't have permission to edit recipes");
+    }
+
+    // Extract form data
+    const extractedData = extractEditRecipeFormData(formData);
+    const recipeId = formData.get("recipeId") as string;
+
+    if (!recipeId) {
+      throw new Error("Recipe ID is required");
+    }
+
+    // Check if user can edit this recipe
+    if (!(await canEditRecipe(user.id, recipeId))) {
+      throw new Error("You don't have permission to edit this recipe");
+    }
+
+    // Create the recipe data
+    const recipeData = {
+      name: extractedData.name,
+      timeInMinutes: extractedData.timeInMinutes,
+      serves: extractedData.serves,
+      categoryIds: extractedData.categoryIds,
+      ingredients: extractedData.ingredients,
+      instructions: extractedData.instructions,
+      notes: extractedData.notes,
+    };
+
+    // Validate the data
+    const validatedInput = updateRecipeSchema.parse(recipeData);
+
+    // Handle image processing only if image has changed
+    let imageData: { url: string; filename: string } | undefined;
+    let shouldDeleteOldImage = false;
+
+    if (extractedData.hasImageChanged) {
+      if (extractedData.imageFile && extractedData.imageFile.size > 0) {
+        // Process new image
+        imageData = await processRecipeImage(extractedData.imageFile);
+        shouldDeleteOldImage = !!extractedData.currentImageFilename;
+      } else {
+        // User removed the image
+        imageData = undefined;
+        shouldDeleteOldImage = !!extractedData.currentImageFilename;
+      }
+    }
+
+    // Validate references only for fields that are being updated
+    if (validatedInput.categoryIds || validatedInput.ingredients) {
+      const validationData = {
+        categoryIds: validatedInput.categoryIds || [],
+        ingredients: validatedInput.ingredients || [],
+      };
+      await validateRecipeReferences(validationData);
+    }
+
+    // Create the final recipe data with image
+    const finalRecipeData = {
+      ...validatedInput,
+      ...(extractedData.hasImageChanged && { image: imageData }),
+    };
+
+    // Update the recipe
+    const recipe = await editRecipeDAL(recipeId, finalRecipeData);
+
+    // Delete old image if needed (don't await to avoid blocking the response)
+    if (shouldDeleteOldImage && extractedData.currentImageFilename) {
+      deleteRecipeImage(extractedData.currentImageFilename).catch((error) => {
+        console.error("Failed to delete old image:", error);
+      });
+    }
+
+    // Revalidate relevant paths in parallel
+    await Promise.all([
+      revalidatePath("/recipes"),
+      revalidatePath("/your-crockpot"),
+      revalidatePath(`/recipes/${recipeId}`),
+    ]);
+
+    return {
+      success: true,
+      recipe,
+      message: "Recipe updated successfully!",
+    };
+  } catch (error) {
+    console.error("Recipe update failed:", error);
     throw error;
   }
 }

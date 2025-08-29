@@ -340,3 +340,104 @@ export function createPublicAction<TArgs extends unknown[], TReturn>(
 ): (...args: TArgs) => Promise<TReturn> {
   return withErrorHandling(handler);
 }
+
+/**
+ * Helper function to extract form data with potential prefixed keys
+ * Handles React 19 potential prefixing of form field names
+ */
+export function extractFormData(formData: FormData) {
+  const getFormValue = (key: string): string | File | null => {
+    // Try exact key first
+    const value = formData.get(key);
+    if (value !== null) return value;
+
+    // Try with React 19 potential prefix
+    for (const [formKey, formValue] of formData.entries()) {
+      if (formKey.endsWith(`_${key}`)) {
+        return formValue;
+      }
+    }
+
+    return null;
+  };
+
+  return { getFormValue };
+}
+
+/**
+ * Extract basic recipe form data (common between create and edit)
+ */
+export function extractRecipeFormData(formData: FormData) {
+  const { getFormValue } = extractFormData(formData);
+
+  const name = getFormValue("name") as string;
+  const timeInMinutes = parseInt(getFormValue("timeInMinutes") as string);
+  const serves = parseInt(getFormValue("serves") as string);
+  const categoryIds = JSON.parse(getFormValue("categoryIds") as string);
+  const ingredients = JSON.parse(getFormValue("ingredients") as string);
+  const instructions = JSON.parse(getFormValue("instructions") as string);
+  const notes = JSON.parse((getFormValue("notes") as string) || "[]");
+  const imageFile = getFormValue("image") as File | null;
+
+  return {
+    name,
+    timeInMinutes,
+    serves,
+    categoryIds,
+    ingredients,
+    instructions,
+    notes,
+    imageFile,
+  };
+}
+
+/**
+ * Extract edit-specific recipe form data
+ */
+export function extractEditRecipeFormData(formData: FormData) {
+  const { getFormValue } = extractFormData(formData);
+
+  const basicData = extractRecipeFormData(formData);
+  const hasImageChanged = getFormValue("hasImageChanged") === "true";
+  const currentImageFilename = getFormValue("currentImageFilename") as
+    | string
+    | null;
+
+  return {
+    ...basicData,
+    hasImageChanged,
+    currentImageFilename,
+  };
+}
+
+/**
+ * Check if user can edit a recipe (either creator or admin)
+ */
+export async function canEditRecipe(
+  userId: string,
+  recipeId: string
+): Promise<boolean> {
+  const { prisma } = await import("@/lib/prisma");
+
+  const recipe = await prisma.recipe.findUnique({
+    where: { id: recipeId },
+    select: { createdById: true },
+  });
+
+  if (!recipe) {
+    return false;
+  }
+
+  // User can edit if they created the recipe
+  if (recipe.createdById === userId) {
+    return true;
+  }
+
+  // Check if user is admin
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  return user?.role === "ADMIN";
+}

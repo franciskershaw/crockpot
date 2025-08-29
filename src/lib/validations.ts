@@ -128,6 +128,8 @@ export const createRecipeSchema = z.object({
   image: recipeImageSchema,
 });
 
+export const updateRecipeSchema = createRecipeSchema.partial();
+
 // ===================================
 // TYPE EXPORTS
 // ===================================
@@ -149,3 +151,4 @@ export type AddManualShoppingListItemInput = z.infer<
   typeof addManualShoppingListItemSchema
 >;
 export type CreateRecipeInput = z.infer<typeof createRecipeSchema>;
+export type UpdateRecipeInput = z.infer<typeof updateRecipeSchema>;
