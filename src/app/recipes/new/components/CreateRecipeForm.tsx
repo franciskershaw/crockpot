@@ -45,7 +45,6 @@ const CreateRecipeForm = ({
   ingredients,
   units,
 }: CreateRecipeFormProps) => {
-  console.log("recipe", recipe);
   const createRecipeMutation = useCreateRecipe();
   const [imagePreview, setImagePreview] = useState<string | null>(
     recipe?.image?.url || null
@@ -293,10 +292,16 @@ const CreateRecipeForm = ({
                 {createRecipeMutation.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating Recipe...
+                    {`${
+                      recipe && "id" in recipe && recipe.id
+                        ? "Updating Recipe..."
+                        : "Creating Recipe..."
+                    }`}
                   </>
                 ) : (
-                  "Create Recipe"
+                  `${
+                    recipe && "id" in recipe && recipe.id ? "Update" : "Create"
+                  } Recipe`
                 )}
               </Button>
             </div>
