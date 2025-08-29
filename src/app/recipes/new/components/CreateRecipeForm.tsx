@@ -132,7 +132,7 @@ const CreateRecipeForm = ({
     <div className="relative">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Card>
+          <Card className="pb-0">
             <CardContent className="space-y-6 md:space-y-6">
               {/* Recipe Name */}
               <RecipeName control={form.control} />
@@ -260,12 +260,11 @@ const CreateRecipeForm = ({
                 name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Recipe Notes (optional)</FormLabel>
+                    <FormLabel>Recipe Notes</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Add any additional notes, tips, or variations for this recipe..."
+                        placeholder="Add any additional notes, tips, or variations for this recipe. Each new line is a new note..."
                         className="min-h-[100px]"
-                        value={field.value?.join("\n") || ""}
                         onChange={(
                           e: React.ChangeEvent<HTMLTextAreaElement>
                         ) => {
@@ -284,7 +283,7 @@ const CreateRecipeForm = ({
             </CardContent>
 
             {/* Sticky Submit Button */}
-            <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 -mx-6 mt-6 shadow-lg">
+            <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 shadow-lg rounded-b-lg">
               <Button
                 type="submit"
                 disabled={isSubmitting}

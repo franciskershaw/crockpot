@@ -64,7 +64,9 @@ const InstructionItem = ({
           value={instruction.text}
           onChange={(e) => onUpdate(instruction.id, e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder={`Step ${index + 1} instruction...`}
+          placeholder={`Step ${
+            index + 1
+          } instruction. Press Enter to add a new step...`}
           className="w-full"
         />
       </div>
@@ -122,12 +124,7 @@ const Instructions = ({ instructions, setInstructions }: InstructionsProps) => {
 
   return (
     <div className="space-y-3">
-      <FormLabel>
-        Instructions*{" "}
-        <span className="hidden sm:inline">
-          (press Enter to add a new step)
-        </span>
-      </FormLabel>
+      <FormLabel>Instructions* </FormLabel>
       <div
         ref={constraintsRef}
         className="border border-gray-200 rounded-lg p-4 bg-gray-50 relative overflow-hidden"
