@@ -52,7 +52,11 @@ export async function processRecipeImage(
     };
   } catch (error) {
     console.error("Image upload failed:", error);
-    throw new ValidationError("Failed to upload image. Please try again.");
+
+    // Include the original error message for better debugging
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    throw new ValidationError(`Failed to upload image: ${errorMessage}`);
   }
 }
 

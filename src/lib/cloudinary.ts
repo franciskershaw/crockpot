@@ -28,34 +28,32 @@ export const uploadImage = async (
       fileData = file;
     }
 
-    const result = await cloudinary.uploader.upload(
-      `data:image/jpeg;base64,${fileData.toString("base64")}`,
-      {
-        folder: folder,
-        resource_type: "auto",
-        // Automatic format optimization (WebP, AVIF when supported)
-        format: "auto",
-        quality: "auto:good",
-        fetch_format: "auto",
-        // File size limits at Cloudinary level (5MB backup)
-        bytes: 5000000,
-        // Enable automatic optimization features
-        flags: "progressive",
-        // Generate responsive breakpoints for different screen sizes
-        responsive_breakpoints: [
-          {
-            create_derived: true,
-            bytes_step: 20000,
-            min_width: 200,
-            max_width: 1000,
-            transformation: {
-              quality: "auto:good",
-              fetch_format: "auto",
-            },
+    // Create proper data URL based on file type
+    const fileType = file instanceof File ? file.type : "image/jpeg";
+    const dataUrl = `data:${fileType};base64,${fileData.toString("base64")}`;
+
+    const result = await cloudinary.uploader.upload(dataUrl, {
+      folder: folder,
+      resource_type: "auto",
+      // Automatic format optimization
+      quality: "auto:good",
+      // File size limits at Cloudinary level (5MB backup)
+      bytes: 5000000,
+      // Enable automatic optimization features
+      flags: "progressive",
+      // Generate responsive breakpoints for different screen sizes
+      responsive_breakpoints: [
+        {
+          create_derived: true,
+          bytes_step: 20000,
+          min_width: 200,
+          max_width: 1000,
+          transformation: {
+            quality: "auto:good",
           },
-        ],
-      }
-    );
+        },
+      ],
+    });
 
     return {
       url: result.secure_url,
@@ -63,6 +61,12 @@ export const uploadImage = async (
     };
   } catch (error) {
     console.error("Cloudinary upload error:", error);
-    throw new Error("Failed to upload image");
+
+    // Provide more specific error information
+    if (error instanceof Error) {
+      throw new Error(`Cloudinary upload failed: ${error.message}`);
+    }
+
+    throw new Error("Failed to upload image to Cloudinary");
   }
 };

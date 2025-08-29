@@ -11,7 +11,8 @@ import { recipeCategoriesInclude } from "../fragments/query-fragments";
  */
 export async function createRecipe(
   userId: string,
-  data: CreateRecipeInput
+  data: CreateRecipeInput,
+  isApproved: boolean = false
 ): Promise<Recipe> {
   // Create the recipe using spread operator for cleaner code
   const recipe = await prisma.recipe.create({
@@ -19,7 +20,7 @@ export async function createRecipe(
       ...data,
       notes: data.notes || [], // Ensure notes is always an array
       createdById: userId,
-      approved: false, // Premium users need admin approval
+      approved: isApproved, // Auto-approve if user is admin
     },
     include: recipeCategoriesInclude,
   });

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { FormLabel } from "@/components/ui/form";
 import {
   Select,
@@ -11,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { NumberInput } from "@/components/ui/number-input";
 import Searchable from "@/components/ui/searchable";
 import { Trash2 } from "lucide-react";
 import type { Item, Unit } from "@/data/types";
@@ -87,19 +87,8 @@ export default function IngredientManager({
     );
   };
 
-  const formatQty = (value: number) => {
-    return Number.isInteger(value) ? String(value) : value.toFixed(2);
-  };
-
-  const handleQuantityChange = (
-    ingredientId: string,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    if (value === "" || /^\d{0,4}(\.\d{0,2})?$/.test(value)) {
-      const quantity = value === "" ? 0 : parseFloat(value) || 0;
-      updateIngredient(ingredientId, { quantity });
-    }
+  const handleQuantityChange = (ingredientId: string, value: number) => {
+    updateIngredient(ingredientId, { quantity: value });
   };
 
   const handleUnitChange = (ingredientId: string, unitId: string) => {
@@ -156,23 +145,21 @@ export default function IngredientManager({
                 </div>
 
                 {/* Quantity Input */}
-                <div className="flex items-center gap-1">
-                  <Input
-                    type="text"
-                    value={
-                      ingredient.quantity === 0
-                        ? ""
-                        : formatQty(ingredient.quantity)
+                <div className="flex-shrink-0">
+                  <NumberInput
+                    value={ingredient.quantity}
+                    onChange={(value) =>
+                      handleQuantityChange(ingredient.id, value)
                     }
-                    onChange={(e) => handleQuantityChange(ingredient.id, e)}
-                    className="w-16 h-8 text-center text-sm"
-                    maxLength={6}
-                    placeholder="Qty"
+                    min={0}
+                    max={9999}
+                    className="w-32"
+                    editable={true}
                   />
                 </div>
 
                 {/* Unit Selector */}
-                <div className="min-w-0">
+                <div className="flex-shrink-0">
                   <Select
                     value={ingredient.unitId || "none"}
                     onValueChange={(value) =>

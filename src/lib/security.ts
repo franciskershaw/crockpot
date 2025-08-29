@@ -188,43 +188,40 @@ export async function validateRecipeReferences(data: {
 }): Promise<void> {
   const { prisma } = await import("@/lib/prisma");
 
-  // Validate that all category IDs exist
-  const categories = await prisma.recipeCategory.findMany({
-    where: {
-      id: { in: data.categoryIds },
-    },
-  });
+  // Collect all IDs to validate
+  const itemIds = data.ingredients.map((i) => i.itemId);
+  const unitIds = data.ingredients
+    .map((i) => i.unitId)
+    .filter((id): id is string => id !== null && id !== undefined);
 
+  // Run all validation queries in parallel
+  const [categories, items, units] = await Promise.all([
+    prisma.recipeCategory.findMany({
+      where: { id: { in: data.categoryIds } },
+      select: { id: true },
+    }),
+    prisma.item.findMany({
+      where: { id: { in: itemIds } },
+      select: { id: true },
+    }),
+    unitIds.length > 0
+      ? prisma.unit.findMany({
+          where: { id: { in: unitIds } },
+          select: { id: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  // Validate results
   if (categories.length !== data.categoryIds.length) {
     throw new ValidationError("One or more categories do not exist");
   }
-
-  // Validate that all item IDs exist
-  const itemIds = data.ingredients.map((i) => i.itemId);
-  const items = await prisma.item.findMany({
-    where: {
-      id: { in: itemIds },
-    },
-  });
 
   if (items.length !== itemIds.length) {
     throw new ValidationError("One or more ingredients do not exist");
   }
 
-  // Validate unit IDs if provided
-  const unitIds = data.ingredients
-    .map((i) => i.unitId)
-    .filter((id): id is string => id !== null && id !== undefined);
-
-  if (unitIds.length > 0) {
-    const units = await prisma.unit.findMany({
-      where: {
-        id: { in: unitIds },
-      },
-    });
-
-    if (units.length !== unitIds.length) {
-      throw new ValidationError("One or more units do not exist");
-    }
+  if (unitIds.length > 0 && units.length !== unitIds.length) {
+    throw new ValidationError("One or more units do not exist");
   }
 }
