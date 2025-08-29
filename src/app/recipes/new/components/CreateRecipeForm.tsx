@@ -23,7 +23,7 @@ import type { Item, RecipeCategory, Unit } from "@/data/types";
 import { createRecipe } from "@/actions/recipes";
 import ImageUpload from "./ImageUpload";
 import RecipeName from "./RecipeName";
-import { MultiSelect } from "@/components/ui/multi-select";
+import { Combobox } from "@/components/ui/combobox";
 import IngredientManager, { type IngredientItem } from "./IngredientManager";
 import Instructions, { type Instruction } from "./Instructions";
 
@@ -191,18 +191,16 @@ const CreateRecipeForm = ({
                 name="categoryIds"
                 render={({ field }) => (
                   <FormItem>
-                    <MultiSelect
+                    <Combobox
                       options={recipeCategories.map((cat) => ({
                         value: cat.id,
                         label: cat.name,
                       }))}
+                      value={field.value}
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
                       placeholder="Search categories..."
                       emptyIndicator="No categories found"
                       maxSelections={3}
-                      hideSelectAll
-                      singleLine
                       label="Categories* (select 1-3)"
                     />
                     <FormMessage />
