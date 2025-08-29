@@ -53,13 +53,13 @@ const CreateRecipeForm = ({
   const form = useForm<CreateRecipeInput>({
     resolver: zodResolver(createRecipeSchema),
     defaultValues: {
-      name: "",
-      timeInMinutes: 30,
-      serves: 4,
-      categoryIds: [],
-      ingredients: [],
-      instructions: [],
-      notes: [],
+      name: recipe?.name || "",
+      timeInMinutes: recipe?.timeInMinutes || 30,
+      serves: recipe?.serves || 4,
+      categoryIds: recipe?.categoryIds || [],
+      ingredients: recipe?.ingredients || [],
+      instructions: recipe?.instructions || [],
+      notes: recipe?.notes || [],
       ...recipe,
     } as CreateRecipeInput,
   });
