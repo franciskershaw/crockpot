@@ -17,10 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { Clock, Users, Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import type { Item, RecipeCategory, Unit } from "@/data/types";
-import { createRecipe } from "@/actions/recipes";
+import { useCreateRecipe } from "@/hooks/useCreateRecipe";
 import ImageUpload from "./ImageUpload";
 import RecipeName from "./RecipeName";
 import { Combobox } from "@/components/ui/combobox";
@@ -40,10 +38,9 @@ const CreateRecipeForm = ({
   ingredients,
   units,
 }: CreateRecipeFormProps) => {
-  const router = useRouter();
+  const createRecipeMutation = useCreateRecipe();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Instructions and ingredients managed separately for complex UI interactions
   const [selectedIngredients, setSelectedIngredients] = useState<
@@ -90,42 +87,24 @@ const CreateRecipeForm = ({
 
   // Handle form submission
   const onSubmit = async (data: CreateRecipeInput) => {
-    setIsSubmitting(true);
+    // Create FormData for server action
+    const formData = new FormData();
 
-    try {
-      // Create FormData for server action
-      const formData = new FormData();
+    // Add all form fields
+    formData.append("name", data.name);
+    formData.append("timeInMinutes", data.timeInMinutes.toString());
+    formData.append("serves", data.serves.toString());
+    formData.append("categoryIds", JSON.stringify(data.categoryIds));
+    formData.append("ingredients", JSON.stringify(data.ingredients));
+    formData.append("instructions", JSON.stringify(data.instructions));
+    formData.append("notes", JSON.stringify(data.notes || []));
 
-      // Add all form fields
-      formData.append("name", data.name);
-      formData.append("timeInMinutes", data.timeInMinutes.toString());
-      formData.append("serves", data.serves.toString());
-      formData.append("categoryIds", JSON.stringify(data.categoryIds));
-      formData.append("ingredients", JSON.stringify(data.ingredients));
-      formData.append("instructions", JSON.stringify(data.instructions));
-      formData.append("notes", JSON.stringify(data.notes || []));
-
-      // Add image file if present
-      if (imageFile) {
-        formData.append("image", imageFile);
-      }
-
-      const result = await createRecipe(formData);
-
-      if (result.success) {
-        toast.success(result.message || "Recipe created successfully!");
-        router.push(`/recipes/${result.recipe.id}`);
-      }
-    } catch (error) {
-      console.error("Recipe creation failed:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to create recipe. Please try again."
-      );
-    } finally {
-      setIsSubmitting(false);
+    // Add image file if present
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
+
+    createRecipeMutation.mutate(formData);
   };
 
   return (
@@ -284,11 +263,11 @@ const CreateRecipeForm = ({
             <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 shadow-lg rounded-b-lg">
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={createRecipeMutation.isPending}
                 className="w-full sm:w-auto min-w-[200px]"
                 size="lg"
               >
-                {isSubmitting ? (
+                {createRecipeMutation.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Creating Recipe...
