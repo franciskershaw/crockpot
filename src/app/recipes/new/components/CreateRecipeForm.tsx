@@ -24,6 +24,12 @@ import RecipeName from "./RecipeName";
 import { Combobox } from "@/components/ui/combobox";
 import IngredientManager, { type IngredientItem } from "./IngredientManager";
 import Instructions, { type Instruction } from "./Instructions";
+import {
+  transformIngredientsForForm,
+  transformInstructionsForForm,
+  transformNotesForTextarea,
+  transformTextareaToNotes,
+} from "../helpers/recipe-form-helpers";
 
 interface CreateRecipeFormProps {
   recipe?: Partial<CreateRecipeInput>;
@@ -39,16 +45,27 @@ const CreateRecipeForm = ({
   units,
 }: CreateRecipeFormProps) => {
   const createRecipeMutation = useCreateRecipe();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    recipe?.image?.url || null
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // Instructions and ingredients managed separately for complex UI interactions
-  const [selectedIngredients, setSelectedIngredients] = useState<
-    IngredientItem[]
-  >([]);
-  const [instructions, setInstructions] = useState<Instruction[]>([
-    { id: crypto.randomUUID(), text: "" },
-  ]);
+  // Initialize state using helper functions for better readability
+  const initialIngredients = recipe?.ingredients
+    ? transformIngredientsForForm(recipe.ingredients, ingredients, units)
+    : [];
+
+  const initialInstructions = recipe?.instructions
+    ? transformInstructionsForForm(recipe.instructions)
+    : transformInstructionsForForm([]);
+
+  const [selectedIngredients, setSelectedIngredients] =
+    useState<IngredientItem[]>(initialIngredients);
+  const [instructions, setInstructions] =
+    useState<Instruction[]>(initialInstructions);
+  const [notesText, setNotesText] = useState(
+    transformNotesForTextarea(recipe?.notes)
+  );
 
   const form = useForm<CreateRecipeInput>({
     resolver: zodResolver(createRecipeSchema),
@@ -57,7 +74,11 @@ const CreateRecipeForm = ({
       timeInMinutes: recipe?.timeInMinutes || 30,
       serves: recipe?.serves || 4,
       categoryIds: recipe?.categoryIds || [],
-      ingredients: recipe?.ingredients || [],
+      ingredients: initialIngredients.map((ing) => ({
+        itemId: ing.itemId,
+        unitId: ing.unitId,
+        quantity: ing.quantity,
+      })),
       instructions: recipe?.instructions || [],
       notes: recipe?.notes || [],
       ...recipe,
@@ -242,13 +263,13 @@ const CreateRecipeForm = ({
                       <Textarea
                         placeholder="Add any additional notes, tips, or variations for this recipe. Each new line is a new note..."
                         className="min-h-[100px]"
+                        value={notesText}
                         onChange={(
                           e: React.ChangeEvent<HTMLTextAreaElement>
                         ) => {
-                          const notes = e.target.value
-                            .split("\n")
-                            .map((note: string) => note.trim())
-                            .filter((note: string) => note.length > 0);
+                          const newValue = e.target.value;
+                          setNotesText(newValue);
+                          const notes = transformTextareaToNotes(newValue);
                           field.onChange(notes);
                         }}
                       />
