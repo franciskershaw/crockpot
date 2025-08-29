@@ -11,6 +11,7 @@ import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeB
 import {
   createRecipe as createRecipeDAL,
   editRecipe as editRecipeDAL,
+  deleteRecipe as deleteRecipeDAL,
 } from "@/data/recipes/createRecipe";
 import { RecipeFilters } from "@/data/types";
 import {
@@ -18,6 +19,7 @@ import {
   extractRecipeFormData,
   extractEditRecipeFormData,
   canEditRecipe,
+  canDeleteRecipe,
 } from "@/lib/action-helpers";
 import { createRecipeSchema, updateRecipeSchema } from "@/lib/validations";
 import { validateRecipeReferences } from "@/lib/security";
@@ -238,6 +240,65 @@ export async function editRecipe(formData: FormData) {
     };
   } catch (error) {
     console.error("Recipe update failed:", error);
+    throw error;
+  }
+}
+
+export async function deleteRecipe(recipeId: string) {
+  "use server";
+
+  try {
+    const { hasPermission, Permission, getAuthenticatedUserWithMinimumRole } =
+      await import("@/lib/action-helpers");
+    const { UserRole } = await import("@prisma/client");
+
+    // Get authenticated user
+    const user = await getAuthenticatedUserWithMinimumRole(UserRole.PREMIUM);
+
+    // Check permissions
+    if (!hasPermission(user.role, Permission.CREATE_RECIPES)) {
+      throw new Error("You don't have permission to delete recipes");
+    }
+
+    // Check if user can delete this recipe
+    if (!(await canDeleteRecipe(user.id, recipeId))) {
+      throw new Error("You don't have permission to delete this recipe");
+    }
+
+    // Get the recipe data before deletion to handle image cleanup
+    const { prisma } = await import("@/lib/prisma");
+    const recipeToDelete = await prisma.recipe.findUnique({
+      where: { id: recipeId },
+      select: { image: true },
+    });
+
+    if (!recipeToDelete) {
+      throw new Error("Recipe not found");
+    }
+
+    // Delete the recipe from database
+    const deletedRecipe = await deleteRecipeDAL(recipeId);
+
+    // Delete image from Cloudinary if it exists (don't await to avoid blocking response)
+    if (recipeToDelete.image?.filename) {
+      deleteRecipeImage(recipeToDelete.image.filename).catch((error) => {
+        console.error("Failed to delete image from cloudinary:", error);
+      });
+    }
+
+    // Revalidate relevant paths in parallel
+    await Promise.all([
+      revalidatePath("/recipes"),
+      revalidatePath("/your-crockpot"),
+    ]);
+
+    return {
+      success: true,
+      recipe: deletedRecipe,
+      message: "Recipe deleted successfully!",
+    };
+  } catch (error) {
+    console.error("Recipe deletion failed:", error);
     throw error;
   }
 }

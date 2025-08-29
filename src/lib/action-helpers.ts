@@ -441,3 +441,35 @@ export async function canEditRecipe(
 
   return user?.role === "ADMIN";
 }
+
+/**
+ * Check if user can delete a recipe (either creator or admin)
+ */
+export async function canDeleteRecipe(
+  userId: string,
+  recipeId: string
+): Promise<boolean> {
+  const { prisma } = await import("@/lib/prisma");
+
+  const recipe = await prisma.recipe.findUnique({
+    where: { id: recipeId },
+    select: { createdById: true },
+  });
+
+  if (!recipe) {
+    return false;
+  }
+
+  // User can delete if they created the recipe
+  if (recipe.createdById === userId) {
+    return true;
+  }
+
+  // Check if user is admin
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  return user?.role === "ADMIN";
+}
