@@ -15,6 +15,7 @@ import BrowseHeader from "./components/Header";
 import RecipeGrid from "./components/RecipeGrid";
 import Filters from "./components/Filters";
 import FilterProvider from "./context/FilterProvider";
+import queryKeys from "@/lib/constants";
 
 export default async function Recipes() {
   const queryClient = new QueryClient({
@@ -35,7 +36,7 @@ export default async function Recipes() {
   // Now prefetch with the same filters that the client will use
   await queryClient.prefetchQuery({
     queryKey: [
-      "recipes",
+      queryKeys.RECIPES,
       {
         pageSize: 10,
         filters: {

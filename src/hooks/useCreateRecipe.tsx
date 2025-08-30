@@ -2,6 +2,7 @@ import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
 import { createRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
 import type { Recipe } from "@/data/types";
+import queryKeys from "@/lib/constants";
 
 export function useCreateRecipe() {
   const router = useRouter();
@@ -14,7 +15,11 @@ export function useCreateRecipe() {
     requireAuth: true,
     successMessage: (data) => data.message || "Recipe created successfully!",
     errorMessage: "Failed to create recipe. Please try again.",
-    invalidateQueries: [["recipes"], ["user-recipes"], ["recipeCount"]],
+    invalidateQueries: [
+      [queryKeys.RECIPES],
+      [queryKeys.USER_RECIPES],
+      [queryKeys.RECIPE_COUNT],
+    ],
     onSuccess: (data) => {
       if (data.success && data.recipe) {
         router.push(`/recipes/${data.recipe.id}`);

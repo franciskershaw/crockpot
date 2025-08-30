@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import queryKeys from "@/lib/constants";
 
 interface ClearMenuDialogProps {
   isMenuEmpty?: boolean;
@@ -28,8 +29,8 @@ export default function ClearMenuDialog({
     mutationFn: removeAllRecipesFromMenu,
     onSuccess: () => {
       setIsOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["menu"] });
-      queryClient.invalidateQueries({ queryKey: ["shoppingList"] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.MENU] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.SHOPPING_LIST] });
       toast.success("Menu cleared successfully");
     },
     onError: (error) => {

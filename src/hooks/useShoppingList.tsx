@@ -13,11 +13,12 @@ import { useMemo } from "react";
 import { WATER_ITEM_ID } from "@/data/items/getItems";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { useOptimisticMutation } from "./shared/useOptimisticMutation";
+import queryKeys from "@/lib/constants";
 
 export function useGetShoppingList(
   initialData?: ShoppingListWithDetails | null
 ) {
-  return useAuthenticatedQuery(["shopping-list"], getShoppingList, {
+  return useAuthenticatedQuery([queryKeys.SHOPPING_LIST], getShoppingList, {
     initialData,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -128,7 +129,7 @@ export const useAddManualShoppingListItemMutation = () => {
     ShoppingListWithDetails
   >({
     mutationFn: addManualShoppingListItem,
-    queryKey: ["shopping-list"],
+    queryKey: [queryKeys.SHOPPING_LIST],
     optimisticUpdate: (previous, input) => {
       if (!previous) return previous;
 
@@ -173,7 +174,7 @@ export const useAddManualShoppingListItemMutation = () => {
 export const useClearShoppingListMutation = () => {
   return useOptimisticMutation<void, unknown, ShoppingListWithDetails>({
     mutationFn: clearShoppingList,
-    queryKey: ["shopping-list"],
+    queryKey: [queryKeys.SHOPPING_LIST],
     optimisticUpdate: (previous) => {
       if (!previous) return previous;
       return { ...previous, items: [] };
@@ -211,7 +212,7 @@ export function createShoppingListMutation<TInput>(config: {
   return () =>
     useOptimisticMutation<TInput, unknown, ShoppingListData>({
       mutationFn: config.mutationFn,
-      queryKey: ["shopping-list"],
+      queryKey: [queryKeys.SHOPPING_LIST],
       optimisticUpdate: (previous, input) => {
         if (!previous) return previous;
 
@@ -243,7 +244,7 @@ export function createShoppingListRemovalMutation<TInput>(config: {
   return () =>
     useOptimisticMutation<TInput, unknown, ShoppingListData>({
       mutationFn: config.mutationFn,
-      queryKey: ["shopping-list"],
+      queryKey: [queryKeys.SHOPPING_LIST],
       optimisticUpdate: (previous, input) => {
         if (!previous) return previous;
 

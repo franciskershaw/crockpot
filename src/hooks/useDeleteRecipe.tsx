@@ -2,6 +2,7 @@ import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
 import { deleteRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
 import type { Recipe } from "@/data/types";
+import queryKeys from "@/lib/constants";
 
 export function useDeleteRecipe() {
   const router = useRouter();
@@ -14,7 +15,11 @@ export function useDeleteRecipe() {
     requireAuth: true,
     successMessage: (data) => data.message || "Recipe deleted successfully!",
     errorMessage: "Failed to delete recipe. Please try again.",
-    invalidateQueries: [["recipes"], ["user-recipes"], ["recipeCount"]],
+    invalidateQueries: [
+      [queryKeys.RECIPES],
+      [queryKeys.USER_RECIPES],
+      [queryKeys.RECIPE_COUNT],
+    ],
     onSuccess: (data) => {
       if (data.success) {
         // Navigate back to recipes list after successful deletion

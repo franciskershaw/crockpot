@@ -10,6 +10,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import queryKeys from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -26,17 +27,17 @@ const YourCrockpotPage = async () => {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["shopping-list"],
+    queryKey: [queryKeys.SHOPPING_LIST],
     queryFn: getShoppingList,
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["favourites"],
+    queryKey: [queryKeys.FAVOURITES],
     queryFn: getUserFavourites,
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["user-recipes"],
+    queryKey: [queryKeys.USER_RECIPES],
     queryFn: getUserCreatedRecipes,
   });
 
