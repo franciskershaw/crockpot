@@ -15,7 +15,11 @@ import BrowseHeader from "./components/Header";
 import RecipeGrid from "./components/RecipeGrid";
 import Filters from "./components/Filters";
 import FilterProvider from "./context/FilterProvider";
-import { queryKeys } from "@/lib/constants";
+import type { RecipeFilters } from "@/data/types";
+import {
+  createRecipeQueryKey,
+  createInfiniteQueryConfig,
+} from "@/lib/query-utils";
 
 export default async function Recipes() {
   const queryClient = new QueryClient({
@@ -33,38 +37,29 @@ export default async function Recipes() {
     getIngredients(),
   ]);
 
-  // Now prefetch with the same filters that the client will use
-  await queryClient.prefetchQuery({
-    queryKey: [
-      queryKeys.RECIPES,
-      {
-        pageSize: 10,
-        filters: {
-          approved: true,
-          minTime: timeRange.min,
-          maxTime: timeRange.max,
-          categoryIds: [],
-          categoryMode: "include",
-          ingredientIds: [],
-          query: undefined,
-        },
-      },
-    ],
-    queryFn: () =>
+  // Create initial filters that match the client defaults
+  const initialFilters: RecipeFilters = {
+    approved: true,
+    minTime: timeRange.min,
+    maxTime: timeRange.max,
+    categoryIds: [],
+    categoryMode: "include" as const,
+    ingredientIds: [],
+    query: undefined,
+  };
+
+  // Generate query key using the same utility as client
+  const prefetchQueryKey = createRecipeQueryKey(10, initialFilters);
+
+  await queryClient.prefetchInfiniteQuery(
+    createInfiniteQueryConfig(prefetchQueryKey, ({ pageParam }) =>
       getRecipes({
-        page: 1,
+        page: pageParam,
         pageSize: 10,
-        filters: {
-          approved: true,
-          minTime: timeRange.min,
-          maxTime: timeRange.max,
-          categoryIds: [],
-          categoryMode: "include",
-          ingredientIds: [],
-          query: undefined,
-        },
-      }),
-  });
+        filters: initialFilters,
+      })
+    )
+  );
 
   return (
     <FilterProvider timeRange={timeRange}>

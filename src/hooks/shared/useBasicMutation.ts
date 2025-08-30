@@ -41,16 +41,20 @@ export function useBasicMutation<TInput = unknown, TData = unknown>(
     onSuccess: (data, input) => {
       // Invalidate specified queries
       if (config.invalidateQueries) {
-        config.invalidateQueries.forEach(queryKey => {
-          queryClient.invalidateQueries({ queryKey });
+        config.invalidateQueries.forEach((queryKey) => {
+          queryClient.invalidateQueries({
+            queryKey,
+            exact: false, // This allows partial matching for infinite queries
+          });
         });
       }
 
       // Show success toast
       if (config.successMessage) {
-        const message = typeof config.successMessage === 'function'
-          ? config.successMessage(data)
-          : config.successMessage;
+        const message =
+          typeof config.successMessage === "function"
+            ? config.successMessage(data)
+            : config.successMessage;
         toast.success(message);
       }
 
@@ -60,11 +64,11 @@ export function useBasicMutation<TInput = unknown, TData = unknown>(
     onError: (error: Error, input) => {
       // Show error toast
       const message = config.errorMessage
-        ? typeof config.errorMessage === 'function'
+        ? typeof config.errorMessage === "function"
           ? config.errorMessage(error)
           : config.errorMessage
         : error.message || "Operation failed";
-      
+
       toast.error(message);
 
       // Call custom onError handler
@@ -77,7 +81,12 @@ export function useBasicMutation<TInput = unknown, TData = unknown>(
  * Add/Remove mutation pair factory
  * Creates consistent add and remove mutations for a resource
  */
-export function createAddRemoveMutations<TAddInput, TRemoveInput, TAddData = unknown, TRemoveData = unknown>(config: {
+export function createAddRemoveMutations<
+  TAddInput,
+  TRemoveInput,
+  TAddData = unknown,
+  TRemoveData = unknown
+>(config: {
   addMutationFn: (input: TAddInput) => Promise<TAddData>;
   removeMutationFn: (input: TRemoveInput) => Promise<TRemoveData>;
   queryKey: string[];
@@ -85,23 +94,28 @@ export function createAddRemoveMutations<TAddInput, TRemoveInput, TAddData = unk
   additionalInvalidateQueries?: string[][];
   requireAuth?: boolean; // Add authentication flag to factory
 }) {
-  const invalidateQueries = [config.queryKey, ...(config.additionalInvalidateQueries || [])];
+  const invalidateQueries = [
+    config.queryKey,
+    ...(config.additionalInvalidateQueries || []),
+  ];
 
-  const useAddMutation = () => useBasicMutation({
-    mutationFn: config.addMutationFn,
-    invalidateQueries,
-    successMessage: `${config.resourceName} added`,
-    errorMessage: `Failed to add ${config.resourceName.toLowerCase()}`,
-    requireAuth: config.requireAuth,
-  });
+  const useAddMutation = () =>
+    useBasicMutation({
+      mutationFn: config.addMutationFn,
+      invalidateQueries,
+      successMessage: `${config.resourceName} added`,
+      errorMessage: `Failed to add ${config.resourceName.toLowerCase()}`,
+      requireAuth: config.requireAuth,
+    });
 
-  const useRemoveMutation = () => useBasicMutation({
-    mutationFn: config.removeMutationFn,
-    invalidateQueries,
-    successMessage: `${config.resourceName} removed`,
-    errorMessage: `Failed to remove ${config.resourceName.toLowerCase()}`,
-    requireAuth: config.requireAuth,
-  });
+  const useRemoveMutation = () =>
+    useBasicMutation({
+      mutationFn: config.removeMutationFn,
+      invalidateQueries,
+      successMessage: `${config.resourceName} removed`,
+      errorMessage: `Failed to remove ${config.resourceName.toLowerCase()}`,
+      requireAuth: config.requireAuth,
+    });
 
   return {
     useAddMutation,

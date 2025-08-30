@@ -1,5 +1,6 @@
 export const queryKeys = {
   RECIPES: "recipes",
+  INFINITE_RECIPES: "infinite-recipes",
   USER_RECIPES: "user-recipes",
   RECIPE_COUNT: "recipe-count",
   SHOPPING_LIST: "shopping-list",

@@ -17,38 +17,55 @@ export async function getRecipes({
   const isFiltered = hasActiveFilters(filters, timeRange);
 
   if (!isFiltered) {
-    // No filters active - use normal pagination with default sorting
-    const skip = (page - 1) * pageSize;
-    const take = pageSize;
+    const { unstable_cache } = await import("next/cache");
 
-    const [recipes, total] = await Promise.all([
-      prisma.recipe.findMany({
-        where,
-        skip,
-        take,
-        orderBy: recentFirstOrderBy,
-        include: recipeCategoriesInclude,
-      }),
-      prisma.recipe.count({ where }),
-    ]);
+    const cacheKey = `unfiltered-recipes-${page}-${pageSize}`;
 
-    return {
-      recipes,
-      total,
-      page,
-      pageSize,
-      totalPages: Math.ceil(total / pageSize),
-    };
+    const getCachedUnfilteredRecipes = unstable_cache(
+      async () => {
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
+
+        const [recipes, total] = await Promise.all([
+          prisma.recipe.findMany({
+            where,
+            skip,
+            take,
+            orderBy: recentFirstOrderBy,
+            include: recipeCategoriesInclude,
+          }),
+          prisma.recipe.count({ where }),
+        ]);
+
+        return {
+          recipes,
+          total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        };
+      },
+      [cacheKey],
+      {
+        revalidate: 300, // 5 minutes
+        tags: [tags.RECIPES], // This is the key fix!
+      }
+    );
+
+    const result = await getCachedUnfilteredRecipes();
+    return result;
   }
 
   // Filters are active - use optimized cached relevance approach
   const { getRecipesWithCachedRelevance } = await import("./relevance-cache");
-  return getRecipesWithCachedRelevance({
+  const result = await getRecipesWithCachedRelevance({
     page,
     pageSize,
     filters,
     timeRange,
   });
+
+  return result;
 }
 
 export async function getRecipeTimeRange() {
@@ -104,8 +121,21 @@ export async function getRecipeCategories() {
 }
 
 export async function getRecipeCount(filters: RecipeFilters = {}) {
-  const where = buildWhereClause(filters);
-  return await prisma.recipe.count({ where });
+  const { unstable_cache } = await import("next/cache");
+
+  const getCachedCount = unstable_cache(
+    async () => {
+      const where = buildWhereClause(filters);
+      return await prisma.recipe.count({ where });
+    },
+    [`recipe-count-${JSON.stringify(filters)}`],
+    {
+      revalidate: 300, // 5 minutes
+      tags: [tags.RECIPES], // Ensure count updates when recipes change
+    }
+  );
+
+  return getCachedCount();
 }
 
 export async function getRandomRecipes(count: number = 12) {

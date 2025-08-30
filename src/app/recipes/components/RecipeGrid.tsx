@@ -8,37 +8,20 @@ import type { Recipe } from "@/data/types";
 import { useFilters } from "@/app/recipes/context/FilterProvider";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
-import { queryKeys } from "@/lib/constants";
+import {
+  createRecipeQueryKey,
+  createInfiniteQueryConfig,
+} from "@/lib/query-utils";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters } = useFilters();
   const { restoreScrollPosition } = useScrollRestoration();
 
-  // Create intelligent query key that only includes relevant filters
-  const queryKey = useMemo(() => {
-    const relevantFilters = { ...filters };
-
-    // Only include categoryMode if there are actually categories selected
-    if (!filters.categoryIds || filters.categoryIds.length === 0) {
-      delete relevantFilters.categoryMode;
-    }
-
-    // Only include ingredientIds if there are actually ingredients selected
-    if (!filters.ingredientIds || filters.ingredientIds.length === 0) {
-      delete relevantFilters.ingredientIds;
-    }
-
-    return [
-      queryKeys.RECIPES,
-      {
-        pageSize,
-        filters: {
-          ...relevantFilters,
-          pageSize,
-        },
-      },
-    ];
-  }, [filters, pageSize]);
+  // Generate consistent query key using centralized utility
+  const queryKey = useMemo(
+    () => createRecipeQueryKey(pageSize, filters),
+    [filters, pageSize]
+  );
 
   const {
     data,
@@ -47,18 +30,15 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     isFetchingNextPage,
     isLoading,
     isFetched,
-  } = useInfiniteQuery({
-    queryKey,
-    queryFn: async ({ pageParam = 1 }) =>
+  } = useInfiniteQuery(
+    createInfiniteQueryConfig(queryKey, ({ pageParam }) =>
       getRecipes({
         page: pageParam,
         pageSize,
         filters,
-      }),
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.totalPages ? lastPage.page + 1 : undefined,
-    initialPageParam: 1,
-  });
+      })
+    )
+  );
 
   const loader = useRef<HTMLDivElement | null>(null);
 
