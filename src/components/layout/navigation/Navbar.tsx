@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Search, ShoppingBag } from "lucide-react";
+import { ChefHat, Plus, Search, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import LogoutButton from "@/components/auth/LogoutButton";
@@ -29,7 +29,7 @@ export default async function Navbar() {
               Browse Recipes
             </Link>
 
-            {session?.user ? (
+            {session?.user && (
               <>
                 <Link
                   className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
@@ -38,12 +38,24 @@ export default async function Navbar() {
                   <ShoppingBag className="h-4 w-4" />
                   Your Crockpot
                 </Link>
-                <LogoutButton variant="outline" />
+
+                {session?.user?.role === "ADMIN" && (
+                  <Link
+                    href="/recipes/new"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Recipe
+                  </Link>
+                )}
               </>
-            ) : (
+            )}
+            {!session?.user ? (
               <Link href="/">
                 <Button variant="outline">Login</Button>
               </Link>
+            ) : (
+              <LogoutButton variant="outline" />
             )}
           </div>
 
