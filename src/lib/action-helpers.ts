@@ -411,6 +411,23 @@ export function extractEditRecipeFormData(formData: FormData) {
 }
 
 /**
+ * Extract basic item form data
+ */
+export function extractItemFormData(formData: FormData) {
+  const { getFormValue } = extractFormData(formData);
+
+  const name = getFormValue("name") as string;
+  const categoryId = getFormValue("categoryId") as string;
+  const allowedUnitIds = JSON.parse(getFormValue("allowedUnitIds") as string);
+
+  return {
+    name,
+    categoryId,
+    allowedUnitIds,
+  };
+}
+
+/**
  * Check if user can edit a recipe (either creator or admin)
  */
 export async function canEditRecipe(
@@ -493,6 +510,34 @@ export async function revalidateRecipeCache(
 
   // Default tags to revalidate
   const defaultTags = [tags.RECIPES];
+  const tagsToRevalidate = [...defaultTags, ...(options.includeTags || [])];
+
+  // Revalidate paths and tags in parallel
+  await Promise.all([
+    ...pathsToRevalidate.map((path) => revalidatePath(path)),
+    ...tagsToRevalidate.map((tag) => revalidateTag(tag)),
+  ]);
+}
+
+/**
+ * Cache revalidation utility for item-related operations
+ * Provides consistent cache invalidation patterns
+ */
+export async function revalidateItemCache(
+  options: {
+    includePaths?: string[];
+    includeTags?: string[];
+  } = {}
+) {
+  const { revalidatePath, revalidateTag } = await import("next/cache");
+  const { tags } = await import("@/lib/constants");
+
+  // Default paths to revalidate
+  const defaultPaths = ["/your-crockpot"];
+  const pathsToRevalidate = [...defaultPaths, ...(options.includePaths || [])];
+
+  // Default tags to revalidate
+  const defaultTags = [tags.ITEMS];
   const tagsToRevalidate = [...defaultTags, ...(options.includeTags || [])];
 
   // Revalidate paths and tags in parallel

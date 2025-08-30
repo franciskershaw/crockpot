@@ -1,15 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { Item } from "@/data/types";
 import { ValidationError } from "@/lib/errors";
+import { CreateItemInput } from "@/lib/validations";
 
 /**
  * Creates a new item in the database
- * @param item - Item to create
+ * @param itemData - Item creation data
  * @returns The created item
  */
-export async function createItem(item: Item): Promise<Item> {
+export async function createItem(itemData: CreateItemInput): Promise<Item> {
   const createdItem = await prisma.item.create({
-    data: item,
+    data: itemData,
   });
 
   if (!createdItem) {

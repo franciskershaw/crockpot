@@ -225,3 +225,43 @@ export async function validateRecipeReferences(data: {
     throw new ValidationError("One or more units do not exist");
   }
 }
+
+/**
+ * Validates that all referenced database entities exist for item creation
+ * This ensures data integrity by checking that category ID and unit IDs
+ * actually exist in the database before allowing item creation
+ * @param data - The item creation input data
+ * @throws ValidationError if any referenced entities don't exist
+ */
+export async function validateItemReferences(data: {
+  categoryId: string;
+  allowedUnitIds: string[];
+}): Promise<void> {
+  const { prisma } = await import("@/lib/prisma");
+
+  // Run all validation queries in parallel
+  const [category, units] = await Promise.all([
+    prisma.itemCategory.findUnique({
+      where: { id: data.categoryId },
+      select: { id: true },
+    }),
+    data.allowedUnitIds.length > 0
+      ? prisma.unit.findMany({
+          where: { id: { in: data.allowedUnitIds } },
+          select: { id: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  // Validate results
+  if (!category) {
+    throw new ValidationError("Category does not exist");
+  }
+
+  if (
+    data.allowedUnitIds.length > 0 &&
+    units.length !== data.allowedUnitIds.length
+  ) {
+    throw new ValidationError("One or more units do not exist");
+  }
+}

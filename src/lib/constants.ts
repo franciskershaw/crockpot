@@ -19,4 +19,5 @@ export const tags = {
   RELEVANCE: "relevance",
   FILTERED: "filtered",
   UNITS: "units",
+  ITEMS: "items",
 };

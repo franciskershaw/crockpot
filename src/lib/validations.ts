@@ -131,6 +131,22 @@ export const createRecipeSchema = z.object({
 
 export const updateRecipeSchema = createRecipeSchema.partial();
 
+/**
+ * Item creation operations
+ */
+export const createItemSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Item name must be at least 2 characters")
+    .max(50, "Item name must be less than 50 characters"),
+  categoryId: objectIdSchema,
+  allowedUnitIds: z
+    .array(objectIdSchema)
+    .max(10, "Cannot have more than 10 allowed units"),
+});
+
+export const updateItemSchema = createItemSchema.partial();
+
 // ===================================
 // TYPE EXPORTS
 // ===================================
@@ -153,3 +169,5 @@ export type AddManualShoppingListItemInput = z.infer<
 >;
 export type CreateRecipeInput = z.infer<typeof createRecipeSchema>;
 export type UpdateRecipeInput = z.infer<typeof updateRecipeSchema>;
+export type CreateItemInput = z.infer<typeof createItemSchema>;
+export type UpdateItemInput = z.infer<typeof updateItemSchema>;
