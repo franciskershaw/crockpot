@@ -5,7 +5,7 @@ import {
 } from "@/actions/favourites";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { createAddRemoveMutations } from "./shared/useBasicMutation";
-import queryKeys from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 // Create add/remove mutations using the factory
 const { useAddMutation, useRemoveMutation } = createAddRemoveMutations({

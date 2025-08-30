@@ -10,7 +10,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import queryKeys from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 

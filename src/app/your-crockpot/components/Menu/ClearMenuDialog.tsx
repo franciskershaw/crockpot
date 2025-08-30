@@ -14,7 +14,7 @@ import {
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import queryKeys from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 interface ClearMenuDialogProps {
   isMenuEmpty?: boolean;

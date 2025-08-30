@@ -15,7 +15,7 @@ import BrowseHeader from "./components/Header";
 import RecipeGrid from "./components/RecipeGrid";
 import Filters from "./components/Filters";
 import FilterProvider from "./context/FilterProvider";
-import queryKeys from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 export default async function Recipes() {
   const queryClient = new QueryClient({

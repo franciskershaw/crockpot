@@ -5,6 +5,7 @@ import {
   recipeCategoriesInclude,
   recentFirstOrderBy,
 } from "@/data/fragments/query-fragments";
+import { queryKeys } from "@/lib/constants";
 
 export async function getRecipes({
   page = 1,
@@ -75,7 +76,7 @@ export async function getRecipeTimeRange() {
     ["recipe-time-range"],
     {
       revalidate: 3600, // Cache for 1 hour
-      tags: ["recipes", "time-range"],
+      tags: [queryKeys.RECIPES, "time-range"],
     }
   );
 

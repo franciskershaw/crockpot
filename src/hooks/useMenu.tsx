@@ -7,7 +7,7 @@ import {
 } from "@/actions/menu";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { useBasicMutation } from "./shared/useBasicMutation";
-import queryKeys from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 export const useAddToMenuMutation = () => {
   return useBasicMutation({

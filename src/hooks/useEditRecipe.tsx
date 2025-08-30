@@ -2,7 +2,7 @@ import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
 import { editRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
 import type { Recipe } from "@/data/types";
-import queryKeys from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 export function useEditRecipe() {
   const router = useRouter();

@@ -13,7 +13,7 @@ import { useMemo } from "react";
 import { WATER_ITEM_ID } from "@/data/items/getItems";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { useOptimisticMutation } from "./shared/useOptimisticMutation";
-import queryKeys from "@/lib/constants";
+import { queryKeys }  from "@/lib/constants";
 
 export function useGetShoppingList(
   initialData?: ShoppingListWithDetails | null
