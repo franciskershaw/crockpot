@@ -12,51 +12,48 @@ import type { Item, ShoppingListWithDetails } from "@/data/types";
 import { useMemo } from "react";
 import { WATER_ITEM_ID } from "@/data/items/getItems";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
-import { 
-  createShoppingListMutation, 
-  createShoppingListRemovalMutation,
-  useOptimisticMutation 
-} from "./shared/useOptimisticMutation";
+import { useOptimisticMutation } from "./shared/useOptimisticMutation";
 
 export function useGetShoppingList(
   initialData?: ShoppingListWithDetails | null
 ) {
-  return useAuthenticatedQuery(
-    ["shopping-list"],
-    getShoppingList,
-    {
-      initialData,
-      staleTime: 1000 * 60 * 5, // 5 minutes
-    }
-  );
+  return useAuthenticatedQuery(["shopping-list"], getShoppingList, {
+    initialData,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 }
 
 export const useToggleObtainedMutation = createShoppingListMutation({
   mutationFn: toggleObtained,
-  itemMatcher: (item, input) => 
-    item.itemId === input.itemId && (item.unitId ?? null) === (input.unitId ?? null),
+  itemMatcher: (item, input) =>
+    item.itemId === input.itemId &&
+    (item.unitId ?? null) === (input.unitId ?? null),
   itemUpdater: (item) => ({ ...item, obtained: !item.obtained }),
   errorMessage: "Failed to toggle obtained",
   requireAuth: true, // Enable authentication checks
 });
 
-export const useRemoveShoppingListItemMutation = createShoppingListRemovalMutation({
-  mutationFn: removeShoppingListItem,
-  itemMatcher: (item, input) => 
-    item.itemId === input.itemId && (item.unitId ?? null) === (input.unitId ?? null),
-  successMessage: "Removed from shopping list",
-  errorMessage: "Failed to remove item",
-  requireAuth: true, // Enable authentication checks
-});
+export const useRemoveShoppingListItemMutation =
+  createShoppingListRemovalMutation({
+    mutationFn: removeShoppingListItem,
+    itemMatcher: (item, input) =>
+      item.itemId === input.itemId &&
+      (item.unitId ?? null) === (input.unitId ?? null),
+    successMessage: "Removed from shopping list",
+    errorMessage: "Failed to remove item",
+    requireAuth: true, // Enable authentication checks
+  });
 
-export const useUpdateShoppingListItemQuantityMutation = createShoppingListMutation({
-  mutationFn: updateShoppingListItemQuantity,
-  itemMatcher: (item, input) => 
-    item.itemId === input.itemId && (item.unitId ?? null) === (input.unitId ?? null),
-  itemUpdater: (item, input) => ({ ...item, quantity: input.quantity }),
-  errorMessage: "Failed to update quantity",
-  requireAuth: true, // Enable authentication checks
-});
+export const useUpdateShoppingListItemQuantityMutation =
+  createShoppingListMutation({
+    mutationFn: updateShoppingListItemQuantity,
+    itemMatcher: (item, input) =>
+      item.itemId === input.itemId &&
+      (item.unitId ?? null) === (input.unitId ?? null),
+    itemUpdater: (item, input) => ({ ...item, quantity: input.quantity }),
+    errorMessage: "Failed to update quantity",
+    requireAuth: true, // Enable authentication checks
+  });
 
 export function useShoppingListCategories(
   shoppingList: ShoppingListWithDetails | null | undefined,
@@ -125,20 +122,24 @@ export function useShoppingListCategories(
 }
 
 export const useAddManualShoppingListItemMutation = () => {
-  return useOptimisticMutation<{ itemId: string; unitId?: string | null; quantity: number }, unknown, ShoppingListWithDetails>({
+  return useOptimisticMutation<
+    { itemId: string; unitId?: string | null; quantity: number },
+    unknown,
+    ShoppingListWithDetails
+  >({
     mutationFn: addManualShoppingListItem,
     queryKey: ["shopping-list"],
     optimisticUpdate: (previous, input) => {
       if (!previous) return previous;
-      
+
       const keyMatches = (it: ShoppingListWithDetails["items"][number]) =>
         it.itemId === input.itemId &&
         (it.unitId ?? null) === (input.unitId ?? null) &&
         it.isManual === true;
-      
+
       const existingIndex = previous.items.findIndex(keyMatches);
       let nextItems;
-      
+
       if (existingIndex >= 0) {
         nextItems = previous.items.map((it, idx) =>
           idx === existingIndex
@@ -158,7 +159,7 @@ export const useAddManualShoppingListItemMutation = () => {
           },
         ];
       }
-      
+
       return {
         ...previous,
         items: nextItems as ShoppingListWithDetails["items"],
@@ -182,3 +183,79 @@ export const useClearShoppingListMutation = () => {
     requireAuth: true, // Enable authentication checks
   });
 };
+
+interface ShoppingListItem {
+  itemId: string;
+  unitId: string | null;
+  quantity: number;
+  obtained: boolean;
+  isManual?: boolean;
+  // Allow additional properties
+  [key: string]: unknown;
+}
+
+interface ShoppingListData {
+  items: ShoppingListItem[];
+  // Allow additional properties
+  [key: string]: unknown;
+}
+
+export function createShoppingListMutation<TInput>(config: {
+  mutationFn: (input: TInput) => Promise<unknown>;
+  itemMatcher: (item: ShoppingListItem, input: TInput) => boolean;
+  itemUpdater: (item: ShoppingListItem, input: TInput) => ShoppingListItem;
+  successMessage?: string;
+  errorMessage?: string;
+  requireAuth?: boolean; // Add authentication flag
+}) {
+  return () =>
+    useOptimisticMutation<TInput, unknown, ShoppingListData>({
+      mutationFn: config.mutationFn,
+      queryKey: ["shopping-list"],
+      optimisticUpdate: (previous, input) => {
+        if (!previous) return previous;
+
+        return {
+          ...previous,
+          items: previous.items.map((item: ShoppingListItem) =>
+            config.itemMatcher(item, input)
+              ? config.itemUpdater(item, input)
+              : item
+          ),
+        };
+      },
+      successMessage: config.successMessage,
+      errorMessage: config.errorMessage,
+      requireAuth: config.requireAuth,
+    });
+}
+
+/**
+ * Factory for creating shopping list removal mutations
+ */
+export function createShoppingListRemovalMutation<TInput>(config: {
+  mutationFn: (input: TInput) => Promise<unknown>;
+  itemMatcher: (item: ShoppingListItem, input: TInput) => boolean;
+  successMessage?: string;
+  errorMessage?: string;
+  requireAuth?: boolean; // Add authentication flag
+}) {
+  return () =>
+    useOptimisticMutation<TInput, unknown, ShoppingListData>({
+      mutationFn: config.mutationFn,
+      queryKey: ["shopping-list"],
+      optimisticUpdate: (previous, input) => {
+        if (!previous) return previous;
+
+        return {
+          ...previous,
+          items: previous.items.filter(
+            (item: ShoppingListItem) => !config.itemMatcher(item, input)
+          ),
+        };
+      },
+      successMessage: config.successMessage,
+      errorMessage: config.errorMessage,
+      requireAuth: config.requireAuth,
+    });
+}
