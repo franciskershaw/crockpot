@@ -8,11 +8,9 @@ import {
   getRandomRecipes as getRandomRecipesFromDAL,
 } from "@/data/recipes/getRecipes";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
-import {
-  createRecipe as createRecipeDAL,
-  editRecipe as editRecipeDAL,
-  deleteRecipe as deleteRecipeDAL,
-} from "@/data/recipes/createRecipe";
+import { createRecipe as createRecipeDAL } from "@/data/recipes/createRecipe";
+import { editRecipe as editRecipeDAL } from "@/data/recipes/editRecipe";
+import { deleteRecipe as deleteRecipeDAL } from "@/data/recipes/deleteRecipe";
 import { RecipeFilters } from "@/data/types";
 import {
   createPublicAction,
