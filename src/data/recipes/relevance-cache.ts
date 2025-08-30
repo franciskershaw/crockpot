@@ -11,6 +11,7 @@
 import { prisma } from "@/lib/prisma";
 import { RecipeFilters } from "@/data/types";
 import { buildWhereClause } from "./helper";
+import { tags } from "@/lib/constants";
 
 /**
  * Cached relevance data for a recipe
@@ -141,7 +142,7 @@ async function buildRelevanceIndex(
     [getRelevanceCacheKey(filters)],
     {
       revalidate: 300, // Cache for 5 minutes
-      tags: ["recipes", "relevance", "filtered"],
+      tags: [tags.RECIPES, tags.RELEVANCE, tags.FILTERED],
     }
   );
 

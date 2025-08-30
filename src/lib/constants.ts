@@ -8,3 +8,14 @@ export const queryKeys = {
   ITEMS: "items",
   INGREDIENTS: "ingredients",
 };
+
+export const tags = {
+  RECIPES: "recipes",
+  TIME_RANGE: "time-range",
+  RECIPE_TIME_RANGE: "recipe-time-range",
+  RECIPE_CATEGORIES: "recipe-categories",
+  CATEGORIES: "categories",
+  RELEVANCE: "relevance",
+  FILTERED: "filtered",
+  UNITS: "units",
+};

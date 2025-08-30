@@ -5,7 +5,7 @@ import {
   recipeCategoriesInclude,
   recentFirstOrderBy,
 } from "@/data/fragments/query-fragments";
-import { queryKeys } from "@/lib/constants";
+import { tags } from "@/lib/constants";
 
 export async function getRecipes({
   page = 1,
@@ -73,10 +73,10 @@ export async function getRecipeTimeRange() {
         max: result._max.timeInMinutes || 120,
       };
     },
-    ["recipe-time-range"],
+    [tags.RECIPE_TIME_RANGE],
     {
       revalidate: 3600, // Cache for 1 hour
-      tags: [queryKeys.RECIPES, "time-range"],
+      tags: [tags.RECIPES, tags.TIME_RANGE],
     }
   );
 
@@ -93,10 +93,10 @@ export async function getRecipeCategories() {
       });
       return categories;
     },
-    ["recipe-categories"],
+    [tags.RECIPE_CATEGORIES],
     {
       revalidate: 3600, // Cache for 1 hour
-      tags: ["recipes", "categories"],
+      tags: [tags.RECIPES, tags.CATEGORIES],
     }
   );
 

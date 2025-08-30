@@ -5,6 +5,7 @@ import { getRecipeCount } from "@/actions/recipes";
 import { useFilters } from "@/app/recipes/context/FilterProvider";
 import { Badge } from "@/components/ui/badge";
 import { useMemo, useState, useEffect } from "react";
+import { queryKeys } from "@/lib/constants";
 
 export default function RecipeCountBadge() {
   const { filters } = useFilters();
@@ -24,7 +25,7 @@ export default function RecipeCountBadge() {
       delete relevantFilters.ingredientIds;
     }
 
-    return ["recipeCount", relevantFilters];
+    return [queryKeys.RECIPE_COUNT, relevantFilters];
   }, [filters]);
 
   const { data: recipeCount, isFetching } = useQuery({
