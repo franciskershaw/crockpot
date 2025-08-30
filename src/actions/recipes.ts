@@ -18,11 +18,14 @@ import {
   extractEditRecipeFormData,
   canEditRecipe,
   canDeleteRecipe,
+  withPermission,
+  Permission,
+  revalidateRecipeCache,
 } from "@/lib/action-helpers";
 import { createRecipeSchema, updateRecipeSchema } from "@/lib/validations";
 import { validateRecipeReferences } from "@/lib/security";
 import { processRecipeImage, deleteRecipeImage } from "@/lib/upload-helpers";
-import { revalidatePath } from "next/cache";
+import { UserRole } from "@/data/types";
 
 export interface GetRecipesParams {
   page?: number;
@@ -64,22 +67,9 @@ export const getRecipeById = createPublicAction(async (id: string) => {
   return await getRecipeByIdFromDAL(id);
 });
 
-export async function createRecipe(formData: FormData) {
-  "use server";
-
-  try {
-    const { hasPermission, Permission, getAuthenticatedUserWithMinimumRole } =
-      await import("@/lib/action-helpers");
-    const { UserRole } = await import("@prisma/client");
-
-    // Get authenticated user
-    const user = await getAuthenticatedUserWithMinimumRole(UserRole.PREMIUM);
-
-    // Check permissions
-    if (!hasPermission(user.role, Permission.CREATE_RECIPES)) {
-      throw new Error("You don't have permission to create recipes");
-    }
-
+export const createRecipe = withPermission(
+  Permission.CREATE_RECIPES,
+  async (user, formData: FormData) => {
     // Extract form data
     const extractedData = extractRecipeFormData(formData);
 
@@ -121,11 +111,8 @@ export async function createRecipe(formData: FormData) {
     // Create the recipe
     const recipe = await createRecipeDAL(user.id, finalRecipeData, isApproved);
 
-    // Revalidate relevant paths in parallel
-    await Promise.all([
-      revalidatePath("/recipes"),
-      revalidatePath("/your-crockpot"),
-    ]);
+    // Revalidate cache using centralized utility
+    await revalidateRecipeCache();
 
     return {
       success: true,
@@ -134,28 +121,12 @@ export async function createRecipe(formData: FormData) {
         ? "Recipe created successfully!"
         : "Recipe created successfully and is pending approval",
     };
-  } catch (error) {
-    console.error("Recipe creation failed:", error);
-    throw error;
   }
-}
+);
 
-export async function editRecipe(formData: FormData) {
-  "use server";
-
-  try {
-    const { hasPermission, Permission, getAuthenticatedUserWithMinimumRole } =
-      await import("@/lib/action-helpers");
-    const { UserRole } = await import("@prisma/client");
-
-    // Get authenticated user
-    const user = await getAuthenticatedUserWithMinimumRole(UserRole.PREMIUM);
-
-    // Check permissions
-    if (!hasPermission(user.role, Permission.CREATE_RECIPES)) {
-      throw new Error("You don't have permission to edit recipes");
-    }
-
+export const editRecipe = withPermission(
+  Permission.CREATE_RECIPES,
+  async (user, formData: FormData) => {
     // Extract form data
     const extractedData = extractEditRecipeFormData(formData);
     const recipeId = formData.get("recipeId") as string;
@@ -168,7 +139,6 @@ export async function editRecipe(formData: FormData) {
     if (!(await canEditRecipe(user.id, recipeId))) {
       throw new Error("You don't have permission to edit this recipe");
     }
-
     // Create the recipe data
     const recipeData = {
       name: extractedData.name,
@@ -224,40 +194,22 @@ export async function editRecipe(formData: FormData) {
       });
     }
 
-    // Revalidate relevant paths in parallel
-    await Promise.all([
-      revalidatePath("/recipes"),
-      revalidatePath("/your-crockpot"),
-      revalidatePath(`/recipes/${recipeId}`),
-    ]);
+    // Revalidate cache using centralized utility with specific recipe path
+    await revalidateRecipeCache({
+      includePaths: [`/recipes/${recipeId}`],
+    });
 
     return {
       success: true,
       recipe,
       message: "Recipe updated successfully!",
     };
-  } catch (error) {
-    console.error("Recipe update failed:", error);
-    throw error;
   }
-}
+);
 
-export async function deleteRecipe(recipeId: string) {
-  "use server";
-
-  try {
-    const { hasPermission, Permission, getAuthenticatedUserWithMinimumRole } =
-      await import("@/lib/action-helpers");
-    const { UserRole } = await import("@prisma/client");
-
-    // Get authenticated user
-    const user = await getAuthenticatedUserWithMinimumRole(UserRole.PREMIUM);
-
-    // Check permissions
-    if (!hasPermission(user.role, Permission.CREATE_RECIPES)) {
-      throw new Error("You don't have permission to delete recipes");
-    }
-
+export const deleteRecipe = withPermission(
+  Permission.CREATE_RECIPES,
+  async (user: { id: string; role: UserRole }, recipeId: string) => {
     // Check if user can delete this recipe
     if (!(await canDeleteRecipe(user.id, recipeId))) {
       throw new Error("You don't have permission to delete this recipe");
@@ -284,19 +236,13 @@ export async function deleteRecipe(recipeId: string) {
       });
     }
 
-    // Revalidate relevant paths in parallel
-    await Promise.all([
-      revalidatePath("/recipes", "page"),
-      revalidatePath("/your-crockpot", "page"),
-    ]);
+    // Revalidate cache using centralized utility
+    await revalidateRecipeCache();
 
     return {
       success: true,
       recipe: deletedRecipe,
       message: "Recipe deleted successfully!",
     };
-  } catch (error) {
-    console.error("Recipe deletion failed:", error);
-    throw error;
   }
-}
+);
