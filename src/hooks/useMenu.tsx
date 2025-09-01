@@ -15,7 +15,6 @@ export const useAddToMenuMutation = () => {
     invalidateQueries: [[queryKeys.MENU], [queryKeys.SHOPPING_LIST]],
     successMessage: (result) =>
       result.wasUpdate ? "Menu serving size updated" : "Recipe added to menu",
-    errorMessage: "Failed to add recipe to menu",
     requireAuth: true, // Enable authentication checks
   });
 };
@@ -25,7 +24,6 @@ export const useRemoveFromMenuMutation = () => {
     mutationFn: removeRecipeFromMenu,
     invalidateQueries: [[queryKeys.MENU], [queryKeys.SHOPPING_LIST]],
     successMessage: "Recipe removed from menu",
-    errorMessage: "Failed to remove recipe from menu",
     requireAuth: true, // Enable authentication checks
   });
 };

@@ -14,7 +14,6 @@ export function useCreateRecipe() {
     mutationFn: createRecipe,
     requireAuth: true,
     successMessage: (data) => data.message || "Recipe created successfully!",
-    errorMessage: "Failed to create recipe. Please try again.",
     invalidateQueries: [
       [queryKeys.RECIPES],
       [queryKeys.USER_RECIPES],

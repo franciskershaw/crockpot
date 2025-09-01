@@ -13,7 +13,7 @@ import { useMemo } from "react";
 import { WATER_ITEM_ID } from "@/data/items/getItems";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { useOptimisticMutation } from "./shared/useOptimisticMutation";
-import { queryKeys }  from "@/lib/constants";
+import { queryKeys } from "@/lib/constants";
 
 export function useGetShoppingList(
   initialData?: ShoppingListWithDetails | null
@@ -30,7 +30,6 @@ export const useToggleObtainedMutation = createShoppingListMutation({
     item.itemId === input.itemId &&
     (item.unitId ?? null) === (input.unitId ?? null),
   itemUpdater: (item) => ({ ...item, obtained: !item.obtained }),
-  errorMessage: "Failed to toggle obtained",
   requireAuth: true, // Enable authentication checks
 });
 
@@ -41,7 +40,6 @@ export const useRemoveShoppingListItemMutation =
       item.itemId === input.itemId &&
       (item.unitId ?? null) === (input.unitId ?? null),
     successMessage: "Removed from shopping list",
-    errorMessage: "Failed to remove item",
     requireAuth: true, // Enable authentication checks
   });
 
@@ -52,7 +50,6 @@ export const useUpdateShoppingListItemQuantityMutation =
       item.itemId === input.itemId &&
       (item.unitId ?? null) === (input.unitId ?? null),
     itemUpdater: (item, input) => ({ ...item, quantity: input.quantity }),
-    errorMessage: "Failed to update quantity",
     requireAuth: true, // Enable authentication checks
   });
 
@@ -166,7 +163,6 @@ export const useAddManualShoppingListItemMutation = () => {
         items: nextItems as ShoppingListWithDetails["items"],
       };
     },
-    errorMessage: "Failed to add item",
     requireAuth: true, // Enable authentication checks
   });
 };
@@ -180,7 +176,6 @@ export const useClearShoppingListMutation = () => {
       return { ...previous, items: [] };
     },
     successMessage: "Shopping list cleared",
-    errorMessage: "Failed to clear shopping list",
     requireAuth: true, // Enable authentication checks
   });
 };
@@ -226,7 +221,6 @@ export function createShoppingListMutation<TInput>(config: {
         };
       },
       successMessage: config.successMessage,
-      errorMessage: config.errorMessage,
       requireAuth: config.requireAuth,
     });
 }
@@ -238,7 +232,6 @@ export function createShoppingListRemovalMutation<TInput>(config: {
   mutationFn: (input: TInput) => Promise<unknown>;
   itemMatcher: (item: ShoppingListItem, input: TInput) => boolean;
   successMessage?: string;
-  errorMessage?: string;
   requireAuth?: boolean; // Add authentication flag
 }) {
   return () =>
@@ -256,7 +249,6 @@ export function createShoppingListRemovalMutation<TInput>(config: {
         };
       },
       successMessage: config.successMessage,
-      errorMessage: config.errorMessage,
       requireAuth: config.requireAuth,
     });
 }

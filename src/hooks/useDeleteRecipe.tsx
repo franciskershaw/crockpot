@@ -14,7 +14,6 @@ export function useDeleteRecipe() {
     mutationFn: deleteRecipe,
     requireAuth: true,
     successMessage: (data) => data.message || "Recipe deleted successfully!",
-    errorMessage: "Failed to delete recipe. Please try again.",
     invalidateQueries: [
       [queryKeys.RECIPES],
       [queryKeys.USER_RECIPES],

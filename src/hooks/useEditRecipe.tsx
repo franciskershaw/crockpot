@@ -14,7 +14,6 @@ export function useEditRecipe() {
     mutationFn: editRecipe,
     requireAuth: true,
     successMessage: (data) => data.message || "Recipe updated successfully!",
-    errorMessage: "Failed to update recipe. Please try again.",
     invalidateQueries: [
       [queryKeys.RECIPES],
       [queryKeys.USER_RECIPES],

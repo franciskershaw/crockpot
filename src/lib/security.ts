@@ -192,7 +192,8 @@ export async function validateRecipeReferences(data: {
   const itemIds = data.ingredients.map((i) => i.itemId);
   const unitIds = data.ingredients
     .map((i) => i.unitId)
-    .filter((id): id is string => id !== null && id !== undefined);
+    .filter((id): id is string => id !== null && id !== undefined)
+    .filter((id, index, array) => array.indexOf(id) === index); // Remove duplicates
 
   // Run all validation queries in parallel
   const [categories, items, units] = await Promise.all([

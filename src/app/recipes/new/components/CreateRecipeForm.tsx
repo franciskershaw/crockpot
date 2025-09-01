@@ -16,6 +16,7 @@ import { createRecipeSchema, type CreateRecipeInput } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Clock, Users, Loader2 } from "lucide-react";
 import type { Item, RecipeCategory, Unit } from "@/data/types";
 import { useCreateRecipe } from "@/hooks/useCreateRecipe";
@@ -46,6 +47,7 @@ const CreateRecipeForm = ({
   ingredients,
   units,
 }: CreateRecipeFormProps) => {
+  const router = useRouter();
   const createRecipeMutation = useCreateRecipe();
   const editRecipeMutation = useEditRecipe();
   const [imagePreview, setImagePreview] = useState<string | null>(
@@ -307,29 +309,45 @@ const CreateRecipeForm = ({
 
             {/* Sticky Submit Button */}
             <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 shadow-lg rounded-b-lg">
-              <Button
-                type="submit"
-                disabled={
-                  isEditing
-                    ? editRecipeMutation.isPending
-                    : createRecipeMutation.isPending
-                }
-                className="w-full sm:w-auto min-w-[200px]"
-                size="lg"
-              >
-                {(
-                  isEditing
-                    ? editRecipeMutation.isPending
-                    : createRecipeMutation.isPending
-                ) ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {isEditing ? "Updating Recipe..." : "Creating Recipe..."}
-                  </>
-                ) : (
-                  `${isEditing ? "Update" : "Create"} Recipe`
-                )}
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3 justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  disabled={
+                    isEditing
+                      ? editRecipeMutation.isPending
+                      : createRecipeMutation.isPending
+                  }
+                  className="w-full sm:w-auto min-w-[200px]"
+                  size="lg"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={
+                    isEditing
+                      ? editRecipeMutation.isPending
+                      : createRecipeMutation.isPending
+                  }
+                  className="w-full sm:w-auto min-w-[200px]"
+                  size="lg"
+                >
+                  {(
+                    isEditing
+                      ? editRecipeMutation.isPending
+                      : createRecipeMutation.isPending
+                  ) ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {isEditing ? "Updating Recipe..." : "Creating Recipe..."}
+                    </>
+                  ) : (
+                    `${isEditing ? "Update" : "Create"} Recipe`
+                  )}
+                </Button>
+              </div>
             </div>
           </Card>
         </form>

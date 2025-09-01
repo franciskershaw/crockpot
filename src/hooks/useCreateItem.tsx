@@ -12,7 +12,6 @@ export function useCreateItem() {
     mutationFn: createItem,
     requireAuth: true,
     successMessage: (data) => data.message || "Item created successfully!",
-    errorMessage: "Failed to create item. Please try again.",
     invalidateQueries: [[tags.ITEMS], [tags.CATEGORIES]],
   });
 }
