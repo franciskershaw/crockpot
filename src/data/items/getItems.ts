@@ -42,6 +42,7 @@ export async function getIngredients() {
             not: HOUSE_CATEGORY_ID,
           },
         },
+        orderBy: { name: "asc" },
         include: itemWithCategoryInclude,
       });
       return ingredients;

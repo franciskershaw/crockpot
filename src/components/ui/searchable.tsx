@@ -42,10 +42,19 @@ export default function Searchable({
 }) {
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState("");
 
   // Use controlled value if provided, otherwise use internal state
   const value = controlledValue !== undefined ? controlledValue : internalValue;
   const setValue = onValueChange || setInternalValue;
+
+  // Filter options based on search value
+  const filteredOptions = React.useMemo(() => {
+    if (!searchValue) return options;
+    return options.filter((option) =>
+      option.label.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }, [options, searchValue]);
 
   const handleSelect = (currentValue: string) => {
     // Find the option by label (currentValue) and get its value
@@ -60,6 +69,13 @@ export default function Searchable({
     setOpen(false);
     onSelect?.(finalValue);
   };
+
+  // Clear search when popover closes
+  React.useEffect(() => {
+    if (!open) {
+      setSearchValue("");
+    }
+  }, [open]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -91,9 +107,11 @@ export default function Searchable({
         )}
         align="start"
       >
-        <Command>
+        <Command shouldFilter={false}>
           <CommandInput
             placeholder="Search..."
+            value={searchValue}
+            onValueChange={setSearchValue}
             className="h-9 border-0 focus:ring-0"
           />
           <CommandList className="max-h-[200px] overflow-auto">
@@ -117,10 +135,10 @@ export default function Searchable({
               </div>
             </CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
+              {filteredOptions.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.label} // Use label for search functionality
+                  value={option.label}
                   onSelect={handleSelect}
                   className="cursor-pointer"
                 >

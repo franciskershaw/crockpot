@@ -4,6 +4,7 @@ import {
   getItems as getItemsFromDAL,
   getIngredients as getIngredientsFromDAL,
 } from "@/data/items/getItems";
+import { getItemCategories as getItemCategoriesFromDAL } from "@/data/items/getItemCategories";
 import {
   createPublicAction,
   Permission,
@@ -21,6 +22,10 @@ export const getItems = createPublicAction(async () => {
 
 export const getIngredients = createPublicAction(async () => {
   return await getIngredientsFromDAL();
+});
+
+export const getItemCategories = createPublicAction(async () => {
+  return await getItemCategoriesFromDAL();
 });
 
 export const createItem = withPermission(
