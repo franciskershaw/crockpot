@@ -38,7 +38,7 @@ export default function Searchable({
   onValueChange?: (value: string) => void;
   showAddNew?: boolean;
   addNewLabel?: string;
-  onAddNew?: () => void;
+  onAddNew?: (searchText?: string) => void;
 }) {
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState("");
@@ -124,7 +124,7 @@ export default function Searchable({
                     size="sm"
                     onClick={() => {
                       setOpen(false);
-                      onAddNew?.();
+                      onAddNew?.(searchValue);
                     }}
                     className="mt-2"
                   >

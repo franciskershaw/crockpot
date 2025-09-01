@@ -8,8 +8,7 @@ import { getItemCategories as getItemCategoriesFromDAL } from "@/data/items/getI
 import {
   createPublicAction,
   Permission,
-  withPermission,
-  extractItemFormData,
+  withPermissionAndValidation,
   revalidateItemCache,
 } from "@/lib/action-helpers";
 import { createItem as createItemFromDAL } from "@/data/items/createItem";
@@ -28,15 +27,10 @@ export const getItemCategories = createPublicAction(async () => {
   return await getItemCategoriesFromDAL();
 });
 
-export const createItem = withPermission(
+export const createItem = withPermissionAndValidation(
   Permission.CREATE_ITEMS,
-  async (_, formData: FormData) => {
-    // Extract form data
-    const extractedData = extractItemFormData(formData);
-
-    // Validate the data
-    const validatedInput = createItemSchema.parse(extractedData);
-
+  createItemSchema,
+  async (validatedInput) => {
     // Validate references (category and units exist)
     await validateItemReferences(validatedInput);
 

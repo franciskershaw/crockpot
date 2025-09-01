@@ -13,6 +13,9 @@ import {
 import { NumberInput } from "@/components/ui/number-input";
 import Searchable from "@/components/ui/searchable";
 import { Trash2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { hasPermission, Permission } from "@/lib/action-helpers";
+import { CreateItemDialog } from "@/app/recipes/new/components/CreateItemDialog";
 import type { Item, Unit } from "@/data/types";
 
 export type IngredientItem = {
@@ -40,6 +43,11 @@ export default function IngredientManager({
   className,
 }: IngredientManagerProps) {
   const [searchValue, setSearchValue] = useState("");
+  const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
+  const { data: session } = useSession();
+
+  const canCreateItems =
+    session?.user && hasPermission(session.user.role, Permission.CREATE_ITEMS);
   const handleIngredientSelect = (ingredientId: string) => {
     const ingredient = availableIngredients.find(
       (item) => item.id === ingredientId
@@ -66,6 +74,23 @@ export default function IngredientManager({
 
     // Clear the searchable input after selection
     setSearchValue("");
+  };
+
+  const handleItemCreated = (newItem: Item) => {
+    // Close the dialog
+    setShowCreateItemDialog(false);
+
+    // Automatically select the newly created item
+    const newIngredient: IngredientItem = {
+      id: crypto.randomUUID(),
+      itemId: newItem.id,
+      itemName: newItem.name,
+      unitId: null,
+      unitName: null,
+      quantity: 1,
+    };
+
+    onIngredientsChange([...selectedIngredients, newIngredient]);
   };
 
   const updateIngredient = (
@@ -117,10 +142,18 @@ export default function IngredientManager({
               label: item.name,
             }))}
           placeholder="Search for ingredients..."
-          emptyMessage="No ingredients found"
+          emptyMessage={
+            canCreateItems ? "No ingredients found" : "No ingredients found"
+          }
           onSelect={handleIngredientSelect}
           value={searchValue}
           onValueChange={setSearchValue}
+          showAddNew={canCreateItems}
+          addNewLabel="Create new item"
+          onAddNew={(searchText) => {
+            setSearchValue(searchText || "");
+            setShowCreateItemDialog(true);
+          }}
           className="w-full"
         />
       </div>
@@ -201,6 +234,14 @@ export default function IngredientManager({
           </div>
         </div>
       )}
+
+      {/* Create Item Dialog */}
+      <CreateItemDialog
+        open={showCreateItemDialog}
+        onOpenChange={setShowCreateItemDialog}
+        onItemCreated={handleItemCreated}
+        initialName={searchValue}
+      />
     </div>
   );
 }
