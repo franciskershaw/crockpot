@@ -2,10 +2,24 @@
 
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { ChefHat, Plus, Search, ShoppingBag } from "lucide-react";
+import {
+  ChefHat,
+  Plus,
+  Search,
+  ShoppingBag,
+  Shield,
+  Users,
+  Package,
+} from "lucide-react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import LogoutButton from "@/components/auth/LogoutButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default async function Navbar() {
   const session = await auth();
@@ -40,13 +54,55 @@ export default async function Navbar() {
                 </Link>
 
                 {session?.user?.role === "ADMIN" && (
-                  <Link
-                    href="/recipes/new"
-                    className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Add Recipe
-                  </Link>
+                  <>
+                    <Link
+                      href="/recipes/new"
+                      className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Recipe
+                    </Link>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="flex items-center gap-2 px-3 py-2 h-auto text-sm font-medium transition-colors hover:bg-gray-100"
+                        >
+                          <Shield className="h-4 w-4" />
+                          Admin
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/admin/users"
+                            className="flex items-center gap-2"
+                          >
+                            <Users className="h-4 w-4" />
+                            Users
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/admin/recipes"
+                            className="flex items-center gap-2"
+                          >
+                            <ChefHat className="h-4 w-4" />
+                            Recipes
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/admin/items"
+                            className="flex items-center gap-2"
+                          >
+                            <Package className="h-4 w-4" />
+                            Items
+                          </Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
                 )}
               </>
             )}
