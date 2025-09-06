@@ -1,9 +1,12 @@
-export default function UsersPage() {
+import { getAdminUsers } from "@/actions/admin";
+import { UsersDataTable } from "./components/UsersDataTable";
+
+export default async function UsersPage() {
+  const users = await getAdminUsers();
+
   return (
     <div className="bg-white rounded-lg border p-6">
-      <p className="text-gray-600">
-        Users management interface will be implemented here with data tables.
-      </p>
+      <UsersDataTable data={users} />
     </div>
   );
 }
