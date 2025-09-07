@@ -17,6 +17,9 @@ import {
   deleteRecipeAction,
   deleteRecipes,
 } from "../utils/recipeActions";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface RecipesDataTableProps {
   data: AdminRecipe[];
@@ -36,6 +39,7 @@ const statusOptions: StatusOption<boolean>[] = [
 ];
 
 export function RecipesDataTable({ data }: RecipesDataTableProps) {
+  const router = useRouter();
   const [statusDialogOpen, setStatusDialogOpen] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = React.useState(false);
@@ -59,11 +63,12 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
 
   const handleStatusConfirm = (newStatus: boolean) => {
     if (selectedRecipe) {
-      changeRecipeStatus(selectedRecipe.id, newStatus);
+      changeRecipeStatus(selectedRecipe.id, newStatus, () => router.refresh());
     } else if (selectedRecipes.length > 0) {
       changeRecipesStatus(
         selectedRecipes.map((r) => r.id),
-        newStatus
+        newStatus,
+        () => router.refresh()
       );
     }
   };
@@ -73,7 +78,7 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
   };
 
   const handleEdit = (recipe: AdminRecipe) => {
-    editRecipe(recipe);
+    editRecipe(recipe, router);
   };
 
   const handleDelete = (recipe: AdminRecipe) => {
@@ -88,7 +93,7 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
 
   const confirmDelete = () => {
     if (selectedRecipe) {
-      deleteRecipeAction(selectedRecipe.id, () => window.location.reload());
+      deleteRecipeAction(selectedRecipe.id, () => router.refresh());
     }
   };
 
@@ -96,9 +101,13 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
     if (selectedRecipes.length > 0) {
       deleteRecipes(
         selectedRecipes.map((r) => r.id),
-        () => window.location.reload()
+        () => router.refresh()
       );
     }
+  };
+
+  const handleAddNew = () => {
+    router.push("/recipes/new");
   };
 
   const columns = createRecipeColumns({
@@ -114,7 +123,8 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
       onClick: (recipes: AdminRecipe[]) =>
         changeRecipesStatus(
           recipes.map((r) => r.id),
-          true
+          true,
+          () => router.refresh()
         ),
     },
     {
@@ -122,7 +132,8 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
       onClick: (recipes: AdminRecipe[]) =>
         changeRecipesStatus(
           recipes.map((r) => r.id),
-          false
+          false,
+          () => router.refresh()
         ),
       variant: "outline" as const,
     },
@@ -149,6 +160,12 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
         searchPlaceholder="Filter by recipe name..."
         searchFields={["name"]}
         actions={actions}
+        headerActions={
+          <Button onClick={handleAddNew} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Add New Recipe
+          </Button>
+        }
         pageSize={10}
       />
 

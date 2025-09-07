@@ -299,6 +299,7 @@ export interface AdminDataTableProps<T> {
       | "ghost"
       | "link";
   }>;
+  headerActions?: React.ReactNode;
   globalFilterFn?: (row: unknown, columnId: string, value: string) => boolean;
   pageSize?: number;
 }
@@ -309,6 +310,7 @@ export function AdminDataTable<T>({
   searchPlaceholder = "Search...",
   searchFields = [],
   actions = [],
+  headerActions,
   globalFilterFn,
   pageSize = 10,
 }: AdminDataTableProps<T>) {
@@ -396,6 +398,8 @@ export function AdminDataTable<T>({
               </Select>
             </div>
           )}
+
+        {headerActions}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
