@@ -1,3 +1,5 @@
+import { UserRole } from "@/data/types";
+
 export const queryKeys = {
   RECIPES: "recipes",
   INFINITE_RECIPES: "infinite-recipes",
@@ -21,3 +23,10 @@ export const tags = {
   UNITS: "units",
   ITEMS: "items",
 };
+
+export const roleColours = {
+  [UserRole.FREE]: "bg-gray-100 text-gray-800",
+  [UserRole.PREMIUM]: "bg-blue-100 text-blue-800",
+  [UserRole.PRO]: "bg-purple-100 text-purple-800",
+  [UserRole.ADMIN]: "bg-red-100 text-red-800",
+} as const;
