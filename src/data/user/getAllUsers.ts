@@ -1,18 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { UserRole } from "@/data/types";
-
-export interface AdminUser {
-  id: string;
-  name: string | null;
-  email: string | null;
-  role: UserRole;
-  createdAt: Date;
-  updatedAt: Date;
-  _count: {
-    createdRecipes: number;
-    favouriteRecipes: number;
-  };
-}
+import { AdminUser } from "@/data/types";
 
 export async function getAllUsers(): Promise<AdminUser[]> {
   const users = await prisma.user.findMany({
@@ -35,7 +22,6 @@ export async function getAllUsers(): Promise<AdminUser[]> {
     },
   });
 
-  // Transform the data to include the correct favourite count
   return users.map((user) => ({
     id: user.id,
     name: user.name,

@@ -1,5 +1,5 @@
 import { UserRole } from "@/data/types";
-import { updateUserRole, bulkUpdateUserRoles } from "@/actions/admin";
+import { updateUserRole, bulkUpdateUserRoles } from "@/actions/users";
 import { toast } from "sonner";
 
 export async function changeUserRole(userId: string, role: UserRole) {

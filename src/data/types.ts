@@ -125,3 +125,16 @@ export type ShoppingListWithDetails = Omit<ShoppingList, "items"> & {
 export type Unit = PrismaUnit;
 
 export { UserRole };
+
+export interface AdminUser {
+  id: string;
+  name: string | null;
+  email: string | null;
+  role: UserRole;
+  createdAt: Date;
+  updatedAt: Date;
+  _count: {
+    createdRecipes: number;
+    favouriteRecipes: number;
+  };
+}

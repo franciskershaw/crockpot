@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { AdminUser } from "@/data/admin/getAllUsers";
+import { AdminUser } from "@/data/types";
 
 import {
   createSelectionColumn,

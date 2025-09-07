@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AdminUser } from "@/data/admin/getAllUsers";
+import { AdminUser } from "@/data/types";
 import { UserRole } from "@/data/types";
 import { AdminDataTable } from "../../components/AdminDataTable/AdminDataTable";
 import { RoleChangeDialog } from "../../components/AdminDataTable/RoleChangeDialog";

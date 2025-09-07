@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { objectIdSchema, optionalObjectIdSchema } from "@/lib/security";
+import { UserRole } from "@/data/types";
 
 // ===================================
 // SHARED VALIDATION SCHEMAS
@@ -147,6 +148,18 @@ export const createItemSchema = z.object({
 
 export const updateItemSchema = createItemSchema.partial();
 
+// Schema for updating user role
+export const updateUserRoleSchema = z.object({
+  userId: z.string(),
+  role: z.nativeEnum(UserRole),
+});
+
+// Schema for bulk updating user roles
+export const bulkUpdateUserRolesSchema = z.object({
+  userIds: z.array(z.string()),
+  role: z.nativeEnum(UserRole),
+});
+
 // ===================================
 // TYPE EXPORTS
 // ===================================
@@ -171,3 +184,7 @@ export type CreateRecipeInput = z.infer<typeof createRecipeSchema>;
 export type UpdateRecipeInput = z.infer<typeof updateRecipeSchema>;
 export type CreateItemInput = z.infer<typeof createItemSchema>;
 export type UpdateItemInput = z.infer<typeof updateItemSchema>;
+export type UpdateUserRoleInput = z.infer<typeof updateUserRoleSchema>;
+export type BulkUpdateUserRolesInput = z.infer<
+  typeof bulkUpdateUserRolesSchema
+>;

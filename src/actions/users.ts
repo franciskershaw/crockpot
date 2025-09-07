@@ -1,30 +1,20 @@
 "use server";
 
-import { getAllUsers } from "@/data/admin/getAllUsers";
-import { updateUserRole as updateUserRoleDAL } from "@/data/admin/updateUserRole";
-import { bulkUpdateUserRoles as bulkUpdateUserRolesDAL } from "@/data/admin/bulkUpdateUserRoles";
+import { getAllUsers } from "@/data/user/getAllUsers";
+import { updateUserRole as updateUserRoleDAL } from "@/data/user/updateUserRole";
+import { bulkUpdateUserRoles as bulkUpdateUserRolesDAL } from "@/data/user/bulkUpdateUserRoles";
 import {
   withPermission,
   withPermissionAndValidation,
   Permission,
 } from "@/lib/action-helpers";
-import { UserRole } from "@/data/types";
-import { z } from "zod";
-
-// Schema for updating user role
-const updateUserRoleSchema = z.object({
-  userId: z.string(),
-  role: z.nativeEnum(UserRole),
-});
-
-// Schema for bulk updating user roles
-const bulkUpdateUserRolesSchema = z.object({
-  userIds: z.array(z.string()),
-  role: z.nativeEnum(UserRole),
-});
+import {
+  updateUserRoleSchema,
+  bulkUpdateUserRolesSchema,
+} from "@/lib/validations";
 
 // Get all users for admin
-export const getAdminUsers = withPermission(
+export const getUsersForAdminPanel = withPermission(
   Permission.ADMIN_PANEL,
   async () => {
     return await getAllUsers();
