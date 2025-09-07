@@ -10,65 +10,60 @@ import {
 } from "../../components/AdminDataTable/GenericStatusChangeDialog";
 import { roleColours } from "@/lib/constants";
 import { createUserColumns } from "../utils/userColumns";
-import {
-  changeUserRole,
-  changeUsersRole,
-  deleteUsers,
-} from "../utils/userActions";
+import { useUpdateUserRole } from "../../hooks/useUpdateUserRole";
+import { useBulkUpdateUserRoles } from "../../hooks/useBulkUpdateUserRoles";
+import { useRouter } from "next/navigation";
 
 interface UsersDataTableProps {
   data: AdminUser[];
 }
 
-const roleStatusOptions: StatusOption<UserRole>[] = [
-  {
-    value: UserRole.FREE,
-    label: UserRole.FREE,
-    colorClass: roleColours[UserRole.FREE],
-  },
-  {
-    value: UserRole.PREMIUM,
-    label: UserRole.PREMIUM,
-    colorClass: roleColours[UserRole.PREMIUM],
-  },
-  {
-    value: UserRole.PRO,
-    label: UserRole.PRO,
-    colorClass: roleColours[UserRole.PRO],
-  },
-  {
-    value: UserRole.ADMIN,
-    label: UserRole.ADMIN,
-    colorClass: roleColours[UserRole.ADMIN],
-  },
-];
-
 export function UsersDataTable({ data }: UsersDataTableProps) {
+  const router = useRouter();
   const [roleDialogOpen, setRoleDialogOpen] = React.useState(false);
+  const [bulkRoleDialogOpen, setBulkRoleDialogOpen] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState<AdminUser | null>(
     null
   );
   const [selectedUsers, setSelectedUsers] = React.useState<AdminUser[]>([]);
 
+  const updateRoleMutation = useUpdateUserRole();
+  const bulkUpdateRolesMutation = useBulkUpdateUserRoles();
+
   const handleRoleChange = (user: AdminUser) => {
     setSelectedUser(user);
-    setSelectedUsers([]);
     setRoleDialogOpen(true);
   };
 
   const handleBulkRoleChange = (users: AdminUser[]) => {
-    setSelectedUser(null);
     setSelectedUsers(users);
-    setRoleDialogOpen(true);
+    setBulkRoleDialogOpen(true);
   };
 
-  const handleRoleConfirm = (newRole: UserRole) => {
+  const confirmRoleChange = (role: UserRole) => {
     if (selectedUser) {
-      changeUserRole(selectedUser.id, newRole);
-    } else if (selectedUsers.length > 0) {
-      changeUsersRole(
-        selectedUsers.map((u) => u.id),
-        newRole
+      updateRoleMutation.mutate(
+        { userId: selectedUser.id, role },
+        {
+          onSuccess: () => {
+            setRoleDialogOpen(false);
+            router.refresh();
+          },
+        }
+      );
+    }
+  };
+
+  const confirmBulkRoleChange = (role: UserRole) => {
+    if (selectedUsers.length > 0) {
+      bulkUpdateRolesMutation.mutate(
+        { userIds: selectedUsers.map((u) => u.id), role },
+        {
+          onSuccess: () => {
+            setBulkRoleDialogOpen(false);
+            router.refresh();
+          },
+        }
       );
     }
   };
@@ -79,19 +74,49 @@ export function UsersDataTable({ data }: UsersDataTableProps) {
 
   const actions = [
     {
-      label: "Change Role",
+      label: "Set to Free",
       onClick: (users: AdminUser[]) => handleBulkRoleChange(users),
+      variant: "default" as const,
     },
     {
-      label: "Delete Selected",
-      onClick: (users: AdminUser[]) => deleteUsers(users.map((u) => u.id)),
+      label: "Set to Premium",
+      onClick: (users: AdminUser[]) => handleBulkRoleChange(users),
+      variant: "default" as const,
+    },
+    {
+      label: "Set to Pro",
+      onClick: (users: AdminUser[]) => handleBulkRoleChange(users),
+      variant: "default" as const,
+    },
+    {
+      label: "Set to Admin",
+      onClick: (users: AdminUser[]) => handleBulkRoleChange(users),
       variant: "destructive" as const,
     },
   ];
 
-  const currentRole =
-    selectedUser?.role ||
-    (selectedUsers.length > 0 ? selectedUsers[0].role : UserRole.FREE);
+  const roleOptions: StatusOption<UserRole>[] = [
+    {
+      label: "Free",
+      value: UserRole.FREE,
+      colorClass: roleColours[UserRole.FREE],
+    },
+    {
+      label: "Premium",
+      value: UserRole.PREMIUM,
+      colorClass: roleColours[UserRole.PREMIUM],
+    },
+    {
+      label: "Pro",
+      value: UserRole.PRO,
+      colorClass: roleColours[UserRole.PRO],
+    },
+    {
+      label: "Admin",
+      value: UserRole.ADMIN,
+      colorClass: roleColours[UserRole.ADMIN],
+    },
+  ];
 
   return (
     <>
@@ -107,11 +132,21 @@ export function UsersDataTable({ data }: UsersDataTableProps) {
       <GenericStatusChangeDialog
         open={roleDialogOpen}
         onOpenChange={setRoleDialogOpen}
-        currentStatus={currentRole}
-        statusOptions={roleStatusOptions}
-        onConfirm={handleRoleConfirm}
-        isMultiple={selectedUsers.length > 0}
-        count={selectedUsers.length || 1}
+        currentStatus={selectedUser?.role ?? UserRole.FREE}
+        statusOptions={roleOptions}
+        onConfirm={confirmRoleChange}
+        entityName="user"
+        statusName="role"
+      />
+
+      <GenericStatusChangeDialog
+        open={bulkRoleDialogOpen}
+        onOpenChange={setBulkRoleDialogOpen}
+        currentStatus={UserRole.FREE}
+        statusOptions={roleOptions}
+        onConfirm={confirmBulkRoleChange}
+        isMultiple={true}
+        count={selectedUsers.length}
         entityName="user"
         statusName="role"
       />

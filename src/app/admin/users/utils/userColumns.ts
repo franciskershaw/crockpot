@@ -9,7 +9,7 @@ import {
   createCountColumn,
   createActionsColumn,
 } from "../../components/AdminDataTable/AdminDataTable";
-import { deleteUser } from "./userActions";
+// Note: Delete user functionality is not implemented yet
 import { roleColours } from "@/lib/constants";
 
 export interface UserColumnOptions {
@@ -65,7 +65,10 @@ export function createUserColumns(
       },
       {
         label: "Delete User",
-        onClick: (user: AdminUser) => deleteUser(user.id),
+        onClick: (user: AdminUser) => {
+          console.log("Delete user:", user.id);
+          // TODO: Implement delete user functionality
+        },
         variant: "destructive" as const,
       },
     ]),

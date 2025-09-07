@@ -1,27 +1,21 @@
 "use client";
 
 import * as React from "react";
-import { ItemWithRelations, ItemCategory, Unit } from "@/data/types";
+import { ItemWithRelations } from "@/data/types";
 import { AdminDataTable } from "../../components/AdminDataTable/AdminDataTable";
 import { ConfirmationDialog } from "../../components/AdminDataTable/ConfirmationDialog";
-import { ItemDialog } from "./ItemDialog";
+import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import { createItemColumns } from "../utils/itemColumns";
-import { deleteItemAction, deleteItems } from "../utils/itemActions";
+import { useDeleteItem } from "../../hooks/useDeleteItem";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface ItemsDataTableProps {
   data: ItemWithRelations[];
-  categories: ItemCategory[];
-  units: Unit[];
 }
 
-export function ItemsDataTable({
-  data,
-  categories,
-  units,
-}: ItemsDataTableProps) {
+export function ItemsDataTable({ data }: ItemsDataTableProps) {
   const router = useRouter();
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = React.useState(false);
@@ -33,6 +27,8 @@ export function ItemsDataTable({
   );
   const [editingItem, setEditingItem] =
     React.useState<ItemWithRelations | null>(null);
+
+  const deleteItemMutation = useDeleteItem();
 
   const handleEdit = (item: ItemWithRelations) => {
     setEditingItem(item);
@@ -56,16 +52,30 @@ export function ItemsDataTable({
 
   const confirmDelete = () => {
     if (selectedItem) {
-      deleteItemAction(selectedItem.id, () => router.refresh());
+      deleteItemMutation.mutate(selectedItem.id, {
+        onSuccess: () => {
+          setDeleteDialogOpen(false);
+          router.refresh();
+        },
+      });
     }
   };
 
   const confirmBulkDelete = () => {
     if (selectedItems.length > 0) {
-      deleteItems(
-        selectedItems.map((item) => item.id),
-        () => router.refresh()
+      // Delete items sequentially to avoid overwhelming the server
+      const deletePromises = selectedItems.map((item) =>
+        deleteItemMutation.mutateAsync(item.id)
       );
+
+      Promise.all(deletePromises)
+        .then(() => {
+          setBulkDeleteDialogOpen(false);
+          router.refresh();
+        })
+        .catch((error) => {
+          console.error("Bulk delete error:", error);
+        });
     }
   };
 
@@ -106,8 +116,6 @@ export function ItemsDataTable({
       <ItemDialog
         open={itemDialogOpen}
         onOpenChange={setItemDialogOpen}
-        categories={categories}
-        units={units}
         onSuccess={handleItemSuccess}
         item={editingItem}
       />

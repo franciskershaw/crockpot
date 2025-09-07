@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Combobox } from "@/components/ui/combobox";
 import {
   Select,
   SelectContent,
@@ -19,27 +20,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ItemCategory, Unit, ItemWithRelations } from "@/data/types";
-import { createItem, updateItem } from "@/actions/items";
-import { toast } from "sonner";
+import { Item, ItemWithRelations } from "@/data/types";
+import { updateItem } from "@/actions/items";
+import { getItemCategories } from "@/actions/items";
+import { getUnits } from "@/actions/units";
+import { useQuery } from "@tanstack/react-query";
+import { tags } from "@/lib/constants";
+import { useCreateItem } from "@/hooks/useCreateItem";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface ItemDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  categories: ItemCategory[];
-  units: Unit[];
   onSuccess: () => void;
   item?: ItemWithRelations | null; // If provided, we're editing; if null/undefined, we're creating
+  initialCategoryId?: string;
+  initialName?: string;
+  onItemCreated?: (item: Item) => void; // For recipe creation flow
 }
 
 export function ItemDialog({
   open,
   onOpenChange,
-  categories,
-  units,
   onSuccess,
   item,
+  initialCategoryId,
+  initialName,
+  onItemCreated,
 }: ItemDialogProps) {
   const [name, setName] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -47,6 +55,7 @@ export function ItemDialog({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isEditing = !!item;
+  const createItemMutation = useCreateItem();
 
   // Reset form when dialog opens or item changes
   useEffect(() => {
@@ -58,12 +67,23 @@ export function ItemDialog({
         setAllowedUnitIds(item.allowedUnitIds);
       } else {
         // Creating mode - reset form
-        setName("");
-        setCategoryId("");
+        setName(initialName || "");
+        setCategoryId(initialCategoryId || "");
         setAllowedUnitIds([]);
       }
     }
-  }, [open, item]);
+  }, [open, item, initialName, initialCategoryId]);
+
+  // Fetch categories and units
+  const { data: categories = [] } = useQuery({
+    queryKey: [tags.CATEGORIES],
+    queryFn: getItemCategories,
+  });
+
+  const { data: units = [] } = useQuery({
+    queryKey: [tags.UNITS],
+    queryFn: getUnits,
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,36 +93,47 @@ export function ItemDialog({
       return;
     }
 
-    setIsSubmitting(true);
+    const itemData = {
+      name: name.trim(),
+      categoryId,
+      allowedUnitIds,
+    };
 
-    try {
-      const itemData = {
-        name: name.trim(),
-        categoryId,
-        allowedUnitIds,
-      };
-
-      let result;
-      if (isEditing && item) {
-        result = await updateItem(itemData, item.id);
-      } else {
-        result = await createItem(itemData);
+    if (isEditing && item) {
+      // Use direct server action for editing
+      setIsSubmitting(true);
+      try {
+        const result = await updateItem(itemData, item.id);
+        if (result.success) {
+          toast.success("Item updated successfully!");
+          handleClose();
+          onSuccess();
+        }
+      } catch (error) {
+        console.error("Update item error:", error);
+        toast.error("Failed to update item");
+      } finally {
+        setIsSubmitting(false);
       }
-
-      if (result.success) {
-        toast.success(
-          isEditing
-            ? "Item updated successfully!"
-            : "Item created successfully!"
-        );
-        handleClose();
-        onSuccess();
-      }
-    } catch (error) {
-      console.error(`${isEditing ? "Update" : "Create"} item error:`, error);
-      toast.error(`Failed to ${isEditing ? "update" : "create"} item`);
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      // Use mutation for creating (supports both admin and recipe flows)
+      createItemMutation.mutate(itemData, {
+        onSuccess: (data) => {
+          if (data.success && data.item) {
+            toast.success("Item created successfully!");
+            // Call the callback if provided (for recipe creation flow)
+            if (onItemCreated) {
+              onItemCreated(data.item);
+            }
+            handleClose();
+            onSuccess();
+          }
+        },
+        onError: (error) => {
+          console.error("Create item error:", error);
+          toast.error("Failed to create item");
+        },
+      });
     }
   };
 
@@ -112,6 +143,8 @@ export function ItemDialog({
     setAllowedUnitIds([]);
     onOpenChange(false);
   };
+
+  const isLoading = isSubmitting || createItemMutation.isPending;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -156,34 +189,17 @@ export function ItemDialog({
           </div>
 
           <div className="space-y-2">
-            <Label>Allowed Units (optional)</Label>
-            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto border rounded p-2">
-              {units.map((unit) => (
-                <label
-                  key={unit.id}
-                  className="flex items-center space-x-2 text-sm"
-                >
-                  <input
-                    type="checkbox"
-                    checked={allowedUnitIds.includes(unit.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setAllowedUnitIds([...allowedUnitIds, unit.id]);
-                      } else {
-                        setAllowedUnitIds(
-                          allowedUnitIds.filter((id) => id !== unit.id)
-                        );
-                      }
-                    }}
-                    className="rounded"
-                  />
-                  <span>{unit.name}</span>
-                </label>
-              ))}
-            </div>
-            {allowedUnitIds.length === 0 && (
-              <div className="text-sm text-gray-500">All units allowed</div>
-            )}
+            <Combobox
+              options={units.map((unit) => ({
+                value: unit.id,
+                label: unit.name,
+              }))}
+              value={allowedUnitIds}
+              onValueChange={setAllowedUnitIds}
+              placeholder="Select allowed units..."
+              emptyIndicator="No units found"
+              label="Allowed Units (optional)"
+            />
           </div>
 
           <DialogFooter>
@@ -192,9 +208,9 @@ export function ItemDialog({
             </Button>
             <Button
               type="submit"
-              disabled={!name.trim() || !categoryId || isSubmitting}
+              disabled={!name.trim() || !categoryId || isLoading}
             >
-              {isSubmitting ? (
+              {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   {isEditing ? "Updating..." : "Creating..."}

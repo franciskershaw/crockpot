@@ -15,7 +15,7 @@ import Searchable from "@/components/ui/searchable";
 import { Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { hasPermission, Permission } from "@/lib/action-helpers";
-import { CreateItemDialog } from "@/app/recipes/new/components/CreateItemDialog";
+import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import type { Item, Unit } from "@/data/types";
 
 export type IngredientItem = {
@@ -236,9 +236,10 @@ export default function IngredientManager({
       )}
 
       {/* Create Item Dialog */}
-      <CreateItemDialog
+      <ItemDialog
         open={showCreateItemDialog}
         onOpenChange={setShowCreateItemDialog}
+        onSuccess={() => {}} // No additional success handling needed
         onItemCreated={handleItemCreated}
         initialName={searchValue}
       />

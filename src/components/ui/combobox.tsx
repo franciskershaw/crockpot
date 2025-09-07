@@ -16,7 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { FormLabel } from "./form";
+import { Label } from "./label";
 
 export interface ComboboxOption {
   value: string;
@@ -114,7 +114,7 @@ export const Combobox = ({
 
   return (
     <div className="space-y-2">
-      {label && <FormLabel>{label}</FormLabel>}
+      {label && <Label>{label}</Label>}
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

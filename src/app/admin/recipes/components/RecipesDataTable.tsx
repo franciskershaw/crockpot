@@ -9,38 +9,19 @@ import {
 } from "../../components/AdminDataTable/GenericStatusChangeDialog";
 import { ConfirmationDialog } from "../../components/AdminDataTable/ConfirmationDialog";
 import { createRecipeColumns } from "../utils/recipeColumns";
-import {
-  changeRecipeStatus,
-  changeRecipesStatus,
-  viewRecipe,
-  editRecipe,
-  deleteRecipeAction,
-  deleteRecipes,
-} from "../utils/recipeActions";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { useUpdateRecipeStatus } from "../../hooks/useUpdateRecipeStatus";
+import { useBulkUpdateRecipeStatus } from "../../hooks/useBulkUpdateRecipeStatus";
+import { useDeleteRecipe } from "../../hooks/useDeleteRecipe";
 import { useRouter } from "next/navigation";
 
 interface RecipesDataTableProps {
   data: AdminRecipe[];
 }
 
-const statusOptions: StatusOption<boolean>[] = [
-  {
-    value: true,
-    label: "Approved",
-    colorClass: "bg-green-100 text-green-800 border-green-200",
-  },
-  {
-    value: false,
-    label: "Pending",
-    colorClass: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  },
-];
-
 export function RecipesDataTable({ data }: RecipesDataTableProps) {
   const router = useRouter();
   const [statusDialogOpen, setStatusDialogOpen] = React.useState(false);
+  const [bulkStatusDialogOpen, setBulkStatusDialogOpen] = React.useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = React.useState(false);
   const [selectedRecipe, setSelectedRecipe] =
@@ -49,36 +30,28 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
     []
   );
 
+  const updateStatusMutation = useUpdateRecipeStatus();
+  const bulkUpdateStatusMutation = useBulkUpdateRecipeStatus();
+  const deleteRecipeMutation = useDeleteRecipe();
+
   const handleStatusChange = (recipe: AdminRecipe) => {
     setSelectedRecipe(recipe);
-    setSelectedRecipes([]);
     setStatusDialogOpen(true);
   };
 
   const handleBulkStatusChange = (recipes: AdminRecipe[]) => {
-    setSelectedRecipe(null);
     setSelectedRecipes(recipes);
-    setStatusDialogOpen(true);
-  };
-
-  const handleStatusConfirm = (newStatus: boolean) => {
-    if (selectedRecipe) {
-      changeRecipeStatus(selectedRecipe.id, newStatus, () => router.refresh());
-    } else if (selectedRecipes.length > 0) {
-      changeRecipesStatus(
-        selectedRecipes.map((r) => r.id),
-        newStatus,
-        () => router.refresh()
-      );
-    }
+    setBulkStatusDialogOpen(true);
   };
 
   const handleView = (recipe: AdminRecipe) => {
-    viewRecipe(recipe);
+    // Navigate to recipe page
+    window.open(`/recipes/${recipe.id}`, "_blank");
   };
 
   const handleEdit = (recipe: AdminRecipe) => {
-    editRecipe(recipe, router);
+    // Navigate to edit page
+    router.push(`/recipes/edit/${recipe.id}`);
   };
 
   const handleDelete = (recipe: AdminRecipe) => {
@@ -91,23 +64,61 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
     setBulkDeleteDialogOpen(true);
   };
 
+  const confirmStatusChange = (approved: boolean) => {
+    if (selectedRecipe) {
+      updateStatusMutation.mutate(
+        { recipeId: selectedRecipe.id, approved },
+        {
+          onSuccess: () => {
+            setStatusDialogOpen(false);
+            router.refresh();
+          },
+        }
+      );
+    }
+  };
+
+  const confirmBulkStatusChange = (approved: boolean) => {
+    if (selectedRecipes.length > 0) {
+      bulkUpdateStatusMutation.mutate(
+        { recipeIds: selectedRecipes.map((r) => r.id), approved },
+        {
+          onSuccess: () => {
+            setBulkStatusDialogOpen(false);
+            router.refresh();
+          },
+        }
+      );
+    }
+  };
+
   const confirmDelete = () => {
     if (selectedRecipe) {
-      deleteRecipeAction(selectedRecipe.id, () => router.refresh());
+      deleteRecipeMutation.mutate(selectedRecipe.id, {
+        onSuccess: () => {
+          setDeleteDialogOpen(false);
+          router.refresh();
+        },
+      });
     }
   };
 
   const confirmBulkDelete = () => {
     if (selectedRecipes.length > 0) {
-      deleteRecipes(
-        selectedRecipes.map((r) => r.id),
-        () => router.refresh()
+      // Delete recipes sequentially to avoid overwhelming the server
+      const deletePromises = selectedRecipes.map((recipe) =>
+        deleteRecipeMutation.mutateAsync(recipe.id)
       );
-    }
-  };
 
-  const handleAddNew = () => {
-    router.push("/recipes/new");
+      Promise.all(deletePromises)
+        .then(() => {
+          setBulkDeleteDialogOpen(false);
+          router.refresh();
+        })
+        .catch((error) => {
+          console.error("Bulk delete error:", error);
+        });
+    }
   };
 
   const columns = createRecipeColumns({
@@ -120,26 +131,13 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
   const actions = [
     {
       label: "Approve Selected",
-      onClick: (recipes: AdminRecipe[]) =>
-        changeRecipesStatus(
-          recipes.map((r) => r.id),
-          true,
-          () => router.refresh()
-        ),
-    },
-    {
-      label: "Mark as Pending",
-      onClick: (recipes: AdminRecipe[]) =>
-        changeRecipesStatus(
-          recipes.map((r) => r.id),
-          false,
-          () => router.refresh()
-        ),
-      variant: "outline" as const,
-    },
-    {
-      label: "Change Status",
       onClick: (recipes: AdminRecipe[]) => handleBulkStatusChange(recipes),
+      variant: "default" as const,
+    },
+    {
+      label: "Reject Selected",
+      onClick: (recipes: AdminRecipe[]) => handleBulkStatusChange(recipes),
+      variant: "destructive" as const,
     },
     {
       label: "Delete Selected",
@@ -148,9 +146,18 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
     },
   ];
 
-  const currentStatus =
-    selectedRecipe?.approved ??
-    (selectedRecipes.length > 0 ? selectedRecipes[0].approved : false);
+  const statusOptions: StatusOption<boolean>[] = [
+    {
+      label: "Approve",
+      value: true,
+      colorClass: "bg-green-100 text-green-800",
+    },
+    {
+      label: "Reject",
+      value: false,
+      colorClass: "bg-red-100 text-red-800",
+    },
+  ];
 
   return (
     <>
@@ -160,23 +167,27 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
         searchPlaceholder="Filter by recipe name..."
         searchFields={["name"]}
         actions={actions}
-        headerActions={
-          <Button onClick={handleAddNew} className="flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            Add New Recipe
-          </Button>
-        }
         pageSize={10}
       />
 
       <GenericStatusChangeDialog
         open={statusDialogOpen}
         onOpenChange={setStatusDialogOpen}
-        currentStatus={currentStatus}
+        currentStatus={selectedRecipe?.approved ?? false}
         statusOptions={statusOptions}
-        onConfirm={handleStatusConfirm}
-        isMultiple={selectedRecipes.length > 0}
-        count={selectedRecipes.length || 1}
+        onConfirm={confirmStatusChange}
+        entityName="recipe"
+        statusName="status"
+      />
+
+      <GenericStatusChangeDialog
+        open={bulkStatusDialogOpen}
+        onOpenChange={setBulkStatusDialogOpen}
+        currentStatus={false}
+        statusOptions={statusOptions}
+        onConfirm={confirmBulkStatusChange}
+        isMultiple={true}
+        count={selectedRecipes.length}
         entityName="recipe"
         statusName="status"
       />

@@ -1,17 +1,12 @@
-import { getItems, getItemCategories } from "@/actions/items";
-import { getUnits } from "@/actions/units";
+import { getItems } from "@/actions/items";
 import { ItemsDataTable } from "./components/ItemsDataTable";
 
 export default async function ItemsPage() {
-  const [items, categories, units] = await Promise.all([
-    getItems(),
-    getItemCategories(),
-    getUnits(),
-  ]);
+  const items = await getItems();
 
   return (
     <div className="bg-white rounded-lg border p-6">
-      <ItemsDataTable data={items} categories={categories} units={units} />
+      <ItemsDataTable data={items} />
     </div>
   );
 }

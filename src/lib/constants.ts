@@ -10,6 +10,7 @@ export const queryKeys = {
   FAVOURITES: "favourites",
   ITEMS: "items",
   INGREDIENTS: "ingredients",
+  USERS: "users",
 };
 
 export const tags = {
