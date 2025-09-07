@@ -12,6 +12,8 @@ import { createRecipe as createRecipeDAL } from "@/data/recipes/createRecipe";
 import { editRecipe as editRecipeDAL } from "@/data/recipes/editRecipe";
 import { deleteRecipe as deleteRecipeDAL } from "@/data/recipes/deleteRecipe";
 import { getRecipesForAdminPanel } from "@/data/recipes/getRecipesForAdmin";
+import { updateRecipeStatus as updateRecipeStatusDAL } from "@/data/recipes/updateRecipeStatus";
+import { bulkUpdateRecipeStatus as bulkUpdateRecipeStatusDAL } from "@/data/recipes/bulkUpdateRecipeStatus";
 import { RecipeFilters } from "@/data/types";
 import {
   createPublicAction,
@@ -262,17 +264,7 @@ export const updateRecipeStatus = withPermission(
     _user,
     { recipeId, approved }: { recipeId: string; approved: boolean }
   ) => {
-    const { prisma } = await import("@/lib/prisma");
-
-    const recipe = await prisma.recipe.update({
-      where: { id: recipeId },
-      data: { approved },
-      select: {
-        id: true,
-        name: true,
-        approved: true,
-      },
-    });
+    const recipe = await updateRecipeStatusDAL(recipeId, approved);
 
     // Revalidate cache when status changes
     await revalidateRecipeCache();
@@ -291,12 +283,7 @@ export const bulkUpdateRecipeStatus = withPermission(
     _user,
     { recipeIds, approved }: { recipeIds: string[]; approved: boolean }
   ) => {
-    const { prisma } = await import("@/lib/prisma");
-
-    const result = await prisma.recipe.updateMany({
-      where: { id: { in: recipeIds } },
-      data: { approved },
-    });
+    const result = await bulkUpdateRecipeStatusDAL(recipeIds, approved);
 
     // Revalidate cache when status changes
     await revalidateRecipeCache();

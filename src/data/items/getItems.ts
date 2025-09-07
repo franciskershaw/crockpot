@@ -19,7 +19,38 @@ export async function getItems() {
         },
         include: itemWithCategoryInclude,
       });
-      return items;
+
+      // Get all unique unit IDs from all items
+      const allUnitIds = [
+        ...new Set(items.flatMap((item) => item.allowedUnitIds)),
+      ];
+
+      // Fetch all units in one query
+      const units = await prisma.unit.findMany({
+        where: {
+          id: { in: allUnitIds },
+        },
+        select: {
+          id: true,
+          name: true,
+          abbreviation: true,
+        },
+      });
+
+      // Create a map for quick unit lookups
+      const unitsMap = new Map(units.map((unit) => [unit.id, unit]));
+
+      // Transform items to include allowed units
+      return items.map((item) => ({
+        ...item,
+        allowedUnits: item.allowedUnitIds
+          .map((unitId) => unitsMap.get(unitId))
+          .filter(Boolean) as Array<{
+          id: string;
+          name: string;
+          abbreviation: string;
+        }>,
+      }));
     },
     [queryKeys.ITEMS],
     {

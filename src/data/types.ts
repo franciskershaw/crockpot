@@ -160,3 +160,17 @@ export interface AdminRecipe {
     categories: number;
   };
 }
+
+// Type for items with relations (used in admin panel)
+export type ItemWithRelations = Item & {
+  category: {
+    id: string;
+    name: string;
+    faIcon: string;
+  };
+  allowedUnits: {
+    id: string;
+    name: string;
+    abbreviation: string;
+  }[];
+};
