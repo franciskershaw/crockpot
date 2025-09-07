@@ -138,3 +138,25 @@ export interface AdminUser {
     favouriteRecipes: number;
   };
 }
+
+export interface AdminRecipe {
+  id: string;
+  name: string;
+  approved: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: {
+    id: string;
+    name: string | null;
+    email: string | null;
+  } | null;
+  categories: {
+    id: string;
+    name: string;
+  }[];
+  _count: {
+    ingredients: number;
+    instructions: number;
+    categories: number;
+  };
+}

@@ -4,7 +4,11 @@ import * as React from "react";
 import { AdminUser } from "@/data/types";
 import { UserRole } from "@/data/types";
 import { AdminDataTable } from "../../components/AdminDataTable/AdminDataTable";
-import { RoleChangeDialog } from "../../components/AdminDataTable/RoleChangeDialog";
+import {
+  GenericStatusChangeDialog,
+  StatusOption,
+} from "../../components/AdminDataTable/GenericStatusChangeDialog";
+import { roleColours } from "@/lib/constants";
 import { createUserColumns } from "../utils/userColumns";
 import {
   changeUserRole,
@@ -15,6 +19,29 @@ import {
 interface UsersDataTableProps {
   data: AdminUser[];
 }
+
+const roleStatusOptions: StatusOption<UserRole>[] = [
+  {
+    value: UserRole.FREE,
+    label: UserRole.FREE,
+    colorClass: roleColours[UserRole.FREE],
+  },
+  {
+    value: UserRole.PREMIUM,
+    label: UserRole.PREMIUM,
+    colorClass: roleColours[UserRole.PREMIUM],
+  },
+  {
+    value: UserRole.PRO,
+    label: UserRole.PRO,
+    colorClass: roleColours[UserRole.PRO],
+  },
+  {
+    value: UserRole.ADMIN,
+    label: UserRole.ADMIN,
+    colorClass: roleColours[UserRole.ADMIN],
+  },
+];
 
 export function UsersDataTable({ data }: UsersDataTableProps) {
   const [roleDialogOpen, setRoleDialogOpen] = React.useState(false);
@@ -77,13 +104,16 @@ export function UsersDataTable({ data }: UsersDataTableProps) {
         pageSize={10}
       />
 
-      <RoleChangeDialog
+      <GenericStatusChangeDialog
         open={roleDialogOpen}
         onOpenChange={setRoleDialogOpen}
-        currentRole={currentRole}
+        currentStatus={currentRole}
+        statusOptions={roleStatusOptions}
         onConfirm={handleRoleConfirm}
         isMultiple={selectedUsers.length > 0}
         count={selectedUsers.length || 1}
+        entityName="user"
+        statusName="role"
       />
     </>
   );

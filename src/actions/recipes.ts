@@ -11,6 +11,7 @@ import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeB
 import { createRecipe as createRecipeDAL } from "@/data/recipes/createRecipe";
 import { editRecipe as editRecipeDAL } from "@/data/recipes/editRecipe";
 import { deleteRecipe as deleteRecipeDAL } from "@/data/recipes/deleteRecipe";
+import { getRecipesForAdminPanel } from "@/data/recipes/getRecipesForAdmin";
 import { RecipeFilters } from "@/data/types";
 import {
   createPublicAction,
@@ -243,6 +244,69 @@ export const deleteRecipe = withPermission(
       success: true,
       recipe: deletedRecipe,
       message: "Recipe deleted successfully!",
+    };
+  }
+);
+
+// Admin actions
+export const getRecipesForAdminPanelAction = withPermission(
+  Permission.ADMIN_PANEL,
+  async () => {
+    return await getRecipesForAdminPanel();
+  }
+);
+
+export const updateRecipeStatus = withPermission(
+  Permission.ADMIN_PANEL,
+  async (
+    _user,
+    { recipeId, approved }: { recipeId: string; approved: boolean }
+  ) => {
+    const { prisma } = await import("@/lib/prisma");
+
+    const recipe = await prisma.recipe.update({
+      where: { id: recipeId },
+      data: { approved },
+      select: {
+        id: true,
+        name: true,
+        approved: true,
+      },
+    });
+
+    // Revalidate cache when status changes
+    await revalidateRecipeCache();
+
+    return {
+      success: true,
+      recipe,
+      message: `Recipe ${approved ? "approved" : "rejected"} successfully!`,
+    };
+  }
+);
+
+export const bulkUpdateRecipeStatus = withPermission(
+  Permission.ADMIN_PANEL,
+  async (
+    _user,
+    { recipeIds, approved }: { recipeIds: string[]; approved: boolean }
+  ) => {
+    const { prisma } = await import("@/lib/prisma");
+
+    const result = await prisma.recipe.updateMany({
+      where: { id: { in: recipeIds } },
+      data: { approved },
+    });
+
+    // Revalidate cache when status changes
+    await revalidateRecipeCache();
+
+    return {
+      success: true,
+      count: result.count,
+      message: `${result.count} recipe(s) ${
+        approved ? "approved" : "rejected"
+      } successfully!`,
     };
   }
 );

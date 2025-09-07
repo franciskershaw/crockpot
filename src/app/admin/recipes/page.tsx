@@ -1,9 +1,12 @@
-export default function RecipesPage() {
+import { getRecipesForAdminPanelAction } from "@/actions/recipes";
+import { RecipesDataTable } from "./components/RecipesDataTable";
+
+export default async function RecipesPage() {
+  const recipes = await getRecipesForAdminPanelAction();
+
   return (
     <div className="bg-white rounded-lg border p-6">
-      <p className="text-gray-600">
-        Recipe oversight interface will be implemented here with data tables.
-      </p>
+      <RecipesDataTable data={recipes} />
     </div>
   );
 }

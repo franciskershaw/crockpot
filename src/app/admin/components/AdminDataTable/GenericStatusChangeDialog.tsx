@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { UserRole } from "@/data/types";
 import {
   Dialog,
   DialogContent,
@@ -13,45 +12,53 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft } from "lucide-react";
-import { roleColours } from "@/lib/constants";
 
-interface RoleChangeDialogProps {
+export interface StatusOption<T> {
+  value: T;
+  label: string;
+  colorClass: string;
+}
+
+interface GenericStatusChangeDialogProps<T> {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRole: UserRole;
-  onConfirm: (newRole: UserRole) => void;
+  currentStatus: T;
+  statusOptions: StatusOption<T>[];
+  onConfirm: (newStatus: T) => void;
   isMultiple?: boolean;
   count?: number;
+  entityName?: string; // e.g., "user", "recipe"
+  statusName?: string; // e.g., "role", "status"
 }
 
 type DialogState = "select" | "confirm";
 
-export function RoleChangeDialog({
+export function GenericStatusChangeDialog<T>({
   open,
   onOpenChange,
-  currentRole,
+  currentStatus,
+  statusOptions,
   onConfirm,
   isMultiple = false,
   count = 1,
-}: RoleChangeDialogProps) {
+  entityName = "item",
+  statusName = "status",
+}: GenericStatusChangeDialogProps<T>) {
   const [state, setState] = React.useState<DialogState>("select");
-  const [selectedRole, setSelectedRole] = React.useState<UserRole | null>(null);
+  const [selectedStatus, setSelectedStatus] = React.useState<T | null>(null);
 
-  const updateState = (
-    newState: DialogState,
-    newRole: UserRole | null = null
-  ) => {
+  const updateState = (newState: DialogState, newStatus: T | null = null) => {
     setState(newState);
-    setSelectedRole(newRole);
+    setSelectedStatus(newStatus);
   };
 
-  const handleRoleSelect = (role: UserRole) => {
-    updateState("confirm", role);
+  const handleStatusSelect = (status: T) => {
+    updateState("confirm", status);
   };
 
   const handleConfirm = () => {
-    if (selectedRole) {
-      onConfirm(selectedRole);
+    if (selectedStatus !== null) {
+      onConfirm(selectedStatus);
       onOpenChange(false);
       updateState("select", null);
     }
@@ -69,43 +76,56 @@ export function RoleChangeDialog({
     onOpenChange(newOpen);
   };
 
+  const getCurrentStatusOption = (status: T) =>
+    statusOptions.find((option) => option.value === status);
+
+  const currentStatusOption = getCurrentStatusOption(currentStatus);
+  const selectedStatusOption =
+    selectedStatus !== null ? getCurrentStatusOption(selectedStatus) : null;
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {state === "select" ? "Change Role" : "Confirm Role Change"}
+            {state === "select"
+              ? `Change ${statusName}`
+              : `Confirm ${statusName} Change`}
           </DialogTitle>
           <DialogDescription>
             {state === "select"
               ? isMultiple
-                ? `Select a new role for ${count} user${count > 1 ? "s" : ""}`
-                : "Select a new role for this user"
+                ? `Select a new ${statusName} for ${count} ${entityName}${
+                    count > 1 ? "s" : ""
+                  }`
+                : `Select a new ${statusName} for this ${entityName}`
               : isMultiple
-              ? `Are you sure you want to change ${count} user${
+              ? `Are you sure you want to change ${count} ${entityName}${
                   count > 1 ? "s" : ""
-                } to ${selectedRole}?`
-              : `Are you sure you want to change this user's role to ${selectedRole}?`}
+                } to ${selectedStatusOption?.label}?`
+              : `Are you sure you want to change this ${entityName}'s ${statusName} to ${selectedStatusOption?.label}?`}
           </DialogDescription>
         </DialogHeader>
 
         {state === "select" && (
           <div className="space-y-3">
             <div className="text-sm text-muted-foreground">
-              Current role:{" "}
-              <Badge className={roleColours[currentRole]}>{currentRole}</Badge>
+              Current {statusName}:{" "}
+              <Badge className={currentStatusOption?.colorClass}>
+                {currentStatusOption?.label}
+              </Badge>
             </div>
             <div className="space-y-2">
-              {Object.values(UserRole).map((role) => (
+              {statusOptions.map((option) => (
                 <Button
-                  key={role}
+                  key={String(option.value)}
                   variant="outline"
                   className="w-full justify-start"
-                  onClick={() => handleRoleSelect(role)}
-                  disabled={role === currentRole}
+                  onClick={() => handleStatusSelect(option.value)}
+                  disabled={option.value === currentStatus}
                 >
-                  <Badge className={roleColours[role]}>{role}</Badge>
-                  {role === currentRole && (
+                  <Badge className={option.colorClass}>{option.label}</Badge>
+                  {option.value === currentStatus && (
                     <span className="ml-2 text-sm text-muted-foreground">
                       (current)
                     </span>
@@ -116,18 +136,21 @@ export function RoleChangeDialog({
           </div>
         )}
 
-        {state === "confirm" && selectedRole && (
+        {state === "confirm" && selectedStatusOption && currentStatusOption && (
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Badge className={roleColours[currentRole]}>{currentRole}</Badge>
+              <Badge className={currentStatusOption.colorClass}>
+                {currentStatusOption.label}
+              </Badge>
               <span>→</span>
-              <Badge className={roleColours[selectedRole]}>
-                {selectedRole}
+              <Badge className={selectedStatusOption.colorClass}>
+                {selectedStatusOption.label}
               </Badge>
             </div>
             {isMultiple && (
               <div className="text-sm text-muted-foreground">
-                This will affect {count} user{count > 1 ? "s" : ""}
+                This will affect {count} {entityName}
+                {count > 1 ? "s" : ""}
               </div>
             )}
           </div>
