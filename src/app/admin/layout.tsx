@@ -36,7 +36,7 @@ export default async function AdminLayout({
         </div>
 
         <AdminNavigation />
-        {children}
+        <div className="bg-white rounded-lg border p-6">{children}</div>
       </div>
     </div>
   );
