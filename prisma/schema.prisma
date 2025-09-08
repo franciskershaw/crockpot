@@ -138,7 +138,6 @@ model Unit {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String   @unique
   abbreviation String   @unique
-  category     String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
