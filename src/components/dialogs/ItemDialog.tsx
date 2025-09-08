@@ -118,7 +118,7 @@ export function ItemDialog({
     } else {
       // Use mutation for creating (supports both admin and recipe flows)
       createItemMutation.mutate(itemData, {
-        onSuccess: (data) => {
+        onSuccess: (data: { success: boolean; item: Item }) => {
           if (data.success && data.item) {
             toast.success("Item created successfully!");
             // Call the callback if provided (for recipe creation flow)
@@ -128,10 +128,6 @@ export function ItemDialog({
             handleClose();
             onSuccess();
           }
-        },
-        onError: (error) => {
-          console.error("Create item error:", error);
-          toast.error("Failed to create item");
         },
       });
     }

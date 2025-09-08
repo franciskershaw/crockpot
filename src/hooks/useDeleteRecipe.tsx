@@ -1,18 +1,18 @@
-import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
 import { deleteRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
-import type { Recipe } from "@/data/types";
+import { UserRole, type Recipe } from "@/data/types";
 import { queryKeys } from "@/lib/constants";
 
 export function useDeleteRecipe() {
   const router = useRouter();
 
-  return useBasicMutation<
+  return useAuthenticatedMutation<
     string,
     { success: boolean; recipe: Recipe; message: string }
   >({
     mutationFn: deleteRecipe,
-    requireAuth: true,
+    minimumRole: UserRole.PREMIUM,
     successMessage: (data) => data.message || "Recipe deleted successfully!",
     invalidateQueries: [
       [queryKeys.RECIPES],

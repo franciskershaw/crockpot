@@ -6,6 +6,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { UserRole, roleRank } from "@/data/types";
 
 /**
  * Configuration for optimistic mutations
@@ -20,7 +21,8 @@ interface OptimisticMutationConfig<TInput, TData, TQueryData> {
   successMessage?: string;
   errorMessage?: string;
   onSuccess?: (data: TData, input: TInput) => void;
-  requireAuth?: boolean; // New optional authentication flag
+  /** Minimum role required to perform this optimistic mutation */
+  minimumRole: UserRole;
 }
 
 /**
@@ -32,13 +34,21 @@ export function useOptimisticMutation<TInput, TData, TQueryData>(
   const queryClient = useQueryClient();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" && !!session?.user;
+  const hasRequiredRole = (): boolean => {
+    if (!session?.user?.role) return false;
+    const userRole = session.user.role as UserRole;
+    return roleRank[userRole] >= roleRank[config.minimumRole];
+  };
 
   return useMutation({
     mutationFn: config.mutationFn,
     onMutate: async (input: TInput) => {
-      // Check authentication before allowing mutation
-      if (config.requireAuth && !isAuthenticated) {
+      // Enforce login for all mutations and role-based access
+      if (!isAuthenticated) {
         throw new Error("Please sign in to continue");
+      }
+      if (!hasRequiredRole()) {
+        throw new Error("You do not have permission to perform this action");
       }
 
       // Cancel outgoing queries

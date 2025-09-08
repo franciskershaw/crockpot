@@ -6,6 +6,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { UserRole, roleRank } from "@/data/types";
 
 /**
  * Configuration for basic mutations
@@ -17,25 +18,37 @@ interface BasicMutationConfig<TInput, TData> {
   errorMessage?: string | ((error: Error) => string);
   onSuccess?: (data: TData, input: TInput) => void;
   onError?: (error: Error, input: TInput) => void;
-  requireAuth?: boolean; // New optional authentication flag
+  minimumRole: UserRole;
 }
 
 /**
- * Basic mutation hook with toast notifications and query invalidation
+ * Mutation hook with toast notifications and query invalidation
  */
-export function useBasicMutation<TInput = unknown, TData = unknown>(
+export function useAuthenticatedMutation<TInput = unknown, TData = unknown>(
   config: BasicMutationConfig<TInput, TData>
 ) {
   const queryClient = useQueryClient();
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" && !!session?.user;
 
+  const hasRequiredRole = (): boolean => {
+    // Strict: minimumRole is required; user must be logged in with a role
+    if (!session?.user?.role) return false;
+    const userRole = session.user.role as UserRole;
+    return roleRank[userRole] >= roleRank[config.minimumRole];
+  };
+
   return useMutation({
     mutationFn: config.mutationFn,
     onMutate: () => {
-      // Check authentication before allowing mutation
-      if (config.requireAuth && !isAuthenticated) {
+      // Enforce login for all mutations in this app
+      if (!isAuthenticated) {
         throw new Error("Please sign in to continue");
+      }
+
+      // Enforce role-based access if specified
+      if (!hasRequiredRole()) {
+        throw new Error("You do not have permission to perform this action");
       }
     },
     onSuccess: (data, input) => {
@@ -92,7 +105,8 @@ export function createAddRemoveMutations<
   queryKey: string[];
   resourceName: string;
   additionalInvalidateQueries?: string[][];
-  requireAuth?: boolean; // Add authentication flag to factory
+  /** Minimum role required to perform these mutations (defaults to FREE). */
+  minimumRole?: UserRole;
 }) {
   const invalidateQueries = [
     config.queryKey,
@@ -100,21 +114,21 @@ export function createAddRemoveMutations<
   ];
 
   const useAddMutation = () =>
-    useBasicMutation({
+    useAuthenticatedMutation<TAddInput, TAddData>({
       mutationFn: config.addMutationFn,
       invalidateQueries,
       successMessage: `${config.resourceName} added`,
       errorMessage: `Failed to add ${config.resourceName.toLowerCase()}`,
-      requireAuth: config.requireAuth,
+      minimumRole: config.minimumRole ?? UserRole.FREE,
     });
 
   const useRemoveMutation = () =>
-    useBasicMutation({
+    useAuthenticatedMutation<TRemoveInput, TRemoveData>({
       mutationFn: config.removeMutationFn,
       invalidateQueries,
       successMessage: `${config.resourceName} removed`,
       errorMessage: `Failed to remove ${config.resourceName.toLowerCase()}`,
-      requireAuth: config.requireAuth,
+      minimumRole: config.minimumRole ?? UserRole.FREE,
     });
 
   return {

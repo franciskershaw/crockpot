@@ -8,7 +8,11 @@ import {
   addManualShoppingListItem,
   clearShoppingList,
 } from "@/actions/menu";
-import type { Item, ShoppingListWithDetails } from "@/data/types";
+import {
+  UserRole,
+  type Item,
+  type ShoppingListWithDetails,
+} from "@/data/types";
 import { useMemo } from "react";
 import { WATER_ITEM_ID } from "@/data/items/getItems";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
@@ -30,7 +34,7 @@ export const useToggleObtainedMutation = createShoppingListMutation({
     item.itemId === input.itemId &&
     (item.unitId ?? null) === (input.unitId ?? null),
   itemUpdater: (item) => ({ ...item, obtained: !item.obtained }),
-  requireAuth: true, // Enable authentication checks
+  minimumRole: UserRole.FREE,
 });
 
 export const useRemoveShoppingListItemMutation =
@@ -40,7 +44,7 @@ export const useRemoveShoppingListItemMutation =
       item.itemId === input.itemId &&
       (item.unitId ?? null) === (input.unitId ?? null),
     successMessage: "Removed from shopping list",
-    requireAuth: true, // Enable authentication checks
+    minimumRole: UserRole.FREE,
   });
 
 export const useUpdateShoppingListItemQuantityMutation =
@@ -50,7 +54,7 @@ export const useUpdateShoppingListItemQuantityMutation =
       item.itemId === input.itemId &&
       (item.unitId ?? null) === (input.unitId ?? null),
     itemUpdater: (item, input) => ({ ...item, quantity: input.quantity }),
-    requireAuth: true, // Enable authentication checks
+    minimumRole: UserRole.FREE,
   });
 
 export function useShoppingListCategories(
@@ -163,7 +167,7 @@ export const useAddManualShoppingListItemMutation = () => {
         items: nextItems as ShoppingListWithDetails["items"],
       };
     },
-    requireAuth: true, // Enable authentication checks
+    minimumRole: UserRole.FREE,
   });
 };
 
@@ -176,7 +180,7 @@ export const useClearShoppingListMutation = () => {
       return { ...previous, items: [] };
     },
     successMessage: "Shopping list cleared",
-    requireAuth: true, // Enable authentication checks
+    minimumRole: UserRole.FREE,
   });
 };
 
@@ -202,7 +206,7 @@ export function createShoppingListMutation<TInput>(config: {
   itemUpdater: (item: ShoppingListItem, input: TInput) => ShoppingListItem;
   successMessage?: string;
   errorMessage?: string;
-  requireAuth?: boolean; // Add authentication flag
+  minimumRole: UserRole;
 }) {
   return () =>
     useOptimisticMutation<TInput, unknown, ShoppingListData>({
@@ -221,7 +225,7 @@ export function createShoppingListMutation<TInput>(config: {
         };
       },
       successMessage: config.successMessage,
-      requireAuth: config.requireAuth,
+      minimumRole: config.minimumRole,
     });
 }
 
@@ -232,7 +236,7 @@ export function createShoppingListRemovalMutation<TInput>(config: {
   mutationFn: (input: TInput) => Promise<unknown>;
   itemMatcher: (item: ShoppingListItem, input: TInput) => boolean;
   successMessage?: string;
-  requireAuth?: boolean; // Add authentication flag
+  minimumRole: UserRole;
 }) {
   return () =>
     useOptimisticMutation<TInput, unknown, ShoppingListData>({
@@ -249,6 +253,6 @@ export function createShoppingListRemovalMutation<TInput>(config: {
         };
       },
       successMessage: config.successMessage,
-      requireAuth: config.requireAuth,
+      minimumRole: config.minimumRole,
     });
 }

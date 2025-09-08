@@ -1,15 +1,15 @@
-import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
 import { deleteItem } from "@/actions/items";
-import type { Item } from "@/data/types";
+import { UserRole, type Item } from "@/data/types";
 import { queryKeys } from "@/lib/constants";
 
 export function useDeleteItem() {
-  return useBasicMutation<
+  return useAuthenticatedMutation<
     string,
     { success: boolean; item: Item; message: string }
   >({
     mutationFn: deleteItem,
-    requireAuth: true,
+    minimumRole: UserRole.ADMIN,
     successMessage: (data) => data.message || "Item deleted successfully!",
     invalidateQueries: [[queryKeys.ITEMS], [queryKeys.INGREDIENTS]],
   });

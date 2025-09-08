@@ -11,7 +11,7 @@ import { ConfirmationDialog } from "../../components/AdminDataTable/Confirmation
 import { createRecipeColumns } from "../utils/recipeColumns";
 import { useUpdateRecipeStatus } from "../../hooks/useUpdateRecipeStatus";
 import { useBulkUpdateRecipeStatus } from "../../hooks/useBulkUpdateRecipeStatus";
-import { useDeleteRecipe } from "../../hooks/useDeleteRecipe";
+import { useDeleteRecipe } from "@/hooks/useDeleteRecipe";
 import { useRouter } from "next/navigation";
 
 interface RecipesDataTableProps {
@@ -153,7 +153,7 @@ export function RecipesDataTable({ data }: RecipesDataTableProps) {
       colorClass: "bg-green-100 text-green-800",
     },
     {
-      label: "Reject",
+      label: "Pending",
       value: false,
       colorClass: "bg-red-100 text-red-800",
     },

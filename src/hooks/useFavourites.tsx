@@ -6,14 +6,14 @@ import {
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { createAddRemoveMutations } from "./shared/useBasicMutation";
 import { queryKeys } from "@/lib/constants";
+import { UserRole } from "@/data/types";
 
-// Create add/remove mutations using the factory
 const { useAddMutation, useRemoveMutation } = createAddRemoveMutations({
   addMutationFn: addRecipeToFavourites,
   removeMutationFn: removeRecipeFromFavourites,
   queryKey: [queryKeys.FAVOURITES],
   resourceName: "Recipe to favourites",
-  requireAuth: true, // Enable authentication checks
+  minimumRole: UserRole.FREE,
 });
 
 export const useAddToFavouritesMutation = useAddMutation;

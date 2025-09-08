@@ -6,25 +6,26 @@ import {
   getUserMenu,
 } from "@/actions/menu";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
-import { useBasicMutation } from "./shared/useBasicMutation";
+import { useAuthenticatedMutation } from "./shared/useBasicMutation";
 import { queryKeys } from "@/lib/constants";
+import { UserRole } from "@/data/types";
 
 export const useAddToMenuMutation = () => {
-  return useBasicMutation({
+  return useAuthenticatedMutation({
     mutationFn: addRecipeToMenu,
     invalidateQueries: [[queryKeys.MENU], [queryKeys.SHOPPING_LIST]],
     successMessage: (result) =>
       result.wasUpdate ? "Menu serving size updated" : "Recipe added to menu",
-    requireAuth: true, // Enable authentication checks
+    minimumRole: UserRole.FREE,
   });
 };
 
 export const useRemoveFromMenuMutation = () => {
-  return useBasicMutation({
+  return useAuthenticatedMutation({
     mutationFn: removeRecipeFromMenu,
     invalidateQueries: [[queryKeys.MENU], [queryKeys.SHOPPING_LIST]],
     successMessage: "Recipe removed from menu",
-    requireAuth: true, // Enable authentication checks
+    minimumRole: UserRole.FREE,
   });
 };
 

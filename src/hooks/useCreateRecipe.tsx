@@ -1,18 +1,18 @@
-import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
 import { createRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
-import type { Recipe } from "@/data/types";
+import { UserRole, type Recipe } from "@/data/types";
 import { queryKeys } from "@/lib/constants";
 
 export function useCreateRecipe() {
   const router = useRouter();
 
-  return useBasicMutation<
+  return useAuthenticatedMutation<
     FormData,
     { success: boolean; recipe: Recipe; message: string }
   >({
     mutationFn: createRecipe,
-    requireAuth: true,
+    minimumRole: UserRole.PREMIUM,
     successMessage: (data) => data.message || "Recipe created successfully!",
     invalidateQueries: [
       [queryKeys.RECIPES],

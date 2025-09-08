@@ -1,10 +1,10 @@
-import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
 import { updateUserRole } from "@/actions/users";
-import type { UserRole } from "@/data/types";
+import { UserRole } from "@/data/types";
 import { queryKeys } from "@/lib/constants";
 
 export function useUpdateUserRole() {
-  return useBasicMutation<
+  return useAuthenticatedMutation<
     { userId: string; role: UserRole },
     {
       success: boolean;
@@ -18,7 +18,7 @@ export function useUpdateUserRole() {
     }
   >({
     mutationFn: updateUserRole,
-    requireAuth: true,
+    minimumRole: UserRole.ADMIN,
     successMessage: (data) => data.message || "User role updated successfully!",
     invalidateQueries: [[queryKeys.USERS]],
   });

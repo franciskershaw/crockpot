@@ -1,9 +1,10 @@
-import { useBasicMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
 import { updateRecipeStatus } from "@/actions/recipes";
 import { queryKeys } from "@/lib/constants";
+import { UserRole } from "@/data/types";
 
 export function useUpdateRecipeStatus() {
-  return useBasicMutation<
+  return useAuthenticatedMutation<
     { recipeId: string; approved: boolean },
     {
       success: boolean;
@@ -12,7 +13,7 @@ export function useUpdateRecipeStatus() {
     }
   >({
     mutationFn: updateRecipeStatus,
-    requireAuth: true,
+    minimumRole: UserRole.ADMIN,
     successMessage: (data) =>
       data.message || "Recipe status updated successfully!",
     invalidateQueries: [[queryKeys.RECIPES], [queryKeys.USER_RECIPES]],

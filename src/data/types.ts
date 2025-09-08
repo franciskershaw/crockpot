@@ -126,6 +126,13 @@ export type Unit = PrismaUnit;
 
 export { UserRole };
 
+export const roleRank: Record<UserRole, number> = {
+  [UserRole.FREE]: 0,
+  [UserRole.PREMIUM]: 1,
+  [UserRole.PRO]: 2,
+  [UserRole.ADMIN]: 3,
+};
+
 export interface AdminUser {
   id: string;
   name: string | null;
