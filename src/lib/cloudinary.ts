@@ -14,46 +14,41 @@ export { cloudinary };
  * next-cloudinary is primarily for client-side components and URL generation
  */
 export const uploadImage = async (
-  file: File | Buffer,
+  file: Blob | Buffer,
   folder: string = "Crockpot"
 ) => {
   try {
-    let fileData: string | Buffer;
+    let buffer: Buffer;
 
-    // Handle File object by converting to buffer
-    if (file instanceof File) {
+    if (file instanceof Blob) {
       const arrayBuffer = await file.arrayBuffer();
-      fileData = Buffer.from(arrayBuffer);
+      buffer = Buffer.from(arrayBuffer);
     } else {
-      fileData = file;
+      buffer = file;
     }
 
-    // Create proper data URL based on file type
-    const fileType = file instanceof File ? file.type : "image/jpeg";
-    const dataUrl = `data:${fileType};base64,${fileData.toString("base64")}`;
-
-    const result = await cloudinary.uploader.upload(dataUrl, {
-      folder: folder,
-      resource_type: "auto",
-      // Automatic format optimization
-      quality: "auto:good",
-      // File size limits at Cloudinary level (5MB backup)
-      bytes: 5000000,
-      // Enable automatic optimization features
-      flags: "progressive",
-      // Generate responsive breakpoints for different screen sizes
-      responsive_breakpoints: [
-        {
-          create_derived: true,
-          bytes_step: 20000,
-          min_width: 200,
-          max_width: 1000,
-          transformation: {
+    const result = await new Promise<import("cloudinary").UploadApiResponse>(
+      (resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            folder,
+            resource_type: "image",
+            // Derive on-the-fly at render time instead of at upload time
             quality: "auto:good",
+            fetch_format: "auto",
+            use_filename: true,
+            unique_filename: true,
+            overwrite: false,
           },
-        },
-      ],
-    });
+          (error, result) => {
+            if (error || !result) return reject(error);
+            resolve(result);
+          }
+        );
+
+        stream.end(buffer);
+      }
+    );
 
     return {
       url: result.secure_url,
@@ -61,12 +56,9 @@ export const uploadImage = async (
     };
   } catch (error) {
     console.error("Cloudinary upload error:", error);
-
-    // Provide more specific error information
     if (error instanceof Error) {
       throw new Error(`Cloudinary upload failed: ${error.message}`);
     }
-
     throw new Error("Failed to upload image to Cloudinary");
   }
 };
