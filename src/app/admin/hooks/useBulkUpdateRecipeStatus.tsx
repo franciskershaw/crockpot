@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useAuthenticatedMutation";
 import { bulkUpdateRecipeStatus } from "@/actions/recipes";
 import { queryKeys } from "@/lib/constants";
 import { UserRole } from "@/data/types";

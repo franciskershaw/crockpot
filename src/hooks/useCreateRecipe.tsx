@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useAuthenticatedMutation";
 import { createRecipe } from "@/actions/recipes";
 import { useRouter } from "next/navigation";
 import { UserRole, type Recipe } from "@/data/types";

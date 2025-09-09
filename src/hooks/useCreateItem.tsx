@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useAuthenticatedMutation";
 import { createItem } from "@/actions/items";
 import { UserRole, type Item } from "@/data/types";
 import type { CreateItemInput } from "@/lib/validations";

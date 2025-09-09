@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useAuthenticatedMutation";
 import { deleteItem } from "@/actions/items";
 import { UserRole, type Item } from "@/data/types";
 import { queryKeys } from "@/lib/constants";

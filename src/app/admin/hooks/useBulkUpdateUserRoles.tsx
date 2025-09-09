@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from "@/hooks/shared/useBasicMutation";
+import { useAuthenticatedMutation } from "@/hooks/shared/useAuthenticatedMutation";
 import { bulkUpdateUserRoles } from "@/actions/users";
 import { UserRole } from "@/data/types";
 import { queryKeys } from "@/lib/constants";

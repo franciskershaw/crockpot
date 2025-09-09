@@ -6,7 +6,7 @@ import {
   getUserMenu,
 } from "@/actions/menu";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
-import { useAuthenticatedMutation } from "./shared/useBasicMutation";
+import { useAuthenticatedMutation } from "./shared/useAuthenticatedMutation";
 import { queryKeys } from "@/lib/constants";
 import { UserRole } from "@/data/types";
 

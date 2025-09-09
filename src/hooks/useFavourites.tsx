@@ -4,20 +4,27 @@ import {
   removeRecipeFromFavourites,
 } from "@/actions/favourites";
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
-import { createAddRemoveMutations } from "./shared/useBasicMutation";
+import { useAuthenticatedMutation } from "./shared/useAuthenticatedMutation";
 import { queryKeys } from "@/lib/constants";
 import { UserRole } from "@/data/types";
 
-const { useAddMutation, useRemoveMutation } = createAddRemoveMutations({
-  addMutationFn: addRecipeToFavourites,
-  removeMutationFn: removeRecipeFromFavourites,
-  queryKey: [queryKeys.FAVOURITES],
-  resourceName: "Recipe to favourites",
-  minimumRole: UserRole.FREE,
-});
+export const useAddToFavouritesMutation = () => {
+  return useAuthenticatedMutation({
+    mutationFn: addRecipeToFavourites,
+    invalidateQueries: [[queryKeys.FAVOURITES]],
+    successMessage: "Recipe added to favourites",
+    minimumRole: UserRole.FREE,
+  });
+};
 
-export const useAddToFavouritesMutation = useAddMutation;
-export const useRemoveFromFavouritesMutation = useRemoveMutation;
+export const useRemoveFromFavouritesMutation = () => {
+  return useAuthenticatedMutation({
+    mutationFn: removeRecipeFromFavourites,
+    invalidateQueries: [[queryKeys.FAVOURITES]],
+    successMessage: "Recipe removed from favourites",
+    minimumRole: UserRole.FREE,
+  });
+};
 
 export const useGetFavourites = () => {
   const { data, isLoading, error, isError, isAuthenticated } =
