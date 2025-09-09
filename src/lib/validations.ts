@@ -202,6 +202,25 @@ export type CreateItemInput = z.infer<typeof createItemSchema>;
 export type UpdateItemInput = z.infer<typeof updateItemSchema>;
 export type CreateUnitInput = z.infer<typeof createUnitSchema>;
 export type UpdateUnitInput = z.infer<typeof updateUnitSchema>;
+
+/**
+ * Item Category operations
+ */
+export const createItemCategorySchema = z.object({
+  name: z
+    .string()
+    .min(2, "Item category name must be at least 2 characters")
+    .max(50, "Item category name must be less than 50 characters"),
+  faIcon: z
+    .string()
+    .min(1, "Icon is required")
+    .max(50, "Icon name must be less than 50 characters"),
+});
+
+export const updateItemCategorySchema = createItemCategorySchema.partial();
+
+export type CreateItemCategoryInput = z.infer<typeof createItemCategorySchema>;
+export type UpdateItemCategoryInput = z.infer<typeof updateItemCategorySchema>;
 export type UpdateUserRoleInput = z.infer<typeof updateUserRoleSchema>;
 export type BulkUpdateUserRolesInput = z.infer<
   typeof bulkUpdateUserRolesSchema

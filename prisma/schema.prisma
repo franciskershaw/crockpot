@@ -41,14 +41,13 @@ model User {
   shoppingList       ShoppingList?
 }
 
-// Item Categories with default allowed units
+// Item Categories
 model ItemCategory {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  name           String   @unique
-  faIcon         String   @unique
-  defaultUnitIds String[] @db.ObjectId // Default units for this category
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  faIcon    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   items Item[]

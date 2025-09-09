@@ -1,28 +1,144 @@
 import {
+  Amphora,
+  Apple,
+  Banana,
+  Barrel,
   Beef,
-  Fish,
+  Beer,
+  BottleWine,
+  Cake,
+  CakeSlice,
+  Candy,
+  CandyCane,
   Carrot,
-  Milk,
-  Zap,
-  Wine,
-  Cookie,
-  Package,
-  Home,
+  Cherry,
+  ChefHat,
   Citrus,
+  Coffee,
+  Cookie,
+  CookingPot,
+  Croissant,
+  CupSoda,
+  Dessert,
+  Donut,
+  Drumstick,
+  Egg,
+  EggFried,
+  Fish,
+  FishSymbol,
+  GlassWater,
+  Grape,
+  Ham,
+  Hamburger,
+  HandPlatter,
+  Hop,
+  IceCreamBowl,
+  IceCreamCone,
+  LeafyGreen,
+  Lollipop,
+  Martini,
+  Milk,
+  Microwave,
+  Nut,
+  Package,
+  Pizza,
+  Popcorn,
+  Popsicle,
+  Refrigerator,
+  Salad,
+  Sandwich,
+  Shrimp,
+  Soup,
+  Utensils,
+  UtensilsCrossed,
+  Vegan,
+  Wheat,
+  Wine,
+  Box,
+  BrushCleaning,
+  Cpu,
+  Drill,
+  House,
+  Lamp,
+  Zap,
+  type LucideIcon,
 } from "lucide-react";
 
-export const getIconComponent = (faIconName: string) => {
-  const iconMap: Record<string, typeof Beef> = {
-    faDrumstickBite: Beef, // Meat
-    faFish: Fish, // Fish
-    faCarrot: Carrot, // Veg
-    faCheese: Milk, // Dairy
-    faPepperHot: Zap, // Herbs and Spices
-    faWineGlass: Wine, // Drinks
-    faCookieBite: Cookie, // Sweets
-    faJar: Package, // Cupboard
-    faToiletPaper: Home, // House
-    faLemon: Citrus, // Fruit
-  };
-  return iconMap[faIconName] || Package;
+// Create the icon mapping using object shorthand syntax
+export const ITEM_CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Amphora,
+  Apple,
+  Banana,
+  Barrel,
+  Beef,
+  Beer,
+  BottleWine,
+  Cake,
+  CakeSlice,
+  Candy,
+  CandyCane,
+  Carrot,
+  Cherry,
+  ChefHat,
+  Citrus,
+  Coffee,
+  Cookie,
+  CookingPot,
+  Croissant,
+  CupSoda,
+  Dessert,
+  Donut,
+  Drumstick,
+  Egg,
+  EggFried,
+  Fish,
+  FishSymbol,
+  GlassWater,
+  Grape,
+  Ham,
+  Hamburger,
+  HandPlatter,
+  Hop,
+  IceCreamBowl,
+  IceCreamCone,
+  LeafyGreen,
+  Lollipop,
+  Martini,
+  Milk,
+  Microwave,
+  Nut,
+  Package,
+  Pizza,
+  Popcorn,
+  Popsicle,
+  Refrigerator,
+  Salad,
+  Sandwich,
+  Shrimp,
+  Soup,
+  Utensils,
+  UtensilsCrossed,
+  Vegan,
+  Wheat,
+  Wine,
+  Box,
+  BrushCleaning,
+  Cpu,
+  Drill,
+  House,
+  Lamp,
+  Zap,
+};
+
+// Legacy function for backward compatibility - returns Box for unknown icons
+export const getIconComponent = (iconName: string): LucideIcon => {
+  return ITEM_CATEGORY_ICONS[iconName] || Box;
+};
+
+export const getItemCategoryIcon = (iconName: string): LucideIcon => {
+  return ITEM_CATEGORY_ICONS[iconName] || Box;
+};
+
+export const getItemCategoryIconNames = (): string[] => {
+  return Object.keys(ITEM_CATEGORY_ICONS);
 };

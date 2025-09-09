@@ -10,6 +10,7 @@ const navigationItems = [
   { name: "Recipes", href: "/admin/recipes", icon: ChefHat },
   { name: "Recipe Categories", href: "/admin/recipe-categories", icon: Tags },
   { name: "Items", href: "/admin/items", icon: Package },
+  { name: "Item Categories", href: "/admin/item-categories", icon: Package },
   { name: "Units", href: "/admin/units", icon: Ruler },
 ];
 
@@ -21,6 +22,7 @@ export default function AdminNavigation() {
     | "users"
     | "recipes"
     | "items"
+    | "item-categories"
     | "units"
     | "recipe-categories" = "users";
   let pageTitle = "Users Management";
@@ -37,6 +39,9 @@ export default function AdminNavigation() {
   } else if (pathname.includes("/admin/items")) {
     currentPage = "items";
     pageTitle = "Item Management";
+  } else if (pathname.includes("/admin/item-categories")) {
+    currentPage = "item-categories";
+    pageTitle = "Item Category Management";
   } else if (pathname.includes("/admin/units")) {
     currentPage = "units";
     pageTitle = "Unit Management";

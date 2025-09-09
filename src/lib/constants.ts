@@ -24,6 +24,7 @@ export const tags = {
   FILTERED: "filtered",
   UNITS: "units",
   ITEMS: "items",
+  ITEM_CATEGORIES: "item-categories",
 };
 
 export const roleColours = {
