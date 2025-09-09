@@ -2,16 +2,10 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Search, Shield, Users, ChefHat, Package, Ruler } from "lucide-react";
+import { Search, Shield } from "lucide-react";
 import Link from "next/link";
 import { Session } from "next-auth";
 import LogoutButton from "@/components/auth/LogoutButton";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface MobileMenuProps {
   session: Session | null;
@@ -163,59 +157,14 @@ export default function MobileMenu({ session }: MobileMenuProps) {
             </Link>
 
             {session?.user?.role === "ADMIN" && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start px-4 py-3 h-auto text-base font-medium"
-                  >
-                    <Shield className="h-5 w-5 mr-3" />
-                    Admin
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56">
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/admin/users"
-                      onClick={toggleMenu}
-                      className="flex items-center gap-3"
-                    >
-                      <Users className="h-5 w-5" />
-                      Users
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/admin/recipes"
-                      onClick={toggleMenu}
-                      className="flex items-center gap-3"
-                    >
-                      <ChefHat className="h-5 w-5" />
-                      Recipes
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/admin/items"
-                      onClick={toggleMenu}
-                      className="flex items-center gap-3"
-                    >
-                      <Package className="h-5 w-5" />
-                      Items
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/admin/units"
-                      onClick={toggleMenu}
-                      className="flex items-center gap-3"
-                    >
-                      <Ruler className="h-5 w-5" />
-                      Units
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Link
+                href="/admin"
+                onClick={toggleMenu}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <Shield className="h-5 w-5 mr-3" />
+                Admin
+              </Link>
             )}
 
             <span>Future: profile settings, link to another user</span>

@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, ChefHat, Package, Ruler } from "lucide-react";
+import { Users, ChefHat, Package, Ruler, Tags } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navigationItems = [
   { name: "Users", href: "/admin/users", icon: Users },
   { name: "Recipes", href: "/admin/recipes", icon: ChefHat },
+  { name: "Recipe Categories", href: "/admin/recipe-categories", icon: Tags },
   { name: "Items", href: "/admin/items", icon: Package },
   { name: "Units", href: "/admin/units", icon: Ruler },
 ];
@@ -16,7 +17,12 @@ export default function AdminNavigation() {
   const pathname = usePathname();
 
   // Determine current page from pathname
-  let currentPage: "users" | "recipes" | "items" | "units" = "users";
+  let currentPage:
+    | "users"
+    | "recipes"
+    | "items"
+    | "units"
+    | "recipe-categories" = "users";
   let pageTitle = "Users Management";
 
   if (pathname.includes("/admin/users")) {
@@ -25,6 +31,9 @@ export default function AdminNavigation() {
   } else if (pathname.includes("/admin/recipes")) {
     currentPage = "recipes";
     pageTitle = "Recipe Oversight";
+  } else if (pathname.includes("/admin/recipe-categories")) {
+    currentPage = "recipe-categories";
+    pageTitle = "Recipe Category Management";
   } else if (pathname.includes("/admin/items")) {
     currentPage = "items";
     pageTitle = "Item Management";
