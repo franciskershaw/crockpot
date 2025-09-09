@@ -34,7 +34,6 @@ export interface Ingredient {
       id: string;
       name: string;
       faIcon: string;
-      defaultUnitIds: string[];
       createdAt: Date;
       updatedAt: Date;
     };
