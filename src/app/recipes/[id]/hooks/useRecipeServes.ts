@@ -3,7 +3,8 @@
 import { useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useGetMenu } from "@/hooks/useMenu";
-import { scaleIngredients, type Ingredient } from "@/app/recipes/[id]/helpers/helpers";
+import { scaleIngredients } from "@/app/recipes/[id]/helpers/helpers";
+import { Ingredient } from "@/data/types";
 
 interface UseRecipeServesProps {
   recipeId: string;

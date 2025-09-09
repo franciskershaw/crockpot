@@ -4,10 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   groupIngredientsByCategory,
   getCategoryIcon,
-  type Ingredient,
 } from "../helpers/helpers";
 import { useRecipeServes } from "@/app/recipes/[id]/hooks/useRecipeServes";
 import { ServesControl } from "./ServesControl";
+import { Ingredient } from "@/data/types";
 
 interface IngredientsSectionProps {
   ingredients: Ingredient[];
