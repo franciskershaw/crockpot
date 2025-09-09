@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Search, Shield, Users, ChefHat, Package } from "lucide-react";
+import { Search, Shield, Users, ChefHat, Package, Ruler } from "lucide-react";
 import Link from "next/link";
 import { Session } from "next-auth";
 import LogoutButton from "@/components/auth/LogoutButton";
@@ -202,6 +202,16 @@ export default function MobileMenu({ session }: MobileMenuProps) {
                     >
                       <Package className="h-5 w-5" />
                       Items
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      href="/admin/units"
+                      onClick={toggleMenu}
+                      className="flex items-center gap-3"
+                    >
+                      <Ruler className="h-5 w-5" />
+                      Units
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

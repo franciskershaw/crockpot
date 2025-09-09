@@ -11,6 +11,7 @@ export const queryKeys = {
   ITEMS: "items",
   INGREDIENTS: "ingredients",
   USERS: "users",
+  UNITS: "units",
 };
 
 export const tags = {

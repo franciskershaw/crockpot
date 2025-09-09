@@ -10,6 +10,7 @@ import {
   Shield,
   Users,
   Package,
+  Ruler,
 } from "lucide-react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
@@ -98,6 +99,15 @@ export default async function Navbar() {
                           >
                             <Package className="h-4 w-4" />
                             Items
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/admin/units"
+                            className="flex items-center gap-2"
+                          >
+                            <Ruler className="h-4 w-4" />
+                            Units
                           </Link>
                         </DropdownMenuItem>
                       </DropdownMenuContent>

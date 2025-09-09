@@ -21,6 +21,7 @@ export enum Permission {
   AI_FEATURES = "AI_FEATURES", // PRO + admin
   ADMIN_PANEL = "ADMIN_PANEL", // ADMIN only
   APPROVE_CONTENT = "APPROVE_CONTENT", // ADMIN only
+  CREATE_UNITS = "CREATE_UNITS", // ADMIN only
 }
 
 /**
@@ -55,6 +56,7 @@ const PERMISSION_REQUIREMENTS: Record<Permission, UserRole[]> = {
   [Permission.AI_FEATURES]: [UserRole.PRO, UserRole.ADMIN],
   [Permission.ADMIN_PANEL]: [UserRole.ADMIN],
   [Permission.APPROVE_CONTENT]: [UserRole.ADMIN],
+  [Permission.CREATE_UNITS]: [UserRole.ADMIN],
 };
 
 /**

@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, ChefHat, Package } from "lucide-react";
+import { Users, ChefHat, Package, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navigationItems = [
   { name: "Users", href: "/admin/users", icon: Users },
   { name: "Recipes", href: "/admin/recipes", icon: ChefHat },
   { name: "Items", href: "/admin/items", icon: Package },
+  { name: "Units", href: "/admin/units", icon: Ruler },
 ];
 
 export default function AdminNavigation() {
   const pathname = usePathname();
 
   // Determine current page from pathname
-  let currentPage: "users" | "recipes" | "items" = "users";
+  let currentPage: "users" | "recipes" | "items" | "units" = "users";
   let pageTitle = "Users Management";
 
   if (pathname.includes("/admin/users")) {
@@ -27,6 +28,9 @@ export default function AdminNavigation() {
   } else if (pathname.includes("/admin/items")) {
     currentPage = "items";
     pageTitle = "Item Management";
+  } else if (pathname.includes("/admin/units")) {
+    currentPage = "units";
+    pageTitle = "Unit Management";
   }
 
   return (

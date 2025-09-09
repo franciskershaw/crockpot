@@ -148,6 +148,22 @@ export const createItemSchema = z.object({
 
 export const updateItemSchema = createItemSchema.partial();
 
+/**
+ * Unit creation operations
+ */
+export const createUnitSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Unit name must be at least 2 characters")
+    .max(30, "Unit name must be less than 30 characters"),
+  abbreviation: z
+    .string()
+    .min(1, "Abbreviation is required")
+    .max(10, "Abbreviation must be less than 10 characters"),
+});
+
+export const updateUnitSchema = createUnitSchema.partial();
+
 // Schema for updating user role
 export const updateUserRoleSchema = z.object({
   userId: z.string(),
@@ -184,6 +200,8 @@ export type CreateRecipeInput = z.infer<typeof createRecipeSchema>;
 export type UpdateRecipeInput = z.infer<typeof updateRecipeSchema>;
 export type CreateItemInput = z.infer<typeof createItemSchema>;
 export type UpdateItemInput = z.infer<typeof updateItemSchema>;
+export type CreateUnitInput = z.infer<typeof createUnitSchema>;
+export type UpdateUnitInput = z.infer<typeof updateUnitSchema>;
 export type UpdateUserRoleInput = z.infer<typeof updateUserRoleSchema>;
 export type BulkUpdateUserRolesInput = z.infer<
   typeof bulkUpdateUserRolesSchema
