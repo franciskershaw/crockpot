@@ -335,6 +335,7 @@ export function AdminDataTable<T>({
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
+    autoResetPageIndex: false,
     globalFilterFn:
       globalFilterFn ||
       ((row, columnId, value) => {

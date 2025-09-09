@@ -35,6 +35,7 @@ export interface ComboboxProps {
   disabled?: boolean;
   className?: string;
   popoverClassName?: string;
+  modal?: boolean;
 }
 
 export const Combobox = ({
@@ -48,6 +49,7 @@ export const Combobox = ({
   disabled = false,
   className,
   popoverClassName,
+  modal = false,
 }: ComboboxProps) => {
   const [open, setOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
@@ -116,7 +118,7 @@ export const Combobox = ({
     <div className="space-y-2">
       {label && <Label>{label}</Label>}
 
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={setOpen} modal={modal}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -124,16 +126,16 @@ export const Combobox = ({
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              "w-full justify-between h-auto min-h-10 px-3 py-2 text-sm",
+              "w-full justify-between h-auto min-h-10 px-3 py-2 text-sm overflow-hidden",
               "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               disabled && "opacity-50 cursor-not-allowed",
               className
             )}
           >
-            <div className="flex flex-1 items-center gap-1 min-w-0">
+            <div className="flex flex-1 items-center gap-1 min-w-0 overflow-hidden">
               {value.length > 0 ? (
-                <div className="flex items-center gap-1 overflow-x-auto scrollbar-none flex-1">
+                <div className="flex items-center gap-1 overflow-x-auto scrollbar-none flex-1 min-w-0 max-w-full">
                   {value.map((optionValue) => {
                     const option = getOptionByValue(optionValue);
                     if (!option) return null;
@@ -142,9 +144,9 @@ export const Combobox = ({
                       <Badge
                         key={optionValue}
                         variant="secondary"
-                        className="flex-shrink-0 gap-1 pr-1"
+                        className="flex-shrink-0 gap-1 pr-1 whitespace-nowrap"
                       >
-                        <span className="truncate max-w-[120px]">
+                        <span className="truncate max-w-[80px]">
                           {option.label}
                         </span>
                         <div
@@ -171,7 +173,9 @@ export const Combobox = ({
                   })}
                 </div>
               ) : (
-                <span className="text-muted-foreground">{placeholder}</span>
+                <span className="text-muted-foreground truncate">
+                  {placeholder}
+                </span>
               )}
             </div>
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -179,7 +183,10 @@ export const Combobox = ({
         </PopoverTrigger>
 
         <PopoverContent
-          className={cn("w-full p-0 min-w-[200px]", popoverClassName)}
+          className={cn(
+            "w-[var(--radix-popover-trigger-width)] p-0 min-w-[200px] max-w-[400px]",
+            popoverClassName
+          )}
           align="start"
         >
           <Command>

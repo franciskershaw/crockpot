@@ -144,7 +144,7 @@ export function ItemDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] overflow-hidden">
         <DialogHeader>
           <DialogTitle>
             {isEditing ? "Edit Item" : "Create New Item"}
@@ -156,8 +156,8 @@ export function ItemDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-4 min-w-0">
+          <div className="space-y-2 min-w-0">
             <Label htmlFor="name">Item Name *</Label>
             <Input
               id="name"
@@ -165,13 +165,14 @@ export function ItemDialog({
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Fresh Basil"
               required
+              className="w-full"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 min-w-0">
             <Label htmlFor="category">Category *</Label>
             <Select value={categoryId} onValueChange={setCategoryId}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select category..." />
               </SelectTrigger>
               <SelectContent>
@@ -184,7 +185,7 @@ export function ItemDialog({
             </Select>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 min-w-0">
             <Combobox
               options={units
                 .filter((unit) => unit.name !== "" && unit.abbreviation !== "")
@@ -197,6 +198,8 @@ export function ItemDialog({
               placeholder="Select allowed units..."
               emptyIndicator="No units found"
               label="Allowed Units (optional)"
+              modal={true}
+              className="w-full"
             />
           </div>
 
