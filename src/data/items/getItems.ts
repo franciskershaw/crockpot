@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { itemWithCategoryInclude } from "@/data/fragments/query-fragments";
 import { queryKeys } from "@/lib/constants";
+import { ItemWithAllowedUnits } from "@/data/types";
 
 export const HOUSE_CATEGORY_ID = "6310a881b61a0ace3a1281ec";
 export const WATER_ITEM_ID = "6310ad7242687f4a1cf7f26a";
@@ -62,7 +63,7 @@ export async function getItems() {
   return getCachedItems();
 }
 
-export async function getIngredients() {
+export async function getIngredients(): Promise<ItemWithAllowedUnits[]> {
   const { unstable_cache } = await import("next/cache");
 
   const getCachedIngredients = unstable_cache(
@@ -74,9 +75,48 @@ export async function getIngredients() {
           },
         },
         orderBy: { name: "asc" },
-        include: itemWithCategoryInclude,
+        select: {
+          id: true,
+          name: true,
+          categoryId: true,
+          allowedUnitIds: true,
+          createdAt: true,
+          updatedAt: true,
+          category: true,
+        },
       });
-      return ingredients;
+
+      // Get all unique unit IDs from all ingredients
+      const allUnitIds = [
+        ...new Set(ingredients.flatMap((item) => item.allowedUnitIds)),
+      ];
+
+      // Fetch all units in one query
+      const units = await prisma.unit.findMany({
+        where: {
+          id: { in: allUnitIds },
+        },
+        select: {
+          id: true,
+          name: true,
+          abbreviation: true,
+        },
+      });
+
+      // Create a map for quick unit lookups
+      const unitsMap = new Map(units.map((unit) => [unit.id, unit]));
+
+      // Transform ingredients to include allowed units
+      return ingredients.map((item) => ({
+        ...item,
+        allowedUnits: item.allowedUnitIds
+          .map((unitId) => unitsMap.get(unitId))
+          .filter(Boolean) as Array<{
+          id: string;
+          name: string;
+          abbreviation: string;
+        }>,
+      }));
     },
     [queryKeys.INGREDIENTS],
     {

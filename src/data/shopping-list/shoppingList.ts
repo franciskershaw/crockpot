@@ -115,23 +115,62 @@ export async function getUserShoppingListWithDetails(
   const [items, units] = await Promise.all([
     prisma.item.findMany({
       where: { id: { in: itemIds } },
-      include: { category: true },
+      select: {
+        id: true,
+        name: true,
+        categoryId: true,
+        allowedUnitIds: true,
+        createdAt: true,
+        updatedAt: true,
+        category: true,
+      },
     }),
     unitIds.length
       ? prisma.unit.findMany({ where: { id: { in: unitIds } } })
       : Promise.resolve([] as { id: string }[]),
   ]);
 
+  // Get all unique unit IDs from all items for allowedUnits
+  const allAllowedUnitIds = [
+    ...new Set(items.flatMap((item) => item.allowedUnitIds)),
+  ];
+
+  // Fetch all allowed units
+  const allAllowedUnits =
+    allAllowedUnitIds.length > 0
+      ? await prisma.unit.findMany({
+          where: { id: { in: allAllowedUnitIds } },
+          select: {
+            id: true,
+            name: true,
+            abbreviation: true,
+          },
+        })
+      : [];
+
   const itemsMap = new Map(items.map((i) => [i.id, i]));
   const unitsMap = new Map(units.map((u) => [u.id, u]));
+  const allowedUnitsMap = new Map(allAllowedUnits.map((u) => [u.id, u]));
 
   return {
     ...list,
-    items: list.items.map((i) => ({
-      ...i,
-      item: itemsMap.get(i.itemId)!,
-      unit: i.unitId ? unitsMap.get(i.unitId) || null : null,
-    })),
+    items: list.items.map((i) => {
+      const item = itemsMap.get(i.itemId)!;
+      return {
+        ...i,
+        item: {
+          ...item,
+          allowedUnits: item.allowedUnitIds
+            .map((unitId) => allowedUnitsMap.get(unitId))
+            .filter(Boolean) as Array<{
+            id: string;
+            name: string;
+            abbreviation: string;
+          }>,
+        },
+        unit: i.unitId ? unitsMap.get(i.unitId) || null : null,
+      };
+    }),
   } as ShoppingListWithDetails;
 }
 

@@ -48,8 +48,20 @@ export function createItemColumns(
         sortable: false,
         transform: (value) => {
           const units = value as ItemWithRelations["allowedUnits"];
-          if (!units || units.length === 0) return "All";
-          return units.map((unit) => unit.abbreviation).join(", ");
+          if (!units || units.length === 0) return "No unit only";
+
+          const unitNames = units
+            .map((unit) => {
+              // Handle the default "no unit" case
+              if (unit.name === "" && unit.abbreviation === "") {
+                return "No unit";
+              }
+              return unit.abbreviation || unit.name;
+            })
+            .join(", ");
+
+          // Always include "No unit" as an option
+          return `No unit, ${unitNames}`;
         },
       }
     ),

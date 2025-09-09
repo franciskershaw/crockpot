@@ -1,10 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { validateRecipeId } from "@/lib/security";
 import { ValidationError } from "@/lib/errors";
-import { 
-  recipeWithDetailsInclude, 
-  itemWithCategoryInclude 
-} from "@/data/fragments/query-fragments";
+import { recipeWithDetailsInclude } from "@/data/fragments/query-fragments";
 
 export async function getRecipeById(id: string) {
   try {
@@ -33,7 +30,15 @@ export async function getRecipeById(id: string) {
       where: {
         id: { in: ingredientItemIds },
       },
-      include: itemWithCategoryInclude,
+      select: {
+        id: true,
+        name: true,
+        categoryId: true,
+        allowedUnitIds: true,
+        createdAt: true,
+        updatedAt: true,
+        category: true,
+      },
     });
 
     // Get the units for ingredients that have unitId

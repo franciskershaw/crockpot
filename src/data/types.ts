@@ -57,6 +57,18 @@ export type RecipeCategory = PrismaRecipeCategory;
 export type Item = PrismaItem;
 export type ItemCategory = PrismaItemCategory;
 
+// Simple unit type for allowed units (without timestamps)
+export type AllowedUnit = {
+  id: string;
+  name: string;
+  abbreviation: string;
+};
+
+// Item with allowed units populated (used by DAL functions)
+export type ItemWithAllowedUnits = Item & {
+  allowedUnits: AllowedUnit[];
+};
+
 export interface CreateRecipeInput {
   name: string;
   timeInMinutes: number;
@@ -113,7 +125,7 @@ export type ShoppingList = PrismaShoppingList & {
 export type ShoppingListItem = PrismaShoppingListItem;
 
 export type PopulatedShoppingListItem = ShoppingListItem & {
-  item: Item & { category: ItemCategory };
+  item: ItemWithAllowedUnits & { category: ItemCategory };
   unit?: PrismaUnit | null;
 };
 

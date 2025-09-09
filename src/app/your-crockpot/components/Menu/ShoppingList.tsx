@@ -19,10 +19,10 @@ import {
   useAddManualShoppingListItemMutation,
 } from "@/hooks/useShoppingList";
 import type {
-  Item,
   RecipeMenu,
   ShoppingListWithDetails,
   Unit,
+  ItemWithAllowedUnits,
 } from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
 import { useState } from "react";
@@ -33,7 +33,7 @@ import ClearShoppingListDialog from "./ClearShoppingListDialog";
 
 interface ShoppingListProps {
   initialData?: ShoppingListWithDetails | null;
-  items: Item[];
+  items: ItemWithAllowedUnits[];
   units: Unit[];
   menu?: RecipeMenu | null;
 }
@@ -50,7 +50,7 @@ export default function ShoppingList({
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
   const addManualItem = useAddManualShoppingListItemMutation();
 
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ItemWithAllowedUnits | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
 
   const { grouped, categories, categoryIds } = useShoppingListCategories(

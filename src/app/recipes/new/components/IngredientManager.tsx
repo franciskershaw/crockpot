@@ -16,7 +16,12 @@ import { Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { hasPermission, Permission } from "@/lib/action-helpers";
 import { ItemDialog } from "@/components/dialogs/ItemDialog";
-import type { Item, Unit } from "@/data/types";
+import type {
+  Item,
+  Unit,
+  ItemWithAllowedUnits,
+  AllowedUnit,
+} from "@/data/types";
 
 export type IngredientItem = {
   id: string;
@@ -25,10 +30,11 @@ export type IngredientItem = {
   unitId: string | null;
   unitName: string | null;
   quantity: number;
+  allowedUnits: AllowedUnit[]; // Include allowed units directly
 };
 
 interface IngredientManagerProps {
-  availableIngredients: Item[];
+  availableIngredients: ItemWithAllowedUnits[];
   units: Unit[];
   selectedIngredients: IngredientItem[];
   onIngredientsChange: (ingredients: IngredientItem[]) => void;
@@ -66,6 +72,7 @@ export default function IngredientManager({
           unitId: null,
           unitName: null,
           quantity: 1,
+          allowedUnits: ingredient.allowedUnits,
         };
 
         onIngredientsChange([...selectedIngredients, newIngredient]);
@@ -81,6 +88,7 @@ export default function IngredientManager({
     setShowCreateItemDialog(false);
 
     // Automatically select the newly created item
+    // New items start with empty allowedUnits (only default unit allowed)
     const newIngredient: IngredientItem = {
       id: crypto.randomUUID(),
       itemId: newItem.id,
@@ -88,6 +96,7 @@ export default function IngredientManager({
       unitId: null,
       unitName: null,
       quantity: 1,
+      allowedUnits: [], // New items have no allowed units (only default unit)
     };
 
     onIngredientsChange([...selectedIngredients, newIngredient]);
@@ -210,7 +219,7 @@ export default function IngredientManager({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">No unit</SelectItem>
-                      {units.map((unit) => (
+                      {ingredient.allowedUnits.map((unit) => (
                         <SelectItem key={unit.id} value={unit.id}>
                           {unit.name}
                         </SelectItem>

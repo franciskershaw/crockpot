@@ -8,10 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Item, Unit } from "@/data/types";
+import type { Unit, ItemWithAllowedUnits } from "@/data/types";
 
 type AddItemEditorProps = {
-  item: Item;
+  item: ItemWithAllowedUnits;
   onCancel: () => void;
   onConfirm: (quantity: number, unitId: string | null) => void;
   units: Unit[];
@@ -28,9 +28,7 @@ function AddItemEditor({
   units,
 }: AddItemEditorProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedUnitId, setSelectedUnitId] = useState<string>(
-    units.length > 0 ? units[0].id : "none"
-  );
+  const [selectedUnitId, setSelectedUnitId] = useState<string>("none");
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -100,16 +98,20 @@ function AddItemEditor({
               >
                 <SelectTrigger className="h-8 max-w-24 text-sm bg-transparent border-none shadow-none focus:ring-0">
                   <SelectValue>
-                    {selectedUnitId &&
-                      (() => {
-                        const unit = units.find((u) => u.id === selectedUnitId);
-                        return unit?.abbreviation || "-";
-                      })()}
+                    {selectedUnitId === "none"
+                      ? "No unit"
+                      : selectedUnitId &&
+                        (() => {
+                          const unit = units.find(
+                            (u) => u.id === selectedUnitId
+                          );
+                          return unit?.abbreviation || "-";
+                        })()}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                  {/* TODO: use 'allowedUnitIts' once those have been populated */}
-                  {units.map((unit) => (
+                  <SelectItem value="none">No unit</SelectItem>
+                  {item.allowedUnits.map((unit) => (
                     <SelectItem key={unit.id} value={unit.id}>
                       {unit.name}
                     </SelectItem>

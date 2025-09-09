@@ -49,7 +49,7 @@ export default async function Navbar() {
                       Add Recipe
                     </Link>
                     <Link
-                      href="/admin"
+                      href="/admin/users"
                       className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
                     >
                       <Shield className="h-4 w-4" />

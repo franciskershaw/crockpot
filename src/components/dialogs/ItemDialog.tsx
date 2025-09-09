@@ -186,10 +186,12 @@ export function ItemDialog({
 
           <div className="space-y-2">
             <Combobox
-              options={units.map((unit) => ({
-                value: unit.id,
-                label: unit.name,
-              }))}
+              options={units
+                .filter((unit) => unit.name !== "" && unit.abbreviation !== "")
+                .map((unit) => ({
+                  value: unit.id,
+                  label: unit.name,
+                }))}
               value={allowedUnitIds}
               onValueChange={setAllowedUnitIds}
               placeholder="Select allowed units..."
