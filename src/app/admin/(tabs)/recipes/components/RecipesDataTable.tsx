@@ -2,15 +2,15 @@
 
 import * as React from "react";
 import { AdminRecipe } from "@/data/types";
-import { AdminDataTable } from "../../components/AdminDataTable/AdminDataTable";
+import { AdminDataTable } from "@/app/admin/components/AdminDataTable/AdminDataTable";
 import {
   GenericStatusChangeDialog,
   StatusOption,
-} from "../../components/AdminDataTable/GenericStatusChangeDialog";
-import { ConfirmationDialog } from "../../components/AdminDataTable/ConfirmationDialog";
+} from "@/app/admin/components/AdminDataTable/GenericStatusChangeDialog";
+import { ConfirmationDialog } from "@/app/admin/components/AdminDataTable/ConfirmationDialog";
 import { createRecipeColumns } from "../utils/recipeColumns";
-import { useUpdateRecipeStatus } from "../../hooks/useUpdateRecipeStatus";
-import { useBulkUpdateRecipeStatus } from "../../hooks/useBulkUpdateRecipeStatus";
+import { useUpdateRecipeStatus } from "@/app/admin/hooks/useUpdateRecipeStatus";
+import { useBulkUpdateRecipeStatus } from "@/app/admin/hooks/useBulkUpdateRecipeStatus";
 import { useDeleteRecipe } from "@/hooks/useDeleteRecipe";
 import { useRouter } from "next/navigation";
 

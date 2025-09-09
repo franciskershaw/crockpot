@@ -8,7 +8,7 @@ import {
   createDateColumn,
   createCountColumn,
   createActionsColumn,
-} from "../../components/AdminDataTable/AdminDataTable";
+} from "@/app/admin/components/AdminDataTable/AdminDataTable";
 // Note: Delete user functionality is not implemented yet
 import { roleColours } from "@/lib/constants";
 

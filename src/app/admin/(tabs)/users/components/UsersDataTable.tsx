@@ -3,15 +3,15 @@
 import * as React from "react";
 import { AdminUser } from "@/data/types";
 import { UserRole } from "@/data/types";
-import { AdminDataTable } from "../../components/AdminDataTable/AdminDataTable";
+import { AdminDataTable } from "@/app/admin/components/AdminDataTable/AdminDataTable";
 import {
   GenericStatusChangeDialog,
   StatusOption,
-} from "../../components/AdminDataTable/GenericStatusChangeDialog";
+} from "@/app/admin/components/AdminDataTable/GenericStatusChangeDialog";
 import { roleColours } from "@/lib/constants";
 import { createUserColumns } from "../utils/userColumns";
-import { useUpdateUserRole } from "../../hooks/useUpdateUserRole";
-import { useBulkUpdateUserRoles } from "../../hooks/useBulkUpdateUserRoles";
+import { useUpdateUserRole } from "@/app/admin/hooks/useUpdateUserRole";
+import { useBulkUpdateUserRoles } from "@/app/admin/hooks/useBulkUpdateUserRoles";
 import { useRouter } from "next/navigation";
 
 interface UsersDataTableProps {

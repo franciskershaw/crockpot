@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import { ItemWithRelations } from "@/data/types";
-import { AdminDataTable } from "../../components/AdminDataTable/AdminDataTable";
-import { ConfirmationDialog } from "../../components/AdminDataTable/ConfirmationDialog";
+import { AdminDataTable } from "@/app/admin/components/AdminDataTable/AdminDataTable";
+import { ConfirmationDialog } from "@/app/admin/components/AdminDataTable/ConfirmationDialog";
 import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import { createItemColumns } from "../utils/itemColumns";
-import { useDeleteItem } from "../../hooks/useDeleteItem";
+import { useDeleteItem } from "@/app/admin/hooks/useDeleteItem";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";

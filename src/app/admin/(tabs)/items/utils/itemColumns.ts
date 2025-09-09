@@ -5,7 +5,7 @@ import {
   createTextColumn,
   createDateColumn,
   createActionsColumn,
-} from "../../components/AdminDataTable/AdminDataTable";
+} from "@/app/admin/components/AdminDataTable/AdminDataTable";
 
 export interface ItemColumnOptions {
   onEdit: (item: ItemWithRelations) => void;

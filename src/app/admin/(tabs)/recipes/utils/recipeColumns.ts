@@ -6,7 +6,7 @@ import {
   createDateColumn,
   createCountColumn,
   createActionsColumn,
-} from "../../components/AdminDataTable/AdminDataTable";
+} from "@/app/admin/components/AdminDataTable/AdminDataTable";
 
 export interface RecipeColumnOptions {
   onStatusChange: (recipe: AdminRecipe) => void;
