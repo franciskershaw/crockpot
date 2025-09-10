@@ -41,7 +41,27 @@ export async function getItems() {
       // Create a map for quick unit lookups
       const unitsMap = new Map(units.map((unit) => [unit.id, unit]));
 
-      // Transform items to include allowed units
+      // Get all recipes with their ingredients to count usage efficiently
+      const allRecipes = await prisma.recipe.findMany({
+        select: {
+          ingredients: {
+            select: {
+              itemId: true,
+            },
+          },
+        },
+      });
+
+      // Count recipe usage for each item
+      const recipeCountMap = new Map<string, number>();
+      allRecipes.forEach((recipe) => {
+        recipe.ingredients.forEach((ingredient) => {
+          const currentCount = recipeCountMap.get(ingredient.itemId) || 0;
+          recipeCountMap.set(ingredient.itemId, currentCount + 1);
+        });
+      });
+
+      // Transform items to include allowed units and recipe count
       return items.map((item) => ({
         ...item,
         allowedUnits: item.allowedUnitIds
@@ -51,6 +71,7 @@ export async function getItems() {
           name: string;
           abbreviation: string;
         }>,
+        recipeCount: recipeCountMap.get(item.id) || 0,
       }));
     },
     [queryKeys.ITEMS],

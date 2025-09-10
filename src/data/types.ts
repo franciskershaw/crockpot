@@ -191,4 +191,5 @@ export type ItemWithRelations = Item & {
     name: string;
     abbreviation: string;
   }[];
+  recipeCount: number;
 };

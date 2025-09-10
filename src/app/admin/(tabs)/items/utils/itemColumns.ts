@@ -5,6 +5,7 @@ import {
   createTextColumn,
   createDateColumn,
   createActionsColumn,
+  createCountColumn,
 } from "@/app/admin/components/AdminDataTable/AdminDataTable";
 
 export interface ItemColumnOptions {
@@ -64,6 +65,13 @@ export function createItemColumns(
           return `No unit, ${unitNames}`;
         },
       }
+    ),
+
+    // Recipe count column
+    createCountColumn<ItemWithRelations>(
+      "recipeCount",
+      "Recipes",
+      (item) => item.recipeCount
     ),
 
     // Created date with sorting
