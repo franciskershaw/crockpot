@@ -16,12 +16,7 @@ import { Trash2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { hasPermission, Permission } from "@/lib/action-helpers";
 import { ItemDialog } from "@/components/dialogs/ItemDialog";
-import type {
-  Item,
-  Unit,
-  ItemWithAllowedUnits,
-  AllowedUnit,
-} from "@/data/types";
+import type { Item, Unit } from "@/data/types";
 
 export type IngredientItem = {
   id: string;
@@ -30,11 +25,11 @@ export type IngredientItem = {
   unitId: string | null;
   unitName: string | null;
   quantity: number;
-  allowedUnits: AllowedUnit[]; // Include allowed units directly
+  allowedUnits: Item["allowedUnits"]; // Include allowed units directly
 };
 
 interface IngredientManagerProps {
-  availableIngredients: ItemWithAllowedUnits[];
+  availableIngredients: Item[];
   units: Unit[];
   selectedIngredients: IngredientItem[];
   onIngredientsChange: (ingredients: IngredientItem[]) => void;

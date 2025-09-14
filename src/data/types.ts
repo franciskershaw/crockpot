@@ -54,20 +54,15 @@ export type Recipe = PrismaRecipe & {
 };
 
 export type RecipeCategory = PrismaRecipeCategory;
-export type Item = PrismaItem;
+export type Item = PrismaItem & {
+  category: ItemCategory;
+  allowedUnits: {
+    id: string;
+    name: string;
+    abbreviation: string;
+  }[];
+};
 export type ItemCategory = PrismaItemCategory;
-
-// Simple unit type for allowed units (without timestamps)
-export type AllowedUnit = {
-  id: string;
-  name: string;
-  abbreviation: string;
-};
-
-// Item with allowed units populated (used by DAL functions)
-export type ItemWithAllowedUnits = Item & {
-  allowedUnits: AllowedUnit[];
-};
 
 export interface CreateRecipeInput {
   name: string;
@@ -125,7 +120,7 @@ export type ShoppingList = PrismaShoppingList & {
 export type ShoppingListItem = PrismaShoppingListItem;
 
 export type PopulatedShoppingListItem = ShoppingListItem & {
-  item: ItemWithAllowedUnits & { category: ItemCategory };
+  item: Item;
   unit?: PrismaUnit | null;
 };
 
@@ -181,15 +176,5 @@ export interface AdminRecipe {
 
 // Type for items with relations (used in admin panel)
 export type ItemWithRelations = Item & {
-  category: {
-    id: string;
-    name: string;
-    faIcon: string;
-  };
-  allowedUnits: {
-    id: string;
-    name: string;
-    abbreviation: string;
-  }[];
   recipeCount: number;
 };

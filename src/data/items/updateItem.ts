@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { updateItemSchema } from "@/lib/validations";
+import { itemWithRelationsInclude } from "@/data/fragments/query-fragments";
 
 export async function updateItem(
   itemId: string,
@@ -8,10 +9,9 @@ export async function updateItem(
   // Validate the input
   const validatedInput = updateItemSchema.parse(data);
 
-  const item = await prisma.item.update({
+  return await prisma.item.update({
     where: { id: itemId },
     data: validatedInput,
+    include: itemWithRelationsInclude,
   });
-
-  return item;
 }

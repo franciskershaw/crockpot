@@ -8,10 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Unit, ItemWithAllowedUnits } from "@/data/types";
+import type { Unit, Item } from "@/data/types";
 
 type AddItemEditorProps = {
-  item: ItemWithAllowedUnits;
+  item: Item;
   onCancel: () => void;
   onConfirm: (quantity: number, unitId: string | null) => void;
   units: Unit[];

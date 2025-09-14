@@ -1,4 +1,4 @@
-import type { Item, Unit, Recipe, ItemWithAllowedUnits } from "@/data/types";
+import type { Unit, Recipe, Item } from "@/data/types";
 import type { CreateRecipeInput } from "@/lib/validations";
 import type { IngredientItem } from "../components/IngredientManager";
 import type { Instruction } from "../components/Instructions";
@@ -37,7 +37,7 @@ export function transformRecipeForForm(recipe: Recipe): EditRecipeInput {
  */
 export function transformIngredientsForForm(
   recipeIngredients: CreateRecipeInput["ingredients"],
-  availableIngredients: ItemWithAllowedUnits[],
+  availableIngredients: Item[],
   units: Unit[]
 ): IngredientItem[] {
   return recipeIngredients.map((ingredient) => {

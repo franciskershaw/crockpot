@@ -33,11 +33,18 @@ export const recipeWithDetailsInclude = {
 } as const;
 
 /**
- * Standard item include with category
+ * Standard item include with category and allowed units
  * Used in: getItems, getIngredients, ingredient population in getRecipeById
  */
-export const itemWithCategoryInclude = {
+export const itemWithRelationsInclude = {
   category: true,
+  allowedUnits: {
+    select: {
+      id: true,
+      name: true,
+      abbreviation: true,
+    },
+  },
 } as const;
 
 /**

@@ -63,7 +63,8 @@ model Item {
   updatedAt      DateTime @updatedAt
 
   // Relations
-  category ItemCategory @relation(fields: [categoryId], references: [id])
+  category     ItemCategory @relation(fields: [categoryId], references: [id])
+  allowedUnits Unit[]       @relation(fields: [allowedUnitIds], references: [id])
 }
 
 // Recipes collection
@@ -141,7 +142,8 @@ model Unit {
   updatedAt    DateTime @updatedAt
 
   // Relations
-  // No direct relations - units are referenced by ID in embedded types
+  allowedForItems Item[] @relation(fields: [allowedForItemIds], references: [id])
+  allowedForItemIds String[] @db.ObjectId
 }
 
 // Embedded types (only for simple data)
