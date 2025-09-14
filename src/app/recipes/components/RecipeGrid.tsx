@@ -14,7 +14,7 @@ import {
 } from "@/lib/query-utils";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
-  const { filters } = useFilters();
+  const { filters, setTotalRecipeCount } = useFilters();
   const { restoreScrollPosition } = useScrollRestoration();
 
   // Generate consistent query key using centralized utility
@@ -60,6 +60,13 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
       }, 100);
     }
   }, [isFetched, isLoading, restoreScrollPosition]);
+
+  // Update total count when data is available
+  useEffect(() => {
+    if (data?.pages?.[0]?.total !== undefined) {
+      setTotalRecipeCount(data.pages[0].total);
+    }
+  }, [data, setTotalRecipeCount]);
 
   // Check if we have no results after loading is complete
   const allRecipes = data?.pages.flatMap((page) => page.recipes) || [];

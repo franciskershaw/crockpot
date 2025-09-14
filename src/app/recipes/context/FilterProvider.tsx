@@ -19,6 +19,8 @@ interface FilterContextType {
   hasActiveFilters: boolean;
   activeFilterCount: number;
   isHydrated: boolean; // Keep for any edge cases
+  totalRecipeCount: number;
+  setTotalRecipeCount: (count: number) => void;
 }
 
 const FilterContext = createContext<FilterContextType | null>(null);
@@ -43,6 +45,7 @@ export default function FilterProvider({
   timeRange,
 }: FilterProviderProps) {
   const [isHydrated, setIsHydrated] = useState(false);
+  const [totalRecipeCount, setTotalRecipeCount] = useState(0);
 
   // Create default filters
   const getDefaultFilters = useCallback(
@@ -135,6 +138,8 @@ export default function FilterProvider({
         hasActiveFilters,
         activeFilterCount,
         isHydrated,
+        totalRecipeCount,
+        setTotalRecipeCount,
       }}
     >
       {children}
