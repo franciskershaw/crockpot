@@ -6,11 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "test:auth": "cypress run --spec 'cypress/e2e/auth.cy.ts'",
-    "test:auth:headed": "cypress run --spec 'cypress/e2e/auth.cy.ts' --headed"
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -57,9 +53,6 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "cypress": "^15.2.0",
-    "cypress-mongodb": "^6.2.1",
-    "cypress-real-events": "^1.15.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "prisma": "^6.11.1",
