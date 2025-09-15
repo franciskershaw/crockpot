@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChefHat, Plus, Search, ShoppingBag, Shield } from "lucide-react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
-import LogoutButton from "@/components/auth/LogoutButton";
+import LogoutButton from "@/components/landing/LogoutButton";
 
 export default async function Navbar() {
   const session = await auth();

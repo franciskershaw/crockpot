@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Shield } from "lucide-react";
 import Link from "next/link";
 import { Session } from "next-auth";
-import LogoutButton from "@/components/auth/LogoutButton";
+import LogoutButton from "@/components/landing/LogoutButton";
 
 interface MobileMenuProps {
   session: Session | null;
