@@ -1,22 +1,45 @@
 import Auth from "@/components/auth/Auth";
 import HeroSection from "@/components/auth/HeroSection";
+// import HowItWorksSection from "@/components/landing/HowItWorksSection";
+// import PricingSection from "@/components/landing/PricingSection";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
-    <div className="container mx-auto pt-16 lg:py-24">
+    <div className="min-h-screen">
       {/* Hero Section with Auth Card */}
-      <section className="">
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
+      <SectionWrapper className="pt-8 md:pt-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <HeroSection />
-          <Auth />
+          <div className="flex justify-center lg:justify-end">
+            <Auth />
+          </div>
         </div>
-      </section>
+      </SectionWrapper>
 
-      {/* Featured Recipes Section */}
-      {/* <FeaturedRecipes /> */}
+      {/* <SectionWrapper>
+        <HowItWorksSection />
+      </SectionWrapper>
 
-      {/* Features Section */}
-      {/* <FeaturesSection /> */}
+      <SectionWrapper>
+        <PricingSection />
+      </SectionWrapper> */}
     </div>
+  );
+}
+
+function SectionWrapper({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cn("pb-8 md:pb-16 space-y-8 md:space-y-16", className)}>
+      {children}
+      <Separator />
+    </section>
   );
 }
