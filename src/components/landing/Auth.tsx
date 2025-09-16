@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import GoogleIcon from "./GoogleIcon";
-import { sendMagicLink, signInWithGoogle } from "@/actions/auth";
-import { Input } from "@/components/ui/input";
+import { signInWithGoogle } from "@/actions/auth";
+import EmailAuth from "./EmailAuth";
 
 export default function Auth() {
   return (
@@ -39,18 +39,7 @@ export default function Auth() {
             <span className="bg-white px-2 text-sm text-gray-500">or</span>
           </div>
         </div>
-        <form action={sendMagicLink} className="space-y-3">
-          <Input
-            name="email"
-            type="email"
-            placeholder="your@email.com"
-            required
-          />
-          <input type="hidden" name="redirectTo" value="/" />
-          <Button type="submit" className="w-full h-12">
-            Send magic link
-          </Button>
-        </form>
+        <EmailAuth />
       </CardContent>
     </Card>
   );

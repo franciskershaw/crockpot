@@ -19,12 +19,11 @@ export async function sendMagicLink(formData: FormData) {
 
     if (!parsed.success) {
       console.error("Validation failed:", parsed.error);
-      return;
+      throw new Error("Invalid email address");
     }
 
     const { email } = parsed.data;
 
-    // Use the correct provider ID - "resend" not "email"
     const result = await signIn("resend", {
       email,
       redirectTo: "/",
@@ -33,12 +32,9 @@ export async function sendMagicLink(formData: FormData) {
 
     if (result?.error) {
       console.error("Sign in error:", result.error);
-      return;
+      throw new Error("Failed to send magic link");
     }
-
-    console.log("Magic link sent successfully");
   } catch (error) {
-    console.error("Error in sendMagicLink:", error);
     throw error;
   }
 }
