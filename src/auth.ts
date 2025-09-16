@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/data/types";
@@ -7,7 +8,12 @@ import { UserRole } from "@/data/types";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // Keep adapter for OAuth account management only
   adapter: PrismaAdapter(prisma),
-  providers: [Google],
+  providers: [
+    Google,
+    Resend({
+      from: process.env.EMAIL_FROM,
+    }),
+  ],
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days

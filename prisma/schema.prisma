@@ -142,7 +142,7 @@ model Unit {
   updatedAt    DateTime @updatedAt
 
   // Relations
-  allowedForItems Item[] @relation(fields: [allowedForItemIds], references: [id])
+  allowedForItems   Item[]   @relation(fields: [allowedForItemIds], references: [id])
   allowedForItemIds String[] @db.ObjectId
 }
 
@@ -201,4 +201,17 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+// Verification tokens for Email (magic link) provider
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+  @@index([identifier])
 }
