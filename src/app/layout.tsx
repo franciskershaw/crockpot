@@ -43,13 +43,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-surface-warm`}
       >
-        <Navbar />
         <SessionProvider>
+          <Navbar />
           <QueryProvider>
-            <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">{children}</main>
+            <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">
+              {children}
+            </main>
           </QueryProvider>
+          <BottomMobileNav />
         </SessionProvider>
-        <BottomMobileNav />
         <Toaster position="top-right" expand={false} duration={2000} />
       </body>
     </html>

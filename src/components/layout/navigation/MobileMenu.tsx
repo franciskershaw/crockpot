@@ -1,9 +1,5 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { Search, Shield } from "lucide-react";
-import Link from "next/link";
 import { Session } from "next-auth";
 import LogoutButton from "@/components/landing/LogoutButton";
 
@@ -12,6 +8,10 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ session }: MobileMenuProps) {
+  // TODO: Uncomment this entire section when more features are added
+  // Currently commented out to simplify mobile navigation
+
+  /*
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
@@ -89,7 +89,6 @@ export default function MobileMenu({ session }: MobileMenuProps) {
 
   return (
     <div className="h-full flex items-center">
-      {/* Hamburger Button - Always visible */}
       <button
         ref={hamburgerRef}
         onClick={toggleMenu}
@@ -127,7 +126,6 @@ export default function MobileMenu({ session }: MobileMenuProps) {
         />
       </button>
 
-      {/* Sidebar (full screen) */}
       <div
         id="mobile-menu-sidebar"
         ref={menuRef}
@@ -140,21 +138,21 @@ export default function MobileMenu({ session }: MobileMenuProps) {
         style={{ outline: "none" }}
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-xl font-bold text-gray-800">Menu</h2>
           </div>
 
-          {/* Navigation Links */}
           <div className="flex-1 p-6 space-y-4">
-            <Link
-              href="/recipes"
-              onClick={toggleMenu}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-            >
-              <Search className="h-5 w-5" />
-              <span className="font-medium">Browse Recipes</span>
-            </Link>
+            {!session?.user && (
+              <Link
+                href="/recipes"
+                onClick={toggleMenu}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                <Search className="h-5 w-5" />
+                <span className="font-medium">Browse Recipes</span>
+              </Link>
+            )}
 
             {session?.user?.role === "ADMIN" && (
               <Link
@@ -166,8 +164,6 @@ export default function MobileMenu({ session }: MobileMenuProps) {
                 Admin
               </Link>
             )}
-
-            <span>Future: profile settings, link to another user</span>
 
             {session?.user ? (
               <LogoutButton
@@ -186,4 +182,17 @@ export default function MobileMenu({ session }: MobileMenuProps) {
       </div>
     </div>
   );
+  */
+
+  // Simple logout button for logged-in users
+  if (session?.user) {
+    return (
+      <div className="h-full flex items-center">
+        <LogoutButton variant="outline" />
+      </div>
+    );
+  }
+
+  // No mobile menu for non-logged-in users (they'll use bottom nav)
+  return null;
 }
