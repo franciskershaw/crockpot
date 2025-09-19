@@ -108,8 +108,8 @@ export default function GenericFilterList({
 
   return (
     <div className="space-y-4" ref={filterSectionRef}>
-      <div className="flex justify-between items-center">
-        <Label className="text-sm font-medium text-gray-700">{label}</Label>
+        <div className="flex justify-between items-center">
+          <div className="text-sm font-medium text-gray-700">{label}</div>
         {hasMore && (
           <Button
             variant="ghost"
