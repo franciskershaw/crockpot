@@ -30,24 +30,30 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     isFetchingNextPage,
     isLoading,
     isFetched,
-  } = useInfiniteQuery(
-    createInfiniteQueryConfig(queryKey, ({ pageParam }) =>
+  } = useInfiniteQuery({
+    ...createInfiniteQueryConfig(queryKey, ({ pageParam }) =>
       getRecipes({
         page: pageParam,
         pageSize,
         filters,
       })
-    )
-  );
+    ),
+  });
 
   const loader = useRef<HTMLDivElement | null>(null);
 
+  // Intersection observer for infinite scroll
   useEffect(() => {
     if (!hasNextPage || isFetchingNextPage) return;
+
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) fetchNextPage();
+      if (entries[0].isIntersecting) {
+        fetchNextPage();
+      }
     });
+
     if (loader.current) observer.observe(loader.current);
+
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
@@ -78,7 +84,8 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
 
   return (
     <ResponsiveRecipeGrid>
-      {isLoading || !isFetched
+      {/* Show skeletons while loading initial data */}
+      {(isLoading || !isFetched) && allRecipes.length === 0
         ? Array.from({ length: 6 }).map((_, i) => (
             <RecipeCard key={i} skeleton />
           ))
@@ -91,7 +98,13 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
               fromPage="/recipes"
             />
           ))}
-      <div ref={loader}>{isFetchingNextPage && "Loading more..."}</div>
+
+      {/* Intersection observer target */}
+      <div ref={loader} className="col-span-full flex justify-center py-8">
+        {isFetchingNextPage && (
+          <div className="text-gray-500">Loading more recipes...</div>
+        )}
+      </div>
     </ResponsiveRecipeGrid>
   );
 }

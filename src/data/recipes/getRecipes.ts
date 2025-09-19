@@ -47,8 +47,8 @@ export async function getRecipes({
       },
       [cacheKey],
       {
-        revalidate: 300, // 5 minutes
-        tags: [tags.RECIPES], // This is the key fix!
+        revalidate: 300,
+        tags: [tags.RECIPES],
       }
     );
 
