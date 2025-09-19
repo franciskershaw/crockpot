@@ -536,10 +536,12 @@ export function AdminDataTable<T>({
               <p className="text-sm text-muted-foreground">Go to page:</p>
               <Input
                 type="number"
-                defaultValue={table.getState().pagination.pageIndex + 1}
+                value={table.getState().pagination.pageIndex + 1}
                 onChange={(e) => {
                   const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  table.setPageIndex(page);
+                  if (page >= 0 && page < table.getPageCount()) {
+                    table.setPageIndex(page);
+                  }
                 }}
                 className="h-8 w-16"
                 min={1}
