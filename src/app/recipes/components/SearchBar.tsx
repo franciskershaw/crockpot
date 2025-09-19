@@ -5,7 +5,7 @@ import { Search, X } from "lucide-react";
 import { useFilters } from "@/app/recipes/context/FilterProvider";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const SearchBar = () => {
+const SearchBar = ({ id }: { id?: string }) => {
   const { filters, updateFilters } = useFilters();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const [searchValue, setSearchValue] = useState(filters.query || "");
@@ -55,7 +55,7 @@ const SearchBar = () => {
           className="pl-12 h-12 text-base bg-white/80 backdrop-blur-sm border-0 shadow-lg w-full rounded"
           onChange={handleSearchChange}
           value={searchValue}
-          id="search-bar"
+          id={id || "search-bar"}
         />
         {searchValue && (
           <Button

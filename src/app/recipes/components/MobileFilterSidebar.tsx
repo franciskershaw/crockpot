@@ -119,7 +119,7 @@ export default function MobileFilterSidebar({
           <div className="flex-1 overflow-auto">
             {/* Search Section - No heading, search bar is first */}
             <div className="p-6 border-b">
-              <SearchBar />
+              <SearchBar id="mobile-filter-sidebar-search-bar" />
             </div>
 
             {/* Filters Section */}

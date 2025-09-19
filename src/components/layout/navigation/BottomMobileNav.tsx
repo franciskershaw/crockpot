@@ -22,10 +22,13 @@ const BottomMobileNav = async () => {
             <ShoppingBag className="h-5 w-5" />
             <span className="text-sm font-medium">Your Crockpot</span>
           </Link>
-          <button className="flex flex-col items-center gap-2">
+          <Link
+            href="/recipes/new"
+            className="flex flex-col items-center gap-2"
+          >
             <Plus className="h-5 w-5" />
             <span className="text-sm font-medium">Add Recipe</span>
-          </button>
+          </Link>
         </div>
       </nav>
     </div>
