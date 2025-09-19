@@ -131,8 +131,14 @@ export default function MobileFilterSidebar({
                 <ClearFiltersButton />
               </div>
               <TimeRangeFilter timeRange={timeRange} />
-              <CategoryFilter categories={categories} />
-              <IngredientFilter ingredients={ingredients} />
+              <CategoryFilter
+                categories={categories}
+                id="mobile-categories-search"
+              />
+              <IngredientFilter
+                ingredients={ingredients}
+                id="mobile-ingredients-search"
+              />
             </div>
           </div>
         </div>

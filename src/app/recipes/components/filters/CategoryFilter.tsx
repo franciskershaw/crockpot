@@ -5,8 +5,10 @@ import GenericFilterList from "./GenericFilterList";
 
 export default function CategoryFilter({
   categories = [],
+  id,
 }: {
   categories: RecipeCategory[];
+  id?: string;
 }) {
   const { filters, updateFilters } = useFilters();
   const selectedCategoryIds = filters.categoryIds || [];
@@ -32,6 +34,7 @@ export default function CategoryFilter({
       showIncludeExclude={true}
       includeExcludeValue={categoryMode}
       onIncludeExcludeChange={handleModeChange}
+      id={id}
     />
   );
 }

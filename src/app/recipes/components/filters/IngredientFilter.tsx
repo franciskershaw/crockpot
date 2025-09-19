@@ -5,8 +5,10 @@ import GenericFilterList from "./GenericFilterList";
 
 export default function IngredientFilter({
   ingredients = [],
+  id,
 }: {
   ingredients: Item[];
+  id?: string;
 }) {
   const { filters, updateFilters } = useFilters();
   const selectedIngredientIds = filters.ingredientIds || [];
@@ -24,6 +26,7 @@ export default function IngredientFilter({
       options={ingredients}
       selectedIds={selectedIngredientIds}
       onChange={handleIngredientChange}
+      id={id}
     />
   );
 }

@@ -15,6 +15,7 @@ interface GenericFilterListProps {
   showIncludeExclude?: boolean;
   includeExcludeValue?: "include" | "exclude";
   onIncludeExcludeChange?: (mode: "include" | "exclude") => void;
+  id?: string;
 }
 
 export default function GenericFilterList({
@@ -25,6 +26,7 @@ export default function GenericFilterList({
   showIncludeExclude = false,
   includeExcludeValue = "include",
   onIncludeExcludeChange,
+  id,
 }: GenericFilterListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showAll, setShowAll] = useState(false);
@@ -108,8 +110,8 @@ export default function GenericFilterList({
 
   return (
     <div className="space-y-4" ref={filterSectionRef}>
-        <div className="flex justify-between items-center">
-          <div className="text-sm font-medium text-gray-700">{label}</div>
+      <div className="flex justify-between items-center">
+        <div className="text-sm font-medium text-gray-700">{label}</div>
         {hasMore && (
           <Button
             variant="ghost"
@@ -154,6 +156,7 @@ export default function GenericFilterList({
       <div className="relative">
         <Search className="h-3 w-3 absolute left-3 top-3 text-gray-400" />
         <Input
+          id={id || `search-${label.toLowerCase()}`}
           placeholder={`Search ${label.toLowerCase()}...`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
