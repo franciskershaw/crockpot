@@ -1,6 +1,7 @@
 "use client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect, useMemo } from "react";
+import { motion } from "motion/react";
 import { getRecipes } from "@/actions/recipes";
 import RecipeCard from "./RecipeCard";
 import NoResults from "./NoResults";
@@ -30,6 +31,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     isFetchingNextPage,
     isLoading,
     isFetched,
+    refetch,
   } = useInfiniteQuery({
     ...createInfiniteQueryConfig(queryKey, ({ pageParam }) =>
       getRecipes({
@@ -57,15 +59,36 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Restore scroll position after data loads
+  // Track previous query key to detect filter changes
+  const prevQueryKey = useRef(queryKey);
+
+  // Reset query and scroll to top when filters change
+  useEffect(() => {
+    const isFilterChange = prevQueryKey.current !== queryKey;
+
+    if (isFilterChange && prevQueryKey.current !== null) {
+      // Reset the infinite query to start from page 1
+      refetch();
+      // Scroll to top when filters change
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    prevQueryKey.current = queryKey;
+  }, [queryKey, refetch]);
+
+  // Restore scroll position for normal navigation (not filter changes)
   useEffect(() => {
     if (isFetched && !isLoading) {
-      // Small delay to ensure content is rendered
-      setTimeout(() => {
-        restoreScrollPosition();
-      }, 100);
+      const isFilterChange = prevQueryKey.current !== queryKey;
+
+      if (!isFilterChange) {
+        // Restore scroll position for normal navigation
+        setTimeout(() => {
+          restoreScrollPosition();
+        }, 100);
+      }
     }
-  }, [isFetched, isLoading, restoreScrollPosition]);
+  }, [isFetched, isLoading, restoreScrollPosition, queryKey]);
 
   // Update total count when data is available
   useEffect(() => {
@@ -87,22 +110,67 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
       {/* Show skeletons while loading initial data */}
       {(isLoading || !isFetched) && allRecipes.length === 0
         ? Array.from({ length: 6 }).map((_, i) => (
-            <RecipeCard key={i} skeleton />
+            <motion.div
+              key={`skeleton-${i}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+            >
+              <RecipeCard skeleton />
+            </motion.div>
           ))
         : allRecipes.map((recipe: Recipe, index) => (
-            <RecipeCard
+            <motion.div
               key={recipe.id}
-              recipe={recipe}
-              priority={index < 6} // First 6 items get priority
-              skeleton={false}
-              fromPage="/recipes"
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: Math.min(index * 0.05, 0.5), // Cap delay to prevent long waits
+                duration: 0.4,
+                ease: "easeOut",
+              }}
+            >
+              <RecipeCard
+                recipe={recipe}
+                priority={index < 6} // First 6 items get priority
+                skeleton={false}
+                fromPage="/recipes"
+              />
+            </motion.div>
           ))}
+
+      {/* Loading skeletons for infinite scroll */}
+      {isFetchingNextPage && (
+        <>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <motion.div
+              key={`loading-skeleton-${i}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
+            >
+              <RecipeCard skeleton />
+            </motion.div>
+          ))}
+        </>
+      )}
 
       {/* Intersection observer target */}
       <div ref={loader} className="col-span-full flex justify-center py-8">
         {isFetchingNextPage && (
-          <div className="text-gray-500">Loading more recipes...</div>
+          <motion.div
+            className="text-gray-500 flex items-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
+            Loading more recipes...
+          </motion.div>
         )}
       </div>
     </ResponsiveRecipeGrid>

@@ -8,6 +8,7 @@ import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { motion } from "motion/react";
 import RecipeCardActions from "./RecipeCardActions";
 
 export default function RecipeCard({
@@ -106,11 +107,33 @@ export default function RecipeCard({
     );
   };
 
+  // Enhanced skeleton component with shimmer effect
+  const SkeletonWithShimmer = ({ className }: { className?: string }) => (
+    <motion.div
+      className={`relative overflow-hidden ${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Skeleton className="absolute inset-0 w-full h-full bg-gray-200" />
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        animate={{ x: ["-100%", "100%"] }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          repeatDelay: 0.5,
+        }}
+      />
+    </motion.div>
+  );
+
   const cardContent = (
     <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative w-full">
       <div className="relative h-48 overflow-hidden border">
         {skeleton ? (
-          <Skeleton className="absolute inset-0 w-full h-full bg-gray-200" />
+          <SkeletonWithShimmer className="absolute inset-0 w-full h-full" />
         ) : recipe?.image?.url ? (
           <div className="absolute inset-0 border">
             <Image
@@ -141,7 +164,7 @@ export default function RecipeCard({
             title={recipe?.name}
           >
             {skeleton ? (
-              <Skeleton className="h-6 w-2/3 bg-gray-200" />
+              <SkeletonWithShimmer className="h-6 w-2/3" />
             ) : (
               recipe?.name
             )}
@@ -149,8 +172,8 @@ export default function RecipeCard({
           <div className="flex items-center gap-4 text-sm mb-5">
             {skeleton ? (
               <>
-                <Skeleton className="h-4 w-16 bg-gray-200" />
-                <Skeleton className="h-4 w-16 bg-gray-200" />
+                <SkeletonWithShimmer className="h-4 w-16" />
+                <SkeletonWithShimmer className="h-4 w-16" />
               </>
             ) : (
               <>
@@ -199,8 +222,8 @@ export default function RecipeCard({
           <div className="flex flex-wrap gap-2">
             {skeleton ? (
               <>
-                <Skeleton className="h-5 w-16 bg-gray-200" />
-                <Skeleton className="h-5 w-12 bg-gray-200" />
+                <SkeletonWithShimmer className="h-5 w-16" />
+                <SkeletonWithShimmer className="h-5 w-12" />
               </>
             ) : (
               (recipe?.categories ?? []).map((cat) => (

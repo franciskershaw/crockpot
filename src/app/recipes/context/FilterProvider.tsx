@@ -131,7 +131,7 @@ export default function FilterProvider({
   return (
     <FilterContext.Provider
       value={{
-        filters, // These are now always hydration-safe
+        filters,
         updateFilters,
         clearAllFilters,
         timeRange,

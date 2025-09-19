@@ -28,7 +28,7 @@ export default async function Recipes() {
           <Filters />
         </div>
         <div className="flex-1">
-          <RecipeGrid pageSize={10} />
+          <RecipeGrid pageSize={9} />
         </div>
       </div>
     </FilterProvider>
