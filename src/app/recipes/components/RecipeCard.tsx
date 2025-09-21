@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { motion } from "motion/react";
+import { useState } from "react";
 import RecipeCardActions from "./RecipeCardActions";
 
 export default function RecipeCard({
@@ -23,6 +24,7 @@ export default function RecipeCard({
   fromPage?: string;
 }) {
   const { data: session, status } = useSession();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Only show relevance badges when meaningful content filters are applied (not just time)
   const shouldShowBadges = recipe?.relevance?.hasContentFilters === true;
@@ -135,7 +137,7 @@ export default function RecipeCard({
         {skeleton ? (
           <SkeletonWithShimmer className="absolute inset-0 w-full h-full" />
         ) : recipe?.image?.url ? (
-          <div className="absolute inset-0 border">
+          <div className={`absolute inset-0 border bg-accent ${!imageLoaded ? 'animate-pulse' : ''}`}>
             <Image
               src={recipe.image.url ?? ""}
               alt={recipe.name}
@@ -143,6 +145,7 @@ export default function RecipeCard({
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority={priority}
+              onLoad={() => setImageLoaded(true)}
             />
             {renderActionButtons()}
             {renderRelevanceBadges()}

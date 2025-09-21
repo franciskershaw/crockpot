@@ -1,7 +1,7 @@
 "use client";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRef, useEffect, useMemo } from "react";
-import { motion } from "motion/react";
+import { useRef, useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { getRecipes } from "@/actions/recipes";
 import RecipeCard from "./RecipeCard";
 import NoResults from "./NoResults";
@@ -17,6 +17,7 @@ import {
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters, setTotalRecipeCount } = useFilters();
   const { restoreScrollPosition } = useScrollRestoration();
+  const [showInfiniteSkeletons, setShowInfiniteSkeletons] = useState(false);
 
   // Generate consistent query key using centralized utility
   const queryKey = useMemo(
@@ -50,6 +51,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
 
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
+        setShowInfiniteSkeletons(true);
         fetchNextPage();
       }
     });
@@ -58,6 +60,26 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
 
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Track when new page data becomes available
+  const [prevPageCount, setPrevPageCount] = useState(0);
+
+  // Hide infinite skeletons when new data has actually loaded and rendered
+  useEffect(() => {
+    const currentPageCount = data?.pages.length || 0;
+    
+    if (!isFetchingNextPage && showInfiniteSkeletons && currentPageCount > prevPageCount) {
+      // New data has loaded and page count increased - safe to hide skeletons
+      const timer = setTimeout(() => {
+        setShowInfiniteSkeletons(false);
+        setPrevPageCount(currentPageCount);
+      }, 200); // Shorter delay since we know content is ready
+      return () => clearTimeout(timer);
+    } else if (currentPageCount > prevPageCount) {
+      // Update page count even if not showing skeletons
+      setPrevPageCount(currentPageCount);
+    }
+  }, [isFetchingNextPage, showInfiniteSkeletons, data?.pages.length, prevPageCount]);
 
   // Track previous query key to detect filter changes
   const prevQueryKey = useRef(queryKey);
@@ -97,6 +119,16 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     }
   }, [data, setTotalRecipeCount]);
 
+  // Hide server-side skeletons once client-side content is ready
+  useEffect(() => {
+    if (isFetched) {
+      const serverSkeletons = document.querySelector('.recipe-skeletons');
+      if (serverSkeletons) {
+        (serverSkeletons as HTMLElement).style.display = 'none';
+      }
+    }
+  }, [isFetched]);
+
   // Check if we have no results after loading is complete
   const allRecipes = data?.pages.flatMap((page) => page.recipes) || [];
   const hasNoResults = isFetched && !isLoading && allRecipes.length === 0;
@@ -106,7 +138,8 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   }
 
   return (
-    <ResponsiveRecipeGrid>
+    <div className="relative z-10 bg-surface-warm">
+      <ResponsiveRecipeGrid>
       {/* Show skeletons while loading initial data */}
       {(isLoading || !isFetched) && allRecipes.length === 0
         ? Array.from({ length: 6 }).map((_, i) => (
@@ -119,41 +152,57 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
               <RecipeCard skeleton />
             </motion.div>
           ))
-        : allRecipes.map((recipe: Recipe, index) => (
-            <motion.div
-              key={recipe.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: Math.min(index * 0.05, 0.5), // Cap delay to prevent long waits
-                duration: 0.4,
-                ease: "easeOut",
-              }}
-            >
+        : allRecipes.map((recipe: Recipe, index) => {
+            // Calculate if this is a new item (from the latest page)
+            const pagesLoaded = data?.pages.length || 1;
+            const totalPreviousItems = Math.max(0, (pagesLoaded - 1) * pageSize);
+            const isNewItem = index >= totalPreviousItems;
+            const newItemIndex = isNewItem ? index - totalPreviousItems : 0;
+            
+            return (
+              <motion.div
+                key={recipe.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: isNewItem 
+                    ? newItemIndex * 0.08 + 0.1 // Faster stagger for new items, shorter base delay
+                    : Math.min(index * 0.03, 0.3), // Faster for existing items
+                  duration: 0.35,
+                  ease: "easeOut",
+                }}
+              >
               <RecipeCard
                 recipe={recipe}
                 priority={index < 6} // First 6 items get priority
                 skeleton={false}
                 fromPage="/recipes"
               />
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
 
       {/* Loading skeletons for infinite scroll */}
-      {isFetchingNextPage && (
-        <>
-          {Array.from({ length: 3 }).map((_, i) => (
-            <motion.div
-              key={`loading-skeleton-${i}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.4 }}
-            >
-              <RecipeCard skeleton />
-            </motion.div>
-          ))}
-        </>
-      )}
+      <AnimatePresence>
+        {showInfiniteSkeletons && (
+          <>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <motion.div
+                key={`loading-skeleton-${i}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ 
+                  delay: i * 0.05, 
+                  duration: 0.25
+                }}
+              >
+                <RecipeCard skeleton />
+              </motion.div>
+            ))}
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Intersection observer target */}
       <div ref={loader} className="col-span-full flex justify-center py-8">
@@ -173,6 +222,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
           </motion.div>
         )}
       </div>
-    </ResponsiveRecipeGrid>
+      </ResponsiveRecipeGrid>
+    </div>
   );
 }
