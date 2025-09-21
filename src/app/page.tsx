@@ -1,7 +1,7 @@
 import Auth from "@/components/landing/Auth";
 import HeroSection from "@/components/landing/HeroSection";
 // import HowItWorksSection from "@/components/landing/HowItWorksSection";
-// import PricingSection from "@/components/landing/PricingSection";
+import PricingSection from "@/components/landing/PricingSection";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
@@ -20,11 +20,11 @@ export default function Home() {
 
       {/* <SectionWrapper>
         <HowItWorksSection />
-      </SectionWrapper>
+      </SectionWrapper> */}
 
       <SectionWrapper>
         <PricingSection />
-      </SectionWrapper> */}
+      </SectionWrapper>
     </div>
   );
 }

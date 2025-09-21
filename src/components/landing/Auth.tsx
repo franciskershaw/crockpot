@@ -13,7 +13,10 @@ import EmailAuth from "./EmailAuth";
 
 export default function Auth() {
   return (
-    <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm w-full max-w-md">
+    <Card
+      className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm w-full max-w-md"
+      data-auth-section
+    >
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold text-gray-900">
           Join Crockpot
