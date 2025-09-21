@@ -258,7 +258,7 @@
     aspect-ratio: 1;
     display: grid;
     grid: 50%/50%;
-    color: #25b09b;
+    color: var(--brand-primary);
     --_g: no-repeat linear-gradient(currentColor 0 0);
     background: var(--_g), var(--_g), var(--_g);
     background-size: 50.1% 50.1%;
@@ -347,7 +347,7 @@
   @keyframes l6-1 {
     16.5% {
       transform: perspective(150px) rotateX(-90deg) rotateY(0deg) rotateX(0deg);
-      filter: grayscale(0.8);
+      filter: brightness(0.7) saturate(0.8);
     }
     33% {
       transform: perspective(150px) rotateX(-180deg) rotateY(0deg) rotateX(0deg);
@@ -359,7 +359,7 @@
     100% {
       transform: perspective(150px) rotateX(-180deg) rotateY(-180deg)
         rotateX(-180deg);
-      filter: grayscale(0.8);
+      filter: brightness(0.7) saturate(0.8);
     }
   }
 }

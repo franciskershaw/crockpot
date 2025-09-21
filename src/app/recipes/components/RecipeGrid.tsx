@@ -1,6 +1,6 @@
 "use client";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRef, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useMemo, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { getRecipes } from "@/actions/recipes";
 import RecipeCard from "./RecipeCard";
@@ -45,37 +45,44 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     ),
   });
 
-  const loader = useRef<HTMLDivElement | null>(null);
+  // Callback ref for intersection observer - more reliable than useEffect
+  const loaderRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node) return;
 
-  // Intersection observer for infinite scroll with improved stability
-  useEffect(() => {
-    if (!hasNextPage || isFetchingNextPage || isLoadingMore) return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (
+            entries[0].isIntersecting &&
+            hasNextPage &&
+            !isFetchingNextPage &&
+            !isLoadingMore
+          ) {
+            const now = Date.now();
+            // Debounce rapid triggers (minimum 500ms between triggers)
+            if (now - lastTriggerTime.current < 500) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          const now = Date.now();
-          // Debounce rapid triggers (minimum 500ms between triggers)
-          if (now - lastTriggerTime.current < 500) return;
-
-          lastTriggerTime.current = now;
-          setIsLoadingMore(true);
-          setShowInfiniteSkeletons(true);
-          fetchNextPage();
+            lastTriggerTime.current = now;
+            setIsLoadingMore(true);
+            setShowInfiniteSkeletons(true);
+            fetchNextPage();
+          }
+        },
+        {
+          // Trigger earlier - when loader is 200px away from viewport
+          rootMargin: "200px 0px",
+          // More stable threshold
+          threshold: 0.1,
         }
-      },
-      {
-        // Trigger earlier - when loader is 200px away from viewport
-        rootMargin: "200px 0px",
-        // More stable threshold
-        threshold: 0.1,
-      }
-    );
+      );
 
-    if (loader.current) observer.observe(loader.current);
+      observer.observe(node);
 
-    return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, isLoadingMore]);
+      // Cleanup function
+      return () => observer.disconnect();
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage, isLoadingMore]
+  );
 
   // Track when new page data becomes available
   const [prevPageCount, setPrevPageCount] = useState(0);
@@ -101,6 +108,13 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
       setPrevPageCount(currentPageCount);
     }
   }, [isFetchingNextPage, isLoadingMore, data?.pages.length, prevPageCount]);
+
+  // Reset loading states when query changes (filters, etc.)
+  useEffect(() => {
+    setIsLoadingMore(false);
+    setShowInfiniteSkeletons(false);
+    setPrevPageCount(0);
+  }, [queryKey]);
 
   // Track previous query key to detect filter changes
   const prevQueryKey = useRef(queryKey);
@@ -229,7 +243,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
         </AnimatePresence>
 
         {/* Intersection observer target */}
-        <div ref={loader} className="col-span-full flex justify-center py-8">
+        <div ref={loaderRef} className="col-span-full flex justify-center py-8">
           <AnimatePresence>
             {isLoadingMore && (
               <motion.div
