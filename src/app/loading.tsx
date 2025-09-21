@@ -2,7 +2,7 @@ export default async function Loading() {
   await new Promise((resolve) => setTimeout(resolve, 10000));
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-40 flex items-center justify-center"
       style={{
         fontFamily: "var(--font-geist-sans)",
         backgroundColor: "rgba(255, 255, 255, 0.8)",
