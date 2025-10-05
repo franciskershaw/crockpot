@@ -445,10 +445,14 @@ export async function canEditRecipe(
 
   const recipe = await prisma.recipe.findUnique({
     where: { id: recipeId },
-    select: { createdById: true },
+    select: { createdById: true, approved: true },
   });
 
   if (!recipe) {
+    return false;
+  }
+
+  if (recipe.approved) {
     return false;
   }
 
@@ -477,10 +481,14 @@ export async function canDeleteRecipe(
 
   const recipe = await prisma.recipe.findUnique({
     where: { id: recipeId },
-    select: { createdById: true },
+    select: { createdById: true, approved: true },
   });
 
   if (!recipe) {
+    return false;
+  }
+
+  if (recipe.approved) {
     return false;
   }
 
