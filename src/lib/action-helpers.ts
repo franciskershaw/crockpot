@@ -436,6 +436,7 @@ export function extractItemFormData(formData: FormData) {
 
 /**
  * Check if user can edit a recipe (either creator or admin)
+ * Note: Once a recipe is approved, only admins can edit it
  */
 export async function canEditRecipe(
   userId: string,
@@ -452,26 +453,26 @@ export async function canEditRecipe(
     return false;
   }
 
-  if (recipe.approved) {
-    return false;
-  }
-
-  // User can edit if they created the recipe
-  if (recipe.createdById === userId) {
-    return true;
-  }
-
   // Check if user is admin
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { role: true },
   });
 
-  return user?.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN";
+
+  // If recipe is approved, only admins can edit
+  if (recipe.approved) {
+    return isAdmin;
+  }
+
+  // For unapproved recipes, creator or admin can edit
+  return recipe.createdById === userId || isAdmin;
 }
 
 /**
  * Check if user can delete a recipe (either creator or admin)
+ * Note: Once a recipe is approved, only admins can delete it
  */
 export async function canDeleteRecipe(
   userId: string,
@@ -488,22 +489,21 @@ export async function canDeleteRecipe(
     return false;
   }
 
-  if (recipe.approved) {
-    return false;
-  }
-
-  // User can delete if they created the recipe
-  if (recipe.createdById === userId) {
-    return true;
-  }
-
   // Check if user is admin
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { role: true },
   });
 
-  return user?.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN";
+
+  // If recipe is approved, only admins can delete
+  if (recipe.approved) {
+    return isAdmin;
+  }
+
+  // For unapproved recipes, creator or admin can delete
+  return recipe.createdById === userId || isAdmin;
 }
 
 /**
