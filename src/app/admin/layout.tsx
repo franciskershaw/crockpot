@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { UserRole } from "@/data/types";
 import AdminNavigation from "./components/AdminNavigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { hasPermission, Permission } from "@/lib/action-helpers";
+import { UserRole } from "@/data/types";
 
 export default async function AdminLayout({
   children,
@@ -14,8 +15,8 @@ export default async function AdminLayout({
   const session = await auth();
 
   // Check if user is authenticated and has ADMIN role
-  if (!session?.user || session.user.role !== UserRole.ADMIN) {
-    redirect("/");
+  if (!hasPermission(session?.user?.role as UserRole, Permission.ADMIN_PANEL)) {
+    redirect("/not-found");
   }
 
   return (

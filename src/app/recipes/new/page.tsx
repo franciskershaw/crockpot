@@ -16,7 +16,7 @@ export default async function NewRecipePage() {
   // Double-check permission on the server side
   const userRole = session.user.role;
   if (!hasPermission(userRole, Permission.CREATE_RECIPES)) {
-    redirect("/your-crockpot?error=premium-required");
+    redirect("/your-crockpot");
   }
 
   const recipeCategories = await getRecipeCategories();

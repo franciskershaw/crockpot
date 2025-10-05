@@ -51,7 +51,12 @@ const PERMISSION_REQUIREMENTS: Record<Permission, UserRole[]> = {
     UserRole.PRO,
     UserRole.ADMIN,
   ],
-  [Permission.CREATE_RECIPES]: [UserRole.PREMIUM, UserRole.PRO, UserRole.ADMIN],
+  [Permission.CREATE_RECIPES]: [
+    UserRole.FREE,
+    UserRole.PREMIUM,
+    UserRole.PRO,
+    UserRole.ADMIN,
+  ],
   [Permission.CREATE_ITEMS]: [UserRole.ADMIN],
   [Permission.AI_FEATURES]: [UserRole.PRO, UserRole.ADMIN],
   [Permission.ADMIN_PANEL]: [UserRole.ADMIN],

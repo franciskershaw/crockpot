@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import { hasPermission, Permission } from "@/lib/action-helpers";
+import { UserRole } from "@/data/types";
 
 export default auth((req) => {
   const { nextUrl } = req;
@@ -22,13 +24,8 @@ export default auth((req) => {
       return NextResponse.redirect(new URL("/", nextUrl));
     }
 
-    const isPremiumOrHigher = ["PREMIUM", "PRO", "ADMIN"].includes(
-      userRole as string
-    );
-    if (!isPremiumOrHigher) {
-      return NextResponse.redirect(
-        new URL("/your-crockpot?error=premium-required", nextUrl)
-      );
+    if (!hasPermission(userRole as UserRole, Permission.CREATE_RECIPES)) {
+      return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
     }
   }
 
