@@ -8,85 +8,52 @@ import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { motion } from "motion/react";
-import { useState } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import RecipeCardActions from "./RecipeCardActions";
 
-export default function RecipeCard({
-  recipe,
-  priority = false,
-  skeleton = false,
-  fromPage,
-}: {
-  recipe?: Recipe;
-  priority?: boolean;
-  skeleton?: boolean;
-  fromPage?: string;
-}) {
-  const { data: session, status } = useSession();
-  const [imageLoaded, setImageLoaded] = useState(false);
+// Move skeleton outside component - defined once
+const SkeletonWithShimmer = memo(({ className }: { className?: string }) => (
+  <div className={`relative overflow-hidden ${className}`}>
+    <Skeleton className="absolute inset-0 w-full h-full bg-gray-200" />
+  </div>
+));
+SkeletonWithShimmer.displayName = "SkeletonWithShimmer";
 
-  // Only show relevance badges when meaningful content filters are applied (not just time)
+// Badge calculation helper - pure function outside component
+const calculateBadgeType = (
+  recipe: Recipe | undefined
+): "best" | "great" | "none" => {
   const shouldShowBadges = recipe?.relevance?.hasContentFilters === true;
+  if (!shouldShowBadges || !recipe?.relevance) return "none";
 
-  // Calculate badge type based on score relative to highest score
-  let badgeType: "best" | "great" | "none" = "none";
+  const {
+    score,
+    highestScoreInResults,
+    maxPossibleScore,
+    matchedIngredients,
+    matchedCategories,
+  } = recipe.relevance;
 
-  if (shouldShowBadges && recipe?.relevance) {
-    const {
-      score,
-      highestScoreInResults,
-      maxPossibleScore,
-      matchedIngredients,
-      matchedCategories,
-    } = recipe.relevance;
-
-    // Best Match: Either the highest score in results, or 80%+ of max possible
-    if (
-      score === highestScoreInResults ||
-      (maxPossibleScore > 0 && score / maxPossibleScore >= 0.8)
-    ) {
-      badgeType = "best";
-    }
-    // Great Match: 50%+ of max possible score OR 3+ total matches
-    else if (
-      (maxPossibleScore > 0 && score / maxPossibleScore >= 0.5) ||
-      matchedIngredients + matchedCategories >= 3
-    ) {
-      badgeType = "great";
-    }
+  if (
+    score === highestScoreInResults ||
+    (maxPossibleScore > 0 && score / maxPossibleScore >= 0.8)
+  ) {
+    return "best";
   }
 
-  // Save scroll position before navigating to recipe
-  const handleRecipeClick = () => {
-    if (typeof window !== "undefined") {
-      try {
-        const scrollPosition = window.scrollY;
-        sessionStorage.setItem(
-          "crockpot_browse_scroll_position",
-          scrollPosition.toString()
-        );
-      } catch {
-        // Ignore storage errors
-      }
-    }
-  };
+  if (
+    (maxPossibleScore > 0 && score / maxPossibleScore >= 0.5) ||
+    matchedIngredients + matchedCategories >= 3
+  ) {
+    return "great";
+  }
 
-  // Helper function to render action buttons
-  const renderActionButtons = () => {
-    if (skeleton || status !== "authenticated" || !session?.user || !recipe) {
-      return null;
-    }
+  return "none";
+};
 
-    return (
-      <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
-        <RecipeCardActions recipe={recipe} />
-      </div>
-    );
-  };
-
-  // Helper function to render relevance badges
-  const renderRelevanceBadges = () => {
+// Memoized sub-components
+const RelevanceBadge = memo(
+  ({ badgeType }: { badgeType: "best" | "great" | "none" }) => {
     if (badgeType === "none") return null;
 
     return (
@@ -107,60 +74,99 @@ export default function RecipeCard({
         </Badge>
       </div>
     );
-  };
+  }
+);
+RelevanceBadge.displayName = "RelevanceBadge";
 
-  // Enhanced skeleton component with shimmer effect
-  const SkeletonWithShimmer = ({ className }: { className?: string }) => (
-    <motion.div
-      className={`relative overflow-hidden ${className}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Skeleton className="absolute inset-0 w-full h-full bg-gray-200" />
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-        animate={{ x: ["-100%", "100%"] }}
-        transition={{
-          duration: 1.5,
-          repeat: Infinity,
-          ease: "easeInOut",
-          repeatDelay: 0.5,
-        }}
-      />
-    </motion.div>
+const RecipeCard = memo(function RecipeCard({
+  recipe,
+  priority = false,
+  skeleton = false,
+  fromPage = "/recipes",
+}: {
+  recipe?: Recipe;
+  priority?: boolean;
+  skeleton?: boolean;
+  fromPage?: string;
+}) {
+  // Only call useSession once at top level - session is stable
+  const { data: session, status } = useSession();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Memoize badge calculation
+  const badgeType = useMemo(() => calculateBadgeType(recipe), [recipe]);
+
+  // Memoize callbacks
+  const handleRecipeClick = useCallback(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const scrollPosition = window.scrollY;
+        sessionStorage.setItem(
+          "crockpot_browse_scroll_position",
+          scrollPosition.toString()
+        );
+      } catch {
+        // Ignore storage errors
+      }
+    }
+  }, []);
+
+  const handleImageLoad = useCallback(() => {
+    setImageLoaded(true);
+  }, []);
+
+  // Determine if we should show action buttons
+  const showActions =
+    !skeleton && status === "authenticated" && !!session?.user && !!recipe;
+
+  // Memoize the href to avoid recalculation
+  const href = useMemo(
+    () => `/recipes/${recipe?.id}?from=${encodeURIComponent(fromPage)}`,
+    [recipe?.id, fromPage]
   );
 
   const cardContent = (
-    <Card className="hover:shadow-lg transition-all duration-300 border-0 backdrop-blur-sm overflow-hidden cursor-pointer pt-0 relative w-full">
+    <Card className="hover:shadow-lg transition-shadow duration-300 border-0 overflow-hidden cursor-pointer pt-0 relative w-full">
       <div className="relative h-48 overflow-hidden border">
         {skeleton ? (
           <SkeletonWithShimmer className="absolute inset-0 w-full h-full" />
         ) : recipe?.image?.url ? (
-          <div className={`absolute inset-0 border bg-accent ${!imageLoaded ? 'animate-pulse' : ''}`}>
+          <div
+            className={`absolute inset-0 border bg-accent ${
+              !imageLoaded ? "animate-pulse" : ""
+            }`}
+          >
             <Image
-              src={recipe.image.url ?? ""}
+              src={recipe.image.url}
               alt={recipe.name}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority={priority}
-              onLoad={() => setImageLoaded(true)}
+              onLoad={handleImageLoad}
+              loading={priority ? "eager" : "lazy"}
             />
-            {renderActionButtons()}
-            {renderRelevanceBadges()}
+            {showActions && (
+              <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
+                <RecipeCardActions recipe={recipe} />
+              </div>
+            )}
+            <RelevanceBadge badgeType={badgeType} />
           </div>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
             <ChefHat className="h-16 w-16 text-brand-secondary" />
-            {renderActionButtons()}
-            {renderRelevanceBadges()}
+            {showActions && (
+              <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
+                <RecipeCardActions recipe={recipe} />
+              </div>
+            )}
+            <RelevanceBadge badgeType={badgeType} />
           </div>
         )}
       </div>
 
-      {/* Rest of the card content */}
-      <CardContent className="px-4 pb-4 pt-0 ">
+      <CardContent className="px-4 pb-4 pt-0">
         <div className="space-y-3">
           <h3
             className="text-xl font-semibold group-hover:text-brand-primary transition-colors line-clamp-1 text-ellipsis"
@@ -197,7 +203,7 @@ export default function RecipeCard({
           </div>
 
           {/* Relevance indicators */}
-          {shouldShowBadges && recipe?.relevance && (
+          {badgeType !== "none" && recipe?.relevance && (
             <div className="flex flex-wrap gap-1 mb-3">
               {recipe.relevance.matchedIngredients > 0 && (
                 <Badge
@@ -245,21 +251,21 @@ export default function RecipeCard({
     </Card>
   );
 
-  // If skeleton or no recipe ID, don't wrap in Link
   if (skeleton || !recipe?.id) {
     return cardContent;
   }
 
-  // Wrap in Link with proper constraints and scroll position saving
   return (
     <Link
-      href={`/recipes/${recipe.id}?from=${encodeURIComponent(
-        fromPage || window.location.pathname
-      )}`}
+      href={href}
       className="block w-full min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
       onClick={handleRecipeClick}
     >
       {cardContent}
     </Link>
   );
-}
+});
+
+RecipeCard.displayName = "RecipeCard";
+
+export default RecipeCard;

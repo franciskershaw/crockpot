@@ -204,15 +204,15 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     delay: isNewItem
-                      ? newItemIndex * 0.08 + 0.1 // Faster stagger for new items, shorter base delay
-                      : Math.min(index * 0.03, 0.3), // Faster for existing items
+                      ? newItemIndex * 0.08 + 0.1
+                      : Math.min(index * 0.03, 0.3),
                     duration: 0.35,
                     ease: "easeOut",
                   }}
                 >
                   <RecipeCard
                     recipe={recipe}
-                    priority={index < 6} // First 6 items get priority
+                    priority={index < 6}
                     skeleton={false}
                     fromPage="/recipes"
                   />
