@@ -27,8 +27,7 @@ const DeleteRecipeButton = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const hasPermission =
-    user.role === UserRole.ADMIN ||
-    (user.role === UserRole.PRO && recipe.createdById === user.id);
+    user.role === UserRole.ADMIN || recipe.createdById === user.id;
 
   if (!hasPermission) {
     return null;

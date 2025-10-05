@@ -12,7 +12,7 @@ export function useDeleteRecipe() {
     { success: boolean; recipe: Recipe; message: string }
   >({
     mutationFn: deleteRecipe,
-    minimumRole: UserRole.PREMIUM,
+    minimumRole: UserRole.FREE,
     successMessage: (data) => data.message || "Recipe deleted successfully!",
     invalidateQueries: [
       [queryKeys.RECIPES],
