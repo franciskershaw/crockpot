@@ -91,7 +91,7 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
 
   return (
     <div className="relative">
-      <div className="flex items-center h-8 bg-white/95 backdrop-blur-sm rounded-full shadow-sm border border-gray-200">
+      <div className="flex items-center h-8 bg-white/95 rounded-full shadow-sm border border-gray-200">
         <div className="flex items-center justify-center h-8 w-8">
           <AnimatePresence mode="wait">
             {isEditing ? (

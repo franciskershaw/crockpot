@@ -34,7 +34,7 @@ const AddToFavouritesButton = ({ recipeId }: { recipeId: string }) => {
     <Button
       size="sm"
       variant="ghost"
-      className={`h-8 w-8 p-0 rounded-full bg-white/90 backdrop-blur-sm border-0 shadow-sm hover:shadow-md transition-all duration-200 ${
+      className={`h-8 w-8 p-0 rounded-full bg-white/90 border-0 shadow-sm hover:shadow-md transition-all duration-200 ${
         isFavorited
           ? "text-red-500 hover:text-red-600"
           : "text-gray-600 hover:text-red-500"
