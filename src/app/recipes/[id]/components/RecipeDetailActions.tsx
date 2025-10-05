@@ -1,7 +1,7 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { Recipe } from "@/data/types";
+import { Session } from "next-auth";
 import AddToMenuButton from "@/app/recipes/components/AddToMenuButton";
 import AddToFavouritesButton from "@/app/recipes/components/AddToFavouritesButton";
 import EditRecipeButton from "./EditRecipeButton";
@@ -9,15 +9,15 @@ import DeleteRecipeButton from "./DeleteRecipeButton";
 
 interface RecipeDetailActionsProps {
   recipe: Recipe;
+  session: Session | null;
 }
 
 export default function RecipeDetailActions({
   recipe,
+  session,
 }: RecipeDetailActionsProps) {
-  const { data: session, status } = useSession();
-
   // Don't render anything if user is not authenticated
-  if (status === "loading" || !session?.user) {
+  if (!session?.user) {
     return null;
   }
 

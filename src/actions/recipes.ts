@@ -20,6 +20,7 @@ import {
   extractEditRecipeFormData,
   canEditRecipe,
   canDeleteRecipe,
+  canViewRecipe,
   withPermission,
   Permission,
   revalidateRecipeCache,
@@ -28,6 +29,8 @@ import { createRecipeSchema, updateRecipeSchema } from "@/lib/validations";
 import { validateRecipeReferences } from "@/lib/security";
 import { processRecipeImage, deleteRecipeImage } from "@/lib/upload-helpers";
 import { UserRole } from "@/data/types";
+import { getUserRecipeCount } from "@/data/recipes/getUserRecipeCount";
+import { ForbiddenError } from "@/lib/errors";
 
 export interface GetRecipesParams {
   page?: number;
@@ -60,12 +63,39 @@ export const getRandomRecipes = createPublicAction(
 );
 
 export const getRecipeById = createPublicAction(async (id: string) => {
-  return await getRecipeByIdFromDAL(id);
+  const recipe = await getRecipeByIdFromDAL(id);
+
+  if (!recipe) {
+    return null;
+  }
+
+  // Get the current user's ID (if authenticated)
+  const { auth } = await import("@/auth");
+  const session = await auth();
+  const userId = session?.user?.id ?? null;
+
+  // Check if the user can view this recipe
+  if (!(await canViewRecipe(userId, id))) {
+    return null;
+  }
+
+  return recipe;
 });
 
 export const createRecipe = withPermission(
   Permission.CREATE_RECIPES,
   async (user, formData: FormData) => {
+    // Check if the user has created 5 recipes already
+    const userRecipeCount = await getUserRecipeCount(user.id);
+    if (
+      (user.role === UserRole.FREE && userRecipeCount >= 5) ||
+      (user.role === UserRole.PREMIUM && userRecipeCount >= 10)
+    ) {
+      throw new ForbiddenError(
+        "You have reached the maximum number of free recipes"
+      );
+    }
+
     // Extract form data
     const extractedData = extractRecipeFormData(formData);
 

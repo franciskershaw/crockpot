@@ -12,7 +12,7 @@ export function useEditRecipe() {
     { success: boolean; recipe: Recipe; message: string }
   >({
     mutationFn: editRecipe,
-    minimumRole: UserRole.PREMIUM,
+    minimumRole: UserRole.FREE,
     successMessage: (data) => data.message || "Recipe updated successfully!",
     invalidateQueries: [
       [queryKeys.RECIPES],

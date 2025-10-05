@@ -5,6 +5,8 @@ import CreateRecipeForm from "./components/CreateRecipeForm";
 import { getRecipeCategories } from "@/actions/recipes";
 import { getIngredients } from "@/actions/items";
 import { getUnits } from "@/actions/units";
+import { getUserRecipeCount } from "@/data/recipes/getUserRecipeCount";
+import { UserRole } from "@/data/types";
 
 export default async function NewRecipePage() {
   const session = await auth();
@@ -16,6 +18,16 @@ export default async function NewRecipePage() {
   // Double-check permission on the server side
   const userRole = session.user.role;
   if (!hasPermission(userRole, Permission.CREATE_RECIPES)) {
+    redirect("/your-crockpot");
+  }
+
+  // Check recipe limit before loading the form
+  const userRecipeCount = await getUserRecipeCount(session.user.id);
+  const hasReachedLimit =
+    (userRole === UserRole.FREE && userRecipeCount >= 5) ||
+    (userRole === UserRole.PREMIUM && userRecipeCount >= 10);
+
+  if (hasReachedLimit) {
     redirect("/your-crockpot");
   }
 

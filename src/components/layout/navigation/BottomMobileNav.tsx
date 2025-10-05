@@ -3,9 +3,26 @@
 import Link from "next/link";
 import { Plus, Search, ShoppingBag, LogIn } from "lucide-react";
 import { auth } from "@/auth";
+import { getUserRecipeCount } from "@/data/recipes/getUserRecipeCount";
+import { UserRole } from "@/data/types";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 const BottomMobileNav = async () => {
   const session = await auth();
+
+  // Check if user has reached recipe limit
+  let hasReachedLimit = false;
+  if (session?.user?.id) {
+    const userRecipeCount = await getUserRecipeCount(session.user.id);
+    const userRole = session.user.role as UserRole;
+    hasReachedLimit =
+      (userRole === UserRole.FREE && userRecipeCount >= 5) ||
+      (userRole === UserRole.PREMIUM && userRecipeCount >= 10);
+  }
 
   return (
     <div className="md:hidden">
@@ -28,13 +45,30 @@ const BottomMobileNav = async () => {
                 <Search className="h-5 w-5" />
                 <span className="text-sm font-medium">Browse</span>
               </Link>
-              <Link
-                href="/recipes/new"
-                className="flex flex-col items-center gap-2 transition-colors text-gray-600"
-              >
-                <Plus className="h-5 w-5" />
-                <span className="text-sm font-medium">Add Recipe</span>
-              </Link>
+              {hasReachedLimit ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="flex flex-col items-center gap-2 text-gray-400 cursor-not-allowed">
+                      <Plus className="h-5 w-5" />
+                      <span className="text-sm font-medium">Add Recipe</span>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      You&apos;ve reached your recipe limit. Upgrade to create
+                      more!
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <Link
+                  href="/recipes/new"
+                  className="flex flex-col items-center gap-2 transition-colors text-gray-600"
+                >
+                  <Plus className="h-5 w-5" />
+                  <span className="text-sm font-medium">Add Recipe</span>
+                </Link>
+              )}
             </>
           ) : (
             // Non-logged-in users: Browse Recipes, Login

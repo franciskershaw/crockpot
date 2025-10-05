@@ -1,4 +1,5 @@
 import { getRecipeById } from "@/actions/recipes";
+import { auth } from "@/auth";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RecipeHero } from "./components/RecipeHero";
@@ -16,7 +17,7 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
   const { id } = await params;
   const { from } = await searchParams;
 
-  const recipe = await getRecipeById(id);
+  const [recipe, session] = await Promise.all([getRecipeById(id), auth()]);
 
   if (!recipe) {
     notFound();
@@ -26,7 +27,7 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section with Actions */}
       <div className="relative">
-        <RecipeHero recipe={recipe} />
+        <RecipeHero recipe={recipe} session={session} />
         <BackButton from={from} />
       </div>
 

@@ -499,6 +499,50 @@ export async function canDeleteRecipe(
 }
 
 /**
+ * Check if a user can view a recipe
+ * - Approved recipes can be viewed by everyone (including non-authenticated users)
+ * - Unapproved recipes can only be viewed by the creator or admin
+ */
+export async function canViewRecipe(
+  userId: string | null,
+  recipeId: string
+): Promise<boolean> {
+  const { prisma } = await import("@/lib/prisma");
+
+  const recipe = await prisma.recipe.findUnique({
+    where: { id: recipeId },
+    select: { approved: true, createdById: true },
+  });
+
+  if (!recipe) {
+    return false;
+  }
+
+  // Approved recipes are public - everyone can view
+  if (recipe.approved) {
+    return true;
+  }
+
+  // Unapproved recipes require authentication
+  if (!userId) {
+    return false;
+  }
+
+  // User can view if they created the recipe
+  if (recipe.createdById === userId) {
+    return true;
+  }
+
+  // Check if user is admin
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  return user?.role === "ADMIN";
+}
+
+/**
  * Cache revalidation utility for recipe-related operations
  * Provides consistent cache invalidation patterns
  */

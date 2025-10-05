@@ -2,9 +2,15 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, ChefHat } from "lucide-react";
 import { Recipe } from "@/data/types";
+import { Session } from "next-auth";
 import RecipeDetailActions from "./RecipeDetailActions";
 
-export function RecipeHero({ recipe }: { recipe: Recipe }) {
+interface RecipeHeroProps {
+  recipe: Recipe;
+  session: Session | null;
+}
+
+export function RecipeHero({ recipe, session }: RecipeHeroProps) {
   return (
     <div className="relative">
       {recipe.image?.url ? (
@@ -72,7 +78,7 @@ export function RecipeHero({ recipe }: { recipe: Recipe }) {
                 </div>
               )}
               <div className="flex-shrink-0">
-                <RecipeDetailActions recipe={recipe} />
+                <RecipeDetailActions recipe={recipe} session={session} />
               </div>
             </div>
           </div>
