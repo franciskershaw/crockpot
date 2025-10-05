@@ -254,7 +254,11 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
               <motion.button
                 initial={{ x: 20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 20, opacity: 0 }}
+                exit={{
+                  x: 30,
+                  opacity: 0,
+                  transition: { duration: 0.1, delay: 0 },
+                }}
                 transition={{ duration: 0.2, delay: 0.15 }}
                 onClick={handleConfirmAmount}
                 disabled={
