@@ -154,7 +154,11 @@ function ShoppingListRowEditor({
                   <motion.button
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: 20, opacity: 0 }}
+                    exit={{
+                      x: 30,
+                      opacity: 0,
+                      transition: { duration: 0, delay: 0 },
+                    }}
                     transition={{ duration: 0.2, delay: 0.15 }}
                     onClick={confirm}
                     className="flex items-center justify-center h-8 w-8 text-green-600 hover:text-green-700 rounded-full hover:bg-green-50 transition-colors cursor-pointer"
