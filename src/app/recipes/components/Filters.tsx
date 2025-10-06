@@ -2,17 +2,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import TimeRangeFilter from "./filters/TimeRangeFilter";
 import CategoryFilter from "./filters/CategoryFilter";
 import IngredientFilter from "./filters/IngredientFilter";
-import { getRecipeCategories, getRecipeTimeRange } from "@/actions/recipes";
-import { getIngredients } from "@/actions/items";
 import ClearFiltersButton from "./ClearFiltersButton";
+import type { RecipeCategory, Item } from "@/data/types";
 
-export default async function Filters() {
-  const [categories, timeRange, ingredients] = await Promise.all([
-    getRecipeCategories(),
-    getRecipeTimeRange(),
-    getIngredients(),
-  ]);
-
+export default function Filters({
+  categories,
+  timeRange,
+  ingredients,
+}: {
+  categories: RecipeCategory[];
+  timeRange: { min: number; max: number };
+  ingredients: Item[];
+}) {
   return (
     <Card
       className="border-0 sticky top-36 bg-white/80 backdrop-blur-sm shadow-lg overflow-auto p-0"

@@ -26,7 +26,11 @@ export default async function Recipes() {
       <div className="flex gap-6">
         {/* Desktop Filters - Hidden on mobile */}
         <div className="hidden md:block w-80">
-          <Filters />
+          <Filters
+            categories={categories}
+            timeRange={timeRange}
+            ingredients={ingredients}
+          />
         </div>
         <div className="flex-1 relative">
           <ServerSideSkeletons pageSize={9} />
