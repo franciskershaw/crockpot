@@ -3,7 +3,7 @@ import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGr
 import type { RecipeMenu } from "@/data/types";
 import ShoppingList from "./ShoppingList";
 import MobileShoppingListSheet from "./MobileShoppingListSheet";
-import { getShoppingList } from "@/actions/menu";
+import { getShoppingList, getUserMenu } from "@/actions/menu";
 import { getItems } from "@/actions/items";
 import { getUnits } from "@/actions/units";
 import ClearMenuDialog from "./ClearMenuDialog";
@@ -12,10 +12,13 @@ import { ChefHat, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const RecipeMenu = async ({ menu }: { menu: RecipeMenu | null }) => {
-  const shoppingList = await getShoppingList();
-  const items = await getItems();
-  const units = await getUnits();
+const RecipeMenu = async () => {
+  const [shoppingList, items, units, menu] = await Promise.all([
+    getShoppingList(),
+    getItems(),
+    getUnits(),
+    getUserMenu(),
+  ]);
 
   return (
     <div className="md:grid md:grid-cols-3 md:gap-4">
