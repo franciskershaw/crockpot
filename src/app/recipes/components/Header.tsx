@@ -25,7 +25,7 @@ const BrowseHeader = ({
 
   return (
     <>
-      <div className="sticky top-16 z-40 bg-surface-warm/95 backdrop-blur-sm py-4">
+      <div className="sticky top-16 z-40 bg-surface-warm/95 backdrop-blur-sm py-4 my-2">
         {/* Mobile Layout */}
         <div className="md:hidden">
           <div className="flex items-center justify-between mb-2">

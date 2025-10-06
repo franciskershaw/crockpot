@@ -258,7 +258,7 @@ const RecipeCard = memo(function RecipeCard({
   return (
     <Link
       href={href}
-      className="block w-full min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
+      className="block w-full min-w-0 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
       onClick={handleRecipeClick}
     >
       {cardContent}
