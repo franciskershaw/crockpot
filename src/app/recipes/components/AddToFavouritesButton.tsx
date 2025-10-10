@@ -9,8 +9,14 @@ import {
   useGetFavourites,
 } from "@/hooks/useFavourites";
 
-const AddToFavouritesButton = ({ recipeId }: { recipeId: string }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
+const AddToFavouritesButton = ({
+  recipeId,
+  favourited,
+}: {
+  recipeId: string;
+  favourited?: boolean;
+}) => {
+  const [isFavorited, setIsFavorited] = useState(favourited ?? false);
   const addToFavouritesMutation = useAddToFavouritesMutation();
   const removeFromFavouritesMutation = useRemoveFromFavouritesMutation();
   const { favourites } = useGetFavourites();

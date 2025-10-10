@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState, useCallback, useMemo, memo } from "react";
 import RecipeCardActions from "./RecipeCardActions";
+import { useGetFavourites } from "@/hooks/useFavourites";
 
 // Move skeleton outside component - defined once
 const SkeletonWithShimmer = memo(({ className }: { className?: string }) => (
@@ -92,6 +93,9 @@ const RecipeCard = memo(function RecipeCard({
   // Only call useSession once at top level - session is stable
   const { data: session, status } = useSession();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { favourites } = useGetFavourites();
+  const isFavourited =
+    favourites?.some((fav) => fav.id === recipe?.id) ?? false;
 
   // Memoize badge calculation
   const badgeType = useMemo(() => calculateBadgeType(recipe), [recipe]);
@@ -148,7 +152,10 @@ const RecipeCard = memo(function RecipeCard({
             />
             {showActions && (
               <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
-                <RecipeCardActions recipe={recipe} />
+                <RecipeCardActions
+                  recipe={recipe}
+                  isFavourited={isFavourited}
+                />
               </div>
             )}
             <RelevanceBadge badgeType={badgeType} />
@@ -158,7 +165,10 @@ const RecipeCard = memo(function RecipeCard({
             <ChefHat className="h-16 w-16 text-brand-secondary" />
             {showActions && (
               <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
-                <RecipeCardActions recipe={recipe} />
+                <RecipeCardActions
+                  recipe={recipe}
+                  isFavourited={isFavourited}
+                />
               </div>
             )}
             <RelevanceBadge badgeType={badgeType} />
