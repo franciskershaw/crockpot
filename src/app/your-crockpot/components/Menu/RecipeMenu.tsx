@@ -10,13 +10,12 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/constants";
 import MenuGrid from "./MenuGrid";
+import { getUserCreatedRecipes } from "@/actions/user-recipes";
 
 // Server component
 const RecipeMenu = async () => {
-  // 1) Fetch static catalogs on the server (your preference)
   const [items, units] = await Promise.all([getItems(), getUnits()]);
 
-  // 2) Prefetch dynamic data into React Query (menu, shopping list)
   const queryClient = new QueryClient();
   await Promise.all([
     queryClient.prefetchQuery({
@@ -26,6 +25,10 @@ const RecipeMenu = async () => {
     queryClient.prefetchQuery({
       queryKey: [queryKeys.SHOPPING_LIST],
       queryFn: getShoppingList,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.USER_RECIPES],
+      queryFn: getUserCreatedRecipes,
     }),
   ]);
   const state = dehydrate(queryClient);
