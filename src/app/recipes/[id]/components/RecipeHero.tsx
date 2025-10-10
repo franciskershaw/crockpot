@@ -78,7 +78,9 @@ export function RecipeHero({ recipe, session }: RecipeHeroProps) {
                 </div>
               )}
               <div className="flex-shrink-0">
-                <RecipeDetailActions recipe={recipe} session={session} />
+                {session && (
+                  <RecipeDetailActions recipe={recipe} session={session} />
+                )}
               </div>
             </div>
           </div>
