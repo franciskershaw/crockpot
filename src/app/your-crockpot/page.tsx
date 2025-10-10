@@ -1,66 +1,49 @@
-'use client';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import RecipeMenu from "./components/Menu/RecipeMenu";
+import RecipeFavourites from "./components/Favourites/RecipeFavourites";
+import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
 
-import useProtectedRoute from '@/hooks/auth/useProtectedRoute';
-
-import AddRecipe from '@/components/AddRecipe/AddRecipe';
-import LoadingSpinner from '@/components/Loading/LoadingSpinner';
-import Modal from '@/components/Modal/Modal';
-import { useModal } from '@/components/Modal/ModalContext';
-import RecipeCardModal from '@/components/RecipeCardModal/RecipeCardModal';
-import Tabs from '@/components/Tabs/Tabs';
-
-import Favourites from './tabs/Favourites/Favourites';
-import Menu from './tabs/Menu/Menu';
-import MyRecipes from './tabs/MyRecipes/MyRecipes';
+export const dynamic = "force-dynamic";
 
 const YourCrockpotPage = () => {
-	const { fetchingUser } = useProtectedRoute();
-	const { selectedRecipe, setSelectedRecipe } = useModal();
+  return (
+    <div className="container mx-auto px-2 py-6 max-w-7xl">
+      <div className="flex flex-col gap-2 mb-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+          Your Crockpot
+        </h1>
+        <p className="text-gray-600">
+          Manage your recipes, favorites, and meal planning
+        </p>
+      </div>
 
-	if (fetchingUser) {
-		return <LoadingSpinner />;
-	}
+      <Tabs defaultValue="menu" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 mb-2">
+          <TabsTrigger className="text-base" value="menu">
+            Menu
+          </TabsTrigger>
+          <TabsTrigger className="text-base" value="favourites">
+            Favourites
+          </TabsTrigger>
+          <TabsTrigger className="text-base" value="my-recipes">
+            My Recipes
+          </TabsTrigger>
+        </TabsList>
 
-	const tabTitles = ['Menu', 'Favourites', 'My Recipes'];
+        <TabsContent value="menu">
+          <RecipeMenu />
+        </TabsContent>
 
-	return (
-		<div className="container pt-3 md:pt-4">
-			<Tabs titles={tabTitles}>
-				<div className="md:mt-4">
-					<Menu />
-				</div>
-				<div className="mt-4">
-					<Favourites />
-				</div>
-				<div className="mt-4">
-					<MyRecipes />
-				</div>
-			</Tabs>
-			{selectedRecipe ? (
-				<Modal
-					title={
-						<div className="flex">
-							<div className="lowercase">
-								{selectedRecipe.timeInMinutes} mins
-							</div>
-							{selectedRecipe.categories.map((category, index) => (
-								<div key={index} className="ml-2 pl-2 border-l border-white">
-									{category.name}
-								</div>
-							))}
-						</div>
-					}
-					name="RecipeModal"
-					onClose={() => setSelectedRecipe(null)}
-				>
-					<RecipeCardModal recipe={selectedRecipe} />
-				</Modal>
-			) : null}
-			<Modal name="AddRecipe" title="Add new recipe">
-				<AddRecipe />
-			</Modal>
-		</div>
-	);
+        <TabsContent value="favourites">
+          <RecipeFavourites />
+        </TabsContent>
+
+        <TabsContent value="my-recipes">
+          <RecipeUserRecipes />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 };
 
 export default YourCrockpotPage;

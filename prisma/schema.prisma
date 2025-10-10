@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// User roles and tiers enum
+enum UserRole {
+  FREE // Logged in user - can favourite recipes and create menu/shopping list
+  PREMIUM // Paid tier 1 - can add custom recipes/items (pending approval)
+  PRO // Paid tier 2 - access to AI features and advanced functionality  
+  ADMIN // Full admin access - god mode with admin panel access
+}
+
+// Users collection
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  role          UserRole  @default(FREE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  createdRecipes     Recipe[]      @relation("RecipeCreator")
+  favouriteRecipes   Recipe[]      @relation("UserFavourites", fields: [favouriteRecipeIds], references: [id])
+  favouriteRecipeIds String[]      @db.ObjectId
+  recipeMenu         RecipeMenu?   @relation("UserMenu")
+  shoppingList       ShoppingList?
+}
+
+// Item Categories
+model ItemCategory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  faIcon    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  items Item[]
+}
+
+// Items with optional unit overrides
+model Item {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String   @unique
+  categoryId     String   @db.ObjectId
+  allowedUnitIds String[] @db.ObjectId // Override units (empty = use category defaults)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  category     ItemCategory @relation(fields: [categoryId], references: [id])
+  allowedUnits Unit[]       @relation(fields: [allowedUnitIds], references: [id])
+}
+
+// Recipes collection
+model Recipe {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  timeInMinutes Int
+  image         RecipeImage?
+  instructions  String[]
+  notes         String[]
+  approved      Boolean      @default(false)
+  serves        Int
+  createdById   String?      @db.ObjectId
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // Embedded ingredients
+  ingredients RecipeIngredient[]
+
+  // Relations
+  createdBy       User?            @relation("RecipeCreator", fields: [createdById], references: [id])
+  categories      RecipeCategory[] @relation(fields: [categoryIds], references: [id])
+  categoryIds     String[]         @db.ObjectId
+  favouritedBy    User[]           @relation("UserFavourites", fields: [favouritedByIds], references: [id])
+  favouritedByIds String[]         @db.ObjectId
+}
+
+// Recipe Categories collection
+model RecipeCategory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  recipes   Recipe[] @relation(fields: [recipeIds], references: [id])
+  recipeIds String[] @db.ObjectId
+}
+
+// Recipe Menu collection (meal plan)
+model RecipeMenu {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId // One menu per user
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Embedded entries and history
+  entries RecipeMenuEntry[]
+  history MenuHistoryEntry[]
+
+  // Relations
+  user User @relation("UserMenu", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Shopping List collection
+model ShoppingList {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Embedded items
+  items ShoppingListItem[]
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Unit collection
+model Unit {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String   @unique
+  abbreviation String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  allowedForItems   Item[]   @relation(fields: [allowedForItemIds], references: [id])
+  allowedForItemIds String[] @db.ObjectId
+}
+
+// Embedded types (only for simple data)
+type RecipeImage {
+  url      String?
+  filename String?
+}
+
+type RecipeIngredient {
+  itemId   String  @db.ObjectId
+  unitId   String? @db.ObjectId
+  quantity Float
+}
+
+type RecipeMenuEntry {
+  recipeId String @db.ObjectId
+  serves   Int
+}
+
+type MenuHistoryEntry {
+  recipeId            String   @db.ObjectId
+  timesAddedToMenu    Int
+  firstAddedToMenu    DateTime
+  lastAddedToMenu     DateTime
+  lastRemovedFromMenu DateTime
+}
+
+type ShoppingListItem {
+  itemId   String  @db.ObjectId
+  unitId   String? @db.ObjectId
+  quantity Float
+  obtained Boolean @default(false)
+  // True when the item was added manually by the user (not derived from recipes)
+  isManual Boolean @default(false)
+}
+
+// Auth.js models:
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// Verification tokens for Email (magic link) provider
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+  @@index([identifier])
+}
