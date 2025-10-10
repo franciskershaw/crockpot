@@ -23,7 +23,6 @@ import {
   canViewRecipe,
   withPermission,
   Permission,
-  revalidateRecipeCache,
 } from "@/lib/action-helpers";
 import { createRecipeSchema, updateRecipeSchema } from "@/lib/validations";
 import { validateRecipeReferences } from "@/lib/security";
@@ -137,9 +136,6 @@ export const createRecipe = withPermission(
     // Create the recipe
     const recipe = await createRecipeDAL(user.id, finalRecipeData, isApproved);
 
-    // Revalidate cache using centralized utility
-    await revalidateRecipeCache();
-
     return {
       success: true,
       recipe,
@@ -220,11 +216,6 @@ export const editRecipe = withPermission(
       });
     }
 
-    // Revalidate cache using centralized utility with specific recipe path
-    await revalidateRecipeCache({
-      includePaths: [`/recipes/${recipeId}`],
-    });
-
     return {
       success: true,
       recipe,
@@ -262,9 +253,6 @@ export const deleteRecipe = withPermission(
       });
     }
 
-    // Revalidate cache using centralized utility
-    await revalidateRecipeCache();
-
     return {
       success: true,
       recipe: deletedRecipe,
@@ -289,9 +277,6 @@ export const updateRecipeStatus = withPermission(
   ) => {
     const recipe = await updateRecipeStatusDAL(recipeId, approved);
 
-    // Revalidate cache when status changes
-    await revalidateRecipeCache();
-
     return {
       success: true,
       recipe,
@@ -307,9 +292,6 @@ export const bulkUpdateRecipeStatus = withPermission(
     { recipeIds, approved }: { recipeIds: string[]; approved: boolean }
   ) => {
     const result = await bulkUpdateRecipeStatusDAL(recipeIds, approved);
-
-    // Revalidate cache when status changes
-    await revalidateRecipeCache();
 
     return {
       success: true,

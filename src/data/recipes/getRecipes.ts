@@ -17,43 +17,27 @@ export async function getRecipes({
   const isFiltered = hasActiveFilters(filters, timeRange);
 
   if (!isFiltered) {
-    const { unstable_cache } = await import("next/cache");
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
 
-    const cacheKey = `unfiltered-recipes-${page}-${pageSize}`;
+    const [recipes, total] = await Promise.all([
+      prisma.recipe.findMany({
+        where,
+        skip,
+        take,
+        orderBy: recentFirstOrderBy,
+        include: recipeCategoriesInclude,
+      }),
+      prisma.recipe.count({ where }),
+    ]);
 
-    const getCachedUnfilteredRecipes = unstable_cache(
-      async () => {
-        const skip = (page - 1) * pageSize;
-        const take = pageSize;
-
-        const [recipes, total] = await Promise.all([
-          prisma.recipe.findMany({
-            where,
-            skip,
-            take,
-            orderBy: recentFirstOrderBy,
-            include: recipeCategoriesInclude,
-          }),
-          prisma.recipe.count({ where }),
-        ]);
-
-        return {
-          recipes,
-          total,
-          page,
-          pageSize,
-          totalPages: Math.ceil(total / pageSize),
-        };
-      },
-      [cacheKey],
-      {
-        revalidate: 300,
-        tags: [tags.RECIPES],
-      }
-    );
-
-    const result = await getCachedUnfilteredRecipes();
-    return result;
+    return {
+      recipes,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
   }
 
   // Filters are active - use optimized cached relevance approach
