@@ -44,8 +44,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-surface-warm`}
       >
         <SessionProvider>
-          <Navbar />
           <QueryProvider>
+            <Navbar />
             <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">
               {children}
             </main>
