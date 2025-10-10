@@ -6,6 +6,7 @@ import EmptyState from "@/components/ui/empty-state";
 import { ChefHat, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGetUserRecipes } from "@/hooks/useUserRecipes";
+import Link from "next/link";
 
 export default function RecipeUserRecipes() {
   const { userRecipes } = useGetUserRecipes();
@@ -35,19 +36,13 @@ export default function RecipeUserRecipes() {
 
           {/* Action Button */}
           <div className="space-y-3 pt-2">
-            <Button
-              disabled
-              className="w-full bg-brand-primary hover:bg-brand-secondary text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Create Recipe
-            </Button>
+            <Link href="/recipes/new" className="w-full">
+              <Button className="w-full bg-brand-primary hover:bg-brand-secondary text-white disabled:opacity-50 disabled:cursor-not-allowed">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Recipe
+              </Button>
+            </Link>
           </div>
-
-          {/* Helper Text */}
-          <p className="text-xs text-gray-500">
-            Recipe creation feature coming soon
-          </p>
         </EmptyState>
       ) : (
         <ResponsiveRecipeGrid>
