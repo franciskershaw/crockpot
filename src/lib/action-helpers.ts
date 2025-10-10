@@ -551,34 +551,6 @@ export async function canViewRecipe(
 }
 
 /**
- * Cache revalidation utility for recipe-related operations
- * Provides consistent cache invalidation patterns
- */
-export async function revalidateRecipeCache(
-  options: {
-    includePaths?: string[];
-    includeTags?: string[];
-  } = {}
-) {
-  const { revalidatePath, revalidateTag } = await import("next/cache");
-  const { tags } = await import("@/lib/constants");
-
-  // Default paths to revalidate
-  const defaultPaths = ["/recipes", "/your-crockpot"];
-  const pathsToRevalidate = [...defaultPaths, ...(options.includePaths || [])];
-
-  // Default tags to revalidate
-  const defaultTags = [tags.RECIPES];
-  const tagsToRevalidate = [...defaultTags, ...(options.includeTags || [])];
-
-  // Revalidate paths and tags in parallel
-  await Promise.all([
-    ...pathsToRevalidate.map((path) => revalidatePath(path)),
-    ...tagsToRevalidate.map((tag) => revalidateTag(tag)),
-  ]);
-}
-
-/**
  * Cache revalidation utility for item-related operations
  * Provides consistent cache invalidation patterns
  */
