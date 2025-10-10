@@ -11,17 +11,15 @@ import {
   SheetClose,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type { Item, ShoppingListWithDetails, Unit } from "@/data/types";
+import type { Item, Unit } from "@/data/types";
 import ShoppingList from "./ShoppingList";
 
 type MobileShoppingListSheetProps = {
-  initialData?: ShoppingListWithDetails | null;
   items: Item[];
   units: Unit[];
 };
 
 export default function MobileShoppingListSheet({
-  initialData,
   items,
   units,
 }: MobileShoppingListSheetProps) {
@@ -53,7 +51,7 @@ export default function MobileShoppingListSheet({
           </Button>
         </SheetClose>
         <div className="h-full">
-          <ShoppingList initialData={initialData} items={items} units={units} />
+          <ShoppingList items={items} units={units} />
         </div>
       </SheetContent>
     </Sheet>

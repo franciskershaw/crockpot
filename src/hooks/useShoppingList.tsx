@@ -19,11 +19,8 @@ import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { useOptimisticMutation } from "./shared/useOptimisticMutation";
 import { queryKeys } from "@/lib/constants";
 
-export function useGetShoppingList(
-  initialData?: ShoppingListWithDetails | null
-) {
+export function useGetShoppingList() {
   return useAuthenticatedQuery([queryKeys.SHOPPING_LIST], getShoppingList, {
-    initialData,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }

@@ -18,33 +18,23 @@ import {
   useGetShoppingList,
   useAddManualShoppingListItemMutation,
 } from "@/hooks/useShoppingList";
-import type {
-  RecipeMenu,
-  ShoppingListWithDetails,
-  Unit,
-  Item,
-} from "@/data/types";
+import type { Unit, Item } from "@/data/types";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
 import { useState } from "react";
 import AddItemEditor from "./AddItemEditor";
 import Searchable from "@/components/ui/searchable";
 import ClearMenuDialog from "./ClearMenuDialog";
 import ClearShoppingListDialog from "./ClearShoppingListDialog";
+import { useGetMenu } from "@/hooks/useMenu";
 
 interface ShoppingListProps {
-  initialData?: ShoppingListWithDetails | null;
   items: Item[];
   units: Unit[];
-  menu?: RecipeMenu | null;
 }
 
-export default function ShoppingList({
-  initialData,
-  items,
-  units,
-  menu,
-}: ShoppingListProps) {
-  const { data: shoppingList } = useGetShoppingList(initialData);
+export default function ShoppingList({ items, units }: ShoppingListProps) {
+  const { data: shoppingList } = useGetShoppingList();
+  const { menu } = useGetMenu();
   const toggleObtained = useToggleObtainedMutation();
   const removeItem = useRemoveShoppingListItemMutation();
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
