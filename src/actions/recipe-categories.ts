@@ -1,6 +1,11 @@
 "use server";
 
-import { createPublicAction, Permission, withPermission, withPermissionAndValidation, revalidateRecipeCache } from "@/lib/action-helpers";
+import {
+  createPublicAction,
+  Permission,
+  withPermission,
+  withPermissionAndValidation,
+} from "@/lib/action-helpers";
 import { getRecipeCategoriesWithUsage as getRecipeCategoriesWithUsageFromDAL } from "@/data/recipe-categories/getRecipeCategoriesWithUsage";
 import { createRecipeCategory as createRecipeCategoryDAL } from "@/data/recipe-categories/createRecipeCategory";
 import { updateRecipeCategory as updateRecipeCategoryDAL } from "@/data/recipe-categories/updateRecipeCategory";
@@ -23,9 +28,11 @@ export const createRecipeCategory = withPermissionAndValidation(
   async (validated) => {
     const recipeCategory = await createRecipeCategoryDAL(validated);
 
-    await revalidateRecipeCache({ includeTags: ["categories"], includePaths: ["/admin/recipe-categories", "/recipes"] });
-
-    return { success: true, recipeCategory, message: "Recipe category created successfully!" };
+    return {
+      success: true,
+      recipeCategory,
+      message: "Recipe category created successfully!",
+    };
   }
 );
 
@@ -34,9 +41,11 @@ export const updateRecipeCategory = withPermission(
   async (_user, data: { name?: string }, id: string) => {
     const recipeCategory = await updateRecipeCategoryDAL(id, data);
 
-    await revalidateRecipeCache({ includeTags: ["categories"], includePaths: ["/admin/recipe-categories", "/recipes"] });
-
-    return { success: true, recipeCategory, message: "Recipe category updated successfully!" };
+    return {
+      success: true,
+      recipeCategory,
+      message: "Recipe category updated successfully!",
+    };
   }
 );
 
@@ -53,10 +62,10 @@ export const deleteRecipeCategory = withPermission(
 
     const recipeCategory = await deleteRecipeCategoryDAL(id);
 
-    await revalidateRecipeCache({ includeTags: ["categories", "recipes"], includePaths: ["/admin/recipe-categories", "/recipes"] });
-
-    return { success: true, recipeCategory, message: "Recipe category deleted successfully!" };
+    return {
+      success: true,
+      recipeCategory,
+      message: "Recipe category deleted successfully!",
+    };
   }
 );
-
-
