@@ -26,6 +26,9 @@ import Searchable from "@/components/ui/searchable";
 import ClearMenuDialog from "./ClearMenuDialog";
 import ClearShoppingListDialog from "./ClearShoppingListDialog";
 import { useGetMenu } from "@/hooks/useMenu";
+import { useSession } from "next-auth/react";
+import { hasPermission, Permission } from "@/lib/action-helpers";
+import { ItemDialog } from "@/components/dialogs/ItemDialog";
 
 interface ShoppingListProps {
   items: Item[];
@@ -39,14 +42,27 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
   const removeItem = useRemoveShoppingListItemMutation();
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
   const addManualItem = useAddManualShoppingListItemMutation();
+  const { data: session } = useSession();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
+  const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
+
+  const canCreateItems =
+    session?.user && hasPermission(session.user.role, Permission.CREATE_ITEMS);
 
   const { grouped, categories, categoryIds } = useShoppingListCategories(
     shoppingList,
     items
   );
+
+  const handleItemCreated = (newItem: Item) => {
+    // Close the dialog
+    setShowCreateItemDialog(false);
+
+    // Automatically select the newly created item for pre-confirmation
+    setSelectedItem(newItem);
+  };
 
   return (
     <div className="w-full rounded-md border bg-white h-full flex flex-col">
@@ -75,11 +91,11 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
               setSearchableValue("");
             }
           }}
-          showAddNew={true}
+          showAddNew={canCreateItems}
           addNewLabel="Add new item"
-          onAddNew={() => {
-            console.log("Add new item clicked");
-            // TODO: Open modal or navigate to add item page
+          onAddNew={(searchText) => {
+            setSearchableValue(searchText || "");
+            setShowCreateItemDialog(true);
           }}
           className="w-full"
         />
@@ -230,6 +246,15 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
           </Accordion>
         )}
       </div>
+
+      {/* Create Item Dialog */}
+      <ItemDialog
+        open={showCreateItemDialog}
+        onOpenChange={setShowCreateItemDialog}
+        onSuccess={() => {}} // No additional success handling needed
+        onItemCreated={handleItemCreated}
+        initialName={searchableValue}
+      />
     </div>
   );
 }
