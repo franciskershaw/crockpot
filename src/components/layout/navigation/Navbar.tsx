@@ -1,33 +1,39 @@
-"use server";
+"use client";
 
-import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { ChefHat, Plus, Search, ShoppingBag, Shield } from "lucide-react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
 import LogoutButton from "@/components/landing/LogoutButton";
 import { hasPermission, Permission } from "@/lib/action-helpers";
-import { getUserRecipeCount } from "@/data/recipes/getUserRecipeCount";
 import { UserRole } from "@/data/types";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { useSession } from "next-auth/react";
+import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default async function Navbar() {
-  const session = await auth();
+export default function Navbar() {
+  const { data: session, status } = useSession();
+  const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
+
+  const isLoading = status === "loading";
+  const isAuthenticated = status === "authenticated" && !!session?.user;
 
   // Check if user has reached recipe limit
-  const hasReachedLimit = session?.user?.id
-    ? await getUserRecipeCount(session.user.id).then((count) => {
-        const userRole = session.user.role as UserRole;
-        return (
-          (userRole === UserRole.FREE && count >= 5) ||
-          (userRole === UserRole.PREMIUM && count >= 10)
-        );
-      })
-    : false;
+  const hasReachedLimit =
+    isAuthenticated && !isLoadingCount
+      ? (() => {
+          const userRole = session.user.role as UserRole;
+          return (
+            (userRole === UserRole.FREE && recipeCount >= 5) ||
+            (userRole === UserRole.PREMIUM && recipeCount >= 10)
+          );
+        })()
+      : false;
 
   return (
     <nav className="sticky top-0 z-50 shadow-sm bg-white">
@@ -48,7 +54,14 @@ export default async function Navbar() {
               Browse Recipes
             </Link>
 
-            {session?.user && (
+            {isLoading ? (
+              // Skeleton loading state - matches authenticated layout to prevent shift
+              <>
+                <Skeleton className="h-9 w-32" />
+                <Skeleton className="h-9 w-28" />
+                <Skeleton className="h-9 w-20" />
+              </>
+            ) : isAuthenticated ? (
               <>
                 <Link
                   className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
@@ -59,7 +72,7 @@ export default async function Navbar() {
                 </Link>
 
                 {hasPermission(
-                  session?.user?.role,
+                  session.user.role,
                   Permission.CREATE_RECIPES
                 ) && (
                   <>
@@ -90,7 +103,7 @@ export default async function Navbar() {
                   </>
                 )}
 
-                {hasPermission(session?.user?.role, Permission.ADMIN_PANEL) && (
+                {hasPermission(session.user.role, Permission.ADMIN_PANEL) && (
                   <Link
                     href="/admin/users"
                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
@@ -99,14 +112,12 @@ export default async function Navbar() {
                     Admin
                   </Link>
                 )}
+                <LogoutButton variant="outline" />
               </>
-            )}
-            {!session?.user ? (
+            ) : (
               <Link href="/">
                 <Button variant="outline">Login</Button>
               </Link>
-            ) : (
-              <LogoutButton variant="outline" />
             )}
           </div>
 

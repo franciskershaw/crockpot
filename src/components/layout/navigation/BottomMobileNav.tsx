@@ -1,34 +1,57 @@
-"use server";
+"use client";
 
 import Link from "next/link";
 import { Plus, Search, ShoppingBag, LogIn } from "lucide-react";
-import { auth } from "@/auth";
-import { getUserRecipeCount } from "@/data/recipes/getUserRecipeCount";
 import { UserRole } from "@/data/types";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { useSession } from "next-auth/react";
+import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const BottomMobileNav = async () => {
-  const session = await auth();
+const BottomMobileNav = () => {
+  const { data: session, status } = useSession();
+  const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
+
+  const isLoading = status === "loading";
+  const isAuthenticated = status === "authenticated" && !!session?.user;
 
   // Check if user has reached recipe limit
-  let hasReachedLimit = false;
-  if (session?.user?.id) {
-    const userRecipeCount = await getUserRecipeCount(session.user.id);
-    const userRole = session.user.role as UserRole;
-    hasReachedLimit =
-      (userRole === UserRole.FREE && userRecipeCount >= 5) ||
-      (userRole === UserRole.PREMIUM && userRecipeCount >= 10);
-  }
+  const hasReachedLimit =
+    isAuthenticated && !isLoadingCount
+      ? (() => {
+          const userRole = session.user.role as UserRole;
+          return (
+            (userRole === UserRole.FREE && recipeCount >= 5) ||
+            (userRole === UserRole.PREMIUM && recipeCount >= 10)
+          );
+        })()
+      : false;
 
   return (
     <div className="md:hidden">
       <nav className="fixed bottom-0 left-0 right-0 border-t border-surface-border bg-white z-50">
         <div className="flex items-center justify-around h-16">
-          {session ? (
+          {isLoading ? (
+            // Skeleton loading state - show 3 items to match most common (authenticated) state
+            <>
+              <div className="flex flex-col items-center gap-2">
+                <Skeleton className="h-5 w-5 rounded" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <Skeleton className="h-5 w-5 rounded" />
+                <Skeleton className="h-3 w-14" />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <Skeleton className="h-5 w-5 rounded" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            </>
+          ) : isAuthenticated ? (
             // Logged-in users: Your Crockpot, Browse, Add Recipe
             <>
               <Link

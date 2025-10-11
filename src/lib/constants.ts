@@ -4,6 +4,7 @@ export const queryKeys = {
   RECIPES: "recipes",
   INFINITE_RECIPES: "infinite-recipes",
   USER_RECIPES: "user-recipes",
+  USER_RECIPE_COUNT: "user-recipe-count",
   RECIPE_COUNT: "recipe-count",
   SHOPPING_LIST: "shopping-list",
   MENU: "menu",

@@ -3,8 +3,6 @@ import RecipeMenu from "./components/Menu/RecipeMenu";
 import RecipeFavourites from "./components/Favourites/RecipeFavourites";
 import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
 
-export const dynamic = "force-dynamic";
-
 const YourCrockpotPage = () => {
   return (
     <div className="container mx-auto px-2 py-6 max-w-7xl">

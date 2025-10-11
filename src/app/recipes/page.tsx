@@ -1,5 +1,3 @@
-"use server";
-
 import { getRecipeTimeRange, getRecipeCategories } from "@/actions/recipes";
 import { getIngredients } from "@/actions/items";
 import BrowseHeader from "./components/Header";

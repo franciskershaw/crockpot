@@ -49,8 +49,8 @@ export default function RootLayout({
             <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">
               {children}
             </main>
+            <BottomMobileNav />
           </QueryProvider>
-          <BottomMobileNav />
         </SessionProvider>
         <Toaster position="top-right" expand={false} duration={2000} />
       </body>
