@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import CreateRecipeFormWithAuth from "./components/CreateRecipeFormWithAuth";
+import RecipeFormWithData from "./components/RecipeFormWithData";
 import CreateRecipeFormSkeleton from "./components/CreateRecipeFormSkeleton";
 
 export default function NewRecipePage() {
@@ -17,7 +17,7 @@ export default function NewRecipePage() {
 
       {/* Data fetching wrapped in Suspense */}
       <Suspense fallback={<CreateRecipeFormSkeleton />}>
-        <CreateRecipeFormWithAuth />
+        <RecipeFormWithData />
       </Suspense>
     </div>
   );

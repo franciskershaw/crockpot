@@ -9,25 +9,33 @@ import { UserRole } from "@/data/types";
 import type { Item, RecipeCategory, Unit } from "@/data/types";
 import CreateRecipeForm from "./CreateRecipeForm";
 import CreateRecipeFormSkeleton from "./CreateRecipeFormSkeleton";
+import type { EditRecipeInput } from "../helpers/recipe-form-helpers";
 
-interface CreateRecipeFormClientProps {
+interface RecipeFormClientProps {
   recipeCategories: RecipeCategory[];
   ingredients: Item[];
   units: Unit[];
+  recipe?: EditRecipeInput; // Optional - if provided, we're editing
+  recipeOwnerId?: string; // Required when editing
 }
 
 /**
- * Client component that handles authentication and permission checks
- * before rendering the recipe creation form
+ * Shared client component that handles authentication and permission checks
+ * before rendering the recipe form (for both create and edit)
  * Leverages React Query cache for instant rendering on repeat visits
  */
-export default function CreateRecipeFormClient({
+export default function RecipeFormClient({
   recipeCategories,
   ingredients,
   units,
-}: CreateRecipeFormClientProps) {
+  recipe,
+  recipeOwnerId,
+}: RecipeFormClientProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const isEditing = !!recipe;
+
+  // Only fetch recipe count when creating (not needed for editing)
   const { recipeCount, isLoading: countLoading } = useGetUserRecipeCount();
 
   // Client-side auth and permission checks
@@ -39,15 +47,27 @@ export default function CreateRecipeFormClient({
 
     if (status === "authenticated" && session?.user?.id) {
       const userRole = session.user.role;
+      const userId = session.user.id;
 
-      // Check if user has permission to create recipes
+      // Check if user has permission to create/edit recipes
       if (!hasPermission(userRole, Permission.CREATE_RECIPES)) {
         router.push("/your-crockpot");
         return;
       }
 
-      // Check recipe limits once count is loaded
-      if (recipeCount !== undefined) {
+      // For editing: check ownership
+      if (isEditing && recipeOwnerId) {
+        const isOwner = userId === recipeOwnerId;
+        const isAdmin = userRole === UserRole.ADMIN;
+
+        if (!isOwner && !isAdmin) {
+          router.push("/your-crockpot");
+          return;
+        }
+      }
+
+      // For creating: check recipe limits
+      if (!isEditing && recipeCount !== undefined) {
         const hasReachedLimit =
           (userRole === UserRole.FREE && recipeCount >= 5) ||
           (userRole === UserRole.PREMIUM && recipeCount >= 10);
@@ -57,21 +77,23 @@ export default function CreateRecipeFormClient({
         }
       }
     }
-  }, [status, session, router, recipeCount]);
+  }, [status, session, router, recipeCount, isEditing, recipeOwnerId]);
 
   // Show skeleton if:
-  // 1. Session is still loading (queries can't start yet), OR
-  // 2. Recipe count is loading AND no cached data exists
+  // 1. Session is still loading, OR
+  // 2. Creating AND recipe count is loading AND no cached data exists
   const isInitialLoad =
-    status === "loading" || (countLoading && recipeCount === undefined);
+    status === "loading" ||
+    (!isEditing && countLoading && recipeCount === undefined);
 
   if (isInitialLoad) {
     return <CreateRecipeFormSkeleton />;
   }
 
-  // Render the actual form once auth and limits are verified
+  // Render the form once auth and permissions are verified
   return (
     <CreateRecipeForm
+      recipe={recipe}
       recipeCategories={recipeCategories}
       ingredients={ingredients}
       units={units}
