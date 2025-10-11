@@ -20,9 +20,7 @@ import { useOptimisticMutation } from "./shared/useOptimisticMutation";
 import { queryKeys } from "@/lib/constants";
 
 export function useGetShoppingList() {
-  return useAuthenticatedQuery([queryKeys.SHOPPING_LIST], getShoppingList, {
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
+  return useAuthenticatedQuery([queryKeys.SHOPPING_LIST], getShoppingList);
 }
 
 export const useToggleObtainedMutation = createShoppingListMutation({

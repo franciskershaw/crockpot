@@ -14,7 +14,6 @@ import {
 } from "@/lib/action-helpers";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
 import { NotFoundError } from "@/lib/errors";
-import { revalidatePath } from "next/cache";
 import {
   toggleObtainedForItem as toggleObtainedForItemDAL,
   removeItemFromShoppingList as removeItemFromShoppingListDAL,
@@ -51,7 +50,6 @@ export const addRecipeToMenu = withAuthAndValidation(
       validatedInput.serves
     );
 
-    revalidatePath("/your-crockpot");
     return result;
   }
 );
@@ -79,7 +77,6 @@ export const removeRecipeFromMenu = withAuthAndValidation(
       validatedInput.recipeId
     );
 
-    revalidatePath("/your-crockpot");
     return updatedMenu;
   }
 );
@@ -87,7 +84,6 @@ export const removeRecipeFromMenu = withAuthAndValidation(
 // Remove all recipes from menu
 export const removeAllRecipesFromMenu = withAuthentication(async (userId) => {
   const updatedMenu = await removeAllRecipesFromMenuFromDAL(userId);
-  revalidatePath("/your-crockpot");
   return updatedMenu;
 });
 
@@ -105,7 +101,6 @@ export const toggleObtained = withAuthAndValidation(
       validated.unitId,
       validated.isManual
     );
-    revalidatePath("/your-crockpot");
     return updated;
   }
 );
@@ -119,7 +114,6 @@ export const removeShoppingListItem = withAuthAndValidation(
       validated.unitId,
       validated.isManual
     );
-    revalidatePath("/your-crockpot");
     return updated;
   }
 );
@@ -134,7 +128,6 @@ export const updateShoppingListItemQuantity = withAuthAndValidation(
       validated.quantity,
       validated.isManual
     );
-    revalidatePath("/your-crockpot");
     return updated;
   }
 );
@@ -148,13 +141,11 @@ export const addManualShoppingListItem = withAuthAndValidation(
       validated.unitId ?? null,
       validated.quantity
     );
-    revalidatePath("/your-crockpot");
     return updated;
   }
 );
 
 export const clearShoppingList = withAuthentication(async (userId) => {
   const updated = await clearAllItemsFromShoppingListDAL(userId);
-  revalidatePath("/your-crockpot");
   return updated;
 });

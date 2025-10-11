@@ -11,7 +11,6 @@ export default function QueryProvider({ children }: { children: ReactNode }) {
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false,
-            refetchOnMount: false, // Don't refetch on mount if data exists
             refetchOnReconnect: false, // Don't refetch on reconnect
             staleTime: 10 * 60 * 1000, // 10 minutes - more aggressive
             gcTime: 15 * 60 * 1000, // 15 minutes
