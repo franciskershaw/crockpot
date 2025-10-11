@@ -34,7 +34,7 @@ export default function MobileShoppingListSheet({
           <ShoppingBasket className="h-5 w-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-screen p-0">
+      <SheetContent side="bottom" className="h-dvh p-0">
         <SheetHeader className="sr-only">
           <SheetTitle>Shopping List</SheetTitle>
           <SheetDescription>Manage items to buy</SheetDescription>
