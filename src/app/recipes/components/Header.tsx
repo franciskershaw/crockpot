@@ -6,7 +6,6 @@ import SearchBar from "./SearchBar";
 import RecipeCountBadge from "./RecipeCountBadge";
 import MobileFilterSidebar from "./MobileFilterSidebar";
 import ClearFiltersButton from "./ClearFiltersButton";
-import { useFilters } from "@/app/recipes/context/FilterProvider";
 import type { RecipeCategory, Item } from "@/data/types";
 
 interface BrowseHeaderProps {
@@ -21,7 +20,6 @@ const BrowseHeader = ({
   ingredients,
 }: BrowseHeaderProps) => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const { hasActiveFilters } = useFilters();
 
   return (
     <>
@@ -31,7 +29,7 @@ const BrowseHeader = ({
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold">Browse Recipes</h1>
             <div className="flex items-center gap-2">
-              {hasActiveFilters && <ClearFiltersButton />}
+              <ClearFiltersButton />
               <button
                 onClick={() => setIsMobileFilterOpen(true)}
                 className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
@@ -45,7 +43,7 @@ const BrowseHeader = ({
           <RecipeCountBadge />
         </div>
 
-        {/* Desktop Layout */}
+        {/* Desktop Layout - no changes needed here since no conditional rendering */}
         <div className="hidden md:flex md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold whitespace-nowrap">

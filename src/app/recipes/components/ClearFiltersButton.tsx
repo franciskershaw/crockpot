@@ -19,4 +19,4 @@ export default function ClearFiltersButton() {
       Clear All ({activeFilterCount})
     </Button>
   );
-} 
+}

@@ -15,7 +15,6 @@ interface FilterContextType {
   filters: RecipeFilters; // These are now always hydration-safe
   updateFilters: (updates: Partial<RecipeFilters>) => void;
   clearAllFilters: () => void;
-  timeRange: { min: number; max: number };
   hasActiveFilters: boolean;
   activeFilterCount: number;
   isHydrated: boolean; // Keep for any edge cases
@@ -35,15 +34,11 @@ export function useFilters() {
 
 interface FilterProviderProps {
   children: ReactNode;
-  timeRange: { min: number; max: number };
 }
 
 const FILTERS_STORAGE_KEY = "crockpot_recipe_filters";
 
-export default function FilterProvider({
-  children,
-  timeRange,
-}: FilterProviderProps) {
+export default function FilterProvider({ children }: FilterProviderProps) {
   const [isHydrated, setIsHydrated] = useState(false);
   const [totalRecipeCount, setTotalRecipeCount] = useState(0);
 
@@ -51,14 +46,14 @@ export default function FilterProvider({
   const getDefaultFilters = useCallback(
     (): RecipeFilters => ({
       approved: true,
-      minTime: timeRange.min,
-      maxTime: timeRange.max,
+      minTime: undefined,
+      maxTime: undefined,
       categoryIds: [],
       categoryMode: "include",
       ingredientIds: [],
       query: undefined,
     }),
-    [timeRange.min, timeRange.max]
+    []
   );
 
   // Use localStorage to persist filters (this contains the raw localStorage values)
@@ -71,21 +66,6 @@ export default function FilterProvider({
   useEffect(() => {
     setIsHydrated(true);
   }, []);
-
-  // Update time range if it has changed (e.g., new recipes added)
-  useEffect(() => {
-    setRawFilters((prev) => ({
-      ...prev,
-      minTime:
-        prev.minTime === undefined
-          ? timeRange.min
-          : Math.max(prev.minTime, timeRange.min),
-      maxTime:
-        prev.maxTime === undefined
-          ? timeRange.max
-          : Math.min(prev.maxTime, timeRange.max),
-    }));
-  }, [timeRange.min, timeRange.max, setRawFilters]);
 
   // Return hydration-safe filters (default values during SSR/initial hydration)
   const filters = useMemo(() => {
@@ -102,7 +82,7 @@ export default function FilterProvider({
     const hasIngredients =
       filters.ingredientIds && filters.ingredientIds.length > 0;
     const hasTimeRange =
-      filters.minTime !== timeRange.min || filters.maxTime !== timeRange.max;
+      filters.minTime !== undefined || filters.maxTime !== undefined;
 
     const hasActiveFilters =
       hasQuery || hasCategories || hasIngredients || hasTimeRange;
@@ -114,7 +94,7 @@ export default function FilterProvider({
       (hasTimeRange ? 1 : 0);
 
     return { hasActiveFilters, activeFilterCount };
-  }, [filters, timeRange]);
+  }, [filters]);
 
   const updateFilters = (updates: Partial<RecipeFilters>) => {
     setRawFilters((prev) => ({
@@ -134,7 +114,6 @@ export default function FilterProvider({
         filters,
         updateFilters,
         clearAllFilters,
-        timeRange,
         hasActiveFilters,
         activeFilterCount,
         isHydrated,
