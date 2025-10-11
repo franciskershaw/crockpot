@@ -7,9 +7,21 @@ import { Heart, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useGetFavourites } from "@/hooks/useFavourites";
+import { useSession } from "next-auth/react";
+import FavouritesSkeleton from "./FavouritesSkeleton";
 
 export default function RecipeFavourites() {
-  const { favourites } = useGetFavourites();
+  const { status } = useSession();
+  const { favourites, isLoading } = useGetFavourites();
+
+  // Show skeleton if:
+  // 1. Session is still loading (queries can't start yet), OR
+  // 2. Query is loading AND no cached data exists
+  const isInitialLoad = status === "loading" || (isLoading && !favourites);
+
+  if (isInitialLoad) {
+    return <FavouritesSkeleton />;
+  }
 
   return (
     <>

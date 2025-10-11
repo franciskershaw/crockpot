@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RecipeMenuWithData from "./components/Menu/RecipeMenuWithData";
-import RecipeFavourites from "./components/Favourites/RecipeFavourites";
+import RecipeFavouritesWithData from "./components/Favourites/RecipeFavouritesWithData";
 import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
 import MenuSkeleton from "./components/Menu/MenuSkeleton";
+import FavouritesSkeleton from "./components/Favourites/FavouritesSkeleton";
 
 const YourCrockpotPage = () => {
   return (
@@ -39,9 +40,11 @@ const YourCrockpotPage = () => {
           </Suspense>
         </TabsContent>
 
-        {/* Client-side tabs - no Suspense needed */}
+        {/* Favourites tab - streams in with Suspense */}
         <TabsContent value="favourites">
-          <RecipeFavourites />
+          <Suspense fallback={<FavouritesSkeleton />}>
+            <RecipeFavouritesWithData />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="my-recipes">
