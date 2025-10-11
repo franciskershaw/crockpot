@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ChefHat, Plus, Search, ShoppingBag, Shield } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import MobileMenu from "./MobileMenu";
 import LogoutButton from "@/components/landing/LogoutButton";
 import { hasPermission, Permission } from "@/lib/action-helpers";
@@ -15,13 +16,43 @@ import {
 import { useSession } from "next-auth/react";
 import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn, isActive } from "@/lib/utils";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
+  const pathname = usePathname();
 
   const isLoading = status === "loading";
   const isAuthenticated = status === "authenticated" && !!session?.user;
+
+  // Centralized nav link styling
+  const getNavLinkClasses = (path: string) =>
+    cn(
+      // Base styles
+      "relative flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium",
+      "transition-colors duration-200",
+      // Active/click background
+      "active:bg-gray-100",
+      // Text color
+      isActive(path, pathname)
+        ? "text-brand-primary font-semibold"
+        : "text-gray-700"
+    );
+
+  // Centralized text wrapper styling (for the sliding border effect)
+  const getTextWrapperClasses = (path: string) =>
+    cn(
+      // Position for pseudo-element and padding
+      "relative pb-1",
+      // Bottom border pseudo-element with rounded ends
+      "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-brand-primary after:rounded-full",
+      "after:transition-transform after:duration-300 after:origin-right",
+      // Active state - border stays visible
+      isActive(path, pathname)
+        ? "after:scale-x-100"
+        : "after:scale-x-0 group-hover:after:scale-x-100"
+    );
 
   // Check if user has reached recipe limit
   const hasReachedLimit =
@@ -47,11 +78,13 @@ export default function Navbar() {
           {/* Desktop Navigation - Hidden on mobile */}
           <div className="hidden md:flex items-center gap-6">
             <Link
-              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+              className={cn(getNavLinkClasses("/recipes"), "group")}
               href="/recipes"
             >
               <Search className="h-4 w-4" />
-              Browse Recipes
+              <span className={getTextWrapperClasses("/recipes")}>
+                Browse Recipes
+              </span>
             </Link>
 
             {isLoading ? (
@@ -64,11 +97,13 @@ export default function Navbar() {
             ) : isAuthenticated ? (
               <>
                 <Link
-                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+                  className={cn(getNavLinkClasses("/your-crockpot"), "group")}
                   href="/your-crockpot"
                 >
                   <ShoppingBag className="h-4 w-4" />
-                  Your Crockpot
+                  <span className={getTextWrapperClasses("/your-crockpot")}>
+                    Your Crockpot
+                  </span>
                 </Link>
 
                 {hasPermission(
@@ -94,10 +129,15 @@ export default function Navbar() {
                     ) : (
                       <Link
                         href="/recipes/new"
-                        className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+                        className={cn(
+                          getNavLinkClasses("/recipes/new"),
+                          "group"
+                        )}
                       >
                         <Plus className="h-4 w-4" />
-                        Add Recipe
+                        <span className={getTextWrapperClasses("/recipes/new")}>
+                          Add Recipe
+                        </span>
                       </Link>
                     )}
                   </>
@@ -106,10 +146,12 @@ export default function Navbar() {
                 {hasPermission(session.user.role, Permission.ADMIN_PANEL) && (
                   <Link
                     href="/admin/users"
-                    className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+                    className={cn(getNavLinkClasses("/admin"), "group")}
                   >
                     <Shield className="h-4 w-4" />
-                    Admin
+                    <span className={getTextWrapperClasses("/admin")}>
+                      Admin
+                    </span>
                   </Link>
                 )}
                 <LogoutButton variant="outline" />
