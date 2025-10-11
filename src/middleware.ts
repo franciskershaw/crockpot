@@ -8,6 +8,11 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const userRole = req.auth?.user?.role;
 
+  // Skip all middleware logic for RSC requests
+  if (nextUrl.searchParams.has("_rsc")) {
+    return NextResponse.next();
+  }
+
   // Redirect authenticated users away from landing page
   if (isLoggedIn && nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
