@@ -24,10 +24,13 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section with Actions - renders immediately with server data */}
-      <div className="relative">
-        <RecipeHero recipe={recipe} session={session} />
-        <BackButton from={from} />
+      {/* Break out of parent container for full-width hero */}
+      <div className="-mx-4 md:mx-0">
+        {/* Hero Section with Actions - renders immediately with server data */}
+        <div className="relative">
+          <RecipeHero recipe={recipe} session={session} />
+          <BackButton from={from} />
+        </div>
       </div>
 
       {/* Main Content - use Suspense for progressive loading */}

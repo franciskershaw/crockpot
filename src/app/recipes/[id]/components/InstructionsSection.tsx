@@ -16,38 +16,46 @@ export function InstructionsSection({
   const instructionText = isMobile ? "text-sm sm:text-base" : "text-lg";
   const instructionPadding = isMobile ? "pt-0.5" : "pt-1";
 
-  return (
-    <Card>
-      <CardContent className={isMobile ? "p-4 sm:p-6" : "p-6"}>
-        <h2
-          className={`font-bold text-gray-900 mb-6 ${
-            isMobile ? "text-xl sm:text-2xl" : "text-2xl"
-          }`}
-        >
-          Instructions
-        </h2>
+  const content = (
+    <>
+      <h2
+        className={`font-bold text-gray-900 mb-4 sm:mb-6 ${
+          isMobile ? "text-xl sm:text-2xl" : "text-2xl"
+        }`}
+      >
+        Instructions
+      </h2>
 
-        <div className={instructionSpacing}>
-          {instructions.map((instruction, index) => (
-            <div key={index} className={`flex ${instructionGap}`}>
-              <div className="flex-shrink-0">
-                <div
-                  className={`${stepNumberSize} bg-blue-500 text-white rounded-full flex items-center justify-center font-bold ${stepNumberText} shadow-lg`}
-                >
-                  {index + 1}
-                </div>
-              </div>
-              <div className={`flex-1 ${instructionPadding}`}>
-                <p
-                  className={`text-gray-700 leading-relaxed ${instructionText}`}
-                >
-                  {instruction}
-                </p>
+      <div className={instructionSpacing}>
+        {instructions.map((instruction, index) => (
+          <div key={index} className={`flex ${instructionGap}`}>
+            <div className="flex-shrink-0">
+              <div
+                className={`${stepNumberSize} bg-blue-500 text-white rounded-full flex items-center justify-center font-bold ${stepNumberText} shadow-lg`}
+              >
+                {index + 1}
               </div>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <div className={`flex-1 ${instructionPadding}`}>
+              <p className={`text-gray-700 leading-relaxed ${instructionText}`}>
+                {instruction}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
+
+  // Desktop: wrap in Card
+  if (!isMobile) {
+    return (
+      <Card>
+        <CardContent className="p-6">{content}</CardContent>
+      </Card>
+    );
+  }
+
+  // Mobile: no card, just content with minimal wrapper
+  return <div className="py-2">{content}</div>;
 }

@@ -13,27 +13,40 @@ export function NotesSection({ notes, isMobile = false }: NotesSectionProps) {
   const noteGap = isMobile ? "gap-2 sm:gap-3" : "gap-3";
   const noteText = isMobile ? "text-sm sm:text-base" : "";
   const bulletSize = isMobile ? "w-1 h-1" : "w-1.5 h-1.5";
-  const padding = isMobile ? "p-4 sm:p-6" : "p-6";
 
+  const content = (
+    <>
+      <h3 className={`${titleText} font-bold text-amber-900 mb-4`}>
+        Chef&apos;s Notes
+      </h3>
+      <div className={noteSpacing}>
+        {notes.map((note, index) => (
+          <div key={index} className={`flex ${noteGap}`}>
+            <div
+              className={`flex-shrink-0 ${bulletSize} bg-amber-500 rounded-full mt-2`}
+            />
+            <p className={`text-amber-800 leading-relaxed ${noteText}`}>
+              {note}
+            </p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+
+  // Desktop: wrap in Card
+  if (!isMobile) {
+    return (
+      <Card className="border-amber-200 bg-amber-50">
+        <CardContent className="p-6">{content}</CardContent>
+      </Card>
+    );
+  }
+
+  // Mobile: no card, just content with minimal wrapper and background
   return (
-    <Card className="border-amber-200 bg-amber-50">
-      <CardContent className={padding}>
-        <h3 className={`${titleText} font-bold text-amber-900 mb-4`}>
-          Chef&apos;s Notes
-        </h3>
-        <div className={noteSpacing}>
-          {notes.map((note, index) => (
-            <div key={index} className={`flex ${noteGap}`}>
-              <div
-                className={`flex-shrink-0 ${bulletSize} bg-amber-500 rounded-full mt-2`}
-              />
-              <p className={`text-amber-800 leading-relaxed ${noteText}`}>
-                {note}
-              </p>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="py-4 px-4 bg-amber-50 rounded-lg border border-amber-200">
+      {content}
+    </div>
   );
 }

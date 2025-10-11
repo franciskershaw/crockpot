@@ -72,7 +72,7 @@ export function IngredientsSection({
       {/* Desktop: Single card with serves control, title, and sections */}
       <Card className="hidden lg:block">
         <CardContent className="p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 mb-5">
             Ingredients ({scaledIngredients.length})
           </h2>
 
