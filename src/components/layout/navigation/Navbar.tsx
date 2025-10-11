@@ -30,7 +30,7 @@ export default function Navbar() {
   const getNavLinkClasses = (path: string) =>
     cn(
       // Base styles
-      "relative flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium",
+      "relative flex items-center gap-2 px-3 py-2 pb-3 rounded-md text-sm font-medium",
       "transition-colors duration-200",
       // Active/click background
       "active:bg-gray-100",
@@ -43,10 +43,10 @@ export default function Navbar() {
   // Centralized text wrapper styling (for the sliding border effect)
   const getTextWrapperClasses = (path: string) =>
     cn(
-      // Position for pseudo-element and padding
-      "relative pb-1",
-      // Bottom border pseudo-element with rounded ends
-      "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-brand-primary after:rounded-full",
+      // Position for pseudo-element
+      "relative",
+      // Bottom border pseudo-element with rounded ends, positioned below text
+      "after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-[2px] after:bg-brand-primary after:rounded-full",
       "after:transition-transform after:duration-300 after:origin-right",
       // Active state - border stays visible
       isActive(path, pathname)
