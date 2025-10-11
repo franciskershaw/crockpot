@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useGetMenu } from "@/hooks/useMenu";
 
 function MenuGrid() {
-  const { menu } = useGetMenu();
+  const { menu, isLoading } = useGetMenu();
 
-  if (!menu?.entries?.length) {
+  // Don't show empty state when menu is undefined due to loading
+  if (!isLoading && (!menu || !menu.entries?.length)) {
     return (
       <EmptyState minHeight="min-h-[calc(100vh-20rem)] md:min-h-[calc(100vh-16rem)]">
         <div className="flex justify-center">
@@ -44,9 +45,11 @@ function MenuGrid() {
     );
   }
 
+  // If loading or menu exists, render the grid
+  // (RecipeMenu handles the skeleton for initial load)
   return (
     <ResponsiveRecipeGrid>
-      {menu.entries.map((entry, index) => (
+      {menu?.entries?.map((entry, index) => (
         <RecipeCard
           key={entry.recipeId}
           recipe={entry.recipe}
