@@ -1,38 +1,33 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import { hasPermission, Permission } from "@/lib/action-helpers";
-import { UserRole } from "@/data/types";
+// import { hasPermission, Permission } from "@/lib/action-helpers";
+// import { UserRole } from "@/data/types";
 
-export default auth((req) => {
-  const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
-  const userRole = req.auth?.user?.role;
-
-  // Skip all middleware logic for RSC requests
-  if (nextUrl.searchParams.has("_rsc")) {
-    return NextResponse.next();
-  }
+export default auth(() => {
+  // const { nextUrl } = req;
+  // const isLoggedIn = !!req.auth;
+  // const userRole = req.auth?.user?.role;
 
   // Redirect authenticated users away from landing page
-  if (isLoggedIn && nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
-  }
+  // if (isLoggedIn && nextUrl.pathname === "/") {
+  //   return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
+  // }
 
-  // Protect authenticated routes - redirect unauthenticated users to home
-  if (nextUrl.pathname.startsWith("/your-crockpot") && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/", nextUrl));
-  }
+  // // Protect authenticated routes - redirect unauthenticated users to home
+  // if (nextUrl.pathname.startsWith("/your-crockpot") && !isLoggedIn) {
+  //   return NextResponse.redirect(new URL("/", nextUrl));
+  // }
 
-  // Protect premium routes - require PREMIUM, PRO, or ADMIN role
-  if (nextUrl.pathname.startsWith("/recipes/new")) {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/", nextUrl));
-    }
+  // // Protect premium routes - require PREMIUM, PRO, or ADMIN role
+  // if (nextUrl.pathname.startsWith("/recipes/new")) {
+  //   if (!isLoggedIn) {
+  //     return NextResponse.redirect(new URL("/", nextUrl));
+  //   }
 
-    if (!hasPermission(userRole as UserRole, Permission.CREATE_RECIPES)) {
-      return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
-    }
-  }
+  //   if (!hasPermission(userRole as UserRole, Permission.CREATE_RECIPES)) {
+  //     return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
+  //   }
+  // }
 
   // Allow access to other routes with security headers
   const response = NextResponse.next();
