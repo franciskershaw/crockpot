@@ -13,6 +13,20 @@ const nextConfig: NextConfig = {
     ],
     qualities: [25, 50, 75, 85, 100],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/",
+        destination: "/your-crockpot",
+        has: [
+          {
+            type: "cookie",
+            key: "authjs.session-token",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -8,20 +8,15 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const userRole = req.auth?.user?.role;
 
-  // Skip all middleware logic for RSC requests
-  if (nextUrl.searchParams.has("_rsc")) {
-    return NextResponse.next();
-  }
-
-  // Redirect authenticated users away from landing page
-  if (isLoggedIn && nextUrl.pathname === "/") {
-    return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
-  }
-
   // Protect authenticated routes - redirect unauthenticated users to home
   if (nextUrl.pathname.startsWith("/your-crockpot") && !isLoggedIn) {
     return NextResponse.redirect(new URL("/", nextUrl));
   }
+
+  // Redirect authenticated users away from landing page
+  // if (isLoggedIn && nextUrl.pathname === "/") {
+  //   return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
+  // }
 
   // Protect premium routes - require PREMIUM, PRO, or ADMIN role
   if (nextUrl.pathname.startsWith("/recipes/new")) {
@@ -54,14 +49,7 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - _rsc (React Server Components internal requests)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico|_rsc).*)",
+    // Match pages and routes but exclude Next.js internals
+    "/((?!_next|api|favicon.ico).*)",
   ],
 };
