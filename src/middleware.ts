@@ -8,8 +8,6 @@ const PROTECTED_ROUTES = ["/your-crockpot", "/recipes/new", "/recipes/edit"];
 
 const ADMIN_ROUTES = ["/admin"];
 
-const PUBLIC_ROUTES = ["/", "/recipes", "/api", "/_next", "/favicon.ico"];
-
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
