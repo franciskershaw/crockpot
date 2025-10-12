@@ -14,9 +14,18 @@ export default auth((req) => {
   }
 
   // Redirect authenticated users away from landing page
-  // if (isLoggedIn && nextUrl.pathname === "/") {
-  //   return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
-  // }
+  if (isLoggedIn && nextUrl.pathname === "/") {
+    // Skip redirect for RSC requests to avoid CORS issues
+    if (
+      nextUrl.searchParams.has("_rsc") ||
+      req.headers.get("rsc") === "1" ||
+      req.headers.get("next-router-prefetch") === "1"
+    ) {
+      return NextResponse.next();
+    }
+
+    return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
+  }
 
   // Protect premium routes - require PREMIUM, PRO, or ADMIN role
   if (nextUrl.pathname.startsWith("/recipes/new")) {
