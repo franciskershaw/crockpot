@@ -1,85 +1,57 @@
-// src/middleware.ts
-import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+import { hasPermission, Permission } from "@/lib/action-helpers";
 import { UserRole } from "@/data/types";
 
-// Define route patterns
-const PROTECTED_ROUTES = ["/your-crockpot", "/recipes/new", "/recipes/edit"];
+export default auth((req) => {
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
+  const userRole = req.auth?.user?.role;
 
-const ADMIN_ROUTES = ["/admin"];
-
-export default async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // Skip middleware for static files and API routes (except auth)
-  if (
-    pathname.startsWith("/_next") ||
-    (pathname.startsWith("/api/") && !pathname.startsWith("/api/auth")) ||
-    pathname.includes(".") ||
-    pathname.startsWith("/favicon")
-  ) {
-    return NextResponse.next();
+  // // Protect authenticated routes - redirect unauthenticated users to home
+  if (nextUrl.pathname.startsWith("/your-crockpot") && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/", nextUrl));
   }
 
-  // Get session from NextAuth
-  const session = await auth();
-  const isAuthenticated = !!session?.user;
-  const userRole = session?.user?.role as UserRole;
-
-  // Handle homepage redirects
-  if (pathname === "/") {
-    if (isAuthenticated) {
-      // Logged in users get redirected to your-crockpot
-      return NextResponse.redirect(new URL("/your-crockpot", request.url));
+  // Protect premium routes - require PREMIUM, PRO, or ADMIN role
+  if (nextUrl.pathname.startsWith("/recipes/new")) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL("/", nextUrl));
     }
-    // Not logged in users stay on homepage
-    return NextResponse.next();
+
+    if (!hasPermission(userRole as UserRole, Permission.CREATE_RECIPES)) {
+      return NextResponse.redirect(new URL("/your-crockpot", nextUrl));
+    }
   }
 
-  // Handle protected routes (require authentication)
-  const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
-    pathname.startsWith(route)
+  // Allow access to other routes with security headers
+  const response = NextResponse.next();
+
+  // Add security headers
+  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+
+  // Add Permissions Policy header to restrict potentially dangerous features
+  response.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()"
   );
 
-  if (isProtectedRoute && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  // Handle admin routes (require ADMIN role)
-  const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.startsWith(route));
-
-  if (isAdminRoute) {
-    if (!isAuthenticated || userRole !== UserRole.ADMIN) {
-      // Return 404 for non-admin users trying to access admin routes
-      return NextResponse.redirect(new URL("/not-found", request.url));
-    }
-  }
-
-  // Handle recipe edit routes (require ownership or admin)
-  if (pathname.startsWith("/recipes/edit/")) {
-    if (!isAuthenticated) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
-    // For recipe ownership check, we'll let the page component handle it
-    // since we need to fetch the recipe data to check ownership
-    // This prevents the middleware from making database calls
-  }
-
-  // Allow access to all other routes
-  return NextResponse.next();
-}
+  return response;
+});
 
 export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes, except auth)
+     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - public folder files
+     * - _rsc (React Server Components internal requests)
      */
-    "/((?!api/(?!auth)|_next/static|_next/image|favicon.ico|.*\\.).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|_rsc).*)",
   ],
 };

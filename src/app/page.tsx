@@ -1,11 +1,18 @@
+import { auth } from "@/auth";
 import Auth from "@/components/landing/Auth";
 import HeroSection from "@/components/landing/HeroSection";
 // import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import PricingSection from "@/components/landing/PricingSection";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect("/your-crockpot");
+  }
   return (
     <div className="min-h-screen">
       {/* Hero Section with Auth Card */}
