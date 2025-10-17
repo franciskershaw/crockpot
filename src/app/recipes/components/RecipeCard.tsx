@@ -8,7 +8,7 @@ import type { Recipe } from "@/data/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useState, useCallback, useMemo, memo } from "react";
+import { useState, useCallback, useMemo, memo, useEffect } from "react";
 import RecipeCardActions from "./RecipeCardActions";
 
 // Move skeleton outside component - defined once
@@ -92,12 +92,16 @@ const RecipeCard = memo(function RecipeCard({
   // Only call useSession once at top level - session is stable
   const { data: session, status } = useSession();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [loadingRecipePage, setLoadingRecipePage] = useState(false);
+  const [showSlowConnectionMessage, setShowSlowConnectionMessage] =
+    useState(false);
 
   // Memoize badge calculation
   const badgeType = useMemo(() => calculateBadgeType(recipe), [recipe]);
 
   // Memoize callbacks
   const handleRecipeClick = useCallback(() => {
+    setLoadingRecipePage(true);
     if (typeof window !== "undefined") {
       try {
         const scrollPosition = window.scrollY;
@@ -109,7 +113,21 @@ const RecipeCard = memo(function RecipeCard({
         // Ignore storage errors
       }
     }
-  }, []);
+  }, [setLoadingRecipePage]);
+
+  // Show slow connection message after delay
+  useEffect(() => {
+    if (!loadingRecipePage) {
+      setShowSlowConnectionMessage(false);
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setShowSlowConnectionMessage(true);
+    }, 5000);
+
+    return () => clearTimeout(timeoutId);
+  }, [loadingRecipePage]);
 
   const handleImageLoad = useCallback(() => {
     setImageLoaded(true);
@@ -126,7 +144,33 @@ const RecipeCard = memo(function RecipeCard({
   );
 
   const cardContent = (
-    <Card className="hover:shadow-lg transition-shadow duration-300 border-0 overflow-hidden cursor-pointer pt-0 relative w-full">
+    <Card
+      className="hover:shadow-lg transition-shadow duration-300 border-0 overflow-hidden cursor-pointer pt-0 relative w-full"
+      aria-busy={loadingRecipePage}
+    >
+      {/* Loading overlay */}
+      {loadingRecipePage && (
+        <div
+          className="absolute inset-0 z-50 bg-black/30 flex items-center justify-center"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="flex flex-col items-center gap-3 px-4">
+            <ChefHat className="h-12 w-12 text-white animate-[spin_2s_linear_infinite]" />
+            {showSlowConnectionMessage && (
+              <p className="text-white text-sm font-medium text-center bg-black/50 px-4 py-2 rounded-lg">
+                Slow connection detected...
+              </p>
+            )}
+            <span className="sr-only">
+              {showSlowConnectionMessage
+                ? "Loading recipe - slow connection detected"
+                : "Loading recipe..."}
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="relative h-48 overflow-hidden border">
         {skeleton ? (
           <SkeletonWithShimmer className="absolute inset-0 w-full h-full" />
@@ -258,8 +302,11 @@ const RecipeCard = memo(function RecipeCard({
   return (
     <Link
       href={href}
-      className="block w-full min-w-0 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:ring-offset-2 rounded-lg"
+      className={`block w-full min-w-0 focus:outline-none focus:ring-1 focus:ring-brand-primary focus:ring-offset-2 rounded-lg ${
+        loadingRecipePage ? "pointer-events-none" : ""
+      }`}
       onClick={handleRecipeClick}
+      aria-disabled={loadingRecipePage}
     >
       {cardContent}
     </Link>
