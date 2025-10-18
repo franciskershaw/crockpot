@@ -13,6 +13,7 @@ import {
   createRecipeQueryKey,
   createInfiniteQueryConfig,
 } from "@/lib/query-utils";
+import { useSessionSeed } from "@/hooks/useSessionSeed";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { filters, setTotalRecipeCount } = useFilters();
@@ -21,10 +22,13 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const lastTriggerTime = useRef(0);
 
-  // Generate consistent query key using centralized utility
+  // Use session-persistent seed (same across navigation, changes daily)
+  const sessionSeed = useSessionSeed();
+
+  // Generate consistent query key using centralised utility
   const queryKey = useMemo(
-    () => createRecipeQueryKey(pageSize, filters),
-    [filters, pageSize]
+    () => createRecipeQueryKey(pageSize, filters, sessionSeed),
+    [filters, pageSize, sessionSeed]
   );
 
   const {
@@ -41,6 +45,7 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
         page: pageParam,
         pageSize,
         filters,
+        seed: sessionSeed,
       })
     ),
   });
