@@ -247,30 +247,32 @@ const RecipeCard = memo(function RecipeCard({
           </div>
 
           {/* Relevance indicators */}
-          {badgeType !== "none" && recipe?.relevance && (
-            <div className="flex flex-wrap gap-1 mb-3">
-              {recipe.relevance.matchedIngredients > 0 && (
-                <Badge
-                  variant="outline"
-                  className="text-xs bg-green-50 text-green-700 border-green-200"
-                >
-                  {recipe.relevance.matchedIngredients} ingredient
-                  {recipe.relevance.matchedIngredients > 1 ? "s" : ""} matched
-                </Badge>
-              )}
-              {recipe.relevance.matchedCategories > 0 && (
-                <Badge
-                  variant="outline"
-                  className="text-xs bg-blue-50 text-blue-700 border-blue-200"
-                >
-                  {recipe.relevance.matchedCategories} category
-                  {recipe.relevance.matchedCategories > 1
-                    ? " matches"
-                    : " match"}
-                </Badge>
-              )}
-            </div>
-          )}
+          {recipe?.relevance &&
+            (recipe.relevance.matchedIngredients > 0 ||
+              recipe.relevance.matchedCategories > 0) && (
+              <div className="flex flex-wrap gap-1 mb-3">
+                {recipe.relevance.matchedIngredients > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs bg-green-50 text-green-700 border-green-200"
+                  >
+                    {recipe.relevance.matchedIngredients} ingredient
+                    {recipe.relevance.matchedIngredients > 1 ? "s" : ""} matched
+                  </Badge>
+                )}
+                {recipe.relevance.matchedCategories > 0 && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                  >
+                    {recipe.relevance.matchedCategories} category
+                    {recipe.relevance.matchedCategories > 1
+                      ? " matches"
+                      : " match"}
+                  </Badge>
+                )}
+              </div>
+            )}
 
           <div className="flex flex-wrap gap-2">
             {skeleton ? (

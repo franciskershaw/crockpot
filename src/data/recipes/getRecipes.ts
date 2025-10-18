@@ -1,35 +1,53 @@
 import { prisma } from "@/lib/prisma";
 import { GetRecipesDALParams, RecipeFilters } from "@/data/types";
 import { buildWhereClause, hasActiveFilters } from "./helper";
-import {
-  recipeCategoriesInclude,
-  recentFirstOrderBy,
-} from "@/data/fragments/query-fragments";
+import { recipeCategoriesInclude } from "@/data/fragments/query-fragments";
 import { tags } from "@/lib/constants";
+
+// Simple hash function for deterministic shuffling
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
 
 export async function getRecipes({
   page = 1,
   pageSize = 10,
   filters = {},
-}: GetRecipesDALParams = {}) {
+  seed,
+}: GetRecipesDALParams & { seed?: number } = {}) {
   const where = buildWhereClause(filters);
   const timeRange = await getRecipeTimeRange();
   const isFiltered = hasActiveFilters(filters, timeRange);
 
   if (!isFiltered) {
-    const skip = (page - 1) * pageSize;
-    const take = pageSize;
+    // If no seed provided, generate a random one (different every request)
+    const sortSeed = seed ?? Math.random();
 
-    const [recipes, total] = await Promise.all([
-      prisma.recipe.findMany({
-        where,
-        skip,
-        take,
-        orderBy: recentFirstOrderBy,
-        include: recipeCategoriesInclude,
-      }),
-      prisma.recipe.count({ where }),
-    ]);
+    // Fetch all recipes (only ~189, so this is fine)
+    const allRecipes = await prisma.recipe.findMany({
+      where,
+      include: recipeCategoriesInclude,
+    });
+
+    // Shuffle using the seed
+    const shuffled = allRecipes
+      .map((recipe) => ({
+        recipe,
+        sort: hashString(recipe.id + sortSeed.toString()),
+      }))
+      .sort((a, b) => a.sort - b.sort)
+      .map((item) => item.recipe);
+
+    // Paginate the shuffled results
+    const skip = (page - 1) * pageSize;
+    const recipes = shuffled.slice(skip, skip + pageSize);
+    const total = shuffled.length;
 
     return {
       recipes,
@@ -120,18 +138,4 @@ export async function getRecipeCount(filters: RecipeFilters = {}) {
   );
 
   return getCachedCount();
-}
-
-export async function getRandomRecipes(count: number = 12) {
-  // Get random approved recipes for background display
-  const recipes = await prisma.recipe.findMany({
-    where: {
-      approved: true,
-    },
-    include: recipeCategoriesInclude,
-    take: count,
-    orderBy: recentFirstOrderBy,
-  });
-
-  return recipes;
 }

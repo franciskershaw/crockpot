@@ -17,7 +17,10 @@ export function calculateMaxPossibleScore(
   maxScore += filterCategories.length * 15;
 
   // Max score from time range (if filter is applied)
-  if (filters.minTime !== timeRange.min || filters.maxTime !== timeRange.max) {
+  if (
+    (filters.minTime !== undefined && filters.minTime !== timeRange.min) ||
+    (filters.maxTime !== undefined && filters.maxTime !== timeRange.max)
+  ) {
     maxScore += 5;
   }
 
@@ -111,8 +114,11 @@ export function hasActiveFilters(
   const hasCategories = filters.categoryIds && filters.categoryIds.length > 0;
   const hasIngredients =
     filters.ingredientIds && filters.ingredientIds.length > 0;
+
+  // Only consider time range as active if explicitly set (not undefined)
   const hasTimeRange =
-    filters.minTime !== timeRange.min || filters.maxTime !== timeRange.max;
+    (filters.minTime !== undefined && filters.minTime !== timeRange.min) ||
+    (filters.maxTime !== undefined && filters.maxTime !== timeRange.max);
 
   return hasQuery || hasCategories || hasIngredients || hasTimeRange;
 }

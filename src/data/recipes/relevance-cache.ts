@@ -316,7 +316,10 @@ function calculateMaxPossibleScore(
   const filterCategories = filters.categoryIds || [];
   maxScore += filterCategories.length * 15;
 
-  if (filters.minTime !== timeRange.min || filters.maxTime !== timeRange.max) {
+  if (
+    (filters.minTime !== undefined && filters.minTime !== timeRange.min) ||
+    (filters.maxTime !== undefined && filters.maxTime !== timeRange.max)
+  ) {
     maxScore += 5;
   }
 

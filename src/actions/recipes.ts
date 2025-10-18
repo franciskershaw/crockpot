@@ -4,7 +4,6 @@ import {
   getRecipes as getRecipesFromDAL,
   getRecipeTimeRange as getRecipeTimeRangeFromDAL,
   getRecipeCategories as getRecipeCategoriesFromDAL,
-  getRandomRecipes as getRandomRecipesFromDAL,
 } from "@/data/recipes/getRecipes";
 import { getRecipeById as getRecipeByIdFromDAL } from "@/data/recipes/getRecipeById";
 import { createRecipe as createRecipeDAL } from "@/data/recipes/createRecipe";
@@ -35,14 +34,21 @@ export interface GetRecipesParams {
   page?: number;
   pageSize?: number;
   filters?: RecipeFilters;
+  seed?: number;
 }
 
 export const getRecipes = createPublicAction(
-  async ({ page = 1, pageSize = 10, filters = {} }: GetRecipesParams = {}) => {
+  async ({
+    page = 1,
+    pageSize = 10,
+    filters = {},
+    seed,
+  }: GetRecipesParams = {}) => {
     return await getRecipesFromDAL({
       page,
       pageSize,
       filters,
+      seed,
     });
   }
 );
@@ -54,12 +60,6 @@ export const getRecipeTimeRange = createPublicAction(async () => {
 export const getRecipeCategories = createPublicAction(async () => {
   return await getRecipeCategoriesFromDAL();
 });
-
-export const getRandomRecipes = createPublicAction(
-  async (count: number = 12) => {
-    return await getRandomRecipesFromDAL(count);
-  }
-);
 
 export const getRecipeById = createPublicAction(async (id: string) => {
   const recipe = await getRecipeByIdFromDAL(id);
