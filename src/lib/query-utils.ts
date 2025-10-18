@@ -12,12 +12,8 @@ import type { RecipeFilters } from "@/data/types";
  */
 export function createRecipeQueryKey(
   pageSize: number,
-  filters: RecipeFilters,
-  seed?: number
-): [
-  string,
-  { pageSize: number; filters: Record<string, unknown>; seed?: number }
-] {
+  filters: RecipeFilters
+): [string, { pageSize: number; filters: Record<string, unknown> }] {
   const relevantFilters: Record<string, unknown> = { ...filters };
 
   // Only include categoryMode if there are actually categories selected
@@ -38,7 +34,6 @@ export function createRecipeQueryKey(
         ...relevantFilters,
         pageSize, // Include pageSize in filters for consistency
       },
-      ...(seed !== undefined && { seed }),
     },
   ];
 }

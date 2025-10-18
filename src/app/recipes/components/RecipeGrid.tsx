@@ -21,17 +21,11 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const lastTriggerTime = useRef(0);
 
-  // Generate a unique seed per session (changes on every page load)
-  const sessionSeed = useMemo(() => {
-    const seed = Math.random();
-    return seed;
-  }, []);
-
   // Generate consistent query key using centralized utility
-  const queryKey = useMemo(() => {
-    const key = createRecipeQueryKey(pageSize, filters, sessionSeed);
-    return key;
-  }, [filters, pageSize, sessionSeed]);
+  const queryKey = useMemo(
+    () => createRecipeQueryKey(pageSize, filters),
+    [filters, pageSize]
+  );
 
   const {
     data,
@@ -47,7 +41,6 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
         page: pageParam,
         pageSize,
         filters,
-        seed: sessionSeed,
       })
     ),
   });
