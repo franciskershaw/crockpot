@@ -117,8 +117,8 @@ export default function MobileFilterSidebar({
 
           {/* Content */}
           <div className="flex-1 overflow-auto">
-            {/* Search Section - No heading, search bar is first */}
-            <div className="p-6 border-b">
+            {/* Search Section */}
+            <div className="p-4 border-b bg-white">
               <SearchBar id="mobile-filter-sidebar-search-bar" />
             </div>
 
