@@ -228,6 +228,21 @@
     );
   }
 
+  .mask-fade-right {
+    mask-image: linear-gradient(
+      to right,
+      black 0%,
+      black 85%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 0%,
+      black 85%,
+      transparent 100%
+    );
+  }
+
   /* Custom scrollbar for combobox badges */
   .scrollbar-none {
     -ms-overflow-style: none;

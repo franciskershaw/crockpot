@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 import RecipeCountBadge from "./RecipeCountBadge";
 import MobileFilterSidebar from "./MobileFilterSidebar";
 import ClearFiltersButton from "./ClearFiltersButton";
+import ActiveFilterBadges from "./ActiveFilterBadges";
 import type { RecipeCategory, Item } from "@/data/types";
 
 interface BrowseHeaderProps {
@@ -43,15 +44,23 @@ const BrowseHeader = ({
           <RecipeCountBadge />
         </div>
 
-        {/* Desktop Layout - no changes needed here since no conditional rendering */}
-        <div className="hidden md:flex md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+        {/* Desktop Layout */}
+        <div className="hidden md:flex md:items-center gap-4">
+          <div className="flex items-center gap-3 shrink-0">
             <h1 className="text-3xl font-bold whitespace-nowrap">
               Browse Recipes
             </h1>
             <RecipeCountBadge />
           </div>
-          <SearchBar />
+          <div className="flex-1 min-w-0">
+            <ActiveFilterBadges
+              categories={categories}
+              ingredients={ingredients}
+            />
+          </div>
+          <div className="shrink-0 w-full max-w-md md:max-w-sm">
+            <SearchBar />
+          </div>
         </div>
       </div>
 
