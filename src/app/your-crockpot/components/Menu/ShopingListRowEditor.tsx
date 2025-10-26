@@ -94,7 +94,7 @@ function ShoppingListRowEditor({
                     onClick={() => setIsEditing(true)}
                     className="flex items-center justify-center h-8 w-8 rounded-full text-gray-600 hover:text-blue-600 transition-colors"
                   >
-                    <span>{quantity}</span>
+                    <span>{formatQty(quantity)}</span>
                     <span className="sr-only">Adjust quantity</span>
                   </motion.button>
                 )}
