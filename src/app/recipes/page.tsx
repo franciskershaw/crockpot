@@ -1,11 +1,22 @@
-"use server";
-
 import { Suspense } from "react";
 import BrowseHeaderWithData from "./components/BrowseHeaderWithData";
 import RecipeGrid from "./components/RecipeGrid";
 import FiltersWithData from "./components/FiltersWithData";
 import FilterProvider from "./context/FilterProvider";
 import ServerSideSkeletons from "./components/ServerSideSkeletons";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Browse Recipes",
+  description:
+    "Explore our extensive collection of delicious recipes. Filter by category, ingredients, cooking time, and more. Find your next favorite dish from our curated recipe library.",
+  openGraph: {
+    title: "Browse Recipes | Crockpot",
+    description:
+      "Explore our extensive collection of delicious recipes. Filter by category, ingredients, and cooking time to find your perfect meal.",
+    type: "website",
+  },
+};
 
 export default async function Recipes() {
   return (

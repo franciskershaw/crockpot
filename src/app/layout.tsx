@@ -18,13 +18,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Crockpot - Cook with Confidence",
+  title: {
+    default: "Crockpot - Your Recipe & Meal Planning Companion",
+    template: "%s | Crockpot",
+  },
   description:
     "Discover thousands of recipes, plan your meals effortlessly, and generate smart shopping lists. Transform the way you cook with Crockpot.",
   keywords: "recipes, cooking, meal planning, shopping lists, food, cuisine",
   authors: [{ name: "Crockpot Team" }],
   openGraph: {
-    title: "Crockpot - Cook with Confidence",
+    title: "Crockpot - Your Recipe & Meal Planning Companion",
     description:
       "Discover thousands of recipes, plan your meals effortlessly, and generate smart shopping lists.",
     type: "website",

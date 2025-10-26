@@ -5,6 +5,17 @@ import RecipeFavouritesWithData from "./components/Favourites/RecipeFavouritesWi
 import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
 import MenuSkeleton from "./components/Menu/MenuSkeleton";
 import FavouritesSkeleton from "./components/Favourites/FavouritesSkeleton";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Your Crockpot",
+  description:
+    "Manage your personal recipe collection, favorites, and meal planning. Create your weekly menu and generate shopping lists automatically.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 const YourCrockpotPage = () => {
   return (

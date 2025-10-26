@@ -2,8 +2,9 @@ import { prisma } from "@/lib/prisma";
 import { validateRecipeId } from "@/lib/security";
 import { ValidationError } from "@/lib/errors";
 import { recipeWithDetailsInclude } from "@/data/fragments/query-fragments";
+import { cache } from "react";
 
-export async function getRecipeById(id: string) {
+export const getRecipeById = cache(async (id: string) => {
   try {
     // Validate the ID format before making the database query
     validateRecipeId(id);
@@ -75,4 +76,4 @@ export async function getRecipeById(id: string) {
     console.error("Error fetching recipe:", error);
     return null;
   }
-}
+});

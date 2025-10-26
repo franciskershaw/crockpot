@@ -6,6 +6,19 @@ import PricingSection from "@/components/landing/PricingSection";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Transform the way you cook with Crockpot. Browse thousands of recipes, plan your weekly meals, and generate smart shopping lists automatically. Join our community of home cooks today.",
+  openGraph: {
+    title: "Crockpot - Your Recipe & Meal Planning Companion",
+    description:
+      "Browse thousands of recipes, plan your meals, and generate smart shopping lists automatically.",
+    type: "website",
+  },
+};
 
 export default async function Home() {
   const session = await auth();

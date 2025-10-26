@@ -1,6 +1,16 @@
 import { Suspense } from "react";
 import RecipeFormWithData from "@/app/recipes/new/components/RecipeFormWithData";
 import CreateRecipeFormSkeleton from "@/app/recipes/new/components/CreateRecipeFormSkeleton";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Recipe",
+  description: "Edit your recipe details, ingredients, and instructions.",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 /**
  * Recipe edit page - renders immediately with static shell

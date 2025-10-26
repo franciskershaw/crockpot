@@ -1,6 +1,17 @@
 import { Suspense } from "react";
 import RecipeFormWithData from "./components/RecipeFormWithData";
 import CreateRecipeFormSkeleton from "./components/CreateRecipeFormSkeleton";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Create New Recipe",
+  description:
+    "Share your culinary creation with the Crockpot community. Add ingredients, instructions, and photos to create your own recipe.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function NewRecipePage() {
   return (
