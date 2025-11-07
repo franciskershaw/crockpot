@@ -1,6 +1,6 @@
 # Crockpot 🍲
 
-Crockpot is a modern recipe and meal planning application built with Next.js. Crockpot helps you discover recipes, plan your weekly meals, and automatically generate shopping lists. This is version 2 (or 3? I lose track with how much this thing has been iterated upon!), and is a long winded attempt to remove shopping lists from people's day-to-day lives. 
+Crockpot is a modern recipe and meal planning application built with Next.js. Crockpot helps you discover recipes, plan your weekly meals, and automatically generate shopping lists. This is version 2 (or 3? I lose track with how much this thing has been iterated upon!), and is a long winded attempt to remove shopping lists from people's day-to-day lives.
 
 The live website is found at [crockpot.app](https://www.crockpot.app/). Happy cooking!
 
@@ -197,11 +197,3 @@ The application uses MongoDB with Prisma. Key models include:
 - **ShoppingList**: User shopping lists
 
 See `prisma/schema.prisma` for the complete schema definition.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is private and proprietary.
