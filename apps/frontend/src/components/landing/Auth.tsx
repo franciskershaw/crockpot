@@ -9,7 +9,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import GoogleIcon from "./GoogleIcon";
 import { signInWithGoogle } from "@/actions/auth";
-import EmailAuth from "./EmailAuth";
+// import EmailAuth from "./EmailAuth";
 
 export default function Auth() {
   return (
@@ -38,11 +38,11 @@ export default function Auth() {
         </form>
         <div className="relative">
           <Separator />
-          <div className="absolute inset-0 flex items-center justify-center">
+          {/* <div className="absolute inset-0 flex items-center justify-center">
             <span className="bg-white px-2 text-sm text-gray-500">or</span>
-          </div>
+          </div> */}
         </div>
-        <EmailAuth />
+        {/* <EmailAuth /> */}
       </CardContent>
     </Card>
   );

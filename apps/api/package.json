@@ -4,24 +4,19 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "prisma:generate": "prisma generate --schema=./src/core/config/prisma/schema.prisma",
-    "prisma:push": "prisma db push --schema=./src/core/config/prisma/schema.prisma",
-    "prisma:studio": "prisma studio --schema=./src/core/config/prisma/schema.prisma",
-    "prisma:format": "prisma format --schema=./src/core/config/prisma/schema.prisma"
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.9",
     "@hono/zod-validator": "^0.7.6",
-    "@prisma/client": "^6.11.1",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "hono": "^4.11.4",
+    "mongoose": "^9.1.4",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
-    "prisma": "^6.11.1",
     "tsx": "^4.7.1",
     "typescript": "^5.8.3"
   }
