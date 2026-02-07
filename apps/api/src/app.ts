@@ -2,8 +2,9 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
-import { securityHeaders } from "./core/middleware/security.middleware";
 import { errorHandler } from "./core/middleware/error.middleware";
+import { securityHeaders } from "./core/middleware/security.middleware";
+import authRoutes from "./features/auth/routes/_auth.routes";
 
 export const createApp = () => {
   const app = new Hono();
@@ -25,13 +26,11 @@ export const createApp = () => {
   );
 
   // Feature routes
+  app.route("/api/auth", authRoutes);
 
   // Welcome / health check route
   app.get("/", (c) =>
-    c.json(
-      { message: "Welcome to the Crockpot API (Hono edition" },
-      200
-    )
+    c.json({ message: "Welcome to the Crockpot API (Hono edition" }, 200)
   );
 
   // TODO: Error handling middleware
