@@ -1,6 +1,6 @@
-import getRecipeCategories from "./categories/getRecipeCategories.controller";
-import getRecipes from "./list/getRecipes.controller";
-import getRecipeTimeRange from "./time-range/getRecipeTimeRange.controller";
+import getRecipeCategories from "./getRecipeCategories.controller";
+import getRecipes from "./getRecipes.controller";
+import getRecipeTimeRange from "./getRecipeTimeRange.controller";
 
 export default {
   getRecipeCategories,

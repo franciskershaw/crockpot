@@ -7,9 +7,9 @@ import {
   buildRecipesPipeline,
   MAX_SEED_RESULTS,
   seededSortKey,
-} from "../../helpers/getRecipes.helper";
-import Recipe from "../../model/recipe.model";
-import type { GetRecipesQuery } from "../../validation/getRecipes.recipe.validation";
+} from "../helpers/getRecipes.helper";
+import Recipe from "../model/recipe.model";
+import type { GetRecipesQuery } from "../validation/getRecipes.recipe.validation";
 
 const getRecipes = async (c: Context) => {
   const query = (c.req as { valid: (key: "query") => GetRecipesQuery }).valid(

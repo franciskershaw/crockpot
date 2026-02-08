@@ -1,6 +1,6 @@
 import { Context } from "hono";
 
-import Recipe from "../../model/recipe.model";
+import Recipe from "../model/recipe.model";
 
 const DEFAULT_MAX_MINUTES = 120;
 
