@@ -1,0 +1,44 @@
+# Recipe list – pagination, ordering, filtering (REST Client)
+@baseUrl = http://localhost:5100
+
+### Default – first page, default pageSize (10), random shuffle
+GET {{baseUrl}}/api/recipes
+
+### Page 2
+GET {{baseUrl}}/api/recipes?page=2
+
+### Custom pageSize
+GET {{baseUrl}}/api/recipes?pageSize=5
+
+### Same seed – deterministic order (same request twice = same order)
+GET {{baseUrl}}/api/recipes?seed=42
+
+### Text search (query filter)
+GET {{baseUrl}}/api/recipes?query=taco
+
+### Time range filter (min only)
+GET {{baseUrl}}/api/recipes?minTime=20
+
+### Time range filter (max only)
+GET {{baseUrl}}/api/recipes?maxTime=45
+
+### Time range filter (min and max)
+GET {{baseUrl}}/api/recipes?minTime=15&maxTime=60
+
+### Category filter (include mode – recipes that have any of these categories)
+GET {{baseUrl}}/api/recipes?categoryIds=63108ec7425904cb101dc601&categoryMode=include
+
+### Category filter (exclude mode – recipes that have none of these categories)
+GET {{baseUrl}}/api/recipes?categoryIds=63108ec7425904cb101dc601&categoryMode=exclude
+
+### Ingredient filter (recipes that use any of these ingredients)
+GET {{baseUrl}}/api/recipes?ingredientIds=6310ad7242687f4a1cf7f226,6310ad7242687f4a1cf7f234
+
+### Combined filters – query + time + category
+GET {{baseUrl}}/api/recipes?query=bean&minTime=10&maxTime=45&categoryIds=63108ec7425904cb101dc601
+
+### Pagination with filters (page 2 of filtered results)
+GET {{baseUrl}}/api/recipes?query=chicken&page=2&pageSize=5
+
+### Seed with filters (deterministic relevance order)
+GET {{baseUrl}}/api/recipes?categoryIds=63108ec7425904cb101dc601&seed=123
