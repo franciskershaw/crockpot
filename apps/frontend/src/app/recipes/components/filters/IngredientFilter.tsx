@@ -1,15 +1,10 @@
 "use client";
+
 import { useFilters } from "@/app/recipes/context/FilterProvider";
-import type { Item } from "@/data/types";
+
 import GenericFilterList from "./GenericFilterList";
 
-export default function IngredientFilter({
-  ingredients = [],
-  id,
-}: {
-  ingredients: Item[];
-  id?: string;
-}) {
+export default function IngredientFilter() {
   const { filters, updateFilters } = useFilters();
   const selectedIngredientIds = filters.ingredientIds || [];
 
@@ -23,10 +18,11 @@ export default function IngredientFilter({
   return (
     <GenericFilterList
       label="Ingredients"
-      options={ingredients}
+      // options={ingredients}
+      options={[]}
       selectedIds={selectedIngredientIds}
       onChange={handleIngredientChange}
-      id={id}
+      id="ingredient-filter"
     />
   );
 }

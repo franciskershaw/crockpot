@@ -1,32 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { Filter } from "lucide-react";
-import SearchBar from "./SearchBar";
+// import { useState } from "react";
+
+// import { Filter } from "lucide-react";
+
+// import ActiveFilterBadges from "./ActiveFilterBadges";
+// import ClearFiltersButton from "./ClearFiltersButton";
+// import MobileFilterSidebar from "./MobileFilterSidebar";
 import RecipeCountBadge from "./RecipeCountBadge";
-import MobileFilterSidebar from "./MobileFilterSidebar";
-import ClearFiltersButton from "./ClearFiltersButton";
-import ActiveFilterBadges from "./ActiveFilterBadges";
-import type { RecipeCategory, Item } from "@/data/types";
+import SearchBar from "./SearchBar";
 
-interface BrowseHeaderProps {
-  categories: RecipeCategory[];
-  timeRange: { min: number; max: number };
-  ingredients: Item[];
-}
-
-const BrowseHeader = ({
-  categories,
-  timeRange,
-  ingredients,
-}: BrowseHeaderProps) => {
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+const BrowseHeader = () => {
+  // const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   return (
     <>
       <div className="sticky top-16 z-40 bg-surface-warm/95 backdrop-blur-sm py-4 my-2">
         {/* Mobile Layout */}
-        <div className="md:hidden">
+        {/* <div className="md:hidden">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold">Browse Recipes</h1>
             <div className="flex items-center gap-2">
@@ -42,7 +33,7 @@ const BrowseHeader = ({
             </div>
           </div>
           <RecipeCountBadge />
-        </div>
+        </div> */}
 
         {/* Desktop Layout */}
         <div className="hidden md:flex md:items-center gap-4">
@@ -53,10 +44,10 @@ const BrowseHeader = ({
             <RecipeCountBadge />
           </div>
           <div className="flex-1 min-w-0">
-            <ActiveFilterBadges
+            {/* <ActiveFilterBadges
               categories={categories}
               ingredients={ingredients}
-            />
+            /> */}
           </div>
           <div className="shrink-0 w-full max-w-md md:max-w-sm">
             <SearchBar />
@@ -65,13 +56,13 @@ const BrowseHeader = ({
       </div>
 
       {/* Mobile Filter Sidebar */}
-      <MobileFilterSidebar
+      {/* <MobileFilterSidebar
         categories={categories}
         timeRange={timeRange}
         ingredients={ingredients}
         isOpen={isMobileFilterOpen}
         onClose={() => setIsMobileFilterOpen(false)}
-      />
+      /> */}
     </>
   );
 };

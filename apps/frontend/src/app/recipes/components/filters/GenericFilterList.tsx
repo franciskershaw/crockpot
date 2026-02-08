@@ -1,15 +1,18 @@
 "use client";
-import { useState, useMemo, useRef, useEffect } from "react";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import { Search } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Search } from "lucide-react";
 
 interface GenericFilterListProps {
   label: string;
-  options: { id: string; name: string }[];
+  options: { _id: string; name: string }[];
   selectedIds: string[];
   onChange: (id: string, checked: boolean) => void;
   showIncludeExclude?: boolean;
@@ -179,22 +182,22 @@ export default function GenericFilterList({
           ) : (
             filteredOptions.map((option, index) => (
               <div
-                key={option.id}
+                key={option._id}
                 className={
                   index >= initialVisibleItems && !showAll ? "hidden" : ""
                 }
               >
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    id={`${label}-${option.id}`}
-                    checked={selectedIds.includes(option.id)}
+                    id={`${label}-${option._id}`}
+                    checked={selectedIds.includes(option._id)}
                     onCheckedChange={(checked) =>
-                      onChange(option.id, checked as boolean)
+                      onChange(option._id, checked as boolean)
                     }
                     className="h-4 w-4"
                   />
                   <Label
-                    htmlFor={`${label}-${option.id}`}
+                    htmlFor={`${label}-${option._id}`}
                     className="text-xs font-normal text-gray-600 cursor-pointer capitalize"
                   >
                     {option.name}

@@ -2,7 +2,8 @@ import { UserRole } from "@/data/types";
 
 export const queryKeys = {
   RECIPES: "recipes",
-  INFINITE_RECIPES: "infinite-recipes",
+  RECIPE_CATEGORIES: "recipe-categories",
+  TIME_RANGE: "time-range",
   USER_RECIPES: "user-recipes",
   USER_RECIPE_COUNT: "user-recipe-count",
   RECIPE_COUNT: "recipe-count",

@@ -1,18 +1,17 @@
 "use client";
+
 import { useFilters } from "@/app/recipes/context/FilterProvider";
-import type { RecipeCategory } from "@/data/types";
+
+import useGetRecipeCategories from "../../hooks/useGetRecipeCategories";
+
 import GenericFilterList from "./GenericFilterList";
 
-export default function CategoryFilter({
-  categories = [],
-  id,
-}: {
-  categories: RecipeCategory[];
-  id?: string;
-}) {
+export default function CategoryFilter() {
   const { filters, updateFilters } = useFilters();
   const selectedCategoryIds = filters.categoryIds || [];
   const categoryMode = filters.categoryMode || "include";
+
+  const { data: categories, isLoading } = useGetRecipeCategories();
 
   const handleCategoryChange = (id: string, checked: boolean) => {
     const newCategoryIds = checked
@@ -26,15 +25,21 @@ export default function CategoryFilter({
   };
 
   return (
-    <GenericFilterList
-      label="Categories"
-      options={categories}
-      selectedIds={selectedCategoryIds}
-      onChange={handleCategoryChange}
-      showIncludeExclude={true}
-      includeExcludeValue={categoryMode}
-      onIncludeExcludeChange={handleModeChange}
-      id={id}
-    />
+    <>
+      {isLoading ? (
+        <div className="h-4 w-full bg-accent animate-pulse rounded-md" />
+      ) : (
+        <GenericFilterList
+          label="Categories"
+          options={categories || []}
+          selectedIds={selectedCategoryIds}
+          onChange={handleCategoryChange}
+          showIncludeExclude={true}
+          includeExcludeValue={categoryMode}
+          onIncludeExcludeChange={handleModeChange}
+          id="category-filter"
+        />
+      )}
+    </>
   );
 }

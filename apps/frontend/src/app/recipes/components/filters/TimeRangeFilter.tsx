@@ -1,27 +1,31 @@
 "use client";
-import { Slider } from "@/components/ui/slider";
-import { Label } from "@/components/ui/label";
-import { useFilters } from "@/app/recipes/context/FilterProvider";
+
+// import { useCallback, useEffect, useRef, useState } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export default function TimeRangeFilter({
-  timeRange,
-}: {
-  timeRange: { min: number; max: number };
-}) {
+import { useFilters } from "@/app/recipes/context/FilterProvider";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+
+import useGetTimeRange from "../../hooks/useGetTimeRange";
+
+export default function TimeRangeFilter() {
   const { filters, updateFilters } = useFilters();
+
+  const { data: timeRange, isLoading } = useGetTimeRange();
+
   const [localTimeRange, setLocalTimeRange] = useState<[number, number]>([
-    filters.minTime ?? timeRange.min,
-    filters.maxTime ?? timeRange.max,
+    filters.minTime ?? timeRange?.min,
+    filters.maxTime ?? timeRange?.max,
   ]);
 
   // Update local state when filters change externally
   useEffect(() => {
     setLocalTimeRange([
-      filters.minTime ?? timeRange.min,
-      filters.maxTime ?? timeRange.max,
+      filters.minTime ?? timeRange?.min,
+      filters.maxTime ?? timeRange?.max,
     ]);
-  }, [filters.minTime, filters.maxTime, timeRange.min, timeRange.max]);
+  }, [filters.minTime, filters.maxTime, timeRange?.min, timeRange?.max]);
 
   // Debounced update function using useRef
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -45,23 +49,33 @@ export default function TimeRangeFilter({
   }, []);
 
   const handleSliderChange = (range: [number, number]) => {
-    setLocalTimeRange(range); // Update local state immediately for smooth UI
-    debouncedUpdate(range); // Debounced update to filters
+    setLocalTimeRange(range);
+    debouncedUpdate(range);
   };
 
   return (
     <div className="space-y-3">
-      <Label className="text-sm font-medium text-gray-700">
-        Cooking Time: {localTimeRange[0]}min - {localTimeRange[1]}min
-      </Label>
-      <Slider
-        value={localTimeRange}
-        onValueChange={handleSliderChange}
-        max={timeRange.max}
-        min={timeRange.min}
-        step={5}
-        className="w-full"
-      />
+      {isLoading ? (
+        // Skeleton
+        <>
+          <div className="h-4 w-full" />
+          <div className="h-4 w-full bg-accent animate-pulse rounded-md" />
+        </>
+      ) : (
+        <>
+          <Label className="text-sm font-medium text-gray-700">
+            Cooking Time: {localTimeRange[0]}min - {localTimeRange[1]}min
+          </Label>
+          <Slider
+            value={localTimeRange}
+            onValueChange={handleSliderChange}
+            min={timeRange?.min}
+            max={timeRange?.max}
+            step={5}
+            className="w-full"
+          />
+        </>
+      )}
     </div>
   );
 }
