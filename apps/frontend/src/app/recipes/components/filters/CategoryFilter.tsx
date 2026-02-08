@@ -25,21 +25,16 @@ export default function CategoryFilter() {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <div className="h-4 w-full bg-accent animate-pulse rounded-md" />
-      ) : (
-        <GenericFilterList
-          label="Categories"
-          options={categories || []}
-          selectedIds={selectedCategoryIds}
-          onChange={handleCategoryChange}
-          showIncludeExclude={true}
-          includeExcludeValue={categoryMode}
-          onIncludeExcludeChange={handleModeChange}
-          id="category-filter"
-        />
-      )}
-    </>
+    <GenericFilterList
+      label="Categories"
+      options={categories || []}
+      selectedIds={selectedCategoryIds}
+      onChange={handleCategoryChange}
+      showIncludeExclude={true}
+      includeExcludeValue={categoryMode}
+      onIncludeExcludeChange={handleModeChange}
+      id="category-filter"
+      isLoading={isLoading}
+    />
   );
 }

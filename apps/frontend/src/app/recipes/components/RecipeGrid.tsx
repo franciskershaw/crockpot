@@ -23,6 +23,8 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     isFetched,
   } = useGetRecipes(pageSize);
 
+  console.log(data);
+
   const allRecipes = data?.pages.flatMap((page) => page.recipes) ?? [];
   const hasNoResults = isFetched && !isLoading && allRecipes.length === 0;
 

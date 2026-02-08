@@ -9,6 +9,49 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const initialVisibleItems = 6;
+
+function FilterListSkeleton({
+  showIncludeExclude,
+}: {
+  label: string;
+  showIncludeExclude: boolean;
+}) {
+  return (
+    <div className="space-y-4" aria-busy aria-label="Loading filter options">
+      <div className="flex justify-between items-center">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-4 w-16" />
+      </div>
+      {showIncludeExclude && (
+        <div className="flex gap-6">
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-4 w-4 rounded-full" />
+            <Skeleton className="h-4 w-12" />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-4 w-4 rounded-full" />
+            <Skeleton className="h-4 w-12" />
+          </div>
+        </div>
+      )}
+      <Skeleton className="h-8 w-full" />
+      <div className="space-y-1 rounded p-2 bg-gray-50/50 max-h-96 md:max-h-[28rem]">
+        {Array.from({ length: initialVisibleItems }).map((_, i) => (
+          <div key={i} className="flex items-center space-x-2">
+            <Skeleton className="h-4 w-4 shrink-0" />
+            <Skeleton
+              className="h-4 flex-1"
+              style={{ width: `${60 + (i % 3) * 15}%` }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 interface GenericFilterListProps {
   label: string;
@@ -19,6 +62,7 @@ interface GenericFilterListProps {
   includeExcludeValue?: "include" | "exclude";
   onIncludeExcludeChange?: (mode: "include" | "exclude") => void;
   id?: string;
+  isLoading?: boolean;
 }
 
 export default function GenericFilterList({
@@ -30,6 +74,7 @@ export default function GenericFilterList({
   includeExcludeValue = "include",
   onIncludeExcludeChange,
   id,
+  isLoading = false,
 }: GenericFilterListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showAll, setShowAll] = useState(false);
@@ -45,7 +90,6 @@ export default function GenericFilterList({
     );
   }, [options, searchTerm]);
 
-  const initialVisibleItems = 6;
   const hasMore = filteredOptions.length > initialVisibleItems;
 
   const handleShowAllToggle = () => {
@@ -110,6 +154,15 @@ export default function GenericFilterList({
   const shouldShowFade =
     (!showAll && hasMore) ||
     (showAll && !isScrolledToBottom && hasMore && hasOverflow);
+
+  if (isLoading) {
+    return (
+      <FilterListSkeleton
+        label={label}
+        showIncludeExclude={showIncludeExclude}
+      />
+    );
+  }
 
   return (
     <div className="space-y-4" ref={filterSectionRef}>

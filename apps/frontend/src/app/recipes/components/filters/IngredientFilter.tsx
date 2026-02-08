@@ -19,18 +19,13 @@ export default function IngredientFilter() {
   };
 
   return (
-    <>
-      {isLoading ? (
-        <div className="h-4 w-full bg-accent animate-pulse rounded-md" />
-      ) : (
-        <GenericFilterList
-          label="Ingredients"
-          options={ingredients || []}
-          selectedIds={selectedIngredientIds}
-          onChange={handleIngredientChange}
-          id="ingredient-filter"
-        />
-      )}
-    </>
+    <GenericFilterList
+      label="Ingredients"
+      options={ingredients || []}
+      selectedIds={selectedIngredientIds}
+      onChange={handleIngredientChange}
+      id="ingredient-filter"
+      isLoading={isLoading}
+    />
   );
 }

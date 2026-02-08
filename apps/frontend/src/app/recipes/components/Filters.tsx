@@ -1,11 +1,18 @@
+"use client";
+
+import useItems from "@/app/items/useItems";
 import { Card, CardContent } from "@/components/ui/card";
+
+import useGetRecipeCategories from "../hooks/useGetRecipeCategories";
+import useGetTimeRange from "../hooks/useGetTimeRange";
 
 import CategoryFilter from "./filters/CategoryFilter";
 import IngredientFilter from "./filters/IngredientFilter";
 import TimeRangeFilter from "./filters/TimeRangeFilter";
 import ClearFiltersButton from "./ClearFiltersButton";
+import FiltersSkeleton from "./FiltersSkeleton";
 
-export default function Filters() {
+function FiltersContent() {
   return (
     <Card
       className="border-0 sticky top-36 bg-white/80 backdrop-blur-sm shadow-lg overflow-auto p-0"
@@ -26,4 +33,19 @@ export default function Filters() {
       </CardContent>
     </Card>
   );
+}
+
+export default function Filters() {
+  const { isLoading: timeRangeLoading } = useGetTimeRange();
+  const { isLoading: categoriesLoading } = useGetRecipeCategories();
+  const { isLoading: ingredientsLoading } = useItems("ingredients");
+
+  const isAnyLoading =
+    timeRangeLoading || categoriesLoading || ingredientsLoading;
+
+  if (isAnyLoading) {
+    return <FiltersSkeleton />;
+  }
+
+  return <FiltersContent />;
 }
