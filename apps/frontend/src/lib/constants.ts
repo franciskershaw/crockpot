@@ -34,3 +34,5 @@ export const roleColours = {
   [UserRole.PRO]: "bg-purple-100 text-purple-800",
   [UserRole.ADMIN]: "bg-red-100 text-red-800",
 } as const;
+
+export const INVALID_ACCESS_TOKEN = "INVALID_ACCESS_TOKEN";
