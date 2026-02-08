@@ -1,21 +1,25 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
+
+import { AnimatePresence, motion } from "motion/react";
 
 import { useFilters } from "@/app/recipes/context/FilterProvider";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
-import type { Recipe } from "@/data/types";
 
 import useGetRecipes from "../hooks/useGetRecipes";
 
 import NoResults from "./NoResults";
 import RecipeCard from "./RecipeCard";
+import RecipeGridSkeleton from "./RecipeGridSkeleton";
 
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { setTotalRecipeCount } = useFilters();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const {
     data,
+    recipes,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -23,46 +27,96 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
     isFetched,
   } = useGetRecipes(pageSize);
 
-  console.log(data);
-
-  const allRecipes = data?.pages.flatMap((page) => page.recipes) ?? [];
-  const hasNoResults = isFetched && !isLoading && allRecipes.length === 0;
-
   useEffect(() => {
     const total = data?.pages?.[0]?.total;
-    if (total !== undefined) setTotalRecipeCount(total);
+    if (typeof total === "number") setTotalRecipeCount(total);
   }, [data?.pages, setTotalRecipeCount]);
 
-  const loadMoreRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (!node || !hasNextPage || isFetchingNextPage) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0]?.isIntersecting) fetchNextPage();
-        },
-        { rootMargin: "200px 0px", threshold: 0.1 }
-      );
-      observer.observe(node);
-      return () => observer.disconnect();
+  const handleIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      if (!entry?.isIntersecting || !hasNextPage || isFetchingNextPage) return;
+      fetchNextPage();
     },
-    [hasNextPage, isFetchingNextPage, fetchNextPage]
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
   );
 
-  if (hasNoResults) return <NoResults />;
+  useEffect(() => {
+    const el = loadMoreRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(handleIntersect, {
+      rootMargin: "200px",
+      threshold: 0,
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [handleIntersect]);
+
+  if (isLoading) {
+    return <RecipeGridSkeleton count={pageSize} />;
+  }
+
+  if (isFetched && recipes.length === 0) {
+    return <NoResults />;
+  }
+
+  const pagesLoaded = data?.pages?.length ?? 1;
+  const totalPreviousItems = Math.max(0, (pagesLoaded - 1) * pageSize);
 
   return (
     <div className="relative z-10 bg-surface-warm">
       <ResponsiveRecipeGrid>
-        {/* {allRecipes.map((recipe: Recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} fromPage="/recipes" />
-        ))} */}
+        {recipes.map((recipe, index) => {
+          const isNewItem = index >= totalPreviousItems;
+          const newItemIndex = isNewItem ? index - totalPreviousItems : 0;
+          return (
+            <motion.div
+              key={recipe._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: isNewItem
+                  ? newItemIndex * 0.08 + 0.1
+                  : Math.min(index * 0.03, 0.3),
+                duration: 0.35,
+                ease: "easeOut",
+              }}
+            >
+              <RecipeCard recipe={recipe} priority={index < 6} />
+            </motion.div>
+          );
+        })}
 
-        {/* <div ref={loadMoreRef} className="col-span-full min-h-[1px]" />
-        {isFetchingNextPage && (
-          <div className="col-span-full flex justify-center py-6 text-gray-500">
-            Loading more…
-          </div>
-        )} */}
+        {/* Loading skeletons for infinite scroll */}
+        <AnimatePresence>
+          {isFetchingNextPage && (
+            <>
+              {Array.from({ length: Math.min(3, pageSize) }, (_, i) => (
+                <motion.div
+                  key={`loading-skeleton-${i}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{
+                    delay: i * 0.05,
+                    duration: 0.25,
+                  }}
+                >
+                  <RecipeCard skeleton />
+                </motion.div>
+              ))}
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Sentinel for infinite scroll */}
+        {hasNextPage && (
+          <div
+            ref={loadMoreRef}
+            className="col-span-full min-h-[120px] w-full py-8"
+            aria-hidden
+          />
+        )}
       </ResponsiveRecipeGrid>
     </div>
   );

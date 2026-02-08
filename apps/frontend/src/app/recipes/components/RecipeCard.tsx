@@ -139,8 +139,8 @@ const RecipeCard = memo(function RecipeCard({
 
   // Memoize the href to avoid recalculation
   const href = useMemo(
-    () => `/recipes/${recipe?.id}?from=${encodeURIComponent(fromPage)}`,
-    [recipe?.id, fromPage]
+    () => `/recipes/${recipe?._id}?from=${encodeURIComponent(fromPage)}`,
+    [recipe?._id, fromPage]
   );
 
   const cardContent = (
@@ -283,7 +283,7 @@ const RecipeCard = memo(function RecipeCard({
             ) : (
               (recipe?.categories ?? []).map((cat) => (
                 <Badge
-                  key={cat.id}
+                  key={cat._id}
                   variant="secondary"
                   className="text-xs bg-surface-soft text-text-soft"
                 >
@@ -297,7 +297,7 @@ const RecipeCard = memo(function RecipeCard({
     </Card>
   );
 
-  if (skeleton || !recipe?.id) {
+  if (skeleton || !recipe?._id) {
     return cardContent;
   }
 
