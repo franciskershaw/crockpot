@@ -1,0 +1,5 @@
+# Item categories (REST Client)
+@baseUrl = http://localhost:5100
+
+### Get item categories (list, sorted by name)
+GET {{baseUrl}}/api/items/categories

@@ -1,0 +1,11 @@
+# Items list – all items or ingredients only (REST Client)
+@baseUrl = http://localhost:5100
+
+### Default – all items (excludes water item, includes category + allowedUnits + recipeCount)
+GET {{baseUrl}}/api/items
+
+### Explicit mode=all (same as default)
+GET {{baseUrl}}/api/items?mode=all
+
+### Ingredients only (excludes house category; for recipe filters / create recipe)
+GET {{baseUrl}}/api/items?mode=ingredients

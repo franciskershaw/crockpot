@@ -5,6 +5,7 @@ import { logger } from "hono/logger";
 import { errorHandler } from "./core/middleware/error.middleware";
 import { securityHeaders } from "./core/middleware/security.middleware";
 import authRoutes from "./features/auth/routes/_auth.routes";
+import itemRoutes from "./features/items/routes/_item.routes";
 import recipeRoutes from "./features/recipes/routes/_recipe.routes";
 
 export const createApp = () => {
@@ -28,6 +29,7 @@ export const createApp = () => {
 
   // Feature routes
   app.route("/api/auth", authRoutes);
+  app.route("/api/items", itemRoutes);
   app.route("/api/recipes", recipeRoutes);
 
   // Welcome / health check route
