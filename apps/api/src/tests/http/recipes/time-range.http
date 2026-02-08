@@ -1,0 +1,9 @@
+# Crockpot API – Recipe endpoints (REST Client)
+# Set base URL to match your running server (default port 5300).
+@baseUrl = http://localhost:5100
+
+### Health check
+GET {{baseUrl}}/
+
+### Get recipe time range (min/max timeInMinutes for approved recipes)
+GET {{baseUrl}}/api/recipes/time-range
