@@ -41,7 +41,7 @@ const BrowseHeader = () => {
             <h1 className="text-3xl font-bold whitespace-nowrap">
               Browse Recipes
             </h1>
-            <RecipeCountBadge />
+            {/* <RecipeCountBadge /> */}
           </div>
           <div className="flex-1 min-w-0">
             {/* <ActiveFilterBadges
@@ -50,7 +50,7 @@ const BrowseHeader = () => {
             /> */}
           </div>
           <div className="shrink-0 w-full max-w-md md:max-w-sm">
-            <SearchBar />
+            {/* <SearchBar /> */}
           </div>
         </div>
       </div>

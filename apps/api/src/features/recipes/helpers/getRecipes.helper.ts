@@ -44,7 +44,7 @@ function scorePart(
   return condition ? expr : 0;
 }
 
-/** Builds $addFields stage for _relevanceScore (query + category + ingredient + time). */
+/** Builds $addFields stage for _relevanceScore and match counts (for relevance badges). */
 function buildRelevanceScoreStage(
   query: GetRecipesQuery
 ): PipelineStage.AddFields {
@@ -97,7 +97,31 @@ function buildRelevanceScoreStage(
     }),
   ];
 
-  return { $addFields: { _relevanceScore: { $add: sumParts } } };
+  const fields: Record<string, unknown> = {
+    _relevanceScore: { $add: sumParts },
+  };
+  if (filterCatIds?.length) {
+    fields._matchedCategories = {
+      $size: { $setIntersection: ["$categoryIds", filterCatIds] },
+    };
+  } else {
+    fields._matchedCategories = 0;
+  }
+  if (filterIngIds?.length) {
+    fields._matchedIngredients = {
+      $size: {
+        $filter: {
+          input: "$ingredients",
+          as: "ing",
+          cond: { $in: ["$$ing.itemId", filterIngIds] },
+        },
+      },
+    };
+  } else {
+    fields._matchedIngredients = 0;
+  }
+
+  return { $addFields: fields };
 }
 
 export function seededSortKey(idStr: string, seedNum: number): number {
@@ -160,6 +184,6 @@ export function buildRecipesPipeline(
         as: "categories",
       },
     },
-    { $project: { categoryIds: 0, _relevanceScore: 0 } },
+    { $project: { categoryIds: 0 } },
   ];
 }

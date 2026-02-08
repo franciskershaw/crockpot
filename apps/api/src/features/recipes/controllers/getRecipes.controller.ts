@@ -52,6 +52,54 @@ const getRecipes = async (c: Context) => {
       .slice(skip, skip + pageSize);
   }
 
+  // Attach relevance for badges when filters were applied
+  const hasRelevance = recipes.length > 0 && recipes[0]._relevanceScore != null;
+  if (hasRelevance) {
+    const highestScoreInResults = Math.max(
+      ...recipes.map(
+        (r: { _relevanceScore?: number }) => r._relevanceScore ?? 0
+      )
+    );
+    const hasContentFilters =
+      !!query.query?.trim() ||
+      !!query.categoryIds?.length ||
+      !!query.ingredientIds?.length;
+    const maxPossibleScore =
+      (query.query?.trim() ? 20 : 0) +
+      (query.categoryIds?.length ?? 0) * 15 +
+      (query.ingredientIds?.length ?? 0) * 10 +
+      (query.minTime != null || query.maxTime != null ? 5 : 0);
+
+    recipes = recipes.map(
+      (r: {
+        _relevanceScore?: number;
+        _matchedCategories?: number;
+        _matchedIngredients?: number;
+        [k: string]: unknown;
+      }) => {
+        const {
+          _relevanceScore,
+          _matchedCategories,
+          _matchedIngredients,
+          ...rest
+        } = r;
+        return {
+          ...rest,
+          relevance: {
+            score: _relevanceScore ?? 0,
+            highestScoreInResults,
+            maxPossibleScore,
+            hasContentFilters,
+            matchedIngredients: _matchedIngredients ?? 0,
+            matchedCategories: _matchedCategories ?? 0,
+            hasTimeMatch: true,
+            hasQueryMatch: true,
+          },
+        };
+      }
+    );
+  }
+
   return c.json(
     {
       recipes,

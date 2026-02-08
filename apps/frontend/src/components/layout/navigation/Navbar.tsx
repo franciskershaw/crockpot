@@ -1,22 +1,25 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { ChefHat, Plus, Search, ShoppingBag, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import MobileMenu from "./MobileMenu";
+
+import { ChefHat, Plus, Search, Shield, ShoppingBag } from "lucide-react";
+import { useSession } from "next-auth/react";
+
 import LogoutButton from "@/components/landing/LogoutButton";
-import { hasPermission, Permission } from "@/lib/action-helpers";
-import { UserRole } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSession } from "next-auth/react";
+import { UserRole } from "@/data/types";
 import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
-import { Skeleton } from "@/components/ui/skeleton";
+import { hasPermission, Permission } from "@/lib/action-helpers";
 import { cn, isActive } from "@/lib/utils";
+
+import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
   const { data: session, status } = useSession();

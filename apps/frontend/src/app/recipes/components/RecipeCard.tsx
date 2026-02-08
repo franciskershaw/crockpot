@@ -1,15 +1,19 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ChefHat, Clock, Users, Star } from "lucide-react";
+// import { useSession } from "next-auth/react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+
 import Image from "next/image";
-import type { Recipe } from "@/data/types";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useState, useCallback, useMemo, memo, useEffect } from "react";
-import RecipeCardActions from "./RecipeCardActions";
+
+import { ChefHat, Clock, Star, Users } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { Recipe } from "@/data/types";
+
+// import RecipeCardActions from "./RecipeCardActions";
 
 // Move skeleton outside component - defined once
 const SkeletonWithShimmer = memo(({ className }: { className?: string }) => (
@@ -90,7 +94,7 @@ const RecipeCard = memo(function RecipeCard({
   fromPage?: string;
 }) {
   // Only call useSession once at top level - session is stable
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [loadingRecipePage, setLoadingRecipePage] = useState(false);
   const [showSlowConnectionMessage, setShowSlowConnectionMessage] =
@@ -134,8 +138,8 @@ const RecipeCard = memo(function RecipeCard({
   }, []);
 
   // Determine if we should show action buttons
-  const showActions =
-    !skeleton && status === "authenticated" && !!session?.user && !!recipe;
+  // const showActions =
+  //   !skeleton && status === "authenticated" && !!session?.user && !!recipe;
 
   // Memoize the href to avoid recalculation
   const href = useMemo(
@@ -190,21 +194,21 @@ const RecipeCard = memo(function RecipeCard({
               onLoad={handleImageLoad}
               loading={priority ? "eager" : "lazy"}
             />
-            {showActions && (
+            {/* {showActions && (
               <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
                 <RecipeCardActions recipe={recipe} />
               </div>
-            )}
+            )} */}
             <RelevanceBadge badgeType={badgeType} />
           </div>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
             <ChefHat className="h-16 w-16 text-brand-secondary" />
-            {showActions && (
+            {/* {showActions && (
               <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
                 <RecipeCardActions recipe={recipe} />
               </div>
-            )}
+            )} */}
             <RelevanceBadge badgeType={badgeType} />
           </div>
         )}

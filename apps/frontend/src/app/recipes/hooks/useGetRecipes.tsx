@@ -37,7 +37,15 @@ const useGetRecipes = (pageSize: number) => {
   );
 
   const getRecipes = async (params: GetRecipesParams) => {
-    const response = await api.get("/api/recipes", { params });
+    const { page, pageSize, filters, seed } = params;
+    const response = await api.get("/api/recipes", {
+      params: {
+        page,
+        pageSize,
+        seed,
+        filters: JSON.stringify(filters ?? {}),
+      },
+    });
     return response.data;
   };
 
