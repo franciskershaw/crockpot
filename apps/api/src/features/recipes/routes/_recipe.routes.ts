@@ -15,8 +15,7 @@ import recipeControllers from "../controllers/_recipes.controller";
 const recipeRoutes = new Hono();
 
 recipeRoutes.get("/time-range", recipeControllers.getRecipeTimeRange);
-
-// recipeRoutes.get("/categories", recipeControllers.getRecipeCategories);
+recipeRoutes.get("/categories", recipeControllers.getRecipeCategories);
 
 // recipeRoutes.get("/", validate("query", getRecipesQuerySchema), recipeControllers.getRecipes);
 

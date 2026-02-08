@@ -1,0 +1,5 @@
+# Recipe categories (REST Client)
+@baseUrl = http://localhost:5100
+
+### Get recipe categories (list, sorted by name)
+GET {{baseUrl}}/api/recipes/categories
