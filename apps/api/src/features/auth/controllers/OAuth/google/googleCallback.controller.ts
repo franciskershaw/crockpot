@@ -76,7 +76,7 @@ export const googleCallback = async (c: Context) => {
         googleId: googleUser.id,
         name: googleUser.given_name + " " + (googleUser.family_name || ""),
         provider: "google",
-        role: "user",
+        role: "FREE",
       });
     }
   }

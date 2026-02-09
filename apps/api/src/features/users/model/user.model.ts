@@ -53,7 +53,7 @@ const UserSchema = new Schema<IUser>(
     },
     passwordHash: { type: String, required: false, select: false },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "User" }
 );
 
 const User: Model<IUser> = mongoose.model<IUser>("User", UserSchema);

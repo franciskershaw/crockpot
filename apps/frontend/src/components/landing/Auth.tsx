@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,8 +9,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+
 import GoogleIcon from "./GoogleIcon";
-import { signInWithGoogle } from "@/actions/auth";
+
 // import EmailAuth from "./EmailAuth";
 
 export default function Auth() {
@@ -26,16 +29,18 @@ export default function Auth() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form action={signInWithGoogle}>
-          <Button
-            type="submit"
-            variant="outline"
-            className="w-full h-12 border-gray-300 hover:bg-gray-50"
-          >
-            <GoogleIcon />
-            Continue with Google
-          </Button>
-        </form>
+        <Button
+          type="submit"
+          variant="outline"
+          className="w-full h-12 border-gray-300 hover:bg-gray-50"
+          onClick={() => {
+            window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`;
+          }}
+        >
+          <GoogleIcon />
+          Continue with Google
+        </Button>
+
         <div className="relative">
           <Separator />
           {/* <div className="absolute inset-0 flex items-center justify-center">
