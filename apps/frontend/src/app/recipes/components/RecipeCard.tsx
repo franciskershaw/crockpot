@@ -1,6 +1,5 @@
 "use client";
 
-// import { useSession } from "next-auth/react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import Image from "next/image";
@@ -12,6 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Recipe } from "@/data/types";
+import useUser from "@/hooks/user/useUser";
+
+import RecipeCardActions from "./RecipeCardActions";
 
 // import RecipeCardActions from "./RecipeCardActions";
 
@@ -93,8 +95,8 @@ const RecipeCard = memo(function RecipeCard({
   skeleton?: boolean;
   fromPage?: string;
 }) {
-  // Only call useSession once at top level - session is stable
-  // const { data: session, status } = useSession();
+  const { isAuthenticated } = useUser();
+
   const [imageLoaded, setImageLoaded] = useState(false);
   const [loadingRecipePage, setLoadingRecipePage] = useState(false);
   const [showSlowConnectionMessage, setShowSlowConnectionMessage] =
@@ -138,8 +140,7 @@ const RecipeCard = memo(function RecipeCard({
   }, []);
 
   // Determine if we should show action buttons
-  // const showActions =
-  //   !skeleton && status === "authenticated" && !!session?.user && !!recipe;
+  const showActions = !skeleton && isAuthenticated && !!recipe;
 
   // Memoize the href to avoid recalculation
   const href = useMemo(
@@ -194,11 +195,11 @@ const RecipeCard = memo(function RecipeCard({
               onLoad={handleImageLoad}
               loading={priority ? "eager" : "lazy"}
             />
-            {/* {showActions && (
+            {showActions && (
               <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
                 <RecipeCardActions recipe={recipe} />
               </div>
-            )} */}
+            )}
             <RelevanceBadge badgeType={badgeType} />
           </div>
         ) : (

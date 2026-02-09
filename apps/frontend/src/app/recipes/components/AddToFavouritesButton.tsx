@@ -1,13 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  useAddToFavouritesMutation,
-  useRemoveFromFavouritesMutation,
-  useGetFavourites,
-} from "@/hooks/useFavourites";
+
+import { Heart } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+// import {
+//   useAddToFavouritesMutation,
+//   useRemoveFromFavouritesMutation,
+//   useGetFavourites,
+// } from "@/hooks/useFavourites";
 
 const AddToFavouritesButton = ({
   recipeId,
@@ -17,23 +20,23 @@ const AddToFavouritesButton = ({
   favourited?: boolean;
 }) => {
   const [isFavorited, setIsFavorited] = useState(favourited ?? false);
-  const addToFavouritesMutation = useAddToFavouritesMutation();
-  const removeFromFavouritesMutation = useRemoveFromFavouritesMutation();
-  const { favourites } = useGetFavourites();
+  // const addToFavouritesMutation = useAddToFavouritesMutation();
+  // const removeFromFavouritesMutation = useRemoveFromFavouritesMutation();
+  // const { favourites } = useGetFavourites();
 
-  useEffect(() => {
-    setIsFavorited(favourites?.some((fav) => fav.id === recipeId) ?? false);
-  }, [favourites, recipeId]);
+  // useEffect(() => {
+  //   setIsFavorited(favourites?.some((fav) => fav.id === recipeId) ?? false);
+  // }, [favourites, recipeId]);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorited(!isFavorited);
-    if (isFavorited) {
-      removeFromFavouritesMutation.mutate({ recipeId });
-    } else {
-      addToFavouritesMutation.mutate({ recipeId });
-    }
+    // setIsFavorited(!isFavorited);
+    // if (isFavorited) {
+    //   removeFromFavouritesMutation.mutate({ recipeId });
+    // } else {
+    //   addToFavouritesMutation.mutate({ recipeId });
+    // }
   };
 
   return (

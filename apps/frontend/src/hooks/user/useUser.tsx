@@ -44,7 +44,13 @@ const useUser = () => {
     }
   }
 
-  return { user: user ?? null, fetchingUser, updateUser, clearUser };
+  return {
+    user: user ?? null,
+    fetchingUser,
+    updateUser,
+    clearUser,
+    isAuthenticated: !!user,
+  };
 };
 
 export default useUser;
