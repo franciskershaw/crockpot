@@ -10,9 +10,9 @@ const useUser = () => {
 
   const getUser = async (): Promise<IUser | null> => {
     try {
-      const response = await api.get("/auth/refresh-token");
+      const response = await api.get("/api/auth/refresh-token");
       if (response?.status === 200) {
-        const userResponse = await api.get("/users", {
+        const userResponse = await api.get("/api/users", {
           headers: {
             Authorization: `Bearer ${response.data.accessToken}`,
           },
@@ -37,7 +37,7 @@ const useUser = () => {
 
   async function clearUser() {
     try {
-      await api.post("/auth/logout");
+      await api.post("/api/auth/logout");
       queryClient.setQueryData([queryKeys.USER], null);
     } catch (error) {
       console.error(error);

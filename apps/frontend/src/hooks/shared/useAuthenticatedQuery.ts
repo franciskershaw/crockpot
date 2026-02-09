@@ -4,7 +4,8 @@
  */
 
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
+
+import useUser from "@/hooks/user/useUser";
 
 /**
  * Hook for authenticated data fetching with consistent patterns
@@ -17,8 +18,8 @@ export function useAuthenticatedQuery<TData = unknown, TError = Error>(
     "queryKey" | "queryFn" | "enabled"
   >
 ) {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === "authenticated" && !!session?.user;
+  const { user } = useUser();
+  const isAuthenticated = !!user;
 
   const query = useQuery<TData, TError>({
     queryKey,

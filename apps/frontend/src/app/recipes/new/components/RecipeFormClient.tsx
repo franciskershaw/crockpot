@@ -1,15 +1,20 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { hasPermission, Permission } from "@/lib/action-helpers";
-import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
+
+import { useRouter } from "next/navigation";
+
 import { UserRole } from "@/data/types";
 import type { Item, RecipeCategory, Unit } from "@/data/types";
+import useUser from "@/hooks/user/useUser";
+import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
+import { hasPermission, Permission } from "@/lib/action-helpers";
+
+import type { EditRecipeInput } from "../helpers/recipe-form-helpers";
+
 import CreateRecipeForm from "./CreateRecipeForm";
 import CreateRecipeFormSkeleton from "./CreateRecipeFormSkeleton";
-import type { EditRecipeInput } from "../helpers/recipe-form-helpers";
 
 interface RecipeFormClientProps {
   recipeCategories: RecipeCategory[];
@@ -31,23 +36,23 @@ export default function RecipeFormClient({
   recipe,
   recipeOwnerId,
 }: RecipeFormClientProps) {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const router = useRouter();
   const isEditing = !!recipe;
-
+  const { user, fetchingUser } = useUser();
   // Only fetch recipe count when creating (not needed for editing)
   const { recipeCount, isLoading: countLoading } = useGetUserRecipeCount();
 
   // Client-side auth and permission checks
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (!user) {
       router.push("/");
       return;
     }
 
-    if (status === "authenticated" && session?.user?.id) {
-      const userRole = session.user.role;
-      const userId = session.user.id;
+    if (user && user._id) {
+      const userRole = user.role;
+      const userId = user._id;
 
       // Check if user has permission to create/edit recipes
       if (!hasPermission(userRole, Permission.CREATE_RECIPES)) {
@@ -77,14 +82,13 @@ export default function RecipeFormClient({
         }
       }
     }
-  }, [status, session, router, recipeCount, isEditing, recipeOwnerId]);
+  }, [router, recipeCount, isEditing, recipeOwnerId, user]);
 
   // Show skeleton if:
   // 1. Session is still loading, OR
   // 2. Creating AND recipe count is loading AND no cached data exists
   const isInitialLoad =
-    status === "loading" ||
-    (!isEditing && countLoading && recipeCount === undefined);
+    fetchingUser || (!isEditing && countLoading && recipeCount === undefined);
 
   if (isInitialLoad) {
     return <CreateRecipeFormSkeleton />;

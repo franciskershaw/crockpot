@@ -4,9 +4,11 @@
  */
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { UserRole, roleRank } from "@/data/types";
+
+import { roleRank, UserRole } from "@/data/types";
+
+import useUser from "../user/useUser";
 
 /**
  * Configuration for basic mutations
@@ -28,13 +30,13 @@ export function useAuthenticatedMutation<TInput = unknown, TData = unknown>(
   config: BasicMutationConfig<TInput, TData>
 ) {
   const queryClient = useQueryClient();
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === "authenticated" && !!session?.user;
+  const { user } = useUser();
+  const isAuthenticated = !!user;
 
   const hasRequiredRole = (): boolean => {
     // Strict: minimumRole is required; user must be logged in with a role
-    if (!session?.user?.role) return false;
-    const userRole = session.user.role as UserRole;
+    if (!user?.role) return false;
+    const userRole = user.role;
     return roleRank[userRole] >= roleRank[config.minimumRole];
   };
 

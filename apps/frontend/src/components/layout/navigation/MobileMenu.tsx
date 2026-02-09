@@ -1,13 +1,10 @@
 "use client";
 
-import { Session } from "next-auth";
 import LogoutButton from "@/components/landing/LogoutButton";
+import useUser from "@/hooks/user/useUser";
 
-interface MobileMenuProps {
-  session: Session | null;
-}
-
-export default function MobileMenu({ session }: MobileMenuProps) {
+export default function MobileMenu() {
+  const { user } = useUser();
   // TODO: Uncomment this entire section when more features are added
   // Currently commented out to simplify mobile navigation
 
@@ -185,7 +182,7 @@ export default function MobileMenu({ session }: MobileMenuProps) {
   */
 
   // Simple logout button for logged-in users
-  if (session?.user) {
+  if (user) {
     return (
       <div className="h-full flex items-center">
         <LogoutButton variant="outline" />

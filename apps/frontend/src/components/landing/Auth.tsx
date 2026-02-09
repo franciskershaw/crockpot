@@ -1,5 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
+
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,12 +13,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import useUser from "@/hooks/user/useUser";
 
 import GoogleIcon from "./GoogleIcon";
 
-// import EmailAuth from "./EmailAuth";
-
 export default function Auth() {
+  const router = useRouter();
+  const { user } = useUser();
+  console.log(user)
+
+  useEffect(() => {
+    if (user) {
+      router.push("/recipes");
+    }
+  }, [user, router]);
   return (
     <Card
       className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm w-full max-w-md"
@@ -43,11 +55,7 @@ export default function Auth() {
 
         <div className="relative">
           <Separator />
-          {/* <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-white px-2 text-sm text-gray-500">or</span>
-          </div> */}
         </div>
-        {/* <EmailAuth /> */}
       </CardContent>
     </Card>
   );

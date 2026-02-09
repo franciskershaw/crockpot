@@ -1,10 +1,13 @@
 "use client";
 
 import { useCallback } from "react";
+
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { Button } from "@/components/ui/button";
+
 import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import useUser from "@/hooks/user/useUser";
 
 interface LogoutButtonProps {
   variant?:
@@ -26,11 +29,11 @@ export default function LogoutButton({
   onLogout,
 }: LogoutButtonProps) {
   const router = useRouter();
-
+  const { clearUser } = useUser();
   const handleLogout = useCallback(async () => {
     try {
       // Call signOut directly from client side - this automatically updates all useSession() hooks
-      await signOut({ redirect: false });
+      await clearUser();
       // Refresh the router to ensure server components update
       router.refresh();
       toast.success("Logged out successfully");
@@ -39,7 +42,7 @@ export default function LogoutButton({
     } catch (error) {
       console.error("Logout failed:", error);
     }
-  }, [router, onLogout]);
+  }, [router, onLogout, clearUser]);
 
   return (
     <Button onClick={handleLogout} variant={variant} className={className}>

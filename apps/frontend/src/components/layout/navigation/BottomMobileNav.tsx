@@ -2,25 +2,27 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Plus, Search, ShoppingBag, LogIn } from "lucide-react";
-import { UserRole } from "@/data/types";
+
+import { LogIn, Plus, Search, ShoppingBag } from "lucide-react";
+
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSession } from "next-auth/react";
-import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
-import { Skeleton } from "@/components/ui/skeleton";
+// import { UserRole } from "@/data/types";
+import useUser from "@/hooks/user/useUser";
+// import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
 import { cn, isActive } from "@/lib/utils";
 
 const BottomMobileNav = () => {
-  const { data: session, status } = useSession();
-  const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
+  const { user, fetchingUser } = useUser();
+  // const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
   const pathname = usePathname();
 
-  const isLoading = status === "loading";
-  const isAuthenticated = status === "authenticated" && !!session?.user;
+  const isLoading = fetchingUser;
+  const isAuthenticated = !!user;
 
   // Helper function to determine if link is active
 
@@ -42,16 +44,16 @@ const BottomMobileNav = () => {
     );
 
   // Check if user has reached recipe limit
-  const hasReachedLimit =
-    isAuthenticated && !isLoadingCount
-      ? (() => {
-          const userRole = session.user.role as UserRole;
-          return (
-            (userRole === UserRole.FREE && recipeCount >= 5) ||
-            (userRole === UserRole.PREMIUM && recipeCount >= 10)
-          );
-        })()
-      : false;
+  // const hasReachedLimit =
+  //   isAuthenticated && !isLoadingCount
+  //     ? (() => {
+  //         const userRole = user?.role as UserRole;
+  //         return (
+  //           (userRole === UserRole.FREE && recipeCount >= 5) ||
+  //           (userRole === UserRole.PREMIUM && recipeCount >= 10)
+  //         );
+  //       })()
+  //     : false;
 
   return (
     <div className="md:hidden">
@@ -92,7 +94,7 @@ const BottomMobileNav = () => {
                 <Search className={getMobileIconClasses("/recipes")} />
                 <span className="text-sm font-medium">Browse</span>
               </Link>
-              {hasReachedLimit ? (
+              {/* {hasReachedLimit ? (
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span className="flex flex-col items-center gap-2 text-gray-400 cursor-not-allowed">
@@ -107,15 +109,15 @@ const BottomMobileNav = () => {
                     </p>
                   </TooltipContent>
                 </Tooltip>
-              ) : (
-                <Link
-                  href="/recipes/new"
-                  className={getMobileNavLinkClasses("/recipes/new")}
-                >
-                  <Plus className={getMobileIconClasses("/recipes/new")} />
-                  <span className="text-sm font-medium">Add Recipe</span>
-                </Link>
-              )}
+              ) : ( */}
+              <Link
+                href="/recipes/new"
+                className={getMobileNavLinkClasses("/recipes/new")}
+              >
+                <Plus className={getMobileIconClasses("/recipes/new")} />
+                <span className="text-sm font-medium">Add Recipe</span>
+              </Link>
+              {/* )} */}
             </>
           ) : (
             // Non-logged-in users: Browse Recipes, Login

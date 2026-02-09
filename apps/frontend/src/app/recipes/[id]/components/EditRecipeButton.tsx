@@ -1,10 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
-import { Recipe, UserRole } from "@/data/types";
-import { User } from "next-auth";
 import { useRouter } from "next/navigation";
 
-const EditRecipeButton = ({ recipe, user }: { recipe: Recipe; user: User }) => {
+import { Pencil } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Recipe, UserRole } from "@/data/types";
+import { IUser } from "@/shared/types";
+
+const EditRecipeButton = ({
+  recipe,
+  user,
+}: {
+  recipe: Recipe;
+  user: IUser;
+}) => {
   const router = useRouter();
   const hasPermission =
     user.role === UserRole.ADMIN || recipe.createdById === user.id;

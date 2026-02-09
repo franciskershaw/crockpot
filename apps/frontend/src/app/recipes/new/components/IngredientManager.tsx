@@ -1,8 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+
+import { Trash2 } from "lucide-react";
+
+import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import { Button } from "@/components/ui/button";
 import { FormLabel } from "@/components/ui/form";
+import { NumberInput } from "@/components/ui/number-input";
+import Searchable from "@/components/ui/searchable";
 import {
   Select,
   SelectContent,
@@ -10,13 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { NumberInput } from "@/components/ui/number-input";
-import Searchable from "@/components/ui/searchable";
-import { Trash2 } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { hasPermission, Permission } from "@/lib/action-helpers";
-import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import type { Item, Unit } from "@/data/types";
+import useUser from "@/hooks/user/useUser";
+// import { useSession } from "next-auth/react";
+import { hasPermission, Permission } from "@/lib/action-helpers";
 
 export type IngredientItem = {
   id: string;
@@ -45,10 +48,10 @@ export default function IngredientManager({
 }: IngredientManagerProps) {
   const [searchValue, setSearchValue] = useState("");
   const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
-  const { data: session } = useSession();
+  const { user } = useUser();
 
   const canCreateItems =
-    session?.user && hasPermission(session.user.role, Permission.CREATE_ITEMS);
+    user && hasPermission(user.role, Permission.CREATE_ITEMS);
   const handleIngredientSelect = (ingredientId: string) => {
     const ingredient = availableIngredients.find(
       (item) => item.id === ingredientId

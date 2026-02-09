@@ -1,12 +1,14 @@
-import { auth } from "@/auth";
+// import { auth } from "@/auth";
+import type { Metadata } from "next";
+
+// import { redirect } from "next/navigation";
+
 import Auth from "@/components/landing/Auth";
 import HeroSection from "@/components/landing/HeroSection";
 // import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import PricingSection from "@/components/landing/PricingSection";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { redirect } from "next/navigation";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -21,11 +23,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const session = await auth();
+  // const session = await auth();
 
-  if (session?.user) {
-    redirect("/your-crockpot");
-  }
+  // if (session?.user) {
+  //   redirect("/your-crockpot");
+  // }
   return (
     <div className="min-h-screen">
       {/* Hero Section with Auth Card */}

@@ -1,5 +1,10 @@
 "use client";
 
+import { useState } from "react";
+
+import { ShoppingBasket, Trash2 } from "lucide-react";
+
+import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import {
   Accordion,
   AccordionContent,
@@ -8,27 +13,25 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getIconComponent } from "@/lib/icon-map";
-import { Trash2, ShoppingBasket } from "lucide-react";
+import Searchable from "@/components/ui/searchable";
+import type { Item, Unit } from "@/data/types";
+import { useGetMenu } from "@/hooks/useMenu";
+import useUser from "@/hooks/user/useUser";
 import {
+  useAddManualShoppingListItemMutation,
+  useGetShoppingList,
   useRemoveShoppingListItemMutation,
+  useShoppingListCategories,
   useToggleObtainedMutation,
   useUpdateShoppingListItemQuantityMutation,
-  useShoppingListCategories,
-  useGetShoppingList,
-  useAddManualShoppingListItemMutation,
 } from "@/hooks/useShoppingList";
-import type { Unit, Item } from "@/data/types";
-import ShoppingListRowEditor from "./ShopingListRowEditor";
-import { useState } from "react";
+import { hasPermission, Permission } from "@/lib/action-helpers";
+import { getIconComponent } from "@/lib/icon-map";
+
 import AddItemEditor from "./AddItemEditor";
-import Searchable from "@/components/ui/searchable";
 import ClearMenuDialog from "./ClearMenuDialog";
 import ClearShoppingListDialog from "./ClearShoppingListDialog";
-import { useGetMenu } from "@/hooks/useMenu";
-import { useSession } from "next-auth/react";
-import { hasPermission, Permission } from "@/lib/action-helpers";
-import { ItemDialog } from "@/components/dialogs/ItemDialog";
+import ShoppingListRowEditor from "./ShopingListRowEditor";
 
 interface ShoppingListProps {
   items: Item[];
@@ -42,14 +45,14 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
   const removeItem = useRemoveShoppingListItemMutation();
   const updateQuantity = useUpdateShoppingListItemQuantityMutation();
   const addManualItem = useAddManualShoppingListItemMutation();
-  const { data: session } = useSession();
+  const { user } = useUser();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
   const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
 
   const canCreateItems =
-    session?.user && hasPermission(session.user.role, Permission.CREATE_ITEMS);
+    user && hasPermission(user.role, Permission.CREATE_ITEMS);
 
   const { grouped, categories, categoryIds } = useShoppingListCategories(
     shoppingList,

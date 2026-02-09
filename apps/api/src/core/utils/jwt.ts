@@ -1,7 +1,7 @@
 import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
 
-import { IUser } from "../shared/types";
+import { IUser } from "../../shared/types";
 
 // Types for token payload
 interface TokenPayload extends JWTPayload {

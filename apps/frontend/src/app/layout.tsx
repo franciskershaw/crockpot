@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "@/styles/globals.css";
+
+import BottomMobileNav from "@/components/layout/navigation/BottomMobileNav";
 import Navbar from "@/components/layout/navigation/Navbar";
 import QueryProvider from "@/components/providers/QueryProvider";
-import SessionProvider from "@/components/providers/SessionProvider";
 import { Toaster } from "@/components/ui/sonner";
-import BottomMobileNav from "@/components/layout/navigation/BottomMobileNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,15 +47,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-surface-warm`}
       >
-        <SessionProvider>
-          <QueryProvider>
-            <Navbar />
-            <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">
-              {children}
-            </main>
-            <BottomMobileNav />
-          </QueryProvider>
-        </SessionProvider>
+        {/* <SessionProvider> */}
+        <QueryProvider>
+          <Navbar />
+          <main className="mx-auto px-4 md:px-0 container pb-16 md:pb-0">
+            {children}
+          </main>
+          <BottomMobileNav />
+        </QueryProvider>
+        {/* </SessionProvider> */}
         <Toaster position="top-right" expand={false} duration={2000} />
       </body>
     </html>

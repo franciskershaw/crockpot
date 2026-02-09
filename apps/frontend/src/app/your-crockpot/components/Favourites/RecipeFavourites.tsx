@@ -1,23 +1,26 @@
 "use client";
 
+import Link from "next/link";
+
+import { Heart, Search } from "lucide-react";
+
 import RecipeCard from "@/app/recipes/components/RecipeCard";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
-import EmptyState from "@/components/ui/empty-state";
-import { Heart, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import EmptyState from "@/components/ui/empty-state";
 import { useGetFavourites } from "@/hooks/useFavourites";
-import { useSession } from "next-auth/react";
+import useUser from "@/hooks/user/useUser";
+
 import FavouritesSkeleton from "./FavouritesSkeleton";
 
 export default function RecipeFavourites() {
-  const { status } = useSession();
+  const { fetchingUser } = useUser();
   const { favourites, isLoading } = useGetFavourites();
 
   // Show skeleton if:
   // 1. Session is still loading (queries can't start yet), OR
   // 2. Query is loading AND no cached data exists
-  const isInitialLoad = status === "loading" || (isLoading && !favourites);
+  const isInitialLoad = fetchingUser || (isLoading && !favourites);
 
   if (isInitialLoad) {
     return <FavouritesSkeleton />;

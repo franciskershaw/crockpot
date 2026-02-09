@@ -1,15 +1,16 @@
 "use client";
 
-import ClearMenuDialog from "./ClearMenuDialog";
-import MobileShoppingListSheet from "./MobileShoppingListSheet";
-import ShoppingList from "./ShoppingList";
-import MenuGrid from "./MenuGrid";
-import MenuSkeleton from "./MenuSkeleton";
+import type { Item, Unit } from "@/data/types";
 import { useGetMenu } from "@/hooks/useMenu";
+import useUser from "@/hooks/user/useUser";
 import { useGetShoppingList } from "@/hooks/useShoppingList";
 import { useGetUserRecipes } from "@/hooks/useUserRecipes";
-import { useSession } from "next-auth/react";
-import type { Item, Unit } from "@/data/types";
+
+import ClearMenuDialog from "./ClearMenuDialog";
+import MenuGrid from "./MenuGrid";
+import MenuSkeleton from "./MenuSkeleton";
+import MobileShoppingListSheet from "./MobileShoppingListSheet";
+import ShoppingList from "./ShoppingList";
 
 interface RecipeMenuProps {
   items: Item[];
@@ -21,7 +22,7 @@ interface RecipeMenuProps {
  * Leverages client-side cache for instant rendering on repeat visits
  */
 export default function RecipeMenu({ items, units }: RecipeMenuProps) {
-  const { status } = useSession();
+  const { fetchingUser } = useUser();
   const { menu, isLoading: menuLoading } = useGetMenu();
   const { data: shoppingList, isLoading: shoppingListLoading } =
     useGetShoppingList();
@@ -31,7 +32,7 @@ export default function RecipeMenu({ items, units }: RecipeMenuProps) {
   // 1. Session is still loading (queries can't start yet), OR
   // 2. Any query is loading AND no cached data exists
   const isInitialLoad =
-    status === "loading" ||
+    fetchingUser ||
     ((menuLoading || shoppingListLoading || userRecipesLoading) &&
       !menu &&
       !shoppingList &&

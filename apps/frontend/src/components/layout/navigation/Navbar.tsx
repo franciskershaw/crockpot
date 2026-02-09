@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { ChefHat, Plus, Search, Shield, ShoppingBag } from "lucide-react";
-import { useSession } from "next-auth/react";
 
 import LogoutButton from "@/components/landing/LogoutButton";
 import { Button } from "@/components/ui/button";
@@ -15,19 +14,20 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserRole } from "@/data/types";
+import useUser from "@/hooks/user/useUser";
 import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
-import { hasPermission, Permission } from "@/lib/action-helpers";
+// import { hasPermission, Permission } from "@/lib/action-helpers";
 import { cn, isActive } from "@/lib/utils";
 
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
-  const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
+  const { user, fetchingUser } = useUser();
+  // const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
   const pathname = usePathname();
 
-  const isLoading = status === "loading";
-  const isAuthenticated = status === "authenticated" && !!session?.user;
+  const isLoading = fetchingUser;
+  const isAuthenticated = !!user;
 
   // Centralized nav link styling
   const getNavLinkClasses = (path: string) =>
@@ -58,16 +58,16 @@ export default function Navbar() {
     );
 
   // Check if user has reached recipe limit
-  const hasReachedLimit =
-    isAuthenticated && !isLoadingCount
-      ? (() => {
-          const userRole = session.user.role as UserRole;
-          return (
-            (userRole === UserRole.FREE && recipeCount >= 5) ||
-            (userRole === UserRole.PREMIUM && recipeCount >= 10)
-          );
-        })()
-      : false;
+  // const hasReachedLimit =
+  //   isAuthenticated && !isLoadingCount
+  //     ? (() => {
+  //         const userRole = user?.role as UserRole;
+  //         return (
+  //           (userRole === UserRole.FREE && recipeCount >= 5) ||
+  //           (userRole === UserRole.PREMIUM && recipeCount >= 10)
+  //         );
+  //       })()
+  //     : false;
 
   return (
     <nav className="sticky top-0 z-50 shadow-sm bg-white">
@@ -109,10 +109,7 @@ export default function Navbar() {
                   </span>
                 </Link>
 
-                {hasPermission(
-                  session.user.role,
-                  Permission.CREATE_RECIPES
-                ) && (
+                {/* {hasPermission(user?.role, Permission.CREATE_RECIPES) && (
                   <>
                     {hasReachedLimit ? (
                       <Tooltip>
@@ -144,9 +141,9 @@ export default function Navbar() {
                       </Link>
                     )}
                   </>
-                )}
+                )} */}
 
-                {hasPermission(session.user.role, Permission.ADMIN_PANEL) && (
+                {/* {hasPermission(user?.role, Permission.ADMIN_PANEL) && (
                   <Link
                     href="/admin/users"
                     className={cn(getNavLinkClasses("/admin"), "group")}
@@ -156,7 +153,7 @@ export default function Navbar() {
                       Admin
                     </span>
                   </Link>
-                )}
+                )} */}
                 <LogoutButton variant="outline" />
               </>
             ) : (
@@ -168,7 +165,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button - Only visible on mobile */}
           <div className="md:hidden h-full">
-            <MobileMenu session={session} />
+            <MobileMenu />
           </div>
         </div>
       </div>

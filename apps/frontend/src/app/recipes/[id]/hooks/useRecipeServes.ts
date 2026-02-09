@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useSession } from "next-auth/react";
-import { useGetMenu } from "@/hooks/useMenu";
+import { useMemo, useState } from "react";
+
 import { scaleIngredients } from "@/app/recipes/[id]/helpers/helpers";
 import { Ingredient } from "@/data/types";
+// import { useSession } from "next-auth/react";
+import { useGetMenu } from "@/hooks/useMenu";
+import useUser from "@/hooks/user/useUser";
 
 interface UseRecipeServesProps {
   recipeId: string;
@@ -17,8 +19,10 @@ export function useRecipeServes({
   originalServes,
   ingredients,
 }: UseRecipeServesProps) {
-  const { data: session, status } = useSession();
-  const isAuthenticated = status === "authenticated" && !!session?.user;
+  // const { data: session, status } = useSession();
+  const { user } = useUser();
+  const isAuthenticated = !!user;
+
   const { menu } = useGetMenu();
 
   // For non-authenticated users, manage serves locally
@@ -32,7 +36,7 @@ export function useRecipeServes({
   // - For authenticated users: use menuServes if available, otherwise original
   // - For non-authenticated users: use local state
   const effectiveServes = isAuthenticated
-    ? menuServes ?? originalServes
+    ? (menuServes ?? originalServes)
     : localServes;
 
   // Scale ingredients based on effective serves
