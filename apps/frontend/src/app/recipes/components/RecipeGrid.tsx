@@ -69,11 +69,14 @@ export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
         {recipes.map((recipe, index) => {
           const isNewItem = index >= totalPreviousItems;
           const newItemIndex = isNewItem ? index - totalPreviousItems : 0;
+
           return (
             <motion.div
               key={recipe._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{
+                opacity: 0,
+              }}
+              animate={{ opacity: 1 }}
               transition={{
                 delay: isNewItem
                   ? newItemIndex * 0.08 + 0.1

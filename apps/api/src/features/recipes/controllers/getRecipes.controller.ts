@@ -5,6 +5,7 @@ import type { PipelineStage } from "mongoose";
 import {
   buildMatchFilter,
   buildRecipesPipeline,
+  hasRelevanceFilters,
   MAX_SEED_RESULTS,
   seededSortKey,
 } from "../helpers/getRecipes.helper";
@@ -42,14 +43,19 @@ const getRecipes = async (c: Context) => {
   const total = result.total?.[0]?.count ?? 0;
 
   if (seedInMemory && query.seed != null && recipes.length > 0) {
-    const seed = query.seed;
-    recipes = [...recipes]
-      .sort(
-        (a, b) =>
-          seededSortKey(String(a._id), seed) -
-          seededSortKey(String(b._id), seed)
-      )
-      .slice(skip, skip + pageSize);
+    if (hasRelevanceFilters(query)) {
+      // Keep pipeline order (relevance); just paginate
+      recipes = recipes.slice(skip, skip + pageSize);
+    } else {
+      const seed = query.seed;
+      recipes = [...recipes]
+        .sort(
+          (a, b) =>
+            seededSortKey(String(a._id), seed) -
+            seededSortKey(String(b._id), seed)
+        )
+        .slice(skip, skip + pageSize);
+    }
   }
 
   // Attach relevance for badges when filters were applied

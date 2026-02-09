@@ -27,7 +27,7 @@ function getFilterIds(query: GetRecipesQuery) {
   };
 }
 
-function hasRelevanceFilters(query: GetRecipesQuery): boolean {
+export function hasRelevanceFilters(query: GetRecipesQuery): boolean {
   return (
     !!query.query?.trim() ||
     !!query.categoryIds?.length ||
