@@ -9,7 +9,7 @@ export type AuthProvider = (typeof AUTH_PROVIDERS)[number];
 export interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
   name?: string;
-  email?: string;
+  email: string;
   emailVerified?: Date;
   image?: string;
   role: UserRole;
@@ -26,7 +26,6 @@ const UserSchema = new Schema<IUser>(
     name: { type: String, required: false },
     email: {
       type: String,
-      required: false,
       unique: true,
       sparse: true,
     },
@@ -43,7 +42,6 @@ const UserSchema = new Schema<IUser>(
     provider: {
       type: String,
       enum: AUTH_PROVIDERS,
-      required: false,
     },
     googleId: {
       type: String,
