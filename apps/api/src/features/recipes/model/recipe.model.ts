@@ -23,7 +23,6 @@ export interface IRecipe extends Document {
   createdAt: Date;
   updatedAt: Date;
   categoryIds: mongoose.Types.ObjectId[];
-  favouritedByIds: mongoose.Types.ObjectId[];
   image?: IRecipeImage | null;
   ingredients: IRecipeIngredient[];
 }
@@ -55,7 +54,6 @@ const RecipeSchema = new Schema<IRecipe>(
     serves: { type: Number, required: true },
     createdById: { type: Schema.Types.ObjectId, ref: "User", required: false },
     categoryIds: [{ type: Schema.Types.ObjectId, ref: "RecipeCategory" }],
-    favouritedByIds: [{ type: Schema.Types.ObjectId, ref: "User" }],
     image: { type: RecipeImageSchema, required: false },
     ingredients: { type: [RecipeIngredientSchema], default: [] },
   },

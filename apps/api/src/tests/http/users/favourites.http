@@ -1,0 +1,84 @@
+# User Favourites – Add, Remove, and Get (REST Client)
+@baseUrl = http://localhost:5100
+# IMPORTANT: Replace this token with a valid JWT token
+# Login via OAuth and copy the access token from the response/cookie
+
+@accessToken = TOKEN_HERE
+
+@beanAndHalloumiTacosId = 6348124fe85a13ae0e2fd186
+@pulledChickenId = 63481cd65302af1826ec2f0b
+@thaiPorkId = 63481fdf5302af1826ec2f0f
+
+### Get user's favourite recipes
+GET {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+
+### Add recipe to favourites
+# Replace the recipeId with a valid recipe ID from your database
+POST {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}"
+}
+
+### Add another recipe to favourites
+POST {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{pulledChickenId}}"
+}
+
+### Try to add the same recipe again (should return wasAdded: false)
+POST {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}"
+}
+
+### Remove recipe from favourites
+DELETE {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{pulledChickenId}}"
+}
+
+### Try to remove a recipe that's not in favourites (should return wasRemoved: false)
+DELETE {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{thaiPorkId}}"
+}
+
+### Get favourites again after changes
+GET {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+
+### Error case: Invalid recipeId format
+POST {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "invalid-id"
+}
+
+### Error case: Missing recipeId
+POST {{baseUrl}}/api/users/favourites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+}
+
+### Error case: No authentication token
+GET {{baseUrl}}/api/users/favourites

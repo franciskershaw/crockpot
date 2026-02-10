@@ -1,0 +1,5 @@
+# Units list – all available units (REST Client)
+@baseUrl = http://localhost:5100
+
+### Get all units (sorted by name ascending)
+GET {{baseUrl}}/api/units
