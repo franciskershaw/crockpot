@@ -1,12 +1,26 @@
 import { ROLE } from "../constants";
 
 export interface IUser {
-    _id: string;
-    email: string;
-    name: string;
-    emailVerified: Date | null;
-    image?: string;
-    role: typeof ROLE;
-    createdAt: Date;
-    updatedAt: Date;
+  _id: string;
+  email: string;
+  name: string;
+  emailVerified: Date | null;
+  image?: string;
+  role: typeof ROLE;
+  createdAt: Date;
+  updatedAt: Date;
+  accessToken: string;
+}
+
+export interface Recipe {
+  _id: string;
+  name: string;
+  timeInMinutes: number;
+  instructions: string[];
+  notes: string[];
+  approved: boolean;
+  serves: number;
+  createdAt: Date;
+  updatedAt: Date;
+  categoryIds: string[];
 }
