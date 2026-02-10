@@ -1,0 +1,128 @@
+# Recipe Menu – Add, Remove, Update Serves (REST Client)
+@baseUrl = http://localhost:5100
+# Replace this token with a valid JWT token
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OThhMzdkNjg2NThkMTMzZTA4YzhhZGQiLCJlbWFpbCI6ImZyYW5jaXNrZXJzaGF3LmRldkBnbWFpbC5jb20iLCJleHAiOjE3NzA3NTkxNDd9.zuMHsS_pknbqjyX-GOHyZLjdoMhbnnOE-HRFf_jkIPs
+
+@beanAndHalloumiTacosId = 6348124fe85a13ae0e2fd186
+@pulledChickenId = 63481cd65302af1826ec2f0b
+@thaiPorkId = 63481fdf5302af1826ec2f0f
+
+### Get user's menu (empty initially)
+GET {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+
+### Add first recipe to menu
+# Replace the recipeId with a valid recipe ID from your database
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}",
+  "serves": 4
+}
+
+### Add second recipe to menu
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{pulledChickenId}}",
+  "serves": 2
+}
+
+### Get menu with recipes (should show both recipes)
+GET {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+
+### Update serves for first recipe (this uses the same endpoint as add)
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}",
+  "serves": 6
+}
+
+### Get menu again (should show updated serves)
+GET {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+
+### Remove first recipe from menu
+DELETE {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{pulledChickenId}}"
+}
+
+### Get menu after removal (should only show second recipe)
+GET {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+
+### Try to remove a recipe that's not in menu (should return wasRemoved: false)
+DELETE {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{thaiPorkId}}"
+}
+
+### Remove second recipe
+DELETE {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}"
+}
+
+### Get menu when empty
+GET {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+
+### Error case: Invalid recipeId format
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "invalid-id",
+  "serves": 4
+}
+
+### Error case: Missing serves
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}"
+}
+
+### Error case: Serves too small
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}",
+  "serves": 0
+}
+
+### Error case: Serves too large
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}",
+  "serves": 100
+}
+
+### Error case: No authentication token
+GET {{baseUrl}}/api/menu

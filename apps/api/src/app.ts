@@ -6,6 +6,7 @@ import { errorHandler } from "./core/middleware/error.middleware";
 import { securityHeaders } from "./core/middleware/security.middleware";
 import authRoutes from "./features/auth/routes/_auth.routes";
 import itemRoutes from "./features/items/routes/_item.routes";
+import menuRoutes from "./features/menu/routes/_menu.routes";
 import recipeRoutes from "./features/recipes/routes/_recipe.routes";
 import unitRoutes from "./features/units/routes/_unit.routes";
 import userRoutes from "./features/users/routes/_user.routes";
@@ -32,6 +33,7 @@ export const createApp = () => {
   // Feature routes
   app.route("/api/auth", authRoutes);
   app.route("/api/items", itemRoutes);
+  app.route("/api/menu", menuRoutes);
   app.route("/api/recipes", recipeRoutes);
   app.route("/api/units", unitRoutes);
   app.route("/api/users", userRoutes);
