@@ -1,96 +1,94 @@
 "use client";
 
-// import {
-//   useAddToMenuMutation,
-//   useRemoveFromMenuMutation,
-// } from "@/hooks/useMenu";
 import { memo, useCallback, useEffect, useState } from "react";
 
 import { Check, Loader2, ShoppingCart, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
-import { Recipe } from "@/data/types";
-
-// import { useGetMenu } from "@/hooks/useMenu";
+import useAddToMenu from "@/app/menu/hooks/useAddToMenu";
+import useGetMenu from "@/app/menu/hooks/useGetMenu";
+import useRemoveFromMenu from "@/app/menu/hooks/useRemoveFromMenu";
+import { Recipe } from "@/shared/types";
 
 const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
   const [isEditing, setIsEditing] = useState(false);
-  // const { menu } = useGetMenu();
+  const { menu } = useGetMenu();
 
   // Find if this recipe is in the menu
-  // const menuEntry = menu?.entries?.find(
-  //   (entry) => entry.recipeId === recipe.id
-  // );
-  // const isInMenu = !!menuEntry;
-  // const menuServes = menuEntry?.serves || recipe.serves || 4;
+  const menuEntry = menu?.entries?.find(
+    (entry: { recipeId: string; serves: number }) =>
+      entry.recipeId === recipe._id
+  );
+  const isInMenu = !!menuEntry;
+  const menuServes = menuEntry?.serves || recipe.serves || 4;
 
-  // const [servingAmount, setServingAmount] = useState(menuServes);
+  const [servingAmount, setServingAmount] = useState(menuServes);
 
   // Update serving amount when menu data changes
-  // useEffect(() => {
-  //   setServingAmount(menuServes);
-  // }, [menuServes]);
+  useEffect(() => {
+    setServingAmount(menuServes);
+  }, [menuServes]);
 
-  // const addToMenuMutation = useAddToMenuMutation();
-  // const removeFromMenuMutation = useRemoveFromMenuMutation();
+  const addToMenu = useAddToMenu();
+  const removeFromMenu = useRemoveFromMenu();
 
-  // const handleCartClick = useCallback((e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   setIsEditing(true);
-  // }, []);
+  const handleCartClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsEditing(true);
+  }, []);
 
-  // const handleCancel = useCallback(
-  //   (e: React.MouseEvent) => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     setIsEditing(false);
-  //     setServingAmount(menuServes); // Reset to current menu value
-  //   },
-  //   [menuServes]
-  // );
+  const handleCancel = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsEditing(false);
+      setServingAmount(menuServes); // Reset to current menu value
+    },
+    [menuServes]
+  );
 
-  // const handleConfirmAmount = useCallback(
-  //   (e: React.MouseEvent) => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     addToMenuMutation.mutate(
-  //       { recipeId: recipe.id, serves: servingAmount },
-  //       {
-  //         onSuccess: () => {
-  //           setIsEditing(false);
-  //         },
-  //       }
-  //     );
-  //   },
-  //   [recipe.id, servingAmount, addToMenuMutation]
-  // );
+  const handleConfirmAmount = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      addToMenu.mutate(
+        { recipeId: recipe._id, serves: servingAmount },
+        {
+          onSuccess: () => {
+            setIsEditing(false);
+          },
+        }
+      );
+    },
+    [recipe, servingAmount, addToMenu]
+  );
 
-  // const handleRemoveFromMenu = useCallback(
-  //   (e: React.MouseEvent) => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     removeFromMenuMutation.mutate(
-  //       { recipeId: recipe.id },
-  //       {
-  //         onSuccess: () => {
-  //           setIsEditing(false);
-  //         },
-  //       }
-  //     );
-  //   },
-  //   [recipe.id, removeFromMenuMutation]
-  // );
+  const handleRemoveFromMenu = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      removeFromMenu.mutate(
+        { recipeId: recipe._id },
+        {
+          onSuccess: () => {
+            setIsEditing(false);
+          },
+        }
+      );
+    },
+    [recipe, removeFromMenu]
+  );
 
-  // const adjustAmount = useCallback(
-  //   (e: React.MouseEvent, delta: number) => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     const newAmount = Math.max(1, Math.min(20, servingAmount + delta));
-  //     setServingAmount(newAmount);
-  //   },
-  //   [servingAmount]
-  // );
+  const adjustAmount = useCallback(
+    (e: React.MouseEvent, delta: number) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const newAmount = Math.max(1, Math.min(20, servingAmount + delta));
+      setServingAmount(newAmount);
+    },
+    [servingAmount]
+  );
 
   return (
     <div className="relative">
@@ -104,7 +102,7 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.2 }}
-                // onClick={handleCancel}
+                onClick={handleCancel}
                 className="flex items-center justify-center h-8 w-8 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer rounded-full"
               >
                 <X className="h-4 w-4" />
@@ -117,30 +115,21 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.2 }}
-                // onClick={handleCartClick}
+                onClick={handleCartClick}
                 className={`flex items-center justify-center h-8 w-8 rounded-full transition-colors 
                   ${
-                    // isInMenu
-                    // ? "text-green-600 hover:text-green-700"
-                    // :
-                    "text-gray-600 hover:text-blue-600"
+                    isInMenu
+                      ? "text-green-600 hover:text-green-700"
+                      : "text-gray-600 hover:text-blue-600"
                   }`}
               >
                 <ShoppingCart
                   className={`h-4 w-4 transition-all duration-200 
-                    ${
-                      // isInMenu
-                      // ? "fill-current" : ""
-                      ""
-                    }
+                    ${isInMenu ? "fill-current" : ""}
                     `}
                 />
                 <span className="sr-only">
-                  {
-                    // isInMenu
-                    // ? "Edit menu item" : "Add to menu"
-                    "Add to menu"
-                  }
+                  {isInMenu ? "Edit menu item" : "Add to menu"}
                 </span>
               </motion.button>
             )}
@@ -148,23 +137,17 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
 
           {/* Badge positioned to overlap top-right but be mostly outside */}
           <AnimatePresence>
-            {
-              // isInMenu && !isEditing && (
-              false && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium shadow-lg border-2 border-white z-10 overflow-visible"
-                >
-                  {
-                    // menuServes
-                    "4"
-                  }
-                </motion.div>
-              )
-            }
+            {isInMenu && !isEditing && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                className="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium shadow-lg border-2 border-white z-10 overflow-visible"
+              >
+                {menuServes}
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
 
@@ -200,8 +183,8 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
               >
                 {/* Minus button */}
                 <button
-                  // onClick={(e) => adjustAmount(e, -1)}
-                  // disabled={servingAmount <= 1}
+                  onClick={(e) => adjustAmount(e, -1)}
+                  disabled={servingAmount <= 1}
                   className="flex items-center justify-center h-6 w-6 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <span className="text-sm font-bold leading-none">−</span>
@@ -215,19 +198,17 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
                     e.stopPropagation();
                   }}
                 >
-                  {/* {addToMenuMutation.isPending ||
-                  removeFromMenuMutation.isPending ? (
+                  {addToMenu.isPending || removeFromMenu.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     servingAmount
-                  )} */}
-                  4
+                  )}
                 </div>
 
                 {/* Plus button */}
                 <button
-                  // onClick={(e) => adjustAmount(e, 1)}
-                  // disabled={servingAmount >= 20}
+                  onClick={(e) => adjustAmount(e, 1)}
+                  disabled={servingAmount >= 20}
                   className="flex items-center justify-center h-6 w-6 rounded-full hover:bg-gray-100 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <span className="text-sm font-bold leading-none">+</span>
@@ -235,32 +216,29 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
 
                 {/* Remove from menu button - positioned to drop down from number input */}
                 <AnimatePresence>
-                  {
-                    // isInMenu && isEditing && (
-                    false && (
-                      <motion.button
-                        initial={{ y: -20, opacity: 0, scale: 0.9 }}
-                        animate={{
-                          y: 20,
-                          opacity: 1,
-                          scale: 1,
-                          transition: {
-                            duration: 0.25,
-                            delay: 0.3,
-                            ease: "easeOut",
-                          },
-                        }}
-                        exit={{
-                          opacity: 0,
-                        }}
-                        // onClick={handleRemoveFromMenu}
-                        // disabled={removeFromMenuMutation.isPending}
-                        className="absolute top-3 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs rounded-full shadow-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border border-red-700 whitespace-nowrap z-10"
-                      >
-                        Remove from menu
-                      </motion.button>
-                    )
-                  }
+                  {isInMenu && isEditing && (
+                    <motion.button
+                      initial={{ y: -20, opacity: 0, scale: 0.9 }}
+                      animate={{
+                        y: 20,
+                        opacity: 1,
+                        scale: 1,
+                        transition: {
+                          duration: 0.25,
+                          delay: 0.3,
+                          ease: "easeOut",
+                        },
+                      }}
+                      exit={{
+                        opacity: 0,
+                      }}
+                      onClick={handleRemoveFromMenu}
+                      disabled={removeFromMenu.isPending}
+                      className="absolute top-3 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-xs rounded-full shadow-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border border-red-700 whitespace-nowrap z-10"
+                    >
+                      Remove from menu
+                    </motion.button>
+                  )}
                 </AnimatePresence>
               </motion.div>
 
@@ -283,20 +261,13 @@ const AddToMenuButton = memo(({ recipe }: { recipe: Recipe }) => {
                   transition: { duration: 0.1, delay: 0 },
                 }}
                 transition={{ duration: 0.2, delay: 0.15 }}
-                // onClick={handleConfirmAmount}
-                disabled={
-                  // addToMenuMutation.isPending ||
-                  // removeFromMenuMutation.isPending
-                  false
-                }
+                onClick={handleConfirmAmount}
+                disabled={addToMenu.isPending || removeFromMenu.isPending}
                 className="flex items-center justify-center h-8 w-8 text-green-600 hover:text-green-700 rounded-full hover:bg-green-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Check className="h-4 w-4" />
                 <span className="sr-only">
-                  {
-                    // addToMenuMutation.isPending ? "Adding..." : "Confirm amount"
-                    "Confirm amount"
-                  }
+                  {addToMenu.isPending ? "Adding..." : "Confirm amount"}
                 </span>
               </motion.button>
             </motion.div>
