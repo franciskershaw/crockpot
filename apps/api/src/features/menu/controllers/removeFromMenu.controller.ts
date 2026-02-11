@@ -3,6 +3,7 @@ import { Context } from "hono";
 import mongoose from "mongoose";
 
 import { NotFoundError } from "../../../core/utils/errors";
+import { rebuildShoppingListForUser } from "../../shopping-list/services/shoppingList.service";
 import RecipeMenu, { IMenuHistoryEntry } from "../model/recipeMenu.model";
 import { RemoveFromMenuInput } from "../validation/menu.validation";
 
@@ -65,6 +66,9 @@ const removeFromMenu = async (c: Context) => {
   menu.history = updateHistory(menu.history, recipeObjectId);
 
   await menu.save();
+
+  // Rebuild shopping list after menu update
+  await rebuildShoppingListForUser(userId);
 
   return c.json({ wasRemoved: true, message: "Recipe removed from menu" }, 200);
 };

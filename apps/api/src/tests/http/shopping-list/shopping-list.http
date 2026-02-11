@@ -1,0 +1,230 @@
+# Shopping List – Get, Add Manual Item, Update Quantity, Toggle Obtained, Remove, Clear (REST Client)
+@baseUrl = http://localhost:5100
+# Replace this token with a valid JWT token
+@accessToken = JWT_TOKEN_HERE
+
+# Recipe IDs from menu tests - add these to your menu first to see shopping list populated
+@beanAndHalloumiTacosId = 6348124fe85a13ae0e2fd186
+@pulledChickenId = 63481cd65302af1826ec2f0b
+@thaiPorkId = 63481fdf5302af1826ec2f0f
+
+# Sample item and unit IDs for manual items (replace with valid IDs from your database)
+@toiletPaperId = 6310ad7542687f4a1cf7f34a
+@onionItemId = 6310ad7242687f4a1cf7f224
+@eggItemId = 6310ad7342687f4a1cf7f2c2
+@kilogramUnitId = 68c031d63bd53615a0ef0ae7
+@gramUnitId = 68738ad4d5730ccdb15ca142
+
+### Get shopping list (should show aggregated ingredients from menu)
+# First, make sure you have recipes in your menu using the menu.http tests
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Add a manual item to shopping list (tomato)
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "quantity": 2
+}
+
+### Add another manual item (onion)
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{onionItemId}}",
+  "unitId": null,
+  "quantity": 5
+}
+
+### Get shopping list with manual items
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Add same manual item again (should increment quantity)
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "unitId": null,
+  "quantity": 1
+}
+
+### Get shopping list (tomato quantity should be 3 now)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Update quantity of a shopping list item
+PATCH {{baseUrl}}/api/shopping-list/item/quantity
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "unitId": "{{kilogramUnitId}}",
+  "quantity": 5,
+  "isManual": true
+}
+
+### Get shopping list (tomato quantity should be 5 now)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Toggle obtained status for tomato
+PATCH {{baseUrl}}/api/shopping-list/toggle-obtained
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "isManual": true
+}
+
+### Get shopping list (tomato should be marked as obtained)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Toggle obtained status again (should mark as not obtained)
+PATCH {{baseUrl}}/api/shopping-list/toggle-obtained
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "isManual": true
+}
+
+### Get shopping list (tomato should be not obtained)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Remove onion from shopping list
+DELETE {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{onionItemId}}",
+  "unitId": null,
+  "isManual": true
+}
+
+### Get shopping list (onion should be gone)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Remove tomato from shopping list
+DELETE {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "isManual": true
+}
+
+### Get shopping list (all manual items should be gone, but menu items remain)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Clear entire shopping list
+DELETE {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Get shopping list (should be empty or only have auto-generated items from menu)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Error case: Invalid itemId format
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "invalid-id",
+  "unitId": null,
+  "quantity": 1
+}
+
+### Error case: Missing quantity
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "unitId": null
+}
+
+### Error case: Negative quantity
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "unitId": null,
+  "quantity": -1
+}
+
+### Error case: Zero quantity
+POST {{baseUrl}}/api/shopping-list/item
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "itemId": "{{toiletPaperId}}",
+  "unitId": null,
+  "quantity": 0
+}
+
+### Error case: No authentication token
+GET {{baseUrl}}/api/shopping-list
+
+### Test shopping list rebuild when adding recipe to menu
+# Add a recipe to menu
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}",
+  "serves": 4
+}
+
+### Get shopping list (should show ingredients from the recipe)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Add another recipe to menu
+POST {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{pulledChickenId}}",
+  "serves": 2
+}
+
+### Get shopping list (should show aggregated ingredients from both recipes)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}
+
+### Remove a recipe from menu
+DELETE {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "recipeId": "{{beanAndHalloumiTacosId}}"
+}
+
+### Get shopping list (should only show ingredients from remaining recipe)
+GET {{baseUrl}}/api/shopping-list
+Authorization: Bearer {{accessToken}}

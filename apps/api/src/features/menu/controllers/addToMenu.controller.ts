@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 
 import { NotFoundError } from "../../../core/utils/errors";
 import Recipe from "../../recipes/model/recipe.model";
+import { rebuildShoppingListForUser } from "../../shopping-list/services/shoppingList.service";
 import RecipeMenu, { IMenuHistoryEntry } from "../model/recipeMenu.model";
 import { AddToMenuInput } from "../validation/menu.validation";
 
@@ -95,6 +96,9 @@ const addToMenu = async (c: Context) => {
   menu.history = updateHistory(menu.history, recipeObjectId);
 
   await menu.save();
+
+  // Rebuild shopping list after menu update
+  await rebuildShoppingListForUser(userId);
 
   return c.json(
     {

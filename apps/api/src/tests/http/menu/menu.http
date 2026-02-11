@@ -1,7 +1,7 @@
 # Recipe Menu – Add, Remove, Update Serves (REST Client)
 @baseUrl = http://localhost:5100
 # Replace this token with a valid JWT token
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OThhMzdkNjg2NThkMTMzZTA4YzhhZGQiLCJlbWFpbCI6ImZyYW5jaXNrZXJzaGF3LmRldkBnbWFpbC5jb20iLCJleHAiOjE3NzA3NTkxNDd9.zuMHsS_pknbqjyX-GOHyZLjdoMhbnnOE-HRFf_jkIPs
+@accessToken = JWT_TOKEN_HERE
 
 @beanAndHalloumiTacosId = 6348124fe85a13ae0e2fd186
 @pulledChickenId = 63481cd65302af1826ec2f0b
