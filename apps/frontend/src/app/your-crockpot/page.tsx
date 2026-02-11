@@ -1,11 +1,15 @@
 import { Suspense } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import RecipeMenuWithData from "./components/Menu/RecipeMenuWithData";
-import RecipeFavouritesWithData from "./components/Favourites/RecipeFavouritesWithData";
-import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
-import MenuSkeleton from "./components/Menu/MenuSkeleton";
-import FavouritesSkeleton from "./components/Favourites/FavouritesSkeleton";
+
 import type { Metadata } from "next";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import FavouritesSkeleton from "./components/Favourites/FavouritesSkeleton";
+import RecipeFavouritesWithData from "./components/Favourites/RecipeFavouritesWithData";
+// import MenuSkeleton from "./components/Menu/MenuSkeleton";
+import RecipeMenu from "./components/Menu/RecipeMenu";
+// import RecipeMenuWithData from "./components/Menu/RecipeMenuWithData";
+import RecipeUserRecipes from "./components/UserRecipes/RecipeUserRecipes";
 
 export const metadata: Metadata = {
   title: "Your Crockpot",
@@ -43,24 +47,21 @@ const YourCrockpotPage = () => {
             My Recipes
           </TabsTrigger>
         </TabsList>
-
         {/* Menu tab - streams in with Suspense */}
         <TabsContent value="menu">
-          <Suspense fallback={<MenuSkeleton />}>
-            <RecipeMenuWithData />
-          </Suspense>
+          {/* <Suspense fallback={<MenuSkeleton />}> */}
+          <RecipeMenu />
+          {/* </Suspense> */}
         </TabsContent>
 
-        {/* Favourites tab - streams in with Suspense */}
-        <TabsContent value="favourites">
+        {/* <TabsContent value="favourites">
           <Suspense fallback={<FavouritesSkeleton />}>
             <RecipeFavouritesWithData />
           </Suspense>
-        </TabsContent>
-
-        <TabsContent value="my-recipes">
+        </TabsContent> */}
+        {/* <TabsContent value="my-recipes">
           <RecipeUserRecipes />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

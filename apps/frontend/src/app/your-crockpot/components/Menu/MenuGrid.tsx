@@ -1,11 +1,16 @@
 "use client";
-import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
-import RecipeCard from "@/app/recipes/components/RecipeCard";
-import EmptyState from "@/components/ui/empty-state";
-import { ChefHat, Search } from "lucide-react";
+
 import Link from "next/link";
+
+import { ChefHat, Search } from "lucide-react";
+
+// import { useGetMenu } from "@/hooks/useMenu";
+import useGetMenu from "@/app/menu/hooks/useGetMenu";
+import RecipeCard from "@/app/recipes/components/RecipeCard";
+import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
 import { Button } from "@/components/ui/button";
-import { useGetMenu } from "@/hooks/useMenu";
+import EmptyState from "@/components/ui/empty-state";
+import { RecipeMenuEntry } from "@/data/types";
 
 function MenuGrid() {
   const { menu, isLoading } = useGetMenu();
@@ -45,11 +50,9 @@ function MenuGrid() {
     );
   }
 
-  // If loading or menu exists, render the grid
-  // (RecipeMenu handles the skeleton for initial load)
   return (
     <ResponsiveRecipeGrid>
-      {menu?.entries?.map((entry, index) => (
+      {menu?.entries?.map((entry: RecipeMenuEntry, index: number) => (
         <RecipeCard
           key={entry.recipeId}
           recipe={entry.recipe}

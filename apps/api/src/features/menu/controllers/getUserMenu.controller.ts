@@ -23,11 +23,20 @@ const getUserMenu = async (c: Context) => {
     .populate("categoryIds")
     .lean();
 
+  // Transform recipes to match recipes endpoint format (categoryIds -> categories)
+  const transformedRecipes = recipes.map((recipe) => {
+    const { categoryIds, ...rest } = recipe as any;
+    return {
+      ...rest,
+      categories: categoryIds, // Rename categoryIds to categories for consistency
+    };
+  });
+
   // Map recipes to entries
   const entriesWithRecipes = menu.entries.map((entry) => ({
     recipeId: entry.recipeId,
     serves: entry.serves,
-    recipe: recipes.find(
+    recipe: transformedRecipes.find(
       (recipe) => recipe._id.toString() === entry.recipeId.toString()
     ),
   }));

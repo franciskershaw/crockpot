@@ -95,6 +95,7 @@ const RecipeCard = memo(function RecipeCard({
   skeleton?: boolean;
   fromPage?: string;
 }) {
+  console.log(recipe);
   const { isAuthenticated } = useUser();
 
   const [imageLoaded, setImageLoaded] = useState(false);

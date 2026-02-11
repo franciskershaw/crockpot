@@ -22,6 +22,7 @@ const useRemoveFromMenu = () => {
     mutationFn: removeFromMenu,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.MENU] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.SHOPPING_LIST] });
       toast.success("Recipe removed from menu");
     },
   });

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { CheckIcon, Search, Plus } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { CheckIcon, Plus, Search } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 export default function Searchable({
   options,
@@ -135,7 +136,7 @@ export default function Searchable({
               </div>
             </CommandEmpty>
             <CommandGroup>
-              {filteredOptions.map((option) => (
+              {filteredOptions?.map((option) => (
                 <CommandItem
                   key={option.value}
                   value={option.label}

@@ -9,7 +9,7 @@ export default function IngredientFilter() {
   const { filters, updateFilters } = useFilters();
   const selectedIngredientIds = filters.ingredientIds || [];
 
-  const { data: ingredients, isLoading } = useItems("ingredients");
+  const { items, isLoading } = useItems("ingredients");
 
   const handleIngredientChange = (id: string, checked: boolean) => {
     const newIngredientIds = checked
@@ -21,7 +21,7 @@ export default function IngredientFilter() {
   return (
     <GenericFilterList
       label="Ingredients"
-      options={ingredients || []}
+      options={items || []}
       selectedIds={selectedIngredientIds}
       onChange={handleIngredientChange}
       id="ingredient-filter"

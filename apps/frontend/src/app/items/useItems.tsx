@@ -9,12 +9,16 @@ const useItems = (mode: "all" | "ingredients") => {
     const response = await api.get("/api/items", { params: { mode } });
     return response.data;
   };
-  const { data, isLoading, error } = useQuery({
+  const {
+    data: items,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["items", mode],
     queryFn: getItems,
   });
 
-  return { data, isLoading, error };
+  return { items, isLoading, error };
 };
 
 export default useItems;

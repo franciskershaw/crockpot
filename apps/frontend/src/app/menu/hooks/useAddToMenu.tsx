@@ -29,6 +29,7 @@ const useAddToMenu = () => {
     mutationFn: addToMenu,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.MENU] });
+      queryClient.invalidateQueries({ queryKey: [queryKeys.SHOPPING_LIST] });
       toast.success("Recipe added to menu");
     },
   });

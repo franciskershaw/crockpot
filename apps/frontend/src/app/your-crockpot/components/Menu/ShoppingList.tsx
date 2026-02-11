@@ -4,6 +4,18 @@ import { useState } from "react";
 
 import { ShoppingBasket, Trash2 } from "lucide-react";
 
+import useItems from "@/app/items/useItems";
+import useGetMenu from "@/app/menu/hooks/useGetMenu";
+// import {
+//   useAddManualShoppingListItemMutation,
+//   useGetShoppingList,
+//   useRemoveShoppingListItemMutation,
+//   useShoppingListCategories,
+//   useToggleObtainedMutation,
+//   useUpdateShoppingListItemQuantityMutation,
+// } from "@/hooks/useShoppingList";
+import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
+import useToggleObtained from "@/app/shopping-list/hooks/useToggleObtained";
 import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import {
   Accordion,
@@ -15,17 +27,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Searchable from "@/components/ui/searchable";
 import type { Item, Unit } from "@/data/types";
-import { useGetMenu } from "@/hooks/useMenu";
+// import { useGetMenu } from "@/hooks/useMenu";
 import useUser from "@/hooks/user/useUser";
-import {
-  useAddManualShoppingListItemMutation,
-  useGetShoppingList,
-  useRemoveShoppingListItemMutation,
-  useShoppingListCategories,
-  useToggleObtainedMutation,
-  useUpdateShoppingListItemQuantityMutation,
-} from "@/hooks/useShoppingList";
-import { hasPermission, Permission } from "@/lib/action-helpers";
+// import { hasPermission, Permission } from "@/lib/action-helpers";
 import { getIconComponent } from "@/lib/icon-map";
 
 import AddItemEditor from "./AddItemEditor";
@@ -33,31 +37,24 @@ import ClearMenuDialog from "./ClearMenuDialog";
 import ClearShoppingListDialog from "./ClearShoppingListDialog";
 import ShoppingListRowEditor from "./ShopingListRowEditor";
 
-interface ShoppingListProps {
-  items: Item[];
-  units: Unit[];
-}
-
-export default function ShoppingList({ items, units }: ShoppingListProps) {
-  const { data: shoppingList } = useGetShoppingList();
+export default function ShoppingList() {
+  const { shoppingList, grouped, categories, categoryIds } =
+    useGetShoppingList();
+  console.log(shoppingList);
   const { menu } = useGetMenu();
-  const toggleObtained = useToggleObtainedMutation();
-  const removeItem = useRemoveShoppingListItemMutation();
-  const updateQuantity = useUpdateShoppingListItemQuantityMutation();
-  const addManualItem = useAddManualShoppingListItemMutation();
+  const { items } = useItems("all");
+  const toggleObtained = useToggleObtained();
+  // const removeItem = useRemoveShoppingListItemMutation();
+  // const updateQuantity = useUpdateShoppingListItemQuantityMutation();
+  // const addManualItem = useAddManualShoppingListItemMutation();
   const { user } = useUser();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
   const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
 
-  const canCreateItems =
-    user && hasPermission(user.role, Permission.CREATE_ITEMS);
-
-  const { grouped, categories, categoryIds } = useShoppingListCategories(
-    shoppingList,
-    items
-  );
+  // const canCreateItems =
+  //   user && hasPermission(user.role, Permission.CREATE_ITEMS);
 
   const handleItemCreated = (newItem: Item) => {
     // Close the dialog
@@ -77,8 +74,8 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
 
       <div className="p-4 border-b border-gray-200 sticky top-[52px] bg-white z-10 flex flex-col">
         <Searchable
-          options={items.map((i) => ({
-            value: i.id,
+          options={items?.map((i: Item) => ({
+            value: i._id,
             label: i.name,
           }))}
           placeholder="Add extra items..."
@@ -87,14 +84,14 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
           onValueChange={setSearchableValue}
           onSelect={(selectedValue) => {
             const selectedItem = items.find(
-              (item) => item.id === selectedValue
+              (item: Item) => item._id === selectedValue
             );
             if (selectedItem) {
               setSelectedItem(selectedItem);
               setSearchableValue("");
             }
           }}
-          showAddNew={canCreateItems}
+          // showAddNew={canCreateItems}
           addNewLabel="Add new item"
           onAddNew={(searchText) => {
             setSearchableValue(searchText || "");
@@ -105,17 +102,17 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
         <div className="flex gap-2">
           {[
             // Clear Menu button (if menu has entries)
-            !menu?.entries || menu.entries.length === 0 ? null : (
-              <div key="clear-menu" className="flex-1 mt-4">
-                <ClearMenuDialog />
-              </div>
-            ),
+            // !menu?.entries || menu.entries.length === 0 ? null : (
+            //   <div key="clear-menu" className="flex-1 mt-4">
+            //     <ClearMenuDialog />
+            //   </div>
+            // ),
             // Clear Shopping List button (if shopping list has items)
-            shoppingList?.items.length ? (
-              <div key="clear-shopping-list" className="flex-1 mt-4">
-                <ClearShoppingListDialog />
-              </div>
-            ) : null,
+            // shoppingList?.items.length ? (
+            //   <div key="clear-shopping-list" className="flex-1 mt-4">
+            //     <ClearShoppingListDialog />
+            //   </div>
+            // ) : null,
           ].filter(Boolean)}
         </div>
       </div>
@@ -124,13 +121,13 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
         <AddItemEditor
           item={selectedItem}
           onCancel={() => setSelectedItem(null)}
-          units={units}
+          // units={units}
           onConfirm={(quantity, unitId) => {
-            addManualItem.mutate({
-              itemId: selectedItem.id,
-              quantity,
-              unitId: unitId && unitId !== "none" ? unitId : null,
-            });
+            // addManualItem.mutate({
+            //   itemId: selectedItem.id,
+            //   quantity,
+            //   unitId: unitId && unitId !== "none" ? unitId : null,
+            // });
             setSelectedItem(null);
           }}
         />
@@ -171,7 +168,7 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="px-2 py-1 space-y-1">
-                      {items.map((i) => {
+                      {items.map((i: DisplayItem) => {
                         return (
                           <div
                             key={`${i.itemId}-${i.unitId ?? ""}`}
@@ -211,25 +208,27 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
                                 }
                                 struck={i.obtained}
                                 quantity={i.quantity}
-                                onCommit={(next) =>
-                                  updateQuantity.mutate({
-                                    itemId: i.itemId,
-                                    unitId: i.unitId ?? null,
-                                    quantity: next,
-                                    isManual: i.isManual ?? false,
-                                  })
+                                onCommit={
+                                  (next) => {}
+                                  // updateQuantity.mutate({
+                                  //   itemId: i.itemId,
+                                  //   unitId: i.unitId ?? null,
+                                  //   quantity: next,
+                                  //   isManual: i.isManual ?? false,
+                                  // })
                                 }
                               />
                             </div>
 
                             {/* Remove */}
                             <Button
-                              onClick={() =>
-                                removeItem.mutate({
-                                  itemId: i.itemId,
-                                  unitId: i.unitId ?? null,
-                                  isManual: i.isManual ?? false,
-                                })
+                              onClick={
+                                () => {}
+                                // removeItem.mutate({
+                                //   itemId: i.itemId,
+                                //   unitId: i.unitId ?? null,
+                                //   isManual: i.isManual ?? false,
+                                // })
                               }
                               size="icon"
                               variant="ghost"
@@ -251,13 +250,13 @@ export default function ShoppingList({ items, units }: ShoppingListProps) {
       </div>
 
       {/* Create Item Dialog */}
-      <ItemDialog
+      {/* <ItemDialog
         open={showCreateItemDialog}
         onOpenChange={setShowCreateItemDialog}
         onSuccess={() => {}} // No additional success handling needed
         onItemCreated={handleItemCreated}
         initialName={searchableValue}
-      />
+      /> */}
     </div>
   );
 }

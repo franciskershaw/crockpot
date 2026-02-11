@@ -1,23 +1,25 @@
 "use client";
 
+import { useMemo } from "react";
+
 import {
+  addManualShoppingListItem,
+  clearShoppingList,
   getShoppingList,
   removeShoppingListItem,
   toggleObtained,
   updateShoppingListItemQuantity,
-  addManualShoppingListItem,
-  clearShoppingList,
 } from "@/actions/menu";
+import { WATER_ITEM_ID } from "@/data/items/getItems";
 import {
   UserRole,
   type Item,
   type ShoppingListWithDetails,
 } from "@/data/types";
-import { useMemo } from "react";
-import { WATER_ITEM_ID } from "@/data/items/getItems";
+import { queryKeys } from "@/lib/constants";
+
 import { useAuthenticatedQuery } from "./shared/useAuthenticatedQuery";
 import { useOptimisticMutation } from "./shared/useOptimisticMutation";
-import { queryKeys } from "@/lib/constants";
 
 export function useGetShoppingList() {
   return useAuthenticatedQuery([queryKeys.SHOPPING_LIST], getShoppingList);
