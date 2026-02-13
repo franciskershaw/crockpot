@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Item } from "@/data/types";
+import type { Unit } from "@/shared/types";
 
 type AddItemEditorProps = {
   item: Item;

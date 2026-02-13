@@ -8,19 +8,10 @@ import useItems from "@/app/items/useItems";
 import useGetMenu from "@/app/menu/hooks/useGetMenu";
 import useAddManualShoppingListItem from "@/app/shopping-list/hooks/useAddManualShoppingListItem";
 import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
-// import {
-//   useAddManualShoppingListItemMutation,
-//   useGetShoppingList,
-//   useRemoveShoppingListItemMutation,
-//   useShoppingListCategories,
-//   useToggleObtainedMutation,
-//   useUpdateShoppingListItemQuantityMutation,
-// } from "@/hooks/useShoppingList";
-
 import useRemoveShoppingListItem from "@/app/shopping-list/hooks/useRemoveShoppingListItem";
 import useToggleObtained from "@/app/shopping-list/hooks/useToggleObtained";
 import useUpdateShoppingListItemQuantity from "@/app/shopping-list/hooks/useUpdateShoppingListItemQuantity";
-import { ItemDialog } from "@/components/dialogs/ItemDialog";
+// import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import {
   Accordion,
   AccordionContent,
@@ -30,11 +21,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Searchable from "@/components/ui/searchable";
-import type { Item, Unit } from "@/data/types";
 // import { useGetMenu } from "@/hooks/useMenu";
-import useUser from "@/hooks/user/useUser";
+
 // import { hasPermission, Permission } from "@/lib/action-helpers";
 import { getIconComponent } from "@/lib/icon-map";
+import type { Item, ShoppingListItem } from "@/shared/types";
 
 import AddItemEditor from "./AddItemEditor";
 import ClearMenuDialog from "./ClearMenuDialog";
@@ -54,19 +45,19 @@ export default function ShoppingList() {
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
-  const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
+  // const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
 
   // const canCreateItems =
   //   user && hasPermission(user.role, Permission.CREATE_ITEMS);
   const canCreateItems = false;
 
-  const handleItemCreated = (newItem: Item) => {
-    // Close the dialog
-    setShowCreateItemDialog(false);
+  // const handleItemCreated = (newItem: Item) => {
+  //   // Close the dialog
+  //   setShowCreateItemDialog(false);
 
-    // Automatically select the newly created item for pre-confirmation
-    setSelectedItem(newItem);
-  };
+  //   // Automatically select the newly created item for pre-confirmation
+  //   setSelectedItem(newItem);
+  // };
 
   return (
     <div className="w-full rounded-md border bg-white h-full flex flex-col">
@@ -99,7 +90,7 @@ export default function ShoppingList() {
           addNewLabel="Add new item"
           onAddNew={(searchText) => {
             setSearchableValue(searchText || "");
-            setShowCreateItemDialog(true);
+            // setShowCreateItemDialog(true);
           }}
           className="w-full"
         />
@@ -171,7 +162,7 @@ export default function ShoppingList() {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="px-2 py-1 space-y-1">
-                      {items.map((i: DisplayItem) => {
+                      {items.map((i: ShoppingListItem) => {
                         return (
                           <div
                             key={`${i.itemId}-${i.unitId ?? ""}`}
@@ -214,7 +205,7 @@ export default function ShoppingList() {
                                 onCommit={(next) =>
                                   updateQuantity.mutate({
                                     itemId: i.itemId,
-                                    unitId: i.unitId ?? null,
+                                    unitId: i.unit._id ?? null,
                                     quantity: next,
                                     isManual: i.isManual ?? false,
                                   })
@@ -227,7 +218,7 @@ export default function ShoppingList() {
                               onClick={() =>
                                 removeItem.mutate({
                                   itemId: i.itemId,
-                                  unitId: i.unitId ?? null,
+                                  unitId: i.unit._id ?? null,
                                   isManual: i.isManual ?? false,
                                 })
                               }

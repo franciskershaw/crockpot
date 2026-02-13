@@ -57,7 +57,6 @@ const useRemoveShoppingListItem = () => {
         ),
       };
     },
-    successMessage: "Removed from shopping list",
     minimumRole: UserRole.FREE,
   });
 };

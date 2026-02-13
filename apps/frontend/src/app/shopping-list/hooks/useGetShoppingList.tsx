@@ -3,16 +3,11 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import useItems from "@/app/items/useItems";
-import type { Item, ShoppingListWithDetails } from "@/data/types";
 import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import { queryKeys } from "@/lib/constants";
 import { WATER_ITEM_ID } from "@/shared/constants";
-
-type DisplayItem = ShoppingListWithDetails["items"][number] & {
-  displayLabel: string;
-  displayUnitAbbr: string;
-};
+import type { Item } from "@/shared/types";
 
 const useGetShoppingList = () => {
   const api = useAxios();
@@ -41,16 +36,7 @@ const useGetShoppingList = () => {
       (items ?? []).map((it: Item) => [it._id, it])
     );
     const reduced = (shoppingList?.items ?? []).reduce(
-      (
-        acc: {
-          groupedByCategory: Record<string, DisplayItem[]>;
-          categoriesById: Record<
-            string,
-            { _id: string; name: string; faIcon: string }
-          >;
-        },
-        listItem: ShoppingListWithDetails["items"][number]
-      ) => {
+      (acc, listItem) => {
         // Skip water items
         if (listItem.itemId === WATER_ITEM_ID) return acc;
 
@@ -58,7 +44,7 @@ const useGetShoppingList = () => {
         const category = itemRecord?.categoryId;
         if (!category) return acc; // skip until relations load; prevents crashes
 
-        const displayItem: DisplayItem = {
+        const displayItem = {
           ...listItem,
           displayLabel: itemRecord?.name ?? "",
           displayUnitAbbr: listItem.unit?.abbreviation ?? "",
