@@ -51,7 +51,6 @@ export default function ShoppingList() {
   const removeItem = useRemoveShoppingListItem();
   const updateQuantity = useUpdateShoppingListItemQuantity();
   const addManualItem = useAddManualShoppingListItem();
-  const { user } = useUser();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
@@ -126,10 +125,9 @@ export default function ShoppingList() {
         <AddItemEditor
           item={selectedItem}
           onCancel={() => setSelectedItem(null)}
-          units={units}
           onConfirm={(quantity, unitId) => {
             addManualItem.mutate({
-              itemId: selectedItem.id,
+              itemId: selectedItem._id,
               quantity,
               unitId: unitId && unitId !== "none" ? unitId : null,
             });

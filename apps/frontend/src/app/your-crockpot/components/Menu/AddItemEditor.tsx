@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { X, Check } from "lucide-react";
+
+import { Check, X } from "lucide-react";
+
+import useGetUnits from "@/app/units/hooks/useGetUnits";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -8,28 +11,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Unit, Item } from "@/data/types";
+import type { Item } from "@/data/types";
 
 type AddItemEditorProps = {
   item: Item;
   onCancel: () => void;
   onConfirm: (quantity: number, unitId: string | null) => void;
-  units: Unit[];
 };
 
 export function formatQty(value: number) {
   return Number.isInteger(value) ? String(value) : value.toFixed(2);
 }
 
-function AddItemEditor({
-  item,
-  onCancel,
-  onConfirm,
-  units,
-}: AddItemEditorProps) {
+function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedUnitId, setSelectedUnitId] = useState<string>("none");
-
+  const { units } = useGetUnits();
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Allow empty string, numbers, and decimal points, but limit to 4 digits total
@@ -103,7 +100,7 @@ function AddItemEditor({
                       : selectedUnitId &&
                         (() => {
                           const unit = units.find(
-                            (u) => u.id === selectedUnitId
+                            (u: Unit) => u._id === selectedUnitId
                           );
                           return unit?.abbreviation || "-";
                         })()}
@@ -112,7 +109,7 @@ function AddItemEditor({
                 <SelectContent>
                   <SelectItem value="none">No unit</SelectItem>
                   {item.allowedUnits.map((unit) => (
-                    <SelectItem key={unit.id} value={unit.id}>
+                    <SelectItem key={unit._id} value={unit._id}>
                       {unit.name}
                     </SelectItem>
                   ))}
