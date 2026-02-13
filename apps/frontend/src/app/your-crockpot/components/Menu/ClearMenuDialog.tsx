@@ -1,6 +1,9 @@
 "use client";
 
-import { removeAllRecipesFromMenu } from "@/actions/menu";
+// import { removeAllRecipesFromMenu } from "@/actions/menu";
+import { useState } from "react";
+
+import useClearMenu from "@/app/menu/hooks/useClearMenu";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,10 +14,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { queryKeys } from "@/lib/constants";
 
 interface ClearMenuDialogProps {
   isMenuEmpty?: boolean;
@@ -24,21 +23,8 @@ export default function ClearMenuDialog({
   isMenuEmpty = false,
 }: ClearMenuDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const queryClient = useQueryClient();
-  const { mutate: clearMenu, isPending } = useMutation({
-    mutationFn: removeAllRecipesFromMenu,
-    onSuccess: () => {
-      setIsOpen(false);
-      queryClient.invalidateQueries({ queryKey: [queryKeys.MENU] });
-      queryClient.invalidateQueries({ queryKey: [queryKeys.SHOPPING_LIST] });
-      toast.success("Menu cleared successfully");
-    },
-    onError: (error) => {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to clear menu"
-      );
-    },
-  });
+
+  const { mutate: clearMenu, isPending } = useClearMenu();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild disabled={isMenuEmpty}>

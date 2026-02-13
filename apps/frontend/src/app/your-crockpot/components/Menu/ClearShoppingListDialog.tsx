@@ -1,6 +1,11 @@
 "use client";
 
 // import { clearShoppingList } from "@/actions/menu";
+import { useState } from "react";
+
+import { toast } from "sonner";
+
+import useClearShoppingList from "@/app/shopping-list/hooks/useClearShoppingList";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,9 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-import { useClearShoppingListMutation } from "@/hooks/useShoppingList";
-import { toast } from "sonner";
 
 interface ClearShoppingListDialogProps {
   isMenuEmpty?: boolean;
@@ -23,8 +25,7 @@ export default function ClearShoppingListDialog({
   isMenuEmpty = false,
 }: ClearShoppingListDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: clearShoppingList, isPending } =
-    useClearShoppingListMutation();
+  const { mutate: clearShoppingList, isPending } = useClearShoppingList();
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild disabled={isMenuEmpty}>

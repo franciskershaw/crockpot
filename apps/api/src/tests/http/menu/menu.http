@@ -126,3 +126,11 @@ Content-Type: application/json
 
 ### Error case: No authentication token
 GET {{baseUrl}}/api/menu
+
+### Clear entire menu
+DELETE {{baseUrl}}/api/menu/clear
+Authorization: Bearer {{accessToken}}
+
+### Get menu after clearing (should be empty)
+GET {{baseUrl}}/api/menu
+Authorization: Bearer {{accessToken}}

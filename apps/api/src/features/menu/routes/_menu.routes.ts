@@ -29,4 +29,7 @@ menuRoutes.delete(
   menuControllers.removeFromMenu
 );
 
+// Clear entire menu
+menuRoutes.delete("/clear", authenticate, menuControllers.clearMenu);
+
 export default menuRoutes;

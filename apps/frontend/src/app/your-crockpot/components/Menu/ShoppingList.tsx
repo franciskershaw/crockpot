@@ -6,6 +6,8 @@ import { ShoppingBasket, Trash2 } from "lucide-react";
 
 import useItems from "@/app/items/useItems";
 import useGetMenu from "@/app/menu/hooks/useGetMenu";
+import useAddManualShoppingListItem from "@/app/shopping-list/hooks/useAddManualShoppingListItem";
+import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
 // import {
 //   useAddManualShoppingListItemMutation,
 //   useGetShoppingList,
@@ -14,8 +16,10 @@ import useGetMenu from "@/app/menu/hooks/useGetMenu";
 //   useToggleObtainedMutation,
 //   useUpdateShoppingListItemQuantityMutation,
 // } from "@/hooks/useShoppingList";
-import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
+
+import useRemoveShoppingListItem from "@/app/shopping-list/hooks/useRemoveShoppingListItem";
 import useToggleObtained from "@/app/shopping-list/hooks/useToggleObtained";
+import useUpdateShoppingListItemQuantity from "@/app/shopping-list/hooks/useUpdateShoppingListItemQuantity";
 import { ItemDialog } from "@/components/dialogs/ItemDialog";
 import {
   Accordion,
@@ -44,9 +48,9 @@ export default function ShoppingList() {
   const { menu } = useGetMenu();
   const { items } = useItems("all");
   const toggleObtained = useToggleObtained();
-  // const removeItem = useRemoveShoppingListItemMutation();
-  // const updateQuantity = useUpdateShoppingListItemQuantityMutation();
-  // const addManualItem = useAddManualShoppingListItemMutation();
+  const removeItem = useRemoveShoppingListItem();
+  const updateQuantity = useUpdateShoppingListItemQuantity();
+  const addManualItem = useAddManualShoppingListItem();
   const { user } = useUser();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
@@ -55,6 +59,7 @@ export default function ShoppingList() {
 
   // const canCreateItems =
   //   user && hasPermission(user.role, Permission.CREATE_ITEMS);
+  const canCreateItems = false;
 
   const handleItemCreated = (newItem: Item) => {
     // Close the dialog
@@ -91,7 +96,7 @@ export default function ShoppingList() {
               setSearchableValue("");
             }
           }}
-          // showAddNew={canCreateItems}
+          showAddNew={canCreateItems}
           addNewLabel="Add new item"
           onAddNew={(searchText) => {
             setSearchableValue(searchText || "");
@@ -102,17 +107,17 @@ export default function ShoppingList() {
         <div className="flex gap-2">
           {[
             // Clear Menu button (if menu has entries)
-            // !menu?.entries || menu.entries.length === 0 ? null : (
-            //   <div key="clear-menu" className="flex-1 mt-4">
-            //     <ClearMenuDialog />
-            //   </div>
-            // ),
+            !menu?.entries || menu.entries.length === 0 ? null : (
+              <div key="clear-menu" className="flex-1 mt-4">
+                <ClearMenuDialog />
+              </div>
+            ),
             // Clear Shopping List button (if shopping list has items)
-            // shoppingList?.items.length ? (
-            //   <div key="clear-shopping-list" className="flex-1 mt-4">
-            //     <ClearShoppingListDialog />
-            //   </div>
-            // ) : null,
+            shoppingList?.items.length ? (
+              <div key="clear-shopping-list" className="flex-1 mt-4">
+                <ClearShoppingListDialog />
+              </div>
+            ) : null,
           ].filter(Boolean)}
         </div>
       </div>
@@ -121,13 +126,13 @@ export default function ShoppingList() {
         <AddItemEditor
           item={selectedItem}
           onCancel={() => setSelectedItem(null)}
-          // units={units}
+          units={units}
           onConfirm={(quantity, unitId) => {
-            // addManualItem.mutate({
-            //   itemId: selectedItem.id,
-            //   quantity,
-            //   unitId: unitId && unitId !== "none" ? unitId : null,
-            // });
+            addManualItem.mutate({
+              itemId: selectedItem.id,
+              quantity,
+              unitId: unitId && unitId !== "none" ? unitId : null,
+            });
             setSelectedItem(null);
           }}
         />
@@ -208,27 +213,25 @@ export default function ShoppingList() {
                                 }
                                 struck={i.obtained}
                                 quantity={i.quantity}
-                                onCommit={
-                                  (next) => {}
-                                  // updateQuantity.mutate({
-                                  //   itemId: i.itemId,
-                                  //   unitId: i.unitId ?? null,
-                                  //   quantity: next,
-                                  //   isManual: i.isManual ?? false,
-                                  // })
+                                onCommit={(next) =>
+                                  updateQuantity.mutate({
+                                    itemId: i.itemId,
+                                    unitId: i.unitId ?? null,
+                                    quantity: next,
+                                    isManual: i.isManual ?? false,
+                                  })
                                 }
                               />
                             </div>
 
                             {/* Remove */}
                             <Button
-                              onClick={
-                                () => {}
-                                // removeItem.mutate({
-                                //   itemId: i.itemId,
-                                //   unitId: i.unitId ?? null,
-                                //   isManual: i.isManual ?? false,
-                                // })
+                              onClick={() =>
+                                removeItem.mutate({
+                                  itemId: i.itemId,
+                                  unitId: i.unitId ?? null,
+                                  isManual: i.isManual ?? false,
+                                })
                               }
                               size="icon"
                               variant="ghost"
