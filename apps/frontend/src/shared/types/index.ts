@@ -59,3 +59,63 @@ export interface ShoppingListItem {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export enum Permission {
+  VIEW_RECIPES = "VIEW_RECIPES", // Not logged in + all others
+  MANAGE_FAVOURITES = "MANAGE_FAVOURITES", // FREE + paid + admin
+  MANAGE_MENU = "MANAGE_MENU", // FREE + paid + admin
+  CREATE_RECIPES = "CREATE_RECIPES", // PREMIUM + PRO + admin
+  CREATE_ITEMS = "CREATE_ITEMS", // PREMIUM + PRO + admin
+  AI_FEATURES = "AI_FEATURES", // PRO + admin
+  ADMIN_PANEL = "ADMIN_PANEL", // ADMIN only
+  APPROVE_CONTENT = "APPROVE_CONTENT", // ADMIN only
+  CREATE_UNITS = "CREATE_UNITS", // ADMIN only
+}
+
+/** User role – values: "FREE" | "PREMIUM" | "PRO" | "ADMIN" */
+export enum UserRole {
+  FREE = "FREE",
+  PREMIUM = "PREMIUM",
+  PRO = "PRO",
+  ADMIN = "ADMIN",
+}
+
+/**
+ * Role hierarchy mapping - higher values include permissions of lower values
+ */
+export const ROLE_HIERARCHY: Record<UserRole, number> = {
+  FREE: 1,
+  PREMIUM: 2,
+  PRO: 3,
+  ADMIN: 4,
+};
+
+/**
+ * Permission requirements mapping
+ */
+export const PERMISSION_REQUIREMENTS: Record<Permission, UserRole[]> = {
+  [Permission.VIEW_RECIPES]: [], // No authentication required
+  [Permission.MANAGE_FAVOURITES]: [
+    UserRole.FREE,
+    UserRole.PREMIUM,
+    UserRole.PRO,
+    UserRole.ADMIN,
+  ],
+  [Permission.MANAGE_MENU]: [
+    UserRole.FREE,
+    UserRole.PREMIUM,
+    UserRole.PRO,
+    UserRole.ADMIN,
+  ],
+  [Permission.CREATE_RECIPES]: [
+    UserRole.FREE,
+    UserRole.PREMIUM,
+    UserRole.PRO,
+    UserRole.ADMIN,
+  ],
+  [Permission.CREATE_ITEMS]: [UserRole.ADMIN],
+  [Permission.AI_FEATURES]: [UserRole.PRO, UserRole.ADMIN],
+  [Permission.ADMIN_PANEL]: [UserRole.ADMIN],
+  [Permission.APPROVE_CONTENT]: [UserRole.ADMIN],
+  [Permission.CREATE_UNITS]: [UserRole.ADMIN],
+};

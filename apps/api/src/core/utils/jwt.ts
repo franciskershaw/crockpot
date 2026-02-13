@@ -2,11 +2,13 @@ import { sign, verify } from "hono/jwt";
 import { JWTPayload } from "hono/utils/jwt/types";
 
 import { IUser } from "../../features/users/model/user.model";
+import { UserRole } from "../../shared/types";
 
-// Types for token payload
-interface TokenPayload extends JWTPayload {
+// Types for token payload (decoded access token – must include role for requireRole middleware)
+export interface TokenPayload extends JWTPayload {
   _id: string;
   email: string;
+  role: UserRole;
   exp: number;
 }
 
@@ -16,6 +18,7 @@ const createPayload = (
 ): TokenPayload => ({
   _id: user._id.toString(),
   email: user.email,
+  role: user.role as UserRole,
   exp: Math.floor(Date.now() / 1000) + expiresInMinutes * 60,
 });
 
