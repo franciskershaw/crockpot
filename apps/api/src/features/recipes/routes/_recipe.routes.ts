@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 
+import validateObjectId from "../../../core/middleware/validateObjectId.middleware";
 import { validate } from "../../../core/utils/validate";
 import recipeControllers from "../controllers/_recipes.controller";
 import { getRecipesQuerySchema } from "../validation/getRecipes.recipe.validation";
@@ -15,7 +16,11 @@ recipeRoutes.get(
   recipeControllers.getRecipes
 );
 
-// recipeRoutes.get("/:id", validateObjectId("id"), recipeControllers.getRecipeById);
+recipeRoutes.get(
+  "/:id",
+  validateObjectId("id"),
+  recipeControllers.getRecipeById
+);
 
 // recipeRoutes.post("/", authenticate, validate("json", createRecipeSchema), recipeControllers.createRecipe);
 
