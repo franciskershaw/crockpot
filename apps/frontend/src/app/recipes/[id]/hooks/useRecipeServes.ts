@@ -2,10 +2,11 @@
 
 import { useMemo, useState } from "react";
 
+// import { useSession } from "next-auth/react";
+// import { useGetMenu } from "@/hooks/useMenu";
+import useGetMenu from "@/app/menu/hooks/useGetMenu";
 import { scaleIngredients } from "@/app/recipes/[id]/helpers/helpers";
 import { Ingredient } from "@/data/types";
-// import { useSession } from "next-auth/react";
-import { useGetMenu } from "@/hooks/useMenu";
 import useUser from "@/hooks/user/useUser";
 
 interface UseRecipeServesProps {

@@ -1,21 +1,21 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 
 import { Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Recipe, UserRole } from "@/data/types";
-import { IUser } from "@/shared/types";
+import useUser from "@/hooks/user/useUser";
+import { ROLE } from "@/shared/constants";
+import { Recipe } from "@/shared/types";
 
-const EditRecipeButton = ({
-  recipe,
-  user,
-}: {
-  recipe: Recipe;
-  user: IUser;
-}) => {
+const EditRecipeButton = ({ recipe }: { recipe: Recipe }) => {
   const router = useRouter();
+  const { user } = useUser();
+
   const hasPermission =
-    user.role === UserRole.ADMIN || recipe.createdById === user.id;
+    (user?.role as unknown as string) === ROLE.ADMIN ||
+    recipe.createdById === user?._id;
 
   if (!hasPermission) {
     return null;
@@ -28,7 +28,7 @@ const EditRecipeButton = ({
       className={`h-8 w-8 p-0 rounded-full bg-white/90 backdrop-blur-sm border-0 shadow-sm hover:shadow-md transition-all duration-200 ${"text-gray-600 hover:text-red-500"}`}
       // direct to the edit page
       onClick={() => {
-        router.push(`/recipes/edit/${recipe.id}`);
+        router.push(`/recipes/edit/${recipe._id}`);
       }}
     >
       <Pencil className={"h-4 w-4 "} />

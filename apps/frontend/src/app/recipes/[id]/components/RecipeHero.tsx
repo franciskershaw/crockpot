@@ -1,16 +1,17 @@
 import Image from "next/image";
+
+import { ChefHat, Clock, Users } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users, ChefHat } from "lucide-react";
-import { Recipe } from "@/data/types";
-import { Session } from "next-auth";
+import { Recipe } from "@/shared/types";
+
 import RecipeDetailActions from "./RecipeDetailActions";
 
 interface RecipeHeroProps {
   recipe: Recipe;
-  session: Session | null;
 }
 
-export function RecipeHero({ recipe, session }: RecipeHeroProps) {
+export function RecipeHero({ recipe }: RecipeHeroProps) {
   return (
     <div className="relative">
       {recipe.image?.url ? (
@@ -64,11 +65,11 @@ export function RecipeHero({ recipe, session }: RecipeHeroProps) {
 
             {/* Categories and Actions */}
             <div className="flex flex-col md:flex-row md:items-center gap-4">
-              {recipe.categories.length > 0 && (
+              {recipe.categoryIds.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {recipe.categories.map((category) => (
+                  {recipe.categoryIds.map((category) => (
                     <Badge
-                      key={category.id}
+                      key={category._id}
                       variant="secondary"
                       className="px-2 py-1 text-xs sm:px-3 sm:text-sm bg-white/20 backdrop-blur-sm text-white border-white/30"
                     >
@@ -78,9 +79,7 @@ export function RecipeHero({ recipe, session }: RecipeHeroProps) {
                 </div>
               )}
               <div className="flex-shrink-0">
-                {session && (
-                  <RecipeDetailActions recipe={recipe} session={session} />
-                )}
+                <RecipeDetailActions recipe={recipe} />
               </div>
             </div>
           </div>

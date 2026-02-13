@@ -12,6 +12,53 @@ export interface IUser {
   accessToken: string;
 }
 
+/**
+ * Example recipe response from the API
+ * See the full example structure in comments above this interface definition
+ */
+
+export interface RecipeCategory {
+  _id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ItemCategory {
+  _id: string;
+  name: string;
+  faIcon: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface RecipeImage {
+  url: string;
+  filename: string;
+}
+
+export interface RecipeCreator {
+  _id: string;
+  name: string | null;
+  image: string | null;
+}
+
+export interface RecipeIngredient {
+  itemId: string;
+  unitId: string | null;
+  quantity: number;
+  item?: {
+    _id: string;
+    name: string;
+    categoryId: string;
+    allowedUnitIds: string[];
+    createdAt: Date;
+    updatedAt: Date;
+    category?: ItemCategory;
+  };
+  unit?: Unit | null;
+}
+
 export interface Recipe {
   _id: string;
   name: string;
@@ -20,9 +67,13 @@ export interface Recipe {
   notes: string[];
   approved: boolean;
   serves: number;
+  createdById: string | null;
   createdAt: Date;
   updatedAt: Date;
-  categoryIds: string[];
+  categoryIds?: RecipeCategory[]; // Array of populated category objects (legacy from mongoose populate)
+  image?: RecipeImage | null;
+  ingredients: RecipeIngredient[];
+  createdBy?: RecipeCreator | null;
 }
 
 export interface Unit {

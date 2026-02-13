@@ -1,12 +1,14 @@
 // import { getRecipeById } from "@/actions/recipes";
 // import { auth } from "@/auth";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { RecipeHero } from "./components/RecipeHero";
+
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { BackButton } from "./components/BackButton";
 import { RecipeContent } from "./components/RecipeContent";
 import { RecipeContentSkeleton } from "./components/RecipeContentSkeleton";
-import { BackButton } from "./components/BackButton";
-import type { Metadata } from "next";
+import { RecipeHero } from "./components/RecipeHero";
 
 interface RecipePageProps {
   params: Promise<{ id: string }>;
@@ -83,27 +85,32 @@ interface RecipePageProps {
 //   };
 // }
 
+const getRecipe = async (id: string) => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${apiUrl}/api/recipes/${id}`);
+  return response.json();
+};
+
 const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
   const { id } = await params;
   const { from } = await searchParams;
 
-  // const [recipe, session] = await Promise.all([getRecipeById(id), auth()]);
+  const recipe = await getRecipe(id);
 
-  // if (!recipe) {
-  //   notFound();
-  // }
+  if (!recipe) {
+    notFound();
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Break out of parent container for full-width hero */}
       <div className="-mx-4 md:mx-0">
         {/* Hero Section with Actions - renders immediately with server data */}
-        {/* <div className="relative">
-          <RecipeHero recipe={recipe} session={session} />
+        <div className="relative">
+          <RecipeHero recipe={recipe} />
           <BackButton from={from} />
-        </div> */}
+        </div>
       </div>
-
       {/* Main Content - use Suspense for progressive loading */}
       <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
         {/* <Suspense fallback={<RecipeContentSkeleton />}>

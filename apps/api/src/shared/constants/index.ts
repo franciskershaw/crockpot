@@ -5,7 +5,7 @@
  * Run 'npm run sync:shared' to update
  */
 
-const ROLE = {
+export const ROLE = {
   FREE: "FREE",
   PREMIUM: "PREMIUM",
   PRO: "PRO",
@@ -14,5 +14,3 @@ const ROLE = {
 
 export const HOUSE_CATEGORY_ID = "6310a881b61a0ace3a1281ec";
 export const WATER_ITEM_ID = "6310ad7242687f4a1cf7f26a";
-
-export { ROLE };

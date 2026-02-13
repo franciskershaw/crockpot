@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
 import { Trash2 } from "lucide-react";
-import { Recipe, UserRole } from "@/data/types";
-import { User } from "next-auth";
-import { useDeleteRecipe } from "@/hooks/useDeleteRecipe";
+
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,27 +14,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+// import { useDeleteRecipe } from "@/hooks/useDeleteRecipe";
+import useUser from "@/hooks/user/useUser";
+import { ROLE } from "@/shared/constants";
+import { Recipe } from "@/shared/types";
 
-const DeleteRecipeButton = ({
-  recipe,
-  user,
-}: {
-  recipe: Recipe;
-  user: User;
-}) => {
-  const deleteRecipeMutation = useDeleteRecipe();
+const DeleteRecipeButton = ({ recipe }: { recipe: Recipe }) => {
+  const { user } = useUser();
+  // const deleteRecipeMutation = useDeleteRecipe();
   const [isOpen, setIsOpen] = useState(false);
 
   const hasPermission =
-    user.role === UserRole.ADMIN || recipe.createdById === user.id;
+    (user?.role as unknown as string) === ROLE.ADMIN ||
+    recipe.createdById === user?._id;
 
   if (!hasPermission) {
     return null;
   }
 
   const handleDelete = () => {
-    deleteRecipeMutation.mutate(recipe.id);
+    // deleteRecipeMutation.mutate(recipe.id);
     setIsOpen(false);
   };
 
@@ -62,16 +61,17 @@ const DeleteRecipeButton = ({
           <Button
             variant="outline"
             onClick={() => setIsOpen(false)}
-            disabled={deleteRecipeMutation.isPending}
+            // disabled={deleteRecipeMutation.isPending}
           >
             Cancel
           </Button>
           <Button
             variant="destructive"
             onClick={handleDelete}
-            disabled={deleteRecipeMutation.isPending}
+            // disabled={deleteRecipeMutation.isPending}
           >
-            {deleteRecipeMutation.isPending ? "Deleting..." : "Delete Recipe"}
+            {/* {deleteRecipeMutation.isPending ? "Deleting..." : "Delete Recipe"} */}
+            Delete Recipe
           </Button>
         </DialogFooter>
       </DialogContent>
