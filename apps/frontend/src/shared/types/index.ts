@@ -131,14 +131,14 @@ export interface Item {
 
 export interface ShoppingListItem {
   itemId: string;
-  unitId: string;
+  unitId: string | null;
   quantity: number;
   obtained: boolean;
   isManual?: boolean;
-  item: Item;
-  unit: Unit;
-  displayLabel: string;
-  displayUnitAbbr: string;
+  item?: Item;
+  unit?: Unit | null;
+  displayLabel?: string;
+  displayUnitAbbr?: string;
 }
 
 export interface RecipeMenuEntry {

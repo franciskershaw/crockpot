@@ -7,7 +7,7 @@ import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import { queryKeys } from "@/lib/constants";
 import { WATER_ITEM_ID } from "@/shared/constants";
-import type { DisplayItem, Item, ShoppingListItem } from "@/shared/types";
+import type { Item, ShoppingListItem } from "@/shared/types";
 
 const useGetShoppingList = () => {
   const api = useAxios();
@@ -38,7 +38,7 @@ const useGetShoppingList = () => {
     const reduced = (shoppingList?.items ?? []).reduce(
       (
         acc: {
-          groupedByCategory: Record<string, DisplayItem[]>;
+          groupedByCategory: Record<string, ShoppingListItem[]>;
           categoriesById: Record<
             string,
             { _id: string; name: string; faIcon: string }
@@ -75,7 +75,7 @@ const useGetShoppingList = () => {
         return acc;
       },
       {
-        groupedByCategory: {} as Record<string, DisplayItem[]>,
+        groupedByCategory: {} as Record<string, ShoppingListItem[]>,
         categoriesById: {} as Record<
           string,
           { _id: string; name: string; faIcon: string }
