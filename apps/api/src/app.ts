@@ -10,6 +10,7 @@ import menuRoutes from "./features/menu/routes/_menu.routes";
 import recipeRoutes from "./features/recipes/routes/_recipe.routes";
 import shoppingListRoutes from "./features/shopping-list/routes/_shoppingList.routes";
 import unitRoutes from "./features/units/routes/_unit.routes";
+import uploadRoutes from "./features/upload/routes/_upload.routes";
 import userRoutes from "./features/users/routes/_user.routes";
 
 export const createApp = () => {
@@ -38,6 +39,7 @@ export const createApp = () => {
   app.route("/api/recipes", recipeRoutes);
   app.route("/api/shopping-list", shoppingListRoutes);
   app.route("/api/units", unitRoutes);
+  app.route("/api/upload", uploadRoutes);
   app.route("/api/users", userRoutes);
 
   // Welcome / health check route

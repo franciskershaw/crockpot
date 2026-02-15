@@ -13,6 +13,7 @@ import useCreateRecipe from "@/app/recipes/hooks/useCreateRecipe";
 import useGetRecipeCategories from "@/app/recipes/hooks/useGetRecipeCategories";
 import useGetUserRecipeCount from "@/app/recipes/hooks/useGetUserRecipeCount";
 import useUpdateRecipe from "@/app/recipes/hooks/useUpdateRecipe";
+import useUploadImage from "@/app/recipes/hooks/useUploadImage";
 import useGetUnits from "@/app/units/hooks/useGetUnits";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -75,6 +76,11 @@ const CreateRecipeForm = ({ recipe }: CreateRecipeFormProps) => {
   // Mutations
   const createRecipeMutation = useCreateRecipe();
   const updateRecipeMutation = useUpdateRecipe();
+  const { uploadImage, isUploading: isUploadingImage } = useUploadImage();
+
+  // Track the selected image file (not just preview)
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [hasImageChanged, setHasImageChanged] = useState(false);
 
   // Initialize ingredients from recipe if editing
   const getInitialIngredients = (): IngredientItem[] => {
@@ -228,33 +234,51 @@ const CreateRecipeForm = ({ recipe }: CreateRecipeFormProps) => {
 
   // Handle form submission
   const onSubmit = async (data: CreateRecipeInput) => {
-    // TODO: Handle image upload to Cloudinary first if needed
+    try {
+      // Handle image upload if needed
+      let imageData: { url: string; filename: string } | null | undefined =
+        recipe?.image || null;
 
-    // Only send unitIds that exist in the current units list (avoids 400 if a unit was deleted)
-    const validUnitIds = new Set(units.map((u: Unit) => u._id));
+      // Upload new image if user selected one
+      if (hasImageChanged) {
+        if (imageFile) {
+          imageData = await uploadImage(imageFile);
+        } else {
+          // User removed the image
+          imageData = null;
+        }
+      }
 
-    const recipeData = {
-      name: data.name,
-      timeInMinutes: data.timeInMinutes,
-      serves: data.serves,
-      categoryIds: data.categoryIds,
-      ingredients: data.ingredients.map((ing) => ({
-        itemId: ing.itemId,
-        unitId: ing.unitId && validUnitIds.has(ing.unitId) ? ing.unitId : null,
-        quantity: ing.quantity,
-      })),
-      instructions: data.instructions,
-      notes: data.notes || [],
-      // image: imageFile ? await uploadImage(imageFile) : recipe?.image || null,
-    };
+      // Only send unitIds that exist in the current units list (avoids 400 if a unit was deleted)
+      const validUnitIds = new Set(units.map((u: Unit) => u._id));
 
-    if (isEditing && recipe) {
-      updateRecipeMutation.mutate({
-        recipeId: recipe._id,
-        data: recipeData,
-      });
-    } else {
-      createRecipeMutation.mutate(recipeData);
+      const recipeData = {
+        name: data.name,
+        timeInMinutes: data.timeInMinutes,
+        serves: data.serves,
+        categoryIds: data.categoryIds,
+        ingredients: data.ingredients.map((ing) => ({
+          itemId: ing.itemId,
+          unitId:
+            ing.unitId && validUnitIds.has(ing.unitId) ? ing.unitId : null,
+          quantity: ing.quantity,
+        })),
+        instructions: data.instructions,
+        notes: data.notes || [],
+        image: imageData,
+      };
+
+      if (isEditing && recipe) {
+        updateRecipeMutation.mutate({
+          recipeId: recipe._id,
+          data: recipeData,
+        });
+      } else {
+        createRecipeMutation.mutate(recipeData);
+      }
+    } catch (error) {
+      // Image upload error is handled by the hook
+      console.error("Failed to submit recipe:", error);
     }
   };
 
@@ -283,8 +307,9 @@ const CreateRecipeForm = ({ recipe }: CreateRecipeFormProps) => {
               <ImageUpload
                 imagePreview={imagePreview}
                 onImageChange={(file, preview) => {
-                  // TODO: Handle image upload
+                  setImageFile(file);
                   setImagePreview(preview);
+                  setHasImageChanged(true);
                 }}
               />
 
@@ -431,7 +456,8 @@ const CreateRecipeForm = ({ recipe }: CreateRecipeFormProps) => {
                   onClick={() => router.back()}
                   disabled={
                     createRecipeMutation.isPending ||
-                    updateRecipeMutation.isPending
+                    updateRecipeMutation.isPending ||
+                    isUploadingImage
                   }
                   className="w-full sm:w-auto min-w-[200px]"
                   size="lg"
@@ -442,13 +468,19 @@ const CreateRecipeForm = ({ recipe }: CreateRecipeFormProps) => {
                   type="submit"
                   disabled={
                     createRecipeMutation.isPending ||
-                    updateRecipeMutation.isPending
+                    updateRecipeMutation.isPending ||
+                    isUploadingImage
                   }
                   className="w-full sm:w-auto min-w-[200px]"
                   size="lg"
                 >
-                  {createRecipeMutation.isPending ||
-                  updateRecipeMutation.isPending ? (
+                  {isUploadingImage ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Uploading Image...
+                    </>
+                  ) : createRecipeMutation.isPending ||
+                    updateRecipeMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       {isEditing ? "Updating Recipe..." : "Creating Recipe..."}
