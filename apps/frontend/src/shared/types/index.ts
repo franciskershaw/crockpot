@@ -94,9 +94,9 @@ export interface Recipe {
   createdById: string | null;
   createdAt: Date;
   updatedAt: Date;
-  categoryIds?: RecipeCategory[]; // Array of populated category objects (legacy from mongoose populate)
+  categoryIds: RecipeCategory[]; // Array of populated category objects (legacy from mongoose populate)
   image?: RecipeImage | null;
-  ingredients: RecipeIngredient[];
+  ingredients: Ingredient[];
   createdBy?: RecipeCreator | null;
 }
 
