@@ -24,7 +24,6 @@ export function formatQty(value: number) {
 }
 
 function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
-  console.log("item from add item editor", item);
   const [quantity, setQuantity] = useState(1);
   const [selectedUnitId, setSelectedUnitId] = useState<string>("none");
   const { units } = useGetUnits();
