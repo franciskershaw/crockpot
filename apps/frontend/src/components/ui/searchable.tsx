@@ -37,7 +37,7 @@ export default function Searchable({
   onSelect?: (value: string) => void;
   value?: string;
   onValueChange?: (value: string) => void;
-  showAddNew?: boolean;
+  showAddNew?: boolean | null;
   addNewLabel?: string;
   onAddNew?: (searchText?: string) => void;
 }) {

@@ -7,7 +7,7 @@ import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import { queryKeys } from "@/lib/constants";
 import { WATER_ITEM_ID } from "@/shared/constants";
-import type { Item } from "@/shared/types";
+import type { DisplayItem, Item, ShoppingListItem } from "@/shared/types";
 
 const useGetShoppingList = () => {
   const api = useAxios();
@@ -36,7 +36,16 @@ const useGetShoppingList = () => {
       (items ?? []).map((it: Item) => [it._id, it])
     );
     const reduced = (shoppingList?.items ?? []).reduce(
-      (acc, listItem) => {
+      (
+        acc: {
+          groupedByCategory: Record<string, DisplayItem[]>;
+          categoriesById: Record<
+            string,
+            { _id: string; name: string; faIcon: string }
+          >;
+        },
+        listItem: ShoppingListItem
+      ) => {
         // Skip water items
         if (listItem.itemId === WATER_ITEM_ID) return acc;
 

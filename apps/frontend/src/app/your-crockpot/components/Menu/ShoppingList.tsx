@@ -11,7 +11,7 @@ import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
 import useRemoveShoppingListItem from "@/app/shopping-list/hooks/useRemoveShoppingListItem";
 import useToggleObtained from "@/app/shopping-list/hooks/useToggleObtained";
 import useUpdateShoppingListItemQuantity from "@/app/shopping-list/hooks/useUpdateShoppingListItemQuantity";
-// import ItemDialog from "@/components/dialogs/ItemDialog";
+import ItemDialog from "@/components/dialogs/ItemDialog";
 import {
   Accordion,
   AccordionContent,
@@ -24,7 +24,7 @@ import Searchable from "@/components/ui/searchable";
 import useUser from "@/hooks/user/useUser";
 import { getIconComponent } from "@/lib/icon-map";
 import { hasPermission } from "@/lib/utils";
-import type { Item, ShoppingListItem } from "@/shared/types";
+import type { Item, ShoppingListItem, UserRole } from "@/shared/types";
 import { Permission } from "@/shared/types";
 
 import AddItemEditor from "./AddItemEditor";
@@ -50,7 +50,8 @@ export default function ShoppingList() {
   const { user } = useUser();
 
   const canCreateItems =
-    user && hasPermission(user.role, Permission.CREATE_ITEMS);
+    user &&
+    hasPermission(user.role as unknown as UserRole, Permission.CREATE_ITEMS);
 
   const handleItemCreated = (newItem: Item) => {
     // Close the dialog
@@ -139,7 +140,9 @@ export default function ShoppingList() {
               const cat = categories[categoryId];
               const Icon = getIconComponent(cat.faIcon);
               const items = grouped[categoryId] || [];
-              const obtainedCount = items.filter((i) => i.obtained).length;
+              const obtainedCount = items.filter(
+                (i: ShoppingListItem) => i.obtained
+              ).length;
               const total = items.length;
               const allObtained = total > 0 && obtainedCount === total;
 
@@ -206,7 +209,7 @@ export default function ShoppingList() {
                                 onCommit={(next) =>
                                   updateQuantity.mutate({
                                     itemId: i.itemId,
-                                    unitId: i.unit._id ?? null,
+                                    unitId: i.unit?._id ?? null,
                                     quantity: next,
                                     isManual: i.isManual ?? false,
                                   })
@@ -219,7 +222,7 @@ export default function ShoppingList() {
                               onClick={() =>
                                 removeItem.mutate({
                                   itemId: i.itemId,
-                                  unitId: i.unit._id ?? null,
+                                  unitId: i.unit?._id ?? null,
                                   isManual: i.isManual ?? false,
                                 })
                               }
@@ -243,13 +246,13 @@ export default function ShoppingList() {
       </div>
 
       {/* Create Item Dialog */}
-      {/* <ItemDialog
+      <ItemDialog
         open={showCreateItemDialog}
         onOpenChange={setShowCreateItemDialog}
         onSuccess={() => {}} // No additional success handling needed
         onItemCreated={handleItemCreated}
         initialName={searchableValue}
-      /> */}
+      />
     </div>
   );
 }
