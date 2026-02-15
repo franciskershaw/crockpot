@@ -83,6 +83,17 @@ export interface Ingredient {
   quantity: number;
 }
 
+export interface RecipeRelevance {
+  score: number;
+  highestScoreInResults: number;
+  maxPossibleScore: number;
+  hasContentFilters: boolean;
+  matchedIngredients: number;
+  matchedCategories: number;
+  hasTimeMatch: boolean;
+  hasQueryMatch: boolean;
+}
+
 export interface Recipe {
   _id: string;
   name: string;
@@ -97,6 +108,7 @@ export interface Recipe {
   categoryIds: RecipeCategory[]; // Array of populated category objects (legacy from mongoose populate)
   image?: RecipeImage | null;
   ingredients: Ingredient[];
+  relevance?: RecipeRelevance | null;
   createdBy?: RecipeCreator | null;
 }
 

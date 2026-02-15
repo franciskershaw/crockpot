@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { useFilters } from "@/app/recipes/context/FilterProvider";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 import useGetRecipes from "../hooks/useGetRecipes";
 
@@ -16,6 +17,9 @@ import RecipeGridSkeleton from "./RecipeGridSkeleton";
 export default function RecipeGrid({ pageSize = 10 }: { pageSize: number }) {
   const { setTotalRecipeCount } = useFilters();
   const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  // Restore scroll position when returning from recipe detail page
+  useScrollRestoration();
 
   const {
     data,

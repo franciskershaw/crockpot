@@ -2,13 +2,14 @@ import { useMemo } from "react";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { Recipe, RecipeFilters } from "@/data/types";
+import { RecipeFilters } from "@/data/types";
 import useAxios from "@/hooks/axios/useAxios";
 import { useSessionSeed } from "@/hooks/useSessionSeed";
 import {
   createInfiniteQueryConfig,
   createRecipeQueryKey,
 } from "@/lib/query-utils";
+import { Recipe } from "@/shared/types";
 
 import { useFilters } from "../context/FilterProvider";
 
@@ -36,7 +37,7 @@ const useGetRecipes = (pageSize: number) => {
     [filters, pageSize, sessionSeed]
   );
 
-  const getRecipes = async (params: GetRecipesParams) => {
+  const getRecipes = async (params: GetRecipesParams): Promise<RecipePage> => {
     const { page, pageSize, filters, seed } = params;
     const response = await api.get("/api/recipes", {
       params: {

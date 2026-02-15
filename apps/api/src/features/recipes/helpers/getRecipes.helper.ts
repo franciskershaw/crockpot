@@ -181,9 +181,8 @@ export function buildRecipesPipeline(
         from: "RecipeCategory",
         localField: "categoryIds",
         foreignField: "_id",
-        as: "categories",
+        as: "categoryIds",
       },
     },
-    { $project: { categoryIds: 0 } },
   ];
 }

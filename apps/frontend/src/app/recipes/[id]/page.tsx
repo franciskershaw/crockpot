@@ -35,22 +35,18 @@ export async function generateMetadata({
 
   // Create a description from the recipe details
   const categoryNames = recipe.categoryIds.map((cat) => cat.name).join(", ");
-  console.log(categoryNames);
+
   const ingredientsList = recipe.ingredients
     .slice(0, 5)
     .map((ing) => ing.itemId?.name)
     .filter(Boolean)
     .join(", ");
 
-  console.log(ingredientsList);
-
   const description = `${recipe.name} - Ready in ${
     recipe.timeInMinutes
   } minutes, serves ${recipe.serves}. ${
     categoryNames ? `Categories: ${categoryNames}.` : ""
   } ${ingredientsList ? `Main ingredients: ${ingredientsList}.` : ""}`;
-
-  console.log(description);
 
   // Truncate to ~160 characters for optimal SEO
   const truncatedDescription =
@@ -101,6 +97,7 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
   const { from } = await searchParams;
 
   const recipe = await getRecipe(id);
+  console.log("recipe from page", recipe);
 
   if (!recipe) {
     notFound();

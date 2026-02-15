@@ -10,8 +10,8 @@ import { ChefHat, Clock, Star, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Recipe } from "@/data/types";
 import useUser from "@/hooks/user/useUser";
+import { Recipe } from "@/shared/types";
 
 import RecipeCardActions from "./RecipeCardActions";
 
@@ -205,11 +205,6 @@ const RecipeCard = memo(function RecipeCard({
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
             <ChefHat className="h-16 w-16 text-brand-secondary" />
-            {/* {showActions && (
-              <div className="absolute left-2 top-2 z-10 pointer-events-auto w-[calc(100%-1rem)]">
-                <RecipeCardActions recipe={recipe} />
-              </div>
-            )} */}
             <RelevanceBadge badgeType={badgeType} />
           </div>
         )}
@@ -286,7 +281,7 @@ const RecipeCard = memo(function RecipeCard({
                 <SkeletonWithShimmer className="h-5 w-12" />
               </>
             ) : (
-              (recipe?.categories ?? []).map((cat) => (
+              (recipe?.categoryIds ?? []).map((cat) => (
                 <Badge
                   key={cat._id}
                   variant="secondary"
