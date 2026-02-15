@@ -1,7 +1,7 @@
 "use client";
 
-// import AddToFavouritesButton from "@/app/recipes/components/AddToFavouritesButton";
-// import AddToMenuButton from "@/app/recipes/components/AddToMenuButton";
+import AddToFavouritesButton from "@/app/recipes/components/AddToFavouritesButton";
+import AddToMenuButton from "@/app/recipes/components/AddToMenuButton";
 import { Recipe } from "@/shared/types";
 
 import DeleteRecipeButton from "./DeleteRecipeButton";
@@ -18,8 +18,8 @@ export default function RecipeDetailActions({
     <div className="flex items-center gap-2">
       <EditRecipeButton recipe={recipe} />
       <DeleteRecipeButton recipe={recipe} />
-      {/* <AddToFavouritesButton recipeId={recipe.id} favourited={isFavourited} /> */}
-      {/* <AddToMenuButton recipe={recipe} /> */}
+      <AddToFavouritesButton recipeId={recipe._id} />
+      <AddToMenuButton recipe={recipe} />
     </div>
   );
 }

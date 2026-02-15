@@ -117,7 +117,6 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
           <RecipeContent recipe={recipe} />
         </Suspense> */}
       </div>
-      PLACEHOLDER
     </div>
   );
 };

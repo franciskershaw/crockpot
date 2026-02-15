@@ -9,12 +9,6 @@ import useGetFavourites from "@/app/favourites/hooks/useGetFavourites";
 import useRemoveFromFavourites from "@/app/favourites/hooks/useRemoveFromFavourites";
 import { Button } from "@/components/ui/button";
 
-// import {
-//   useAddToFavouritesMutation,
-//   useRemoveFromFavouritesMutation,
-//   useGetFavourites,
-// } from "@/hooks/useFavourites";
-
 const AddToFavouritesButton = ({
   recipeId,
   favourited,
