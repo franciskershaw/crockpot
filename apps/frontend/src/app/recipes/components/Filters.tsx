@@ -1,6 +1,6 @@
 "use client";
 
-import useItems from "@/app/items/useItems";
+import useGetItems from "@/app/items/hooks/useGetItems";
 import { Card, CardContent } from "@/components/ui/card";
 
 import useGetRecipeCategories from "../hooks/useGetRecipeCategories";
@@ -38,7 +38,7 @@ function FiltersContent() {
 export default function Filters() {
   const { isLoading: timeRangeLoading } = useGetTimeRange();
   const { isLoading: categoriesLoading } = useGetRecipeCategories();
-  const { isLoading: ingredientsLoading } = useItems("ingredients");
+  const { isLoading: ingredientsLoading } = useGetItems("ingredients");
 
   const isAnyLoading =
     timeRangeLoading || categoriesLoading || ingredientsLoading;

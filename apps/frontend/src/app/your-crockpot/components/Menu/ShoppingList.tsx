@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { ShoppingBasket, Trash2 } from "lucide-react";
 
-import useItems from "@/app/items/useItems";
+import useGetItems from "@/app/items/hooks/useGetItems";
 import useGetMenu from "@/app/menu/hooks/useGetMenu";
 import useAddManualShoppingListItem from "@/app/shopping-list/hooks/useAddManualShoppingListItem";
 import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
@@ -37,7 +37,7 @@ export default function ShoppingList() {
     useGetShoppingList();
 
   const { menu } = useGetMenu();
-  const { items } = useItems("all");
+  const { items } = useGetItems("all");
   const toggleObtained = useToggleObtained();
   const removeItem = useRemoveShoppingListItem();
   const updateQuantity = useUpdateShoppingListItemQuantity();

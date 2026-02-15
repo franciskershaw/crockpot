@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 
-import useItems from "@/app/items/useItems";
+import useGetItems from "@/app/items/hooks/useGetItems";
 import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import { queryKeys } from "@/lib/constants";
@@ -12,7 +12,7 @@ import type { Item } from "@/shared/types";
 const useGetShoppingList = () => {
   const api = useAxios();
   const { user } = useUser();
-  const { items } = useItems("all");
+  const { items } = useGetItems("all");
 
   const getShoppingList = async () => {
     const response = await api.get("/api/shopping-list", {
