@@ -1,13 +1,15 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  groupIngredientsByCategory,
-  getCategoryIcon,
-} from "../helpers/helpers";
 import { useRecipeServes } from "@/app/recipes/[id]/hooks/useRecipeServes";
+import { Card, CardContent } from "@/components/ui/card";
+import { Ingredient } from "@/shared/types";
+
+import {
+  getCategoryIcon,
+  groupIngredientsByCategory,
+} from "../helpers/helpers";
+
 import { ServesControl } from "./ServesControl";
-import { Ingredient } from "@/data/types";
 
 interface IngredientsSectionProps {
   ingredients: Ingredient[];
@@ -120,19 +122,23 @@ function IngredientItem({ ingredient }: { ingredient: Ingredient }) {
       ? ingredient.quantity.toString()
       : ingredient.quantity.toString();
 
+  const unit = ingredient.unitId;
+
+  const itemName = ingredient.itemId?.name;
+
   return (
     <div className="flex items-center lg:items-baseline gap-2 p-2 lg:px-3 lg:py-2 rounded lg:rounded-lg hover:bg-gray-50 transition-colors">
       <div className="flex items-baseline gap-1 min-w-0 flex-1">
         <span className="font-semibold text-gray-900 text-sm lg:text-base shrink-0 lg:min-w-0 lg:flex-shrink-0">
           {formattedQuantity}
         </span>
-        {ingredient.unit && (
+        {unit && unit.abbreviation && (
           <span className="text-gray-600 text-xs lg:text-sm shrink-0 lg:flex-shrink-0">
-            {ingredient.unit.abbreviation}
+            {unit.abbreviation}
           </span>
         )}
         <span className="text-gray-700 text-sm lg:text-base truncate lg:min-w-0">
-          {ingredient.item?.name}
+          {itemName}
         </span>
       </div>
     </div>

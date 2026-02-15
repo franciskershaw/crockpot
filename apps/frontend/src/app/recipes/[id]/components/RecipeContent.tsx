@@ -1,10 +1,11 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Recipe } from "@/shared/types";
+
 import { IngredientsSection } from "./IngredientsSection";
 import { InstructionsSection } from "./InstructionsSection";
 import { NotesSection } from "./NotesSection";
-import { Recipe } from "@/data/types";
 
 interface RecipeContentProps {
   recipe: Recipe;
@@ -29,7 +30,7 @@ export function RecipeContent({ recipe }: RecipeContentProps) {
             <IngredientsSection
               ingredients={recipe.ingredients}
               originalServes={recipe.serves}
-              recipeId={recipe.id}
+              recipeId={recipe._id}
             />
           </TabsContent>
 
@@ -52,7 +53,7 @@ export function RecipeContent({ recipe }: RecipeContentProps) {
             <IngredientsSection
               ingredients={recipe.ingredients}
               originalServes={recipe.serves}
-              recipeId={recipe.id}
+              recipeId={recipe._id}
             />
           </div>
         </div>

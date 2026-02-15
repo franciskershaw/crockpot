@@ -6,8 +6,8 @@ import { useMemo, useState } from "react";
 // import { useGetMenu } from "@/hooks/useMenu";
 import useGetMenu from "@/app/menu/hooks/useGetMenu";
 import { scaleIngredients } from "@/app/recipes/[id]/helpers/helpers";
-import { Ingredient } from "@/data/types";
 import useUser from "@/hooks/user/useUser";
+import { Ingredient } from "@/shared/types";
 
 interface UseRecipeServesProps {
   recipeId: string;

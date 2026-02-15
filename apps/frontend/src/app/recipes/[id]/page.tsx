@@ -111,11 +111,9 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
           <BackButton from={from} />
         </div>
       </div>
-      {/* Main Content - use Suspense for progressive loading */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
-        {/* <Suspense fallback={<RecipeContentSkeleton />}>
-          <RecipeContent recipe={recipe} />
-        </Suspense> */}
+        <RecipeContent recipe={recipe} />
       </div>
     </div>
   );

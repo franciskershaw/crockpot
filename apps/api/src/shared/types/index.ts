@@ -66,6 +66,23 @@ export interface RecipeIngredient {
   unit?: Unit | null;
 }
 
+/**
+ * Ingredient type matching the actual API response from Hono/Mongoose
+ * itemId and unitId are populated objects from mongoose .populate()
+ */
+export interface Ingredient {
+  itemId: {
+    _id: string;
+    name: string;
+    categoryId: ItemCategory;
+    allowedUnitIds: string[];
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  unitId: Unit;
+  quantity: number;
+}
+
 export interface Recipe {
   _id: string;
   name: string;
@@ -107,6 +124,22 @@ export interface ShoppingListItem {
   quantity: number;
   obtained: boolean;
   isManual?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface RecipeMenuEntry {
+  _id: string;
+  recipeId: string;
+  serves: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface RecipeMenu {
+  _id: string;
+  userId: string;
+  entries: RecipeMenuEntry[];
   createdAt: Date;
   updatedAt: Date;
 }

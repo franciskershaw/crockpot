@@ -1,6 +1,7 @@
 import { Package } from "lucide-react";
+
 import { getIconComponent } from "@/lib/icon-map";
-import { Ingredient } from "@/data/types";
+import { Ingredient } from "@/shared/types";
 
 export interface CategorizedIngredients {
   [categoryName: string]: Ingredient[];
@@ -10,7 +11,8 @@ export function groupIngredientsByCategory(
   ingredients: Ingredient[]
 ): CategorizedIngredients {
   return ingredients.reduce((acc, ingredient) => {
-    const categoryName = ingredient.item?.category?.name || "Other";
+    // Handle both formats: ingredient.item.category OR ingredient.itemId.categoryId
+    const categoryName = ingredient.itemId?.categoryId?.name || "Other";
     if (!acc[categoryName]) {
       acc[categoryName] = [];
     }
@@ -20,7 +22,8 @@ export function groupIngredientsByCategory(
 }
 
 export function getCategoryIcon(ingredients: Ingredient[]) {
-  const categoryIcon = ingredients[0]?.item?.category?.faIcon;
+  // Handle both formats: ingredient.item.category OR ingredient.itemId.categoryId
+  const categoryIcon = ingredients[0]?.itemId?.categoryId?.faIcon;
   return categoryIcon ? getIconComponent(categoryIcon) : Package;
 }
 
