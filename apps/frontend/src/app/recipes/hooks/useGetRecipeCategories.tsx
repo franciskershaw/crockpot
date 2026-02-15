@@ -16,7 +16,7 @@ const useGetRecipeCategories = () => {
     queryFn: getRecipeCategories,
   });
 
-  return { data, isLoading };
+  return { categories: data, isLoading };
 };
 
 export default useGetRecipeCategories;

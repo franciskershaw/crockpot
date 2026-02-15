@@ -5,10 +5,6 @@ import useAxios from "@/hooks/axios/useAxios";
 import useUser from "@/hooks/user/useUser";
 import { queryKeys } from "@/lib/constants";
 
-interface UpdateRecipeStatusData {
-  approved: boolean;
-}
-
 interface RecipeStatusResponse {
   _id: string;
   name: string;

@@ -1,7 +1,6 @@
-import { Suspense } from "react";
-import RecipeFormWithData from "./components/RecipeFormWithData";
-import CreateRecipeFormSkeleton from "./components/CreateRecipeFormSkeleton";
 import type { Metadata } from "next";
+
+import CreateRecipeForm from "./components/CreateRecipeForm";
 
 export const metadata: Metadata = {
   title: "Create New Recipe",
@@ -26,10 +25,7 @@ export default function NewRecipePage() {
         </p>
       </div>
 
-      {/* Data fetching wrapped in Suspense */}
-      <Suspense fallback={<CreateRecipeFormSkeleton />}>
-        <RecipeFormWithData />
-      </Suspense>
+      <CreateRecipeForm />
     </div>
   );
 }

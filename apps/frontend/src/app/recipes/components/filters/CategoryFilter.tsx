@@ -11,7 +11,7 @@ export default function CategoryFilter() {
   const selectedCategoryIds = filters.categoryIds || [];
   const categoryMode = filters.categoryMode || "include";
 
-  const { data: categories, isLoading } = useGetRecipeCategories();
+  const { categories, isLoading } = useGetRecipeCategories();
 
   const handleCategoryChange = (id: string, checked: boolean) => {
     const newCategoryIds = checked

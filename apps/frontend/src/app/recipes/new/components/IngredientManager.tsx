@@ -16,10 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Item, Unit } from "@/data/types";
 import useUser from "@/hooks/user/useUser";
-// import { useSession } from "next-auth/react";
-import { hasPermission, Permission } from "@/lib/action-helpers";
+import { hasPermission } from "@/lib/utils";
+import type { Item, Unit, UserRole } from "@/shared/types";
+import { Permission } from "@/shared/types";
 
 export type IngredientItem = {
   id: string;
@@ -28,7 +28,7 @@ export type IngredientItem = {
   unitId: string | null;
   unitName: string | null;
   quantity: number;
-  allowedUnits: Item["allowedUnits"]; // Include allowed units directly
+  allowedUnits: Item["allowedUnitIds"];
 };
 
 interface IngredientManagerProps {
@@ -51,26 +51,27 @@ export default function IngredientManager({
   const { user } = useUser();
 
   const canCreateItems =
-    user && hasPermission(user.role, Permission.CREATE_ITEMS);
+    user &&
+    hasPermission(user.role as unknown as UserRole, Permission.CREATE_ITEMS);
   const handleIngredientSelect = (ingredientId: string) => {
     const ingredient = availableIngredients.find(
-      (item) => item.id === ingredientId
+      (item) => item._id === ingredientId
     );
     if (ingredient) {
       // Check if ingredient is already selected
       const alreadySelected = selectedIngredients.some(
-        (selected) => selected.itemId === ingredient.id
+        (selected) => selected.itemId === ingredient._id
       );
 
       if (!alreadySelected) {
         const newIngredient: IngredientItem = {
           id: crypto.randomUUID(),
-          itemId: ingredient.id,
+          itemId: ingredient._id,
           itemName: ingredient.name,
           unitId: null,
           unitName: null,
           quantity: 1,
-          allowedUnits: ingredient.allowedUnits,
+          allowedUnits: ingredient.allowedUnitIds,
         };
 
         onIngredientsChange([...selectedIngredients, newIngredient]);
@@ -89,7 +90,7 @@ export default function IngredientManager({
     // New items start with empty allowedUnits (only default unit allowed)
     const newIngredient: IngredientItem = {
       id: crypto.randomUUID(),
-      itemId: newItem.id,
+      itemId: newItem._id,
       itemName: newItem.name,
       unitId: null,
       unitName: null,
@@ -124,7 +125,7 @@ export default function IngredientManager({
   };
 
   const handleUnitChange = (ingredientId: string, unitId: string) => {
-    const unit = units.find((u) => u.id === unitId);
+    const unit = units.find((u) => u._id === unitId);
     updateIngredient(ingredientId, {
       unitId: unitId === "none" ? null : unitId,
       unitName: unitId === "none" ? null : unit?.name || null,
@@ -141,11 +142,11 @@ export default function IngredientManager({
             .filter(
               (item) =>
                 !selectedIngredients.some(
-                  (selected) => selected.itemId === item.id
+                  (selected) => selected.itemId === item._id
                 )
             )
             .map((item) => ({
-              value: item.id,
+              value: item._id,
               label: item.name,
             }))}
           placeholder="Search for ingredients..."
@@ -211,14 +212,14 @@ export default function IngredientManager({
                         {ingredient.unitId === null ||
                         ingredient.unitId === "none"
                           ? "-"
-                          : units.find((u) => u.id === ingredient.unitId)
+                          : units.find((u) => u._id === ingredient.unitId)
                               ?.abbreviation || "-"}
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="none">No unit</SelectItem>
                       {ingredient.allowedUnits.map((unit) => (
-                        <SelectItem key={unit.id} value={unit.id}>
+                        <SelectItem key={unit._id} value={unit._id}>
                           {unit.name}
                         </SelectItem>
                       ))}

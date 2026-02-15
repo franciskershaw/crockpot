@@ -1,7 +1,9 @@
-import { Suspense } from "react";
-import RecipeFormWithData from "@/app/recipes/new/components/RecipeFormWithData";
-import CreateRecipeFormSkeleton from "@/app/recipes/new/components/CreateRecipeFormSkeleton";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { getRecipe } from "@/app/recipes/[id]/page";
+
+import CreateRecipeForm from "../../new/components/CreateRecipeForm";
 
 export const metadata: Metadata = {
   title: "Edit Recipe",
@@ -22,6 +24,11 @@ export default async function EditRecipePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const recipe = await getRecipe(id);
+
+  if (!recipe) {
+    notFound();
+  }
 
   return (
     <div className="container mx-auto md:px-4 py-6 max-w-4xl">
@@ -33,10 +40,7 @@ export default async function EditRecipePage({
         <p className="text-gray-600 mt-2">Edit your culinary creation</p>
       </div>
 
-      {/* Form streams in via Suspense */}
-      <Suspense fallback={<CreateRecipeFormSkeleton />}>
-        <RecipeFormWithData recipeId={id} />
-      </Suspense>
+      <CreateRecipeForm recipe={recipe} />
     </div>
   );
 }

@@ -1,80 +1,129 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { useRouter } from "next/navigation";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Clock, Loader2, Users } from "lucide-react";
+import { useForm } from "react-hook-form";
+
+import useGetItems from "@/app/items/hooks/useGetItems";
+import useCreateRecipe from "@/app/recipes/hooks/useCreateRecipe";
+import useGetRecipeCategories from "@/app/recipes/hooks/useGetRecipeCategories";
+import useGetUserRecipeCount from "@/app/recipes/hooks/useGetUserRecipeCount";
+import useUpdateRecipe from "@/app/recipes/hooks/useUpdateRecipe";
+import useGetUnits from "@/app/units/hooks/useGetUnits";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Combobox } from "@/components/ui/combobox";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  FormControl,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { NumberInput } from "@/components/ui/number-input";
+import { Textarea } from "@/components/ui/textarea";
+import useUser from "@/hooks/user/useUser";
+import { hasPermission } from "@/lib/utils";
 import { createRecipeSchema, type CreateRecipeInput } from "@/lib/validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Clock, Users, Loader2 } from "lucide-react";
-import type { Item, RecipeCategory, Unit } from "@/data/types";
-import { useCreateRecipe } from "@/hooks/useCreateRecipe";
-import ImageUpload from "./ImageUpload";
-import RecipeName from "./RecipeName";
-import { Combobox } from "@/components/ui/combobox";
-import IngredientManager, { type IngredientItem } from "./IngredientManager";
-import Instructions, { type Instruction } from "./Instructions";
 import {
-  transformIngredientsForForm,
-  transformInstructionsForForm,
+  Permission,
+  RecipeCategory,
+  Unit,
+  UserRole,
+  type Recipe,
+} from "@/shared/types";
+
+import {
   transformNotesForTextarea,
   transformTextareaToNotes,
-  type EditRecipeInput,
 } from "../helpers/recipe-form-helpers";
-import { useEditRecipe } from "@/hooks/useEditRecipe";
+
+import CreateRecipeFormSkeleton from "./CreateRecipeFormSkeleton";
+import ImageUpload from "./ImageUpload";
+import IngredientManager, { type IngredientItem } from "./IngredientManager";
+import Instructions, { type Instruction } from "./Instructions";
+import RecipeName from "./RecipeName";
 
 interface CreateRecipeFormProps {
-  recipe?: Partial<CreateRecipeInput> | EditRecipeInput;
-  recipeCategories: RecipeCategory[];
-  ingredients: Item[];
-  units: Unit[];
+  recipe?: Recipe; // Optional - if provided, we're editing
 }
 
-const CreateRecipeForm = ({
-  recipe,
-  recipeCategories,
-  ingredients,
-  units,
-}: CreateRecipeFormProps) => {
+const CreateRecipeForm = ({ recipe }: CreateRecipeFormProps) => {
   const router = useRouter();
-  const createRecipeMutation = useCreateRecipe();
-  const editRecipeMutation = useEditRecipe();
+  const { user, fetchingUser } = useUser();
+
   const [imagePreview, setImagePreview] = useState<string | null>(
     recipe?.image?.url || null
   );
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [hasImageChanged, setHasImageChanged] = useState(false);
 
   // Determine if we're editing or creating
-  const isEditing = recipe && "id" in recipe && recipe.id;
+  const isEditing = !!recipe;
 
-  // Initialize state using helper functions for better readability
-  const initialIngredients = recipe?.ingredients
-    ? transformIngredientsForForm(recipe.ingredients, ingredients, units)
-    : [];
+  // Fetch reference data client-side
+  const { categories: recipeCategories = [], isLoading: categoriesLoading } =
+    useGetRecipeCategories();
+  const { items: ingredients = [], isLoading: itemsLoading } =
+    useGetItems("ingredients");
+  const { units = [], isLoading: unitsLoading } = useGetUnits();
+  const { recipeCount, isLoading: countLoading } = useGetUserRecipeCount();
 
-  const initialInstructions = recipe?.instructions
-    ? transformInstructionsForForm(recipe.instructions)
-    : transformInstructionsForForm([]);
+  // Mutations
+  const createRecipeMutation = useCreateRecipe();
+  const updateRecipeMutation = useUpdateRecipe();
 
-  const [selectedIngredients, setSelectedIngredients] =
-    useState<IngredientItem[]>(initialIngredients);
-  const [instructions, setInstructions] =
-    useState<Instruction[]>(initialInstructions);
-  const [notesText, setNotesText] = useState(
-    transformNotesForTextarea(recipe?.notes)
-  );
+  // Initialize ingredients from recipe if editing
+  const getInitialIngredients = (): IngredientItem[] => {
+    if (!recipe?.ingredients || !ingredients.length) return [];
+
+    return recipe.ingredients.map((ing) => {
+      const itemId =
+        typeof ing.itemId === "string" ? ing.itemId : ing.itemId._id;
+      const unitId = ing.unitId
+        ? typeof ing.unitId === "string"
+          ? ing.unitId
+          : ing.unitId._id
+        : null;
+
+      const item = ingredients.find((i) => i._id === itemId);
+
+      return {
+        id: crypto.randomUUID(),
+        itemId,
+        itemName:
+          item?.name ||
+          (typeof ing.itemId === "object" ? ing.itemId.name : "Unknown"),
+        unitId,
+        unitName: unitId
+          ? units.find((u: Unit) => u._id === unitId)?.name || null
+          : null,
+        quantity: ing.quantity,
+        allowedUnits: item?.allowedUnitIds || [],
+      };
+    });
+  };
+
+  const getInitialInstructions = (): Instruction[] => {
+    if (!recipe?.instructions || recipe.instructions.length === 0) {
+      return [{ id: crypto.randomUUID(), text: "" }];
+    }
+    return recipe.instructions.map((text) => ({
+      id: crypto.randomUUID(),
+      text,
+    }));
+  };
+
+  const [selectedIngredients, setSelectedIngredients] = useState<
+    IngredientItem[]
+  >([]);
+  const [instructions, setInstructions] = useState<Instruction[]>([
+    { id: crypto.randomUUID(), text: "" },
+  ]);
+  const [notesText, setNotesText] = useState("");
 
   const form = useForm<CreateRecipeInput>({
     resolver: zodResolver(createRecipeSchema),
@@ -82,17 +131,79 @@ const CreateRecipeForm = ({
       name: recipe?.name || "",
       timeInMinutes: recipe?.timeInMinutes || 30,
       serves: recipe?.serves || 4,
-      categoryIds: recipe?.categoryIds || [],
-      ingredients: initialIngredients.map((ing) => ({
+      categoryIds: recipe?.categoryIds
+        ? recipe.categoryIds.map((cat) =>
+            typeof cat === "string" ? cat : cat._id
+          )
+        : [],
+      ingredients: [],
+      instructions: recipe?.instructions || [],
+      notes: recipe?.notes || [],
+    },
+  });
+
+  // Initialize state when editing and reference data is loaded; sync form.ingredients so Zod has the data
+  useEffect(() => {
+    if (!recipe || ingredients.length === 0 || units.length === 0) return;
+    const initial = getInitialIngredients();
+    setSelectedIngredients(initial);
+    setInstructions(getInitialInstructions());
+    setNotesText(transformNotesForTextarea(recipe.notes));
+    form.setValue(
+      "ingredients",
+      initial.map((ing) => ({
         itemId: ing.itemId,
         unitId: ing.unitId,
         quantity: ing.quantity,
-      })),
-      instructions: recipe?.instructions || [],
-      notes: recipe?.notes || [],
-      ...recipe,
-    } as CreateRecipeInput,
-  });
+      }))
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipe, ingredients.length, units.length]);
+
+  // Client-side auth and permission checks
+  useEffect(() => {
+    if (fetchingUser) return;
+
+    if (!user) {
+      router.push("/");
+      return;
+    }
+
+    const userRole = user.role as unknown as UserRole;
+
+    // Check if user has permission to create/edit recipes
+    if (!hasPermission(userRole, Permission.CREATE_RECIPES)) {
+      router.push("/your-crockpot");
+      return;
+    }
+
+    // For editing: check ownership
+    if (isEditing && recipe) {
+      const recipeOwnerId =
+        typeof recipe.createdById === "string"
+          ? recipe.createdById
+          : recipe.createdById;
+      const isOwner = user._id === recipeOwnerId;
+      const isAdmin = userRole === UserRole.ADMIN;
+
+      if (!isOwner && !isAdmin) {
+        router.push("/your-crockpot");
+        return;
+      }
+    }
+
+    // For creating: check recipe limits
+    if (!isEditing && recipeCount !== undefined) {
+      const hasReachedLimit =
+        (userRole === UserRole.FREE && recipeCount >= 5) ||
+        (userRole === UserRole.PREMIUM && recipeCount >= 10);
+
+      if (hasReachedLimit) {
+        router.push("/your-crockpot");
+        return;
+      }
+    }
+  }, [router, user, fetchingUser, isEditing, recipe, recipeCount]);
 
   // Sync instructions with form state and clear validation errors
   useEffect(() => {
@@ -117,42 +228,47 @@ const CreateRecipeForm = ({
 
   // Handle form submission
   const onSubmit = async (data: CreateRecipeInput) => {
-    // Create FormData for server action
-    const formData = new FormData();
+    // TODO: Handle image upload to Cloudinary first if needed
 
-    // Add all form fields
-    formData.append("name", data.name);
-    formData.append("timeInMinutes", data.timeInMinutes.toString());
-    formData.append("serves", data.serves.toString());
-    formData.append("categoryIds", JSON.stringify(data.categoryIds));
-    formData.append("ingredients", JSON.stringify(data.ingredients));
-    formData.append("instructions", JSON.stringify(data.instructions));
-    formData.append("notes", JSON.stringify(data.notes || []));
+    // Only send unitIds that exist in the current units list (avoids 400 if a unit was deleted)
+    const validUnitIds = new Set(units.map((u: Unit) => u._id));
 
-    if (isEditing) {
-      // Add edit-specific fields
-      formData.append("recipeId", (recipe as EditRecipeInput).id);
-      formData.append("hasImageChanged", hasImageChanged.toString());
-      formData.append(
-        "currentImageFilename",
-        (recipe as EditRecipeInput).image?.filename || ""
-      );
+    const recipeData = {
+      name: data.name,
+      timeInMinutes: data.timeInMinutes,
+      serves: data.serves,
+      categoryIds: data.categoryIds,
+      ingredients: data.ingredients.map((ing) => ({
+        itemId: ing.itemId,
+        unitId: ing.unitId && validUnitIds.has(ing.unitId) ? ing.unitId : null,
+        quantity: ing.quantity,
+      })),
+      instructions: data.instructions,
+      notes: data.notes || [],
+      // image: imageFile ? await uploadImage(imageFile) : recipe?.image || null,
+    };
 
-      // Add image file if present and changed
-      if (imageFile) {
-        formData.append("image", imageFile);
-      }
-
-      editRecipeMutation.mutate(formData);
+    if (isEditing && recipe) {
+      updateRecipeMutation.mutate({
+        recipeId: recipe._id,
+        data: recipeData,
+      });
     } else {
-      // Add image file if present (for create)
-      if (imageFile) {
-        formData.append("image", imageFile);
-      }
-
-      createRecipeMutation.mutate(formData);
+      createRecipeMutation.mutate(recipeData);
     }
   };
+
+  // Show skeleton while loading
+  const isLoading =
+    fetchingUser ||
+    categoriesLoading ||
+    itemsLoading ||
+    unitsLoading ||
+    (!isEditing && countLoading);
+
+  if (isLoading) {
+    return <CreateRecipeFormSkeleton />;
+  }
 
   return (
     <div className="relative">
@@ -167,9 +283,8 @@ const CreateRecipeForm = ({
               <ImageUpload
                 imagePreview={imagePreview}
                 onImageChange={(file, preview) => {
-                  setImageFile(file);
+                  // TODO: Handle image upload
                   setImagePreview(preview);
-                  setHasImageChanged(true);
                 }}
               />
 
@@ -219,8 +334,8 @@ const CreateRecipeForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <Combobox
-                      options={recipeCategories.map((cat) => ({
-                        value: cat.id,
+                      options={recipeCategories.map((cat: RecipeCategory) => ({
+                        value: cat._id,
                         label: cat.name,
                       }))}
                       value={field.value}
@@ -315,9 +430,8 @@ const CreateRecipeForm = ({
                   variant="outline"
                   onClick={() => router.back()}
                   disabled={
-                    isEditing
-                      ? editRecipeMutation.isPending
-                      : createRecipeMutation.isPending
+                    createRecipeMutation.isPending ||
+                    updateRecipeMutation.isPending
                   }
                   className="w-full sm:w-auto min-w-[200px]"
                   size="lg"
@@ -327,18 +441,14 @@ const CreateRecipeForm = ({
                 <Button
                   type="submit"
                   disabled={
-                    isEditing
-                      ? editRecipeMutation.isPending
-                      : createRecipeMutation.isPending
+                    createRecipeMutation.isPending ||
+                    updateRecipeMutation.isPending
                   }
                   className="w-full sm:w-auto min-w-[200px]"
                   size="lg"
                 >
-                  {(
-                    isEditing
-                      ? editRecipeMutation.isPending
-                      : createRecipeMutation.isPending
-                  ) ? (
+                  {createRecipeMutation.isPending ||
+                  updateRecipeMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       {isEditing ? "Updating Recipe..." : "Creating Recipe..."}

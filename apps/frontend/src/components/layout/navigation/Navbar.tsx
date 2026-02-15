@@ -13,11 +13,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { UserRole } from "@/data/types";
 import useUser from "@/hooks/user/useUser";
 import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
-// import { hasPermission, Permission } from "@/lib/action-helpers";
-import { cn, isActive } from "@/lib/utils";
+import { cn, hasPermission, isActive } from "@/lib/utils";
 
 import MobileMenu from "./MobileMenu";
 
@@ -106,6 +104,16 @@ export default function Navbar() {
                   <ShoppingBag className="h-4 w-4" />
                   <span className={getTextWrapperClasses("/your-crockpot")}>
                     Your Crockpot
+                  </span>
+                </Link>
+
+                <Link
+                  href="/recipes/new"
+                  className={cn(getNavLinkClasses("/recipes/new"), "group")}
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className={getTextWrapperClasses("/recipes/new")}>
+                    Add Recipe
                   </span>
                 </Link>
 
