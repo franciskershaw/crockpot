@@ -31,22 +31,16 @@ const getItems = async (c: Context) => {
         from: "ItemCategory",
         localField: "categoryId",
         foreignField: "_id",
-        as: "category",
+        as: "categoryId",
       },
     },
-    { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
+    { $unwind: { path: "$categoryId", preserveNullAndEmptyArrays: true } },
     {
       $lookup: {
         from: "Unit",
         localField: "allowedUnitIds",
         foreignField: "_id",
-        as: "allowedUnits",
-      },
-    },
-    {
-      $project: {
-        categoryId: 0,
-        allowedUnitIds: 0,
+        as: "allowedUnitIds",
       },
     },
   ]);

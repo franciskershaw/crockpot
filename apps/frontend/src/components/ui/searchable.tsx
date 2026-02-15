@@ -30,7 +30,7 @@ export default function Searchable({
   addNewLabel = "Add new item",
   onAddNew,
 }: {
-  options: { value: string; label: string }[];
+  options: { value: string; label: string }[] | undefined;
   placeholder?: string;
   emptyMessage?: string;
   className?: string;
@@ -52,14 +52,14 @@ export default function Searchable({
   // Filter options based on search value
   const filteredOptions = React.useMemo(() => {
     if (!searchValue) return options;
-    return options.filter((option) =>
+    return options?.filter((option) =>
       option.label.toLowerCase().includes(searchValue.toLowerCase())
     );
   }, [options, searchValue]);
 
   const handleSelect = (currentValue: string) => {
     // Find the option by label (currentValue) and get its value
-    const selectedOption = options.find(
+    const selectedOption = options?.find(
       (option) => option.label === currentValue
     );
     const newValue = selectedOption ? selectedOption.value : "";
@@ -93,7 +93,7 @@ export default function Searchable({
           )}
         >
           <span className={cn("truncate", !value && "text-muted-foreground")}>
-            {value
+            {value && options
               ? options.find((option) => option.value === value)?.label
               : placeholder}
           </span>

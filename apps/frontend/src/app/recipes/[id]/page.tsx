@@ -97,7 +97,6 @@ const RecipePage = async ({ params, searchParams }: RecipePageProps) => {
   const { from } = await searchParams;
 
   const recipe = await getRecipe(id);
-  console.log("recipe from page", recipe);
 
   if (!recipe) {
     notFound();

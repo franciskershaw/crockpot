@@ -11,8 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Item } from "@/data/types";
-import type { Unit } from "@/shared/types";
+import type { Item, Unit } from "@/shared/types";
 
 type AddItemEditorProps = {
   item: Item;
@@ -25,6 +24,7 @@ export function formatQty(value: number) {
 }
 
 function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
+  console.log("item from add item editor", item);
   const [quantity, setQuantity] = useState(1);
   const [selectedUnitId, setSelectedUnitId] = useState<string>("none");
   const { units } = useGetUnits();
@@ -109,7 +109,7 @@ function AddItemEditor({ item, onCancel, onConfirm }: AddItemEditorProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">No unit</SelectItem>
-                  {item.allowedUnits.map((unit) => (
+                  {item.allowedUnitIds.map((unit: Unit) => (
                     <SelectItem key={unit._id} value={unit._id}>
                       {unit.name}
                     </SelectItem>

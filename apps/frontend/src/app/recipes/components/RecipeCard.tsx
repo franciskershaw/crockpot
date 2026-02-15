@@ -15,8 +15,6 @@ import { Recipe } from "@/shared/types";
 
 import RecipeCardActions from "./RecipeCardActions";
 
-// import RecipeCardActions from "./RecipeCardActions";
-
 // Move skeleton outside component - defined once
 const SkeletonWithShimmer = memo(({ className }: { className?: string }) => (
   <div className={`relative overflow-hidden ${className}`}>

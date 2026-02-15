@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import useAxios from "@/hooks/axios/useAxios";
+import { Item } from "@/shared/types";
 
 const useItems = (mode: "all" | "ingredients") => {
   const api = useAxios();
@@ -13,7 +14,7 @@ const useItems = (mode: "all" | "ingredients") => {
     data: items,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<Item[]>({
     queryKey: ["items", mode],
     queryFn: getItems,
   });

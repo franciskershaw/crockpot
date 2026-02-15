@@ -20,7 +20,6 @@ import GoogleIcon from "./GoogleIcon";
 export default function Auth() {
   const router = useRouter();
   const { user } = useUser();
-  console.log(user)
 
   useEffect(() => {
     if (user) {

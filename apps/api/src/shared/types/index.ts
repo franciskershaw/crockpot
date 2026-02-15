@@ -123,21 +123,22 @@ export interface Unit {
 export interface Item {
   _id: string;
   name: string;
-  categoryId: string;
-  allowedUnitIds: string[];
+  categoryId: ItemCategory;
+  allowedUnitIds: Unit[];
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface ShoppingListItem {
-  _id: string;
   itemId: string;
-  unit: Unit;
+  unitId: string;
   quantity: number;
   obtained: boolean;
   isManual?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  item: Item;
+  unit: Unit;
+  displayLabel: string;
+  displayUnitAbbr: string;
 }
 
 export interface RecipeMenuEntry {

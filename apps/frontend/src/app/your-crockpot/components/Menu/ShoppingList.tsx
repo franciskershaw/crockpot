@@ -11,7 +11,7 @@ import useGetShoppingList from "@/app/shopping-list/hooks/useGetShoppingList";
 import useRemoveShoppingListItem from "@/app/shopping-list/hooks/useRemoveShoppingListItem";
 import useToggleObtained from "@/app/shopping-list/hooks/useToggleObtained";
 import useUpdateShoppingListItemQuantity from "@/app/shopping-list/hooks/useUpdateShoppingListItemQuantity";
-// import { ItemDialog } from "@/components/dialogs/ItemDialog";
+// import ItemDialog from "@/components/dialogs/ItemDialog";
 import {
   Accordion,
   AccordionContent,
@@ -21,11 +21,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Searchable from "@/components/ui/searchable";
-// import { useGetMenu } from "@/hooks/useMenu";
-
-// import { hasPermission, Permission } from "@/lib/action-helpers";
+import useUser from "@/hooks/user/useUser";
 import { getIconComponent } from "@/lib/icon-map";
+import { hasPermission } from "@/lib/utils";
 import type { Item, ShoppingListItem } from "@/shared/types";
+import { Permission } from "@/shared/types";
 
 import AddItemEditor from "./AddItemEditor";
 import ClearMenuDialog from "./ClearMenuDialog";
@@ -35,7 +35,7 @@ import ShoppingListRowEditor from "./ShopingListRowEditor";
 export default function ShoppingList() {
   const { shoppingList, grouped, categories, categoryIds } =
     useGetShoppingList();
-  console.log(shoppingList);
+
   const { menu } = useGetMenu();
   const { items } = useItems("all");
   const toggleObtained = useToggleObtained();
@@ -45,19 +45,20 @@ export default function ShoppingList() {
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [searchableValue, setSearchableValue] = useState("");
-  // const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
+  const [showCreateItemDialog, setShowCreateItemDialog] = useState(false);
 
-  // const canCreateItems =
-  //   user && hasPermission(user.role, Permission.CREATE_ITEMS);
-  const canCreateItems = false;
+  const { user } = useUser();
 
-  // const handleItemCreated = (newItem: Item) => {
-  //   // Close the dialog
-  //   setShowCreateItemDialog(false);
+  const canCreateItems =
+    user && hasPermission(user.role, Permission.CREATE_ITEMS);
 
-  //   // Automatically select the newly created item for pre-confirmation
-  //   setSelectedItem(newItem);
-  // };
+  const handleItemCreated = (newItem: Item) => {
+    // Close the dialog
+    setShowCreateItemDialog(false);
+
+    // Automatically select the newly created item for pre-confirmation
+    setSelectedItem(newItem);
+  };
 
   return (
     <div className="w-full rounded-md border bg-white h-full flex flex-col">
@@ -78,7 +79,7 @@ export default function ShoppingList() {
           value={searchableValue}
           onValueChange={setSearchableValue}
           onSelect={(selectedValue) => {
-            const selectedItem = items.find(
+            const selectedItem = items?.find(
               (item: Item) => item._id === selectedValue
             );
             if (selectedItem) {
@@ -90,7 +91,7 @@ export default function ShoppingList() {
           addNewLabel="Add new item"
           onAddNew={(searchText) => {
             setSearchableValue(searchText || "");
-            // setShowCreateItemDialog(true);
+            setShowCreateItemDialog(true);
           }}
           className="w-full"
         />
