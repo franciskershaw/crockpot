@@ -2,14 +2,13 @@ import { useMemo } from "react";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { RecipeFilters } from "@/data/types";
 import useAxios from "@/hooks/axios/useAxios";
 import { useSessionSeed } from "@/hooks/useSessionSeed";
 import {
   createInfiniteQueryConfig,
   createRecipeQueryKey,
 } from "@/lib/query-utils";
-import { Recipe } from "@/shared/types";
+import { Recipe, RecipeFilters } from "@/shared/types";
 
 import { useFilters } from "../context/FilterProvider";
 

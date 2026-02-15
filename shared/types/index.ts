@@ -150,6 +150,16 @@ export interface RecipeMenu {
   updatedAt: Date;
 }
 
+export interface RecipeFilters {
+  query?: string;
+  categoryIds?: string[];
+  categoryMode?: "include" | "exclude";
+  ingredientIds?: string[];
+  approved?: boolean;
+  minTime?: number;
+  maxTime?: number;
+}
+
 export enum Permission {
   VIEW_RECIPES = "VIEW_RECIPES", // Not logged in + all others
   MANAGE_FAVOURITES = "MANAGE_FAVOURITES", // FREE + paid + admin
@@ -178,6 +188,13 @@ export const ROLE_HIERARCHY: Record<UserRole, number> = {
   PREMIUM: 2,
   PRO: 3,
   ADMIN: 4,
+};
+
+export const roleRank: Record<UserRole, number> = {
+  [UserRole.FREE]: 0,
+  [UserRole.PREMIUM]: 1,
+  [UserRole.PRO]: 2,
+  [UserRole.ADMIN]: 3,
 };
 
 /**

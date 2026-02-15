@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { ChefHat, Plus, Search, Shield, ShoppingBag } from "lucide-react";
+import { ChefHat, Plus, Search, ShoppingBag } from "lucide-react";
 
+import useGetUserRecipeCount from "@/app/recipes/hooks/useGetUserRecipeCount";
 import LogoutButton from "@/components/landing/LogoutButton";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,14 +15,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useUser from "@/hooks/user/useUser";
-import { useGetUserRecipeCount } from "@/hooks/useUserRecipes";
 import { cn, hasPermission, isActive } from "@/lib/utils";
+import { Permission, UserRole } from "@/shared/types";
 
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
   const { user, fetchingUser } = useUser();
-  // const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
+  const { recipeCount, isLoading: isLoadingCount } = useGetUserRecipeCount();
   const pathname = usePathname();
 
   const isLoading = fetchingUser;
@@ -56,16 +57,16 @@ export default function Navbar() {
     );
 
   // Check if user has reached recipe limit
-  // const hasReachedLimit =
-  //   isAuthenticated && !isLoadingCount
-  //     ? (() => {
-  //         const userRole = user?.role as UserRole;
-  //         return (
-  //           (userRole === UserRole.FREE && recipeCount >= 5) ||
-  //           (userRole === UserRole.PREMIUM && recipeCount >= 10)
-  //         );
-  //       })()
-  //     : false;
+  const hasReachedLimit =
+    isAuthenticated && !isLoadingCount
+      ? (() => {
+          const userRole = user?.role as unknown as UserRole;
+          return (
+            (userRole === UserRole.FREE && recipeCount >= 5) ||
+            (userRole === UserRole.PREMIUM && recipeCount >= 10)
+          );
+        })()
+      : false;
 
   return (
     <nav className="sticky top-0 z-50 shadow-sm bg-white">
@@ -117,7 +118,10 @@ export default function Navbar() {
                   </span>
                 </Link>
 
-                {/* {hasPermission(user?.role, Permission.CREATE_RECIPES) && (
+                {hasPermission(
+                  user?.role as unknown as UserRole,
+                  Permission.CREATE_RECIPES
+                ) && (
                   <>
                     {hasReachedLimit ? (
                       <Tooltip>
@@ -149,7 +153,7 @@ export default function Navbar() {
                       </Link>
                     )}
                   </>
-                )} */}
+                )}
 
                 {/* {hasPermission(user?.role, Permission.ADMIN_PANEL) && (
                   <Link

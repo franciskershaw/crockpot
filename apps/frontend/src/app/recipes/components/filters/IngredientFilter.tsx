@@ -14,7 +14,7 @@ export default function IngredientFilter() {
   const handleIngredientChange = (id: string, checked: boolean) => {
     const newIngredientIds = checked
       ? [...selectedIngredientIds, id]
-      : selectedIngredientIds.filter((iid) => iid !== id);
+      : selectedIngredientIds.filter((iid: string) => iid !== id);
     updateFilters({ ingredientIds: newIngredientIds });
   };
 

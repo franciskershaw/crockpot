@@ -1,4 +1,4 @@
-import { UserRole } from "@/data/types";
+import { UserRole } from "@/shared/types";
 
 export const queryKeys = {
   RECIPES: "recipes",

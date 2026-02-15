@@ -3,8 +3,9 @@
  * Ensures consistent cache keys across server prefetch and client queries
  */
 
+import type { RecipeFilters } from "@/shared/types";
+
 import { queryKeys } from "./constants";
-import type { RecipeFilters } from "@/data/types";
 
 /**
  * Generates a standardized query key for recipe queries
@@ -16,7 +17,7 @@ export function createRecipeQueryKey(
   seed?: number
 ): [
   string,
-  { pageSize: number; filters: Record<string, unknown>; seed?: number }
+  { pageSize: number; filters: Record<string, unknown>; seed?: number },
 ] {
   const relevantFilters: Record<string, unknown> = { ...filters };
 
@@ -56,7 +57,7 @@ export interface InfiniteQueryParams {
  * Ensures server prefetch and client infinite queries use identical structure
  */
 export function createInfiniteQueryConfig<
-  TData extends { page: number; totalPages: number }
+  TData extends { page: number; totalPages: number },
 >(
   queryKey: ReturnType<typeof createRecipeQueryKey>,
   queryFn: (params: { pageParam: number }) => Promise<TData>

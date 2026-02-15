@@ -16,7 +16,7 @@ export default function CategoryFilter() {
   const handleCategoryChange = (id: string, checked: boolean) => {
     const newCategoryIds = checked
       ? [...selectedCategoryIds, id]
-      : selectedCategoryIds.filter((cid) => cid !== id);
+      : selectedCategoryIds.filter((cid: string) => cid !== id);
     updateFilters({ categoryIds: newCategoryIds });
   };
 

@@ -6,7 +6,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { roleRank, UserRole } from "@/data/types";
+import { UserRole } from "@/shared/types";
+import { roleRank } from "@/shared/types";
 
 import useUser from "../user/useUser";
 

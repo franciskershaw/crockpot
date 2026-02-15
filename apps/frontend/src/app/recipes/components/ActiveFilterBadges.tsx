@@ -1,10 +1,12 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { useEffect, useMemo, useRef, useState } from "react";
+
 import { X } from "lucide-react";
+
 import { useFilters } from "@/app/recipes/context/FilterProvider";
-import type { RecipeCategory, Item } from "@/data/types";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { Badge } from "@/components/ui/badge";
+import type { Item, RecipeCategory } from "@/shared/types";
 
 interface ActiveFilterBadgesProps {
   categories: RecipeCategory[];
@@ -59,8 +61,8 @@ export default function ActiveFilterBadges({
     }
 
     // Category filters
-    filters.categoryIds?.forEach((categoryId) => {
-      const category = categories.find((c) => c.id === categoryId);
+    filters.categoryIds?.forEach((categoryId: string) => {
+      const category = categories.find((c) => c._id === categoryId);
       if (category) {
         const modePrefix = filters.categoryMode === "exclude" ? "Not " : "";
         badges.push({
@@ -70,7 +72,7 @@ export default function ActiveFilterBadges({
           onRemove: () =>
             updateFilters({
               categoryIds: filters.categoryIds?.filter(
-                (id) => id !== categoryId
+                (id: string) => id !== categoryId
               ),
             }),
         });
@@ -78,8 +80,8 @@ export default function ActiveFilterBadges({
     });
 
     // Ingredient filters
-    filters.ingredientIds?.forEach((ingredientId) => {
-      const ingredient = ingredients.find((i) => i.id === ingredientId);
+    filters.ingredientIds?.forEach((ingredientId: string) => {
+      const ingredient = ingredients.find((i) => i._id === ingredientId);
       if (ingredient) {
         badges.push({
           key: `ingredient-${ingredientId}`,
@@ -88,7 +90,7 @@ export default function ActiveFilterBadges({
           onRemove: () =>
             updateFilters({
               ingredientIds: filters.ingredientIds?.filter(
-                (id) => id !== ingredientId
+                (id: string) => id !== ingredientId
               ),
             }),
         });
@@ -141,7 +143,7 @@ export default function ActiveFilterBadges({
         ref={scrollContainerRef}
         className="flex items-center gap-2 overflow-x-auto scrollbar-none w-full"
       >
-        {filterBadges.map((badge) => (
+        {filterBadges.map((badge: BadgeConfig) => (
           <Badge
             key={badge.key}
             onClick={badge.onRemove}

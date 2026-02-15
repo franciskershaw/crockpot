@@ -10,7 +10,7 @@ import RecipeCard from "@/app/recipes/components/RecipeCard";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
-import { RecipeMenuEntry } from "@/data/types";
+import { RecipeMenuEntry } from "@/shared/types";
 
 function MenuGrid() {
   const { menu, isLoading } = useGetMenu();

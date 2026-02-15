@@ -4,12 +4,13 @@ import Link from "next/link";
 
 import { Heart, Search } from "lucide-react";
 
+import useGetFavourites from "@/app/favourites/hooks/useGetFavourites";
 import RecipeCard from "@/app/recipes/components/RecipeCard";
 import ResponsiveRecipeGrid from "@/components/layout/wrapper/ResponsiveRecipeGrid";
 import { Button } from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
-import { useGetFavourites } from "@/hooks/useFavourites";
 import useUser from "@/hooks/user/useUser";
+import { Recipe } from "@/shared/types";
 
 import FavouritesSkeleton from "./FavouritesSkeleton";
 
@@ -69,9 +70,9 @@ export default function RecipeFavourites() {
         </EmptyState>
       ) : (
         <ResponsiveRecipeGrid>
-          {favourites.map((recipe, index) => (
+          {favourites.map((recipe: Recipe, index: number) => (
             <RecipeCard
-              key={recipe.id}
+              key={recipe._id}
               recipe={recipe}
               priority={index < 6}
               fromPage="/your-crockpot"

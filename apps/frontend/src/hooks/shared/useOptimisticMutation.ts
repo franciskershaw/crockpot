@@ -6,8 +6,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { roleRank, UserRole } from "@/data/types";
 import useUser from "@/hooks/user/useUser";
+import { roleRank, UserRole } from "@/shared/types";
 
 /**
  * Configuration for optimistic mutations

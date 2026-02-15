@@ -1,17 +1,19 @@
 "use client";
 
 import { ShoppingBasket } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
-  SheetClose,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type { Item, Unit } from "@/data/types";
+import { Item, Unit } from "@/shared/types";
+
 import ShoppingList from "./ShoppingList";
 
 type MobileShoppingListSheetProps = {

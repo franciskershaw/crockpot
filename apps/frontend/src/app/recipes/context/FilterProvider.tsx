@@ -1,15 +1,17 @@
 "use client";
+
 import {
   createContext,
-  useContext,
   ReactNode,
-  useMemo,
-  useEffect,
-  useState,
   useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
-import type { RecipeFilters } from "@/data/types";
+
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { RecipeFilters } from "@/shared/types";
 
 interface FilterContextType {
   filters: RecipeFilters; // These are now always hydration-safe

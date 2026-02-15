@@ -1,8 +1,8 @@
-import { UserRole } from "@/data/types";
 import useAxios from "@/hooks/axios/useAxios";
 import { useOptimisticMutation } from "@/hooks/shared/useOptimisticMutation";
 import useUser from "@/hooks/user/useUser";
 import { queryKeys } from "@/lib/constants";
+import { UserRole } from "@/shared/types";
 
 interface UpdateShoppingListItemQuantityInput {
   itemId: string;
