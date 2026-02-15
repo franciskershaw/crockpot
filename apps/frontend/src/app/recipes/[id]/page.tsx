@@ -15,7 +15,7 @@ interface RecipePageProps {
   searchParams: Promise<{ from?: string }>;
 }
 
-const getRecipe = async (id: string): Promise<Recipe> => {
+export const getRecipe = async (id: string): Promise<Recipe> => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const response = await fetch(`${apiUrl}/api/recipes/${id}`);
   return response.json() as Promise<Recipe>;
