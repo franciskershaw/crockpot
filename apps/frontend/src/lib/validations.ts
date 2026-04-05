@@ -1,6 +1,7 @@
 import { z } from "zod";
+
 import { objectIdSchema, optionalObjectIdSchema } from "@/lib/security";
-import { UserRole } from "@/data/types";
+import { UserRole } from "@/shared/types";
 
 // ===================================
 // SHARED VALIDATION SCHEMAS
